@@ -3,20 +3,15 @@ from libc.math cimport fabs, sqrt
 cimport cython
 cimport openmp
 from cython.parallel import prange, parallel
-
+from gapfill_config import FlagValues, \
+    DespeckleSearchConfig as SpiralSearchConfig, \
+    DespeckleThresholdConfig as Limits, \
+    DataSpecificConfig
 
 @cython.cdivision(True)
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef setSpeckleFlags (
-                   dict DataStacks,
-                   dict FlagValues,
-                   dict SpiralSearchConfig,
-                   dict Limits,
-                   dict Margins,
-                   float _NDV,
-                   float _CORRECTION_OFFSET = 0,
-                   ):
+cpdef setSpeckleFlags (dict DataStacks, dict Margins):
 
     '''
     Cython implementation of the "despeckle" algorithm; also applies land-sea mask and any systematic correction.
@@ -63,9 +58,9 @@ cpdef setSpeckleFlags (
         # thresholds / consts
         float hardLowerLimit = Limits["HARD_LOWER_LIMIT"]
         float hardUpperLimit = Limits["HARD_UPPER_LIMIT"]
-        float _SPECKLE_ZSCORE_THRESHOLD = Limits["ZSCORE_ACCEPTANCE_STDS"]
+        float _SPECKLE_ZSCORE_THRESHOLD = Limits["SPECKLE_NBR_Z_THRESH"]
         float stDevValidityThreshold = Limits["INVALID_BEYOND_STDS"]
-        float speckleDevThreshold = Limits["SPECKLE_BEYOND_STDS"]
+        float speckleDevThreshold = Limits["SPECKLE_BEYOND_SD"]
 
         int _SPECKLE_NBR_MIN_THRESHOLD = SpiralSearchConfig["MIN_NBRS_REQUIRED"]
         int _SPECKLE_NBR_MAX_THRESHOLD = SpiralSearchConfig["MAX_NBRS_REQUIRED"]
@@ -129,7 +124,7 @@ cpdef setSpeckleFlags (
     # Generate the neighbour spiral search table out to "a bit" further than needed
     _SEARCH_RADIUS =  <int> ((sqrt(_MAX_NEIGHBOURS_TO_CHECK / 3.14)) + 5)
     diam = _SEARCH_RADIUS * 2 + 1
-    print "Despeckle diam = " + str(diam)
+    print ("Despeckle diam = " + str(diam))
     inds = np.indices([diam, diam]) - _SEARCH_RADIUS
     distTmp = np.sqrt((inds ** 2).sum(0))
     npTmpTable = ((inds.T).reshape(diam ** 2, 2))
@@ -320,9 +315,9 @@ cpdef setSpeckleFlags (
                     speckleCount_Glob += 1
                     outputData[z, yD_prv, xD_prv] = _NDV
 
-    print "Speckle count:    " + str(speckleCount_Glob)
-    print "Extreme count:    " + str(extremeCount_Glob)
-    print "Good count:       " + str(goodCount_Glob)
-    print "Cleared Speckle:  " + str(clearedSpeckleCount_Glob)
-    print "Ocean count:      " + str(oceanCount_Glob)
+    print ("Speckle count:    " + str(speckleCount_Glob))
+    print ("Extreme count:    " + str(extremeCount_Glob))
+    print ("Good count:       " + str(goodCount_Glob))
+    print ("Cleared Speckle:  " + str(clearedSpeckleCount_Glob))
+    print ("Ocean count:      " + str(oceanCount_Glob))
     return (outputData, flags)

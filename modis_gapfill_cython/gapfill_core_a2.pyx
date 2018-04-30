@@ -101,7 +101,7 @@ cpdef a2_core (
     # becomes signficant. So, store an int version of the coords array
     nbrIntCoords = np.asarray(nbrTable[0:2,:]).astype(np.int32)
 
-    print "Beginning pass of A2..."
+    print ("Beginning pass of A2...")
     # populate the ratio or difference image,
     # this is just (data / mean) or (data - mean) (whether the data are original or from A1)
     diffImage_Local = np.empty_like(dataImage_Global_R)

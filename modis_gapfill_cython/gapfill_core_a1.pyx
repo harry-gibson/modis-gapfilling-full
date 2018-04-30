@@ -117,10 +117,10 @@ cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional),
         int _MAX_NEIGHBOURS_TO_CHECK = SpiralSearchConfig["MAX_NBRS_TO_SEARCH"]
 
         # Only use the values gleaned from up to this number of cells (Even if more are avail within radius) #640
-        int _FILL_THRESHOLD = SpiralSearchConfig["MAX_NBRS_REQUIRED"]
+        int _FILL_THRESHOLD = SpiralSearchConfig["MAX_USED_NBRS"]
 
         # 320 min number of values that must be found to have a valid fill
-        int _FILL_MIN = SpiralSearchConfig["MIN_NBRS_REQUIRED"]
+        int _FILL_MIN = SpiralSearchConfig["MIN_REQ_NBRS"]
 
         # calc the distance that is implied by the max spiral search length
         int _SEARCH_RADIUS = <int> (sqrt((_MAX_NEIGHBOURS_TO_CHECK*2.0) / 3.14))  + 1
@@ -197,7 +197,7 @@ cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional),
                 )
 
     # diagnostics; TODO use logging
-    print "Running A1 (Full Spiral Search)."
+    print ("Running A1 (Full Spiral Search).")
     print ("No data template: {0!s}. Using ratio method: {1!s}. Searching for {2!s} - {3!s} nbrs within {4!s} spiral steps".
            format(noTemplate, FillByRatios, _FILL_MIN, _FILL_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK))
     print ("Calculating nbr table out to radius of {0!s}.".format(_SEARCH_RADIUS))
