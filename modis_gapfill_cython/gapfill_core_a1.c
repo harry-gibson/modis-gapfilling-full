@@ -1269,10 +1269,12 @@ static char __pyx_k_04_NeverData[] = "04_NeverData";
 static char __pyx_k_05_TotalGaps[] = "05_TotalGaps";
 static char __pyx_k_DistTemplate[] = "DistTemplate";
 static char __pyx_k_FillByRatios[] = "FillByRatios";
+static char __pyx_k_MIN_REQ_NBRS[] = "MIN_REQ_NBRS";
 static char __pyx_k_TRIM_MIN_MAX[] = "_TRIM_MIN_MAX";
 static char __pyx_k_01_TotalCells[] = "01_TotalCells";
 static char __pyx_k_06_GapsTooBig[] = "06_GapsTooBig";
 static char __pyx_k_08_FilledFull[] = "08_FilledFull";
+static char __pyx_k_MAX_USED_NBRS[] = "MAX_USED_NBRS";
 static char __pyx_k_pyx_getbuffer[] = "__pyx_getbuffer";
 static char __pyx_k_11_FailNoPairs[] = "11_FailNoPairs";
 static char __pyx_k_RunFillFromPos[] = "RunFillFromPos";
@@ -1282,8 +1284,6 @@ static char __pyx_k_dtype_is_object[] = "dtype_is_object";
 static char __pyx_k_07_PermanentGaps[] = "07_PermanentGaps";
 static char __pyx_k_09_FilledPartial[] = "09_FilledPartial";
 static char __pyx_k_14_TotalNbrsUsed[] = "14_TotalNbrsUsed";
-static char __pyx_k_MAX_NBRS_REQUIRED[] = "MAX_NBRS_REQUIRED";
-static char __pyx_k_MIN_NBRS_REQUIRED[] = "MIN_NBRS_REQUIRED";
 static char __pyx_k_RatioAbsZeroPoint[] = "RatioAbsZeroPoint";
 static char __pyx_k_MAX_NBRS_TO_SEARCH[] = "MAX_NBRS_TO_SEARCH";
 static char __pyx_k_SpiralSearchConfig[] = "SpiralSearchConfig";
@@ -1357,9 +1357,9 @@ static PyObject *__pyx_kp_s_Invalid_mode_expected_c_or_fortr;
 static PyObject *__pyx_kp_s_Invalid_shape_in_axis_d_d;
 static PyObject *__pyx_n_s_KnownUnfillable;
 static PyObject *__pyx_n_s_LEFT;
-static PyObject *__pyx_n_s_MAX_NBRS_REQUIRED;
 static PyObject *__pyx_n_s_MAX_NBRS_TO_SEARCH;
-static PyObject *__pyx_n_s_MIN_NBRS_REQUIRED;
+static PyObject *__pyx_n_s_MAX_USED_NBRS;
+static PyObject *__pyx_n_s_MIN_REQ_NBRS;
 static PyObject *__pyx_n_s_Margins;
 static PyObject *__pyx_n_s_MemoryError;
 static PyObject *__pyx_kp_s_MemoryView_of_r_at_0x_x;
@@ -2011,7 +2011,7 @@ static PyObject *__pyx_f_15gapfill_core_a1_a1_core(PyObject *__pyx_v_DataStacks,
   /* "gapfill_core_a1.pyx":120
  * 
  *         # Only use the values gleaned from up to this number of cells (Even if more are avail within radius) #640
- *         int _FILL_THRESHOLD = SpiralSearchConfig["MAX_NBRS_REQUIRED"]             # <<<<<<<<<<<<<<
+ *         int _FILL_THRESHOLD = SpiralSearchConfig["MAX_USED_NBRS"]             # <<<<<<<<<<<<<<
  * 
  *         # 320 min number of values that must be found to have a valid fill
  */
@@ -2019,7 +2019,7 @@ static PyObject *__pyx_f_15gapfill_core_a1_a1_core(PyObject *__pyx_v_DataStacks,
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     {__pyx_filename = __pyx_f[0]; __pyx_lineno = 120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_SpiralSearchConfig, __pyx_n_s_MAX_NBRS_REQUIRED); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 120; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_SpiralSearchConfig, __pyx_n_s_MAX_USED_NBRS); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 120; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 120; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2028,7 +2028,7 @@ static PyObject *__pyx_f_15gapfill_core_a1_a1_core(PyObject *__pyx_v_DataStacks,
   /* "gapfill_core_a1.pyx":123
  * 
  *         # 320 min number of values that must be found to have a valid fill
- *         int _FILL_MIN = SpiralSearchConfig["MIN_NBRS_REQUIRED"]             # <<<<<<<<<<<<<<
+ *         int _FILL_MIN = SpiralSearchConfig["MIN_REQ_NBRS"]             # <<<<<<<<<<<<<<
  * 
  *         # calc the distance that is implied by the max spiral search length
  */
@@ -2036,7 +2036,7 @@ static PyObject *__pyx_f_15gapfill_core_a1_a1_core(PyObject *__pyx_v_DataStacks,
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
     {__pyx_filename = __pyx_f[0]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_SpiralSearchConfig, __pyx_n_s_MIN_NBRS_REQUIRED); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+  __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_SpiralSearchConfig, __pyx_n_s_MIN_REQ_NBRS); if (unlikely(__pyx_t_1 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 123; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3731,7 +3731,7 @@ __pyx_t_23.strides[2] = __pyx_v_outputDists.strides[2];
                 #define unlikely(x) (x)
             #endif
             #ifdef _OPENMP
-            #pragma omp parallel private(__pyx_v_z) reduction(+:__pyx_v_filledBelowThreshold) reduction(+:__pyx_v_noPairsFound) reduction(+:__pyx_v_insufficientPairsFound) reduction(+:__pyx_v_gapsAtUnfillableLocs) reduction(+:__pyx_v_gapsTooBig) reduction(+:__pyx_v_dataGood) reduction(+:__pyx_v_usedNeighbours) reduction(+:__pyx_v_totalProcessedGapCells) reduction(+:__pyx_v_totalCells) reduction(+:__pyx_v_oceanCells) reduction(+:__pyx_v_filledToThreshold) reduction(+:__pyx_v_neverDataCells) reduction(+:__pyx_v_scannedLevels) private(__pyx_t_79, __pyx_t_116, __pyx_t_111, __pyx_t_33, __pyx_t_133, __pyx_t_148, __pyx_t_139, __pyx_t_120, __pyx_t_149, __pyx_t_93, __pyx_t_63, __pyx_t_103, __pyx_t_51, __pyx_t_147, __pyx_t_65, __pyx_t_129, __pyx_t_99, __pyx_t_117, __pyx_t_54, __pyx_t_3, __pyx_t_109, __pyx_t_124, __pyx_t_85, __pyx_t_100, __pyx_t_145, __pyx_t_146, __pyx_t_94, __pyx_t_90, __pyx_t_55, __pyx_t_118, __pyx_t_52, __pyx_t_84, __pyx_t_104, __pyx_t_71, __pyx_t_134, __pyx_t_130, __pyx_t_119, __pyx_t_49, __pyx_t_151, __pyx_t_131, __pyx_t_97, __pyx_t_141, __pyx_t_14, __pyx_t_114, __pyx_t_66, __pyx_t_107, __pyx_t_76, __pyx_t_30, __pyx_t_142, __pyx_t_126, __pyx_t_110, __pyx_t_121, __pyx_t_61, __pyx_t_144, __pyx_t_31, __pyx_t_92, __pyx_t_57, __pyx_t_75, __pyx_t_86, __pyx_t_138, __pyx_t_98, __pyx_t_87, __pyx_t_83, __pyx_t_125, __pyx_t_29, __pyx_t_89, __pyx_t_135, __pyx_t_8, __pyx_t_24, __pyx_t_50, __pyx_t_82, __pyx_t_152, __pyx_t_62, __pyx_t_153, __pyx_t_28, __pyx_t_95, __pyx_t_102, __pyx_t_88, __pyx_t_64, __pyx_t_128, __pyx_t_70, __pyx_t_101, __pyx_t_108, __pyx_t_143, __pyx_t_68, __pyx_t_122, __pyx_t_69, __pyx_t_150, __pyx_t_91, __pyx_t_140, __pyx_t_96, __pyx_t_105, __pyx_t_53, __pyx_t_67, __pyx_t_115, __pyx_t_112, __pyx_t_59, __pyx_t_32, __pyx_t_77, __pyx_t_136, __pyx_t_113, __pyx_t_58, __pyx_t_81, __pyx_t_72, __pyx_t_123, __pyx_t_127, __pyx_t_137, __pyx_t_78, __pyx_t_106, __pyx_t_56, __pyx_t_80, __pyx_t_73, __pyx_t_132, __pyx_t_60, __pyx_t_74) num_threads(20)
+            #pragma omp parallel private(__pyx_v_z) reduction(+:__pyx_v_filledBelowThreshold) reduction(+:__pyx_v_noPairsFound) reduction(+:__pyx_v_insufficientPairsFound) reduction(+:__pyx_v_gapsAtUnfillableLocs) reduction(+:__pyx_v_gapsTooBig) reduction(+:__pyx_v_dataGood) reduction(+:__pyx_v_totalProcessedGapCells) reduction(+:__pyx_v_totalCells) reduction(+:__pyx_v_oceanCells) reduction(+:__pyx_v_filledToThreshold) reduction(+:__pyx_v_neverDataCells) reduction(+:__pyx_v_scannedLevels) reduction(+:__pyx_v_usedNeighbours) private(__pyx_t_79, __pyx_t_116, __pyx_t_111, __pyx_t_33, __pyx_t_133, __pyx_t_148, __pyx_t_139, __pyx_t_120, __pyx_t_149, __pyx_t_93, __pyx_t_63, __pyx_t_103, __pyx_t_51, __pyx_t_147, __pyx_t_65, __pyx_t_129, __pyx_t_99, __pyx_t_117, __pyx_t_54, __pyx_t_3, __pyx_t_109, __pyx_t_124, __pyx_t_85, __pyx_t_100, __pyx_t_145, __pyx_t_146, __pyx_t_94, __pyx_t_90, __pyx_t_55, __pyx_t_118, __pyx_t_52, __pyx_t_84, __pyx_t_104, __pyx_t_71, __pyx_t_134, __pyx_t_130, __pyx_t_119, __pyx_t_49, __pyx_t_151, __pyx_t_131, __pyx_t_97, __pyx_t_141, __pyx_t_14, __pyx_t_114, __pyx_t_66, __pyx_t_107, __pyx_t_76, __pyx_t_30, __pyx_t_142, __pyx_t_126, __pyx_t_110, __pyx_t_121, __pyx_t_61, __pyx_t_144, __pyx_t_31, __pyx_t_92, __pyx_t_57, __pyx_t_75, __pyx_t_86, __pyx_t_138, __pyx_t_98, __pyx_t_87, __pyx_t_83, __pyx_t_125, __pyx_t_29, __pyx_t_89, __pyx_t_135, __pyx_t_8, __pyx_t_24, __pyx_t_50, __pyx_t_82, __pyx_t_62, __pyx_t_153, __pyx_t_28, __pyx_t_95, __pyx_t_102, __pyx_t_88, __pyx_t_64, __pyx_t_128, __pyx_t_70, __pyx_t_101, __pyx_t_108, __pyx_t_143, __pyx_t_68, __pyx_t_122, __pyx_t_69, __pyx_t_150, __pyx_t_91, __pyx_t_140, __pyx_t_96, __pyx_t_105, __pyx_t_53, __pyx_t_67, __pyx_t_115, __pyx_t_112, __pyx_t_152, __pyx_t_59, __pyx_t_32, __pyx_t_77, __pyx_t_136, __pyx_t_113, __pyx_t_58, __pyx_t_81, __pyx_t_72, __pyx_t_123, __pyx_t_127, __pyx_t_137, __pyx_t_78, __pyx_t_106, __pyx_t_56, __pyx_t_80, __pyx_t_73, __pyx_t_132, __pyx_t_60, __pyx_t_74) num_threads(20)
             #endif /* _OPENMP */
             {
                 /* Initialize private variables to invalid values */
@@ -3781,7 +3781,7 @@ __pyx_t_23.strides[2] = __pyx_v_outputDists.strides[2];
                         if (__pyx_t_31 > 0)
                         {
                             #ifdef _OPENMP
-                            #pragma omp for lastprivate(__pyx_v_sumDist_prv) lastprivate(__pyx_v_delta_prv) lastprivate(__pyx_v_max_idx_prv) lastprivate(__pyx_v_x_prv) lastprivate(__pyx_v_min_Diff_prv) lastprivate(__pyx_v_minD_wpfv_prv) lastprivate(__pyx_v_newZ_prv) lastprivate(__pyx_v_max_Diff_prv) lastprivate(__pyx_v_flag_prv) lastprivate(__pyx_v_altValue_prv) lastprivate(__pyx_v_deltaidx_prv) lastprivate(__pyx_v_weight_prv) lastprivate(__pyx_v_min_idx_prv) lastprivate(__pyx_v_xi_prv) lastprivate(__pyx_v_minD_Dist_prv) lastprivate(__pyx_v_currentValue_prv) lastprivate(__pyx_v_xNbr_prv) lastprivate(__pyx_v_pfv_prv) lastprivate(__pyx_v_yi_prv) lastprivate(__pyx_v_maxD_wpfv_prv) lastprivate(__pyx_v_spiralStart_prv) lastprivate(__pyx_v_yNbr_prv) lastprivate(__pyx_v_maxD_Dist_prv) lastprivate(__pyx_v_nfound_prv) firstprivate(__pyx_v_y) lastprivate(__pyx_v_y) lastprivate(__pyx_v_valueDiff_prv) lastprivate(__pyx_v_sw_prv) lastprivate(__pyx_v_maxD_weight_prv) lastprivate(__pyx_v_ws_prv) lastprivate(__pyx_v_wfv_prv) lastprivate(__pyx_v_nbrIndex_prv) lastprivate(__pyx_v_minD_weight_prv) schedule(dynamic, __pyx_t_3)
+                            #pragma omp for lastprivate(__pyx_v_sumDist_prv) lastprivate(__pyx_v_delta_prv) lastprivate(__pyx_v_max_idx_prv) lastprivate(__pyx_v_x_prv) lastprivate(__pyx_v_min_Diff_prv) lastprivate(__pyx_v_minD_wpfv_prv) lastprivate(__pyx_v_newZ_prv) lastprivate(__pyx_v_max_Diff_prv) lastprivate(__pyx_v_flag_prv) lastprivate(__pyx_v_spiralStart_prv) lastprivate(__pyx_v_altValue_prv) lastprivate(__pyx_v_deltaidx_prv) lastprivate(__pyx_v_weight_prv) lastprivate(__pyx_v_min_idx_prv) lastprivate(__pyx_v_xi_prv) lastprivate(__pyx_v_minD_Dist_prv) lastprivate(__pyx_v_currentValue_prv) lastprivate(__pyx_v_xNbr_prv) lastprivate(__pyx_v_pfv_prv) lastprivate(__pyx_v_yi_prv) lastprivate(__pyx_v_maxD_wpfv_prv) lastprivate(__pyx_v_yNbr_prv) lastprivate(__pyx_v_maxD_Dist_prv) lastprivate(__pyx_v_nfound_prv) firstprivate(__pyx_v_y) lastprivate(__pyx_v_y) lastprivate(__pyx_v_valueDiff_prv) lastprivate(__pyx_v_sw_prv) lastprivate(__pyx_v_maxD_weight_prv) lastprivate(__pyx_v_ws_prv) lastprivate(__pyx_v_wfv_prv) lastprivate(__pyx_v_nbrIndex_prv) lastprivate(__pyx_v_minD_weight_prv) schedule(dynamic, __pyx_t_3)
                             #endif /* _OPENMP */
                             for (__pyx_t_30 = 0; __pyx_t_30 < __pyx_t_31; __pyx_t_30++){
                                 {
@@ -3796,6 +3796,7 @@ __pyx_t_23.strides[2] = __pyx_v_outputDists.strides[2];
                                     __pyx_v_newZ_prv = ((Py_ssize_t)0xbad0bad0);
                                     __pyx_v_max_Diff_prv = ((double)__PYX_NAN());
                                     __pyx_v_flag_prv = ((unsigned char)'?');
+                                    __pyx_v_spiralStart_prv = ((int)0xbad0bad0);
                                     __pyx_v_altValue_prv = ((double)__PYX_NAN());
                                     __pyx_v_deltaidx_prv = ((int)0xbad0bad0);
                                     __pyx_v_weight_prv = ((double)__PYX_NAN());
@@ -3807,7 +3808,6 @@ __pyx_t_23.strides[2] = __pyx_v_outputDists.strides[2];
                                     __pyx_v_pfv_prv = ((double)__PYX_NAN());
                                     __pyx_v_yi_prv = ((Py_ssize_t)0xbad0bad0);
                                     __pyx_v_maxD_wpfv_prv = ((double)__PYX_NAN());
-                                    __pyx_v_spiralStart_prv = ((int)0xbad0bad0);
                                     __pyx_v_yNbr_prv = ((Py_ssize_t)0xbad0bad0);
                                     __pyx_v_maxD_Dist_prv = ((double)__PYX_NAN());
                                     __pyx_v_nfound_prv = ((int)0xbad0bad0);
@@ -17504,9 +17504,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Invalid_shape_in_axis_d_d, __pyx_k_Invalid_shape_in_axis_d_d, sizeof(__pyx_k_Invalid_shape_in_axis_d_d), 0, 0, 1, 0},
   {&__pyx_n_s_KnownUnfillable, __pyx_k_KnownUnfillable, sizeof(__pyx_k_KnownUnfillable), 0, 0, 1, 1},
   {&__pyx_n_s_LEFT, __pyx_k_LEFT, sizeof(__pyx_k_LEFT), 0, 0, 1, 1},
-  {&__pyx_n_s_MAX_NBRS_REQUIRED, __pyx_k_MAX_NBRS_REQUIRED, sizeof(__pyx_k_MAX_NBRS_REQUIRED), 0, 0, 1, 1},
   {&__pyx_n_s_MAX_NBRS_TO_SEARCH, __pyx_k_MAX_NBRS_TO_SEARCH, sizeof(__pyx_k_MAX_NBRS_TO_SEARCH), 0, 0, 1, 1},
-  {&__pyx_n_s_MIN_NBRS_REQUIRED, __pyx_k_MIN_NBRS_REQUIRED, sizeof(__pyx_k_MIN_NBRS_REQUIRED), 0, 0, 1, 1},
+  {&__pyx_n_s_MAX_USED_NBRS, __pyx_k_MAX_USED_NBRS, sizeof(__pyx_k_MAX_USED_NBRS), 0, 0, 1, 1},
+  {&__pyx_n_s_MIN_REQ_NBRS, __pyx_k_MIN_REQ_NBRS, sizeof(__pyx_k_MIN_REQ_NBRS), 0, 0, 1, 1},
   {&__pyx_n_s_Margins, __pyx_k_Margins, sizeof(__pyx_k_Margins), 0, 0, 1, 1},
   {&__pyx_n_s_MemoryError, __pyx_k_MemoryError, sizeof(__pyx_k_MemoryError), 0, 0, 1, 1},
   {&__pyx_kp_s_MemoryView_of_r_at_0x_x, __pyx_k_MemoryView_of_r_at_0x_x, sizeof(__pyx_k_MemoryView_of_r_at_0x_x), 0, 0, 1, 0},

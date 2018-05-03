@@ -3,6 +3,10 @@ import numpy as np
 from libc.stdlib cimport abs
 from cython.parallel import prange, parallel
 from libc.math cimport sqrt
+from gapfill_config import FlagValues, \
+    A1SearchConfig , \
+    DataSpecificConfig as DataConfig
+
 
 
 @cython.boundscheck(False)
@@ -15,23 +19,14 @@ from libc.math cimport sqrt
 # margin set to this value also. That way the algorithm can get values for "edge pixels" of its
 # input data
 cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional), KnownUnfillable (optional)
-                    dict FlagValues,
-                    dict SpiralSearchConfig,
                     dict Margins, # has items Top, Bottom, Left, Right
-                    float _NDV,
-                    char FillByRatios = 0,
-                    float RatioAbsZeroPoint = 0,
-                    float RatioLimit = 1,
-                    char RunFillFromPos = 0,
-                    char _TRIM_MIN_MAX = 1
+                    char RunFillFromPos = 0
                 ):
 
     """
     Optimised, multithreaded Cython (C) implementation of the A1 gapfilling algorithm.
 
-    fillGapsA1_Cy(dict DataStacks, dict FlagValues, dict SpiralSearchConfig, dict Margins,
-                float _NDV, char FillByRatios=0, float RatioAbsZeroPoint=0, float RatioLimit=1,
-                char RunFillFromPos = 0)
+    a1_core(dict DataStacks, dict Margins, char RunFillFromPos = 0)
                     ->
                     (float[:,:,::1] output, float[:,:,::1] distances, dict info)
 
@@ -107,20 +102,20 @@ cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional),
 
         float [:,:,::1] dayDataStack = DataStacks["Data"]
         unsigned char[:,:,::1] inputFlags = DataStacks["Flags"] # embeds the land-sea mask (sea=1 land =0)
-        unsigned char[:,:,::1] dataDistTemplate=None
-        unsigned char[:,::1] knownUnfillableLocs=None
-        float _AbsZeroPoint = RatioAbsZeroPoint
-        float _MaxAllowableRatio = RatioLimit
+        unsigned char[:,:,::1] dataDistTemplate = None
+        unsigned char[:,::1] knownUnfillableLocs = None
+        float _AbsZeroPoint = DataConfig["DATA_ABSOLUTE_ZERO_OFFSET"]
+        float _MaxAllowableRatio = A1SearchConfig["MAX_ALLOWABLE_RATIO"]
         float _MinAllowableRatio = 1.0 / _MaxAllowableRatio
 
         #  how many locations should be checked in spiral search (gives radius). #3142
-        int _MAX_NEIGHBOURS_TO_CHECK = SpiralSearchConfig["MAX_NBRS_TO_SEARCH"]
+        int _MAX_NEIGHBOURS_TO_CHECK = A1SearchConfig["MAX_NBRS_TO_SEARCH"]
 
         # Only use the values gleaned from up to this number of cells (Even if more are avail within radius) #640
-        int _FILL_THRESHOLD = SpiralSearchConfig["MAX_USED_NBRS"]
+        int _FILL_THRESHOLD = A1SearchConfig["MAX_USED_NBRS"]
 
         # 320 min number of values that must be found to have a valid fill
-        int _FILL_MIN = SpiralSearchConfig["MIN_REQ_NBRS"]
+        int _FILL_MIN = A1SearchConfig["MIN_REQ_NBRS"]
 
         # calc the distance that is implied by the max spiral search length
         int _SEARCH_RADIUS = <int> (sqrt((_MAX_NEIGHBOURS_TO_CHECK*2.0) / 3.14))  + 1
@@ -198,8 +193,8 @@ cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional),
 
     # diagnostics; TODO use logging
     print ("Running A1 (Full Spiral Search).")
-    print ("No data template: {0!s}. Using ratio method: {1!s}. Searching for {2!s} - {3!s} nbrs within {4!s} spiral steps".
-           format(noTemplate, FillByRatios, _FILL_MIN, _FILL_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK))
+    print ("No data template: {0!s}. Using fill generation method: {1!s}. Searching for {2!s} - {3!s} nbrs within {4!s} spiral steps".
+           format(noTemplate, A1SearchConfig["FILL_GENERATION_METHOD"], _FILL_MIN, _FILL_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK))
     print ("Calculating nbr table out to radius of {0!s}.".format(_SEARCH_RADIUS))
     print ("Filling from stack position {0!s}.".format(RunFillFromPos))
 

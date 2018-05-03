@@ -16,6 +16,9 @@ DataSpecificConfig = {
     # direction. If both are set to this then no clipping will be done.
     "DATA_UPPER_LIMIT": 2.0,
     "DATA_LOWER_LIMIT": -1.0,
+    # The clip process can also clip values that are more than x SD from the mean, set this here
+    # (Will only be applied if an upper and/or lower limit value is also specified above)
+    "FLOOR_CEILING_ZSCORE": 2.58,
     # An offset may be specified which will be applied (added) to all data before any further processing
     # for example to convert from kelvin to celsius specify 273.15
     "DATA_CORRECTION_OFFSET": 0,

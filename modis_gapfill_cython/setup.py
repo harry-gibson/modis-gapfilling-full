@@ -41,6 +41,8 @@ def makeExtension(extName):
     else:
         ext = ".c"
     extPath = extName.replace(".", os.path.sep) + ext
+    # there's probably a more robust way to do this check; we actually care whether it's GCC or intel compiler
+    # rather than the OS. The compilers need a different switch syntax for triggering openmp
     if platform.uname()[0] == 'Windows':
         compArgs = ['/openmp', '-O3']
         linkArgs = ['/openmp']

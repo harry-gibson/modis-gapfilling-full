@@ -6,7 +6,7 @@ from cython.parallel import prange, parallel
 from gapfill_config import FlagValues, \
     DespeckleSearchConfig as SpiralSearchConfig, \
     DespeckleThresholdConfig as Limits, \
-    DataSpecificConfig
+    DataSpecificConfig as DataConfig
 
 @cython.cdivision(True)
 @cython.boundscheck(False)
@@ -56,10 +56,13 @@ cpdef setSpeckleFlags (dict DataStacks, dict Margins):
     # unpack input dictionaries to typed variables
     cdef:
         # thresholds / consts
-        float hardLowerLimit = Limits["HARD_LOWER_LIMIT"]
-        float hardUpperLimit = Limits["HARD_UPPER_LIMIT"]
+        float hardLowerLimit = DataConfig["DATA_LOWER_LIMIT"]
+        float hardUpperLimit = DataConfig["DATA_UPPER_LIMIT"]
+        float _NDV = DataConfig["NODATA_VALUE"]
+        float _CORRECTION_OFFSET = DataConfig["DATA_CORRECTION_OFFSET"]
+
         float _SPECKLE_ZSCORE_THRESHOLD = Limits["SPECKLE_NBR_Z_THRESH"]
-        float stDevValidityThreshold = Limits["INVALID_BEYOND_STDS"]
+        float stDevValidityThreshold = Limits["EXTREME_BEYOND_SD"]
         float speckleDevThreshold = Limits["SPECKLE_BEYOND_SD"]
 
         int _SPECKLE_NBR_MIN_THRESHOLD = SpiralSearchConfig["MIN_NBRS_REQUIRED"]

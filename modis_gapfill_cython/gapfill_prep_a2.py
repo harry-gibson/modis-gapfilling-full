@@ -140,6 +140,7 @@ def A2Caller(dataImageIn, flagsImageIn, distImageIn, meanImageIn):
              FlagValues,
              _NDV,
              _A2_MAX_NBRS,
+             # takes a boolean for if it should use ratio fill (else difference)
              A2SearchConfig["FILL_GENERATION_METHOD"] == "RATIO",
              DataSpecificConfig["DATA_ZERO_OFFSET"],
              A2SearchConfig["MAX_ALLOWABLE_RATIO"]
