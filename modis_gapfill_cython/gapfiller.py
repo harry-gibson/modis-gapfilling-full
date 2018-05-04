@@ -15,16 +15,26 @@ import datetime.date
 
 class gapfiller:
     def __init__(self, fileWildcard, fillForLatLims, fillForLonLims, memLimit=70e9):
+
+        # intialise files
+
+        # initialise limits of fill area in pixel coords of the input files
+
+        # calculate slices to run a1
+
+        # set should-use-slices property
+
         self.sourceDataHeight = 21600
         self.sourceDataWidth = 43200
         self.sliceXSize = 0
         self.latLims = fillForLatLims
         self.lonLims = fillForLonLims
+        self.xLims, self.yLims = CalculatePixelLims(fillForLonLims, fillForLatLims)
         self.inputFileDict = {}
         self.meanFile = ""
         self.stdFile = ""
 
-    def __InitialiseSlices(self):
+    def __InitialiseSlices(self, fillShapeZYX, memLimit):
 
 
     def RunFill(self):
@@ -32,13 +42,31 @@ class gapfiller:
         f
 
     def InitialiseFiles(self, globPattern, filenameDateParser):
+        dayMonths = {1: 1, 9: 1, 17: 1, 25: 1, 33: 2, 41: 2, 49: 2, 57: 2, 65: 3, 73: 3, 81: 3, 89: 3, 97: 4, 105: 4,
+                     113: 4, 121: 4,
+                     129: 5, 137: 5, 145: 5, 153: 6, 161: 6, 169: 6, 177: 6, 185: 7, 193: 7, 201: 7, 209: 7, 217: 8,
+                     225: 8, 233: 8,
+                     241: 8, 249: 9, 257: 9, 265: 9, 273: 9, 281: 10, 289: 10, 297: 10, 305: 10, 313: 11, 321: 11,
+                     329: 11, 337: 12,
+                     345: 12, 353: 12, 361: 12}
+        calendarDays = [str(i).zfill(3) for i in np.arange(1, 365, 8)]
+
         allFiles = glob.glob(globPattern)
 
         for f in allFiles:
             fileDate = filenameDateParser(f)
 
+    def __CalculateSliceSize(self, readShapeZYX, memLimit):
+        # readShapeZYX is the dimension of the data we must READ to fill the required output area;
+        #  i.e .the fill area plus margins. If we're filling globally it's the same thing.
+        dataBPP = 4
+        outputsBPP = dataBPP * 2 + 1 # the output data, distances, and flags
+        # approximate total number of pixels we can read for each file
+        sliceSqrd = memLimit / (readShapeZYX[0] * (dataBPP + outputsBPP))
+        # not implementing slicing in y dimension so xSize is total pixels / total height
+        sliceXSize = sliceSqrd / readShapeZYX[1]
 
-    def CalculateSearchSlices(self):
+    def CalculateSearchSlices(self, fillShapeZYX, memLimit):
         '''
         Generate the slice boundaries, slicing only in the x dimension
         (we are using full data in y dimension for now, though this doesn't have to be so)
@@ -52,7 +80,18 @@ class gapfiller:
         _A1_SEARCH_RADIUS = int(math.sqrt(A1SearchConfig["MAX_NBRS_TO_SEARCH"] / 3.14) + 1)
         _DESPECKLE_SEARCH_RADIUS = int(math.sqrt(DespeckleSearchConfig["MAX_NBRS_TO_SEARCH"] / 3.14) + 1)
         _TOTAL_REQ_MARGIN = _A1_SEARCH_RADIUS + _DESPECKLE_SEARCH_RADIUS
+
+        reqDataL = max(0, self.xLims[0] - _TOTAL_REQ_MARGIN)
+        reqDataR = min(self.xLims[1] + _TOTAL_REQ_MARGIN, self.sourceDataWidth)
+        reqDataT = max(0, self.yLims[0] - _TOTAL_REQ_MARGIN)
+        reqDataB = min(self.yLims[1] + _TOTAL_REQ_MARGIN, self.sourceDataHeight)
+        reqDataHeight = reqDataB - reqDataT
+        reqDataWidth = reqDataR - reqDataL
+        readShape
+
         # section
+
+        totalFillWidth = fillShapeZYX[2]
 
         nchunks = (self.totalFillWidth / self.sliceXSize) + 1
         # generate the "chunk" boundaries that will represent the data processed in one thread's job.
