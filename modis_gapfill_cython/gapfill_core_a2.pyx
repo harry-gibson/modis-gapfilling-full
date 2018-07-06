@@ -4,13 +4,13 @@ from libc.math cimport sqrt
 #cdef int _SEARCH_RADIUS = 10
 from cython.parallel import prange, parallel
 from gapfill_config import A2SearchConfig, DataCharacteristicsConfig, FlagItems
-from gapfill_utils import  A2DataStack
+from gapfill_utils import  A2PassData
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.cdivision(True)
 cpdef a2_core (
-            A2DataStack dataStack,
+            A2PassData dataStack,
             DataCharacteristicsConfig dataConfig,
             A2SearchConfig a2Config,
             FlagItems flagValues
@@ -49,22 +49,23 @@ cpdef a2_core (
         float [:, :] origDistImage_LocalCopy
         # in loop working vars
         Py_ssize_t y, x, yShape, xShape, nbrIndex, xNbr, yNbr
-        double nbrDiffSum, nbrDiffCount, nbrDistSum, diffValThisPass
+        double nbrDiffSum, nbrDiffCount, nbrDistSum, diffValThisPass, distValThisPass
         double local_distance, nbrDist
 
         # metrics
         long long gotPixelVals = 0
 
         # unpack inputs to typed variables
-        float[:,:] dataImage_Global_R = dataStack.DataArray2D # global in both senses
-        unsigned char[:,:] flagsImage_Global_R = dataStack.FlagsArray2D
-        float[:,:] origDistImage_Global_R = dataStack.DistArray2D
-        float[:,:] meanImage_Global_R = dataStack.MeanArray2D
-        # these inputs get modified, i.e. they are "out" parameters in a proper language
-        # It is done like this rather than having return values because they are actually going to be
-        # strided views on arrays (to change iteration order)
-        float[:,:] sumDistImage_Global_W = DataImages["SumDist"]
-        float[:,:] outputImage_ThisPass_W = DataImages["Output"]
+        # nb we can use [:,::1] here (rather than [:,:] *iif* we have transformed the data with a np.copy rather than
+        # just re-striding it in the caller function
+        float[:,::1] dataImage = dataStack.DataArray2D
+        unsigned char[:,::1] flagsImage = dataStack.FlagsArray2D
+        float[:,::1] distImageIn = dataStack.DataArray2D
+        float[:,::1] meanImage = dataStack.MeanArray2D
+        # these inputs get modified, i.e. they are "out" parameters
+        float[:,::1] outputImageDist = dataStack.SumOfPassDistancesArray2D
+        float[:,::1] outputImageData = dataStack.DataArrayOutput2D
+
         char _FILL_FAILED_FLAG = flagValues.FAILURE
         char _OCEAN_FLAG = flagValues.OCEAN
 
@@ -75,8 +76,8 @@ cpdef a2_core (
         float _NDV = dataConfig.NODATA_VALUE
         Py_ssize_t A2_MAX_NBRS = a2Config.MAX_NBRS_TO_SEARCH
 
-    yShape = dataImage_Global_R.shape[0]
-    xShape = dataImage_Global_R.shape[1]
+    yShape = dataImage.shape[0]
+    xShape = dataImage.shape[1]
 
     # it's actually the max neigbours value that defines how far out the search runs.
     # this just makes sure that the nbr table is generated far enough out.
@@ -104,24 +105,24 @@ cpdef a2_core (
     print ("Beginning pass of A2...")
     # populate the ratio or difference image,
     # this is just (data / mean) or (data - mean) (whether the data are original or from A1)
-    diffImage_Local = np.empty_like(dataImage_Global_R)
+    diffImage_Local = np.empty_like(dataImage)
     diffImage_Local[:] = _NDV
     with nogil, parallel(num_threads=20):
         #outerIdx = -1
         for y in prange(0, yShape):
             x = -1
             for x in range(0, xShape):
-                if ((flagsImage_Global_R[y, x] & _OCEAN_FLAG) == _OCEAN_FLAG
+                if ((flagsImage[y, x] & _OCEAN_FLAG) == _OCEAN_FLAG
                     # or meanImage_Global_R[y, x] == 0 # we need to be able to cope with mean = 0
-                    or meanImage_Global_R[y, x] == _NDV
-                    or dataImage_Global_R[y, x] == _NDV
+                    or meanImage[y, x] == _NDV
+                    or dataImage[y, x] == _NDV
                     ):
                     continue
                 if FillByRatios == 0:
-                    diffImage_Local[y, x] = (dataImage_Global_R[y, x] - meanImage_Global_R[y, x])
+                    diffImage_Local[y, x] = (dataImage[y, x] - meanImage[y, x])
                 else:
-                    diffImage_Local[y, x] =((dataImage_Global_R[y, x] - _AbsZeroPoint)
-                        / (meanImage_Global_R[y, x] - _AbsZeroPoint))
+                    diffImage_Local[y, x] =((dataImage[y, x] - _AbsZeroPoint)
+                        / (meanImage[y, x] - _AbsZeroPoint))
                     if diffImage_Local[y, x] > _MaxAllowableRatio:
                         diffImage_Local[y, x] = _MaxAllowableRatio
                     elif diffImage_Local[y, x] < _MinAllowableRatio:
@@ -132,16 +133,14 @@ cpdef a2_core (
     # to store it outside of the pass
     # However we are now creating the fresh copy in the caller function for clarity
     #origDistImage_LocalCopy = np.copy(origDistImage_Global_R)
-    origDistImage_LocalCopy = origDistImage_Global_R
-
     with nogil:
         for y in range (0, yShape): # can't do parallel here,  boooo
             for x in range (0, xShape):
                 #flag = flagsImage[y,x]
-                if (flagsImage_Global_R[y, x] & _FILL_FAILED_FLAG) != _FILL_FAILED_FLAG:
+                if (flagsImage[y, x] & _FILL_FAILED_FLAG) != _FILL_FAILED_FLAG:
                     # it's already good data, or filled with A1
                     continue
-                if meanImage_Global_R[y, x] == _NDV:
+                if meanImage[y, x] == _NDV:
                     #we can't fill, but, if we are here then the flag is already set
                     #to failure (from A1)... could optionally set a separate A2 failure flag (128)
                     continue
@@ -151,13 +150,10 @@ cpdef a2_core (
                 nbrDistSum = 0
                 # summarise the values in the surrounding 8 pixels
                 # we cannot precalculate this elementwise because the
-                # offsets / ratios in diffImageThisPass are updated in the loop,
+                # offsets / ratios in diffImageLocal are updated in the loop,
                 # affecting later iterations, hence why we can't parallelise simply
-                for nbrIndex in xrange(1, A2_MAX_NBRS+1):
+                for nbrIndex in range(1, A2_MAX_NBRS+1):
                     # +1 because the first row of nbr table is the current cell
-                    # this was an attempt at loop reversal so we could always keep it c-contiguous -
-                    # specify the order of the inner / outer loop as a parameter. Never got it working yet...
-                    #if outerLoopShouldBe == 0:
                     xNbr = x + nbrIntCoords[0, nbrIndex]
                     yNbr = y + nbrIntCoords[1, nbrIndex]
                     if (xNbr >= 0 and xNbr < xShape and
@@ -165,8 +161,8 @@ cpdef a2_core (
                             diffImage_Local[yNbr, xNbr] != _NDV):
                         nbrDiffSum += diffImage_Local[yNbr, xNbr]
                         nbrDiffCount += 1
-                        if origDistImage_LocalCopy[yNbr, xNbr] != _NDV:
-                            nbrDist = origDistImage_LocalCopy[yNbr, xNbr]
+                        if distImageIn[yNbr, xNbr] != _NDV:
+                            nbrDist = distImageIn[yNbr, xNbr]
                             # the distance of the filled cell will be the average of the distances
                             # of the neighbour cells used. Where "distance" of a neighbour cell
                             # will be the physical distance from the working cell, plus the
@@ -181,6 +177,7 @@ cpdef a2_core (
                     gotPixelVals += 1
                     # ratio / diff to use is the mean of the (up to) 8 values surrounding the cell
                     diffValThisPass = nbrDiffSum / nbrDiffCount
+                    distValThisPass = nbrDistSum / nbrDiffCount
                     # fill in the same ratio image that we are checking in the neighbour search
                     # step such that the next cell along, in the current pass direction and if
                     # it's a gap, will have this calculated value as an available input.
@@ -189,14 +186,15 @@ cpdef a2_core (
                     # parallel!) and thus this algorithm needs to be run on an entire
                     # global image.
                     diffImage_Local[y, x] = diffValThisPass
+                    outputImageDist[y, x] += distValThisPass
                     if FillByRatios == 0:
-                        outputImage_ThisPass_W[y, x] = (diffValThisPass + meanImage_Global_R[y, x])
+                        outputImageData[y, x] = (diffValThisPass + meanImage[y, x])
                     else:
-                        outputImage_ThisPass_W[y, x] = (diffValThisPass *
-                                                        (meanImage_Global_R[y, x] - _AbsZeroPoint)
+                        outputImageData[y, x] = (diffValThisPass *
+                                                        (meanImage[y, x] - _AbsZeroPoint)
                                                     + _AbsZeroPoint)
                 else:
-                    outputImage_ThisPass_W[y, x] = _NDV
+                    outputImageData[y, x] = _NDV
                     # outside the function we can fill in flags image with _UNFILLABLE_AT_A2
                     # if all passes are nodata in finished image pass stack
     # nothing is returned, as the ratio and dist per-pass images are modified in-place

@@ -1,30 +1,37 @@
+# hack in the path to map raster utilities for I/O
 import sys
 sys.path.insert(0, r'C:\Users\zool1301.NDPH\Documents\Code_General\MAP-raster-utilities')
+# standard python libraries
 import os
-
-# standard io management functions
-from raster_utilities.utils.geotransform_calcs import CalculatePixelLims, CalculateClippedGeoTransform
-from raster_utilities.io.TiffFile import SingleBandTiffFile
-# cython functions
-from gapfill_core_despeckle_and_flag import setSpeckleFlags
-from gapfill_core_a1 import a1_core
-from gapfill_core_clamp import MinMaxClip3D
-
-from gapfill_config import A1SearchConfig, A2SearchConfig, SpeckleSelectionConfig, DataSpecificConfig, FlagItems
-
-from gapfill_utils import PixelMargins, A1DataStack
 import math
 import numpy as np
 import itertools
 import glob
 import datetime.date
+from collections import defaultdict
+# io management functions
+from raster_utilities.utils.geotransform_calcs import CalculatePixelLims, CalculateClippedGeoTransform
+from raster_utilities.io.TiffFile import SingleBandTiffFile
+
+# cython functions
+from gapfill_core_despeckle_and_flag import setSpeckleFlags
+from gapfill_core_a1 import a1_core
+from gapfill_core_clamp import MinMaxClip3D
+from gapfill_prep_a2 import A2ImageCaller
+
+from gapfill_config import A1SearchConfig, A2SearchConfig, SpeckleSelectionConfig, DataSpecificConfig, FlagItems
+
+from gapfill_utils import PixelMargins, A1DataStack
+
 from gapfill_defaults import DefaultFlagValues, DespeckleThresholdDefaultConfig, \
     A1DefaultParams, A2DefaultParams, DataSpecificDefaultConfig
 
 class gapfiller:
-    def __init__(self, fileWildcard, fillForLatLims, fillForLonLims, memLimit=70e9):
+    def __init__(self, fileWildcard, meanFile, sdFile, coastFile,
+                 fillForLatLims, fillForLonLims, memLimit=70e9):
 
-        # intialise files and index by calendar day
+        # initialise input files and index by calendar day and year
+
 
         # initialise limits of fill area in pixel coords of the input files
 
@@ -36,10 +43,12 @@ class gapfiller:
         self.latLims = fillForLatLims
         self.lonLims = fillForLonLims
         self.xLims, self.yLims = CalculatePixelLims(fillForLonLims, fillForLatLims)
-        self.inputFileDict = {}
-        self.meanFile = ""
-        self.stdFile = ""
-        self.coastFile = ""
+
+        self.inputFileDict = defaultdict(defaultdict(list))
+        self.InitialiseFiles(fileWildcard, )
+        self.meanFile = meanFile
+        self.stdFile = sdFile
+        self.coastFile = coastFile
 
         self.flagValues = DefaultFlagValues
         self.dataSpecificConfig = DataSpecificDefaultConfig
@@ -51,15 +60,20 @@ class gapfiller:
 
 
 
-    def RunFill(self, fromYearPosition):
-        days = self._CalendarDays
-        years = self._AvailableYears
+    def RunFill(self, onlyDays=None, onlyYears=None):
+        days = self.inputFileDict.keys()
+        if onlyYears is None:
+            onlyYears = set()
+            for d in self.inputFileDict.keys():
+                onlyYears.update(self.inputFileDict[d].keys())
         for calendarDay in days:
+            if onlyDays is not None and calendarDay not in onlyDays:
+                continue
             for slice in self._Slices:
-                self.DespeckleAndA1JobRunner(slice, calendarDay, years)
-            self.A2Caller(years)
+                self.DespeckleAndA1JobRunner(slice, calendarDay, onlyYears)
+            self.A2Caller(onlyYears)
 
-    def InitialiseFiles(self, globPattern, filenameDateParser):
+    def InitialiseFiles(self, globPattern):
         dayMonths = {1: 1, 9: 1, 17: 1, 25: 1, 33: 2, 41: 2, 49: 2, 57: 2, 65: 3, 73: 3, 81: 3, 89: 3, 97: 4, 105: 4,
                      113: 4, 121: 4,
                      129: 5, 137: 5, 145: 5, 153: 6, 161: 6, 169: 6, 177: 6, 185: 7, 193: 7, 201: 7, 209: 7, 217: 8,
@@ -72,11 +86,16 @@ class gapfiller:
         allFiles = glob.glob(globPattern)
 
         for f in allFiles:
-            fileDate = filenameDateParser(f)
-        self._AvailableYears = []
-        self._CalendarDays = []
+            year, calendarday = self.__parseDailyFilename(f)
+            self.inputFileDict[calendarday][year].append(f)
         initialProps = SingleBandTiffFile(allFiles[0])
         self.InputRasterProps = initialProps.GetExistingProperties()
+
+    def __parseDailyFilename(self, f):
+        base = os.path.basename(f)
+        yr = base[1:5]
+        day = base[5:8]
+        return(day,yr)
 
     def __CalculateSliceSize(self, readShapeZYX, memLimit):
         # readShapeZYX is the dimension of the data we must READ to fill the required output area;
@@ -358,5 +377,6 @@ class gapfiller:
                     d.SavePart(np.asarray(a1Result[2][y], dataWriteWindow["LEFT"], dataWriteWindow["TOP"]))
                     d = None
 
-    def A2Caller(self, filename, meanFileObject):
-
+    def A2BatchRunner(self):
+        for img in self.GetImages():
+            A2ImageCaller(img, fla)

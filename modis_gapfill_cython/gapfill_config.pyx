@@ -47,7 +47,8 @@ DespeckleDiagnostics = namedtuple("DespeckleDiagnostics", [
     "ExtremeCellCount",
     "GoodCellCount",
     "OceanCellCount",
-    "ClearedSpeckleCellCount"
+    "ClearedSpeckleCellCount",
+    "TimeSeconds"
 ])
 
 A1Diagnostics = namedtuple("A1Diagnostics", [
@@ -64,7 +65,14 @@ A1Diagnostics = namedtuple("A1Diagnostics", [
     "FailedNoPairs",
     "TotalAlternateYearsScanned",
     "TotalNbrsChecked",
-    "TotalNbrsUsed"
+    "TotalNbrsUsed",
+    "TimeSeconds"
+])
+
+A2Diagnostics = namedtuple("A2Diagnostics", [
+    "GapCellsTotal",
+    "GapCellsFilled",
+    "TimeSeconds"
 ])
 
 A2SearchConfig = namedtuple("A2SearchConfig", [
