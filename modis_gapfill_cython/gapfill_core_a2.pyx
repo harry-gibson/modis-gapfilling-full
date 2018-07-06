@@ -3,29 +3,31 @@ cimport cython
 from libc.math cimport sqrt
 #cdef int _SEARCH_RADIUS = 10
 from cython.parallel import prange, parallel
+from gapfill_config import A2SearchConfig, DataCharacteristicsConfig, FlagItems
+from gapfill_utils import  A2DataStack
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.cdivision(True)
 cpdef a2_core (
-            dict DataImages,
-            dict FlagValues,
-            float _NDV,
-            Py_ssize_t _A2_MAX_NBRS,
-            char FillByRatios = 0,
-            float RatioAbsZeroPoint = 0,
-            float RatioLimit = 1
+            A2DataStack dataStack,
+            DataCharacteristicsConfig dataConfig,
+            A2SearchConfig a2Config,
+            FlagItems flagValues
             ):
     '''
-    Cython (C) implementation of the A2 gapfilling algorithm main "pass" code. This function should be called 8
-    times with the data structured in such a way that the 8 different directional pass fills are generated, in
-    order to generate overall A2 fill results. A separate (python) function is provided for this.
+    Cython (C) implementation of the A2 gapfilling algorithm main "pass" code. This function always iterates through 
+    the data in C-normal order i.e. by column then row starting from top left. The function should be called 8
+    times with the data transposed differently each time in such a way that the 8 different directional pass fills 
+    are generated, in order to generate overall A2 fill results. A separate (python) function is provided for this.
 
     The nature of the A2 algorithm is such that it cannot be easily parallelised - it modifies the input based
     on results from neighbouring cells, so the cells must be run in a deterministic order.
 
-    Likewise A2 "drags" fill value ratios / calculations for an unlimited distance from nearest data pixels. This
-    means that it cannot be run on separate tiles like A1 and must be run on global images.
+    Likewise A2 "drags" fill value ratios / calculations for an unlimited distance from nearest data pixels, to ensure 
+    that a fill value can always be generated (except on islands which have no data at all). 
+    This means that it cannot be run on separate tiles like A1 and must be run on global images, hence the memory 
+    requirements are very high. 
 
     These two factors mean that unlike in the published paper, A2 is both slower and more demanding of memory than A1,
     whilst producing less good results.
@@ -38,11 +40,6 @@ cpdef a2_core (
     C-ordered copy of the data but re-strides it. This greatly slows the A2 function (by a factor of around 6) and so
     on a machine with sufficent memory the data should be copied into the right order before passing to this function.
     '''
-    # We assume that the arrays passed in are strided / transposed
-    # such that iterating through in the standard c-normal order
-    # will go through the source data in the correct order for this
-    # directional pass. This means that some passes (the ones where the data
-    # are in the native order) are several times quicker than the others
     cdef:
         # intermediate arrays
         double [:,::1] nbrTable
@@ -59,28 +56,31 @@ cpdef a2_core (
         long long gotPixelVals = 0
 
         # unpack inputs to typed variables
-        float[:,:] dataImage_Global_R = DataImages["Data"] # global in both senses
-        unsigned char[:,:] flagsImage_Global_R = DataImages["Flags"]
-        float[:,:] origDistImage_Global_R = DataImages["Distances"]
-        float[:,:] meanImage_Global_R = DataImages["Means"]
+        float[:,:] dataImage_Global_R = dataStack.DataArray2D # global in both senses
+        unsigned char[:,:] flagsImage_Global_R = dataStack.FlagsArray2D
+        float[:,:] origDistImage_Global_R = dataStack.DistArray2D
+        float[:,:] meanImage_Global_R = dataStack.MeanArray2D
         # these inputs get modified, i.e. they are "out" parameters in a proper language
         # It is done like this rather than having return values because they are actually going to be
         # strided views on arrays (to change iteration order)
         float[:,:] sumDistImage_Global_W = DataImages["SumDist"]
         float[:,:] outputImage_ThisPass_W = DataImages["Output"]
-        char _FILL_FAILED_FLAG = FlagValues["FAILURE"]
-        char _OCEAN_FLAG = FlagValues["OCEAN"]
+        char _FILL_FAILED_FLAG = flagValues.FAILURE
+        char _OCEAN_FLAG = flagValues.OCEAN
 
-        float _AbsZeroPoint = RatioAbsZeroPoint
-        float _MaxAllowableRatio = RatioLimit
+        float _AbsZeroPoint = dataConfig.ABSOLUTE_ZERO_OFFSET
+        float _MaxAllowableRatio = a2Config.MAX_ALLOWABLE_RATIO
         float _MinAllowableRatio = 1.0 / _MaxAllowableRatio
+        unsigned char FillByRatios = a2Config.FILL_GENERATION_METHOD == "RATIO"
+        float _NDV = dataConfig.NODATA_VALUE
+        Py_ssize_t A2_MAX_NBRS = a2Config.MAX_NBRS_TO_SEARCH
 
     yShape = dataImage_Global_R.shape[0]
     xShape = dataImage_Global_R.shape[1]
 
     # it's actually the max neigbours value that defines how far out the search runs.
     # this just makes sure that the nbr table is generated far enough out.
-    _SEARCH_RADIUS = <int>sqrt(_A2_MAX_NBRS / 3.14) + 10
+    _SEARCH_RADIUS = <int>sqrt(A2_MAX_NBRS / 3.14) + 10
     diam = _SEARCH_RADIUS * 2 + 1
     inds = np.indices([diam,diam]) - _SEARCH_RADIUS
     distTmp = np.sqrt((inds ** 2).sum(0))
@@ -141,7 +141,7 @@ cpdef a2_core (
                 if (flagsImage_Global_R[y, x] & _FILL_FAILED_FLAG) != _FILL_FAILED_FLAG:
                     # it's already good data, or filled with A1
                     continue
-                if meanImage_Global_R[y,x] == _NDV:
+                if meanImage_Global_R[y, x] == _NDV:
                     #we can't fill, but, if we are here then the flag is already set
                     #to failure (from A1)... could optionally set a separate A2 failure flag (128)
                     continue
@@ -153,7 +153,7 @@ cpdef a2_core (
                 # we cannot precalculate this elementwise because the
                 # offsets / ratios in diffImageThisPass are updated in the loop,
                 # affecting later iterations, hence why we can't parallelise simply
-                for nbrIndex in xrange(1, _A2_MAX_NBRS+1):
+                for nbrIndex in xrange(1, A2_MAX_NBRS+1):
                     # +1 because the first row of nbr table is the current cell
                     # this was an attempt at loop reversal so we could always keep it c-contiguous -
                     # specify the order of the inner / outer loop as a parameter. Never got it working yet...
@@ -181,7 +181,7 @@ cpdef a2_core (
                     gotPixelVals += 1
                     # ratio / diff to use is the mean of the (up to) 8 values surrounding the cell
                     diffValThisPass = nbrDiffSum / nbrDiffCount
-                    # fill in the same ratio image that we are checking in the neigbour search
+                    # fill in the same ratio image that we are checking in the neighbour search
                     # step such that the next cell along, in the current pass direction and if
                     # it's a gap, will have this calculated value as an available input.
                     # Hence values are "smeared" in direction of the scan.

@@ -3,7 +3,8 @@ cimport cython
 from libc.math cimport sqrt
 #cdef int _SEARCH_RADIUS = 10
 from cython.parallel import prange, parallel
-
+from gapfill_utils import A1DataStack
+from gapfill_config import DataCharacteristicsConfig
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -17,7 +18,8 @@ cpdef MinMaxClip(float[:,::1] dataImage,
                  float floor_ceiling_value,
                  float _NDV,
                  float upperHardLimit,
-                 float lowerHardLimit
+                 float lowerHardLimit,
+                 Py_ssize_t nCores
                  ):
     '''
     Clips (clamps) an image to not exceed +- n std from the mean image, or a hard upper / lower limit
@@ -41,8 +43,7 @@ cpdef MinMaxClip(float[:,::1] dataImage,
     posInf = np.inf
     negInf = -np.inf
 
-    #with nogil, parallel(num_threads=20):
-    if 1:
+    with nogil, parallel(num_threads=nCores):
         for y in range(yShape):
             value = -1
             maxAllowed = posInf
@@ -81,25 +82,32 @@ cpdef MinMaxClip(float[:,::1] dataImage,
                     flagsImage[y, x] = flagsImage[y, x] | flagToSet
                     continue
 
-cpdef MinMaxClip3D(float[:,:,::1] dataImage,
-                 unsigned char[:,:,::1] flagsImage,
-                 float[:,::1] meansImage,
-                 float[:,::1] stdImage,
-                 unsigned char flagToCheck,
-                 unsigned char flagToSet,
-                 float floor_ceiling_value,
-                 float _NDV,
-                 float upperHardLimit,
-                 float lowerHardLimit
-                 ):
+cpdef MinMaxClip3D(
+        A1DataStack dataStacks,
+        DataCharacteristicsConfig dataConfig,
+        unsigned char flagToCheck,
+        unsigned char flagToSet,
+        Py_ssize_t nCores
+):
     '''
     Clips / clamps a stack of images to not exceed +- n stds from a mean image or a hard upper/lower limit
     '''
+
     cdef:
         Py_ssize_t zSize, z
-    zSize = dataImage.shape[0]
-    assert zSize == flagsImage.shape[0]
+        float _NDV = dataConfig.NODATA_VALUE
+        float upperHardLimit = dataConfig.CEILING_VALUE
+        float lowerHardLimit = dataConfig.FLOOR_VALUE
+        float floor_ceiling_value = dataConfig.FLOOR_CEILING_ZSCORE
+        float[:,:,::1] dataImages = dataStacks.DataArray3D
+        unsigned char[:,:,::1] flagsImages = dataStacks.FlagsArray3D
+        float[:,::1] meansImage = dataStacks.MeansArray2D
+        float[:,::1] stdImage = dataStacks.SDArray2D
+
+    zSize = dataImages.shape[0]
+    assert zSize == flagsImages.shape[0]
     for z in range(zSize):
-        MinMaxClip(dataImage[z], flagsImage[z],
-                   meansImage, stdImage,
-                   flagToCheck, flagToSet, floor_ceiling_value, _NDV, upperHardLimit, lowerHardLimit)
+        MinMaxClip(dataImages[z], flagsImages[z], meansImage, stdImage,
+                   flagToCheck, flagToSet,
+                   floor_ceiling_value, _NDV, upperHardLimit, lowerHardLimit,
+                   nCores)

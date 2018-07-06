@@ -1,22 +1,30 @@
 import sys
 sys.path.insert(0, r'C:\Users\zool1301.NDPH\Documents\Code_General\MAP-raster-utilities')
+import os
+
+# standard io management functions
 from raster_utilities.utils.geotransform_calcs import CalculatePixelLims, CalculateClippedGeoTransform
 from raster_utilities.io.TiffFile import SingleBandTiffFile
-from gapfill_config import A1SearchConfig, A2SearchConfig, DespeckleSearchConfig, DataSpecificConfig, FlagValues
+# cython functions
 from gapfill_core_despeckle_and_flag import setSpeckleFlags
 from gapfill_core_a1 import a1_core
 from gapfill_core_clamp import MinMaxClip3D
+
+from gapfill_config import A1SearchConfig, A2SearchConfig, SpeckleSelectionConfig, DataSpecificConfig, FlagItems
+
+from gapfill_utils import PixelMargins, A1DataStack
 import math
 import numpy as np
 import itertools
 import glob
 import datetime.date
-
+from gapfill_defaults import DefaultFlagValues, DespeckleThresholdDefaultConfig, \
+    A1DefaultParams, A2DefaultParams, DataSpecificDefaultConfig
 
 class gapfiller:
     def __init__(self, fileWildcard, fillForLatLims, fillForLonLims, memLimit=70e9):
 
-        # intialise files
+        # intialise files and index by calendar day
 
         # initialise limits of fill area in pixel coords of the input files
 
@@ -24,22 +32,32 @@ class gapfiller:
 
         # set should-use-slices property
 
-        self.sourceDataHeight = 21600
-        self.sourceDataWidth = 43200
-        self.sliceXSize = 0
+
         self.latLims = fillForLatLims
         self.lonLims = fillForLonLims
         self.xLims, self.yLims = CalculatePixelLims(fillForLonLims, fillForLatLims)
         self.inputFileDict = {}
         self.meanFile = ""
         self.stdFile = ""
+        self.coastFile = ""
 
-    def __InitialiseSlices(self, fillShapeZYX, memLimit):
+        self.flagValues = DefaultFlagValues
+        self.dataSpecificConfig = DataSpecificDefaultConfig
+        self.nCores = 20
+        self.a1Config = A1DefaultParams
+        self.a2Config = A2DefaultParams
+        self.despeckleConfig = DespeckleThresholdDefaultConfig
 
 
-    def RunFill(self):
-        self.__InitialiseSlices()
-        f
+
+
+    def RunFill(self, fromYearPosition):
+        days = self._CalendarDays
+        years = self._AvailableYears
+        for calendarDay in days:
+            for slice in self._Slices:
+                self.DespeckleAndA1JobRunner(slice, calendarDay, years)
+            self.A2Caller(years)
 
     def InitialiseFiles(self, globPattern, filenameDateParser):
         dayMonths = {1: 1, 9: 1, 17: 1, 25: 1, 33: 2, 41: 2, 49: 2, 57: 2, 65: 3, 73: 3, 81: 3, 89: 3, 97: 4, 105: 4,
@@ -55,6 +73,10 @@ class gapfiller:
 
         for f in allFiles:
             fileDate = filenameDateParser(f)
+        self._AvailableYears = []
+        self._CalendarDays = []
+        initialProps = SingleBandTiffFile(allFiles[0])
+        self.InputRasterProps = initialProps.GetExistingProperties()
 
     def __CalculateSliceSize(self, readShapeZYX, memLimit):
         # readShapeZYX is the dimension of the data we must READ to fill the required output area;
@@ -65,8 +87,9 @@ class gapfiller:
         sliceSqrd = memLimit / (readShapeZYX[0] * (dataBPP + outputsBPP))
         # not implementing slicing in y dimension so xSize is total pixels / total height
         sliceXSize = sliceSqrd / readShapeZYX[1]
+        return sliceXSize
 
-    def CalculateSearchSlices(self, fillShapeZYX, memLimit):
+    def CalculateJobLimits(self, fillShapeZYX, memLimit):
         '''
         Generate the slice boundaries, slicing only in the x dimension
         (we are using full data in y dimension for now, though this doesn't have to be so)
@@ -74,34 +97,49 @@ class gapfiller:
         This allows the gap-filling code to run on the non-overlapping section of the slice
         while having all the data necessary to fill a gap up to the edge of that non-overlapping
 
-        :return:
+        :return a list of 2-tuples where each part is a 6-tuple, the first representing the x-edges of this job's
+        searches and the second the y-edges. Within each 6-tuple the items are the pixel coordinates for this dimension,
+        relative to the input data files, of:
+        (W/N edge of despeckle data, W/N edge of A1 data, W/N edge of A1 Output,
+        E/S edge of A1 Output, E/S edge of A1 data, E/S edge of Despeckle data)
         '''
         # always round up as there's no harm done in passing slightly too much data
-        _A1_SEARCH_RADIUS = int(math.sqrt(A1SearchConfig["MAX_NBRS_TO_SEARCH"] / 3.14) + 1)
-        _DESPECKLE_SEARCH_RADIUS = int(math.sqrt(DespeckleSearchConfig["MAX_NBRS_TO_SEARCH"] / 3.14) + 1)
-        _TOTAL_REQ_MARGIN = _A1_SEARCH_RADIUS + _DESPECKLE_SEARCH_RADIUS
+        _A1_SEARCH_RADIUS = int(math.sqrt(self.a1Config.SPIRAL.MAX_NBRS_TO_SEARCH / 3.14) + 1)
+        _DESPECKLE_SEARCH_RADIUS = int(math.sqrt(self.despeckleConfig.SPIRAL.MAX_NBRS_TO_SEARCH / 3.14) + 1)
+        _TOTAL_DESIRED_MARGIN = _A1_SEARCH_RADIUS + _DESPECKLE_SEARCH_RADIUS
 
-        reqDataL = max(0, self.xLims[0] - _TOTAL_REQ_MARGIN)
-        reqDataR = min(self.xLims[1] + _TOTAL_REQ_MARGIN, self.sourceDataWidth)
-        reqDataT = max(0, self.yLims[0] - _TOTAL_REQ_MARGIN)
-        reqDataB = min(self.yLims[1] + _TOTAL_REQ_MARGIN, self.sourceDataHeight)
+        reqDataL = max(0, self.xLims[0] - _TOTAL_DESIRED_MARGIN)
+        reqDataR = min(self.xLims[1] + _TOTAL_DESIRED_MARGIN, self.InputRasterProps.width)
+        reqDataT = max(0, self.yLims[0] - _TOTAL_DESIRED_MARGIN)
+        reqDataB = min(self.yLims[1] + _TOTAL_DESIRED_MARGIN, self.InputRasterProps.height)
         reqDataHeight = reqDataB - reqDataT
         reqDataWidth = reqDataR - reqDataL
-        readShape
 
-        # section
+        # get an estimated maximum width for the slices based on the available memory and the number of years (vertical
+        # size of the stack) and height (y dimension) of the data (not slicing in Y dimension)
+        readShapeZYX = (fillShapeZYX[0], reqDataHeight, reqDataWidth)
+        sliceXSize = self.__CalculateSliceSize(readShapeZYX, memLimit)
 
+        # how many slices are we going to need
         totalFillWidth = fillShapeZYX[2]
+        nChunks = (totalFillWidth / sliceXSize) + 1
 
-        nchunks = (self.totalFillWidth / self.sliceXSize) + 1
-        # generate the "chunk" boundaries that will represent the data processed in one thread's job.
-        chunkedges = np.linspace(self.xLims[0], self.xLims[1], nchunks + 1).astype(np.int32)
-        leftRealEdges = chunkedges[:-1]
-        rightRealEdges = chunkedges[1:]
-        left_A1_edges = np.clip((chunkedges - _A1_SEARCH_RADIUS)[:-1], 0, np.inf).astype(np.int32)
-        right_A1_edges = np.clip((chunkedges + _A1_SEARCH_RADIUS)[1:], -np.inf, self.sourceDataWidth).astype(np.int32)
-        left_Despeckle_edges = np.clip((chunkedges - _TOTAL_REQ_MARGIN)[:-1], 0, np.inf).astype(np.int32)
-        right_Despeckle_edges = np.clip((chunkedges + _TOTAL_REQ_MARGIN)[1:], -np.inf, self.sourceDataWidth).astype(np.int32)
+        # generate the "chunk" boundaries that will represent the data processed in one thread's job, in terms of the
+        # pixel coordinates of the source data files.
+        # the actual slice boundaries for filling and writing out
+        chunkEdges = np.linspace(self.xLims[0], self.xLims[1], nChunks + 1).astype(np.int32)
+        leftRealEdges = chunkEdges[:-1]
+        rightRealEdges = chunkEdges[1:]
+        # the boundaries of these slices plus the margin of extra data for A1, but respecting the fact we can't
+        # go beyond the edge of the source data
+        left_A1_edges = np.clip((chunkEdges - _A1_SEARCH_RADIUS)[:-1], 0, np.inf).astype(np.int32)
+        right_A1_edges = np.clip((chunkEdges + _A1_SEARCH_RADIUS)[1:], -np.inf, self.InputRasterProps.width).astype(np.int32)
+        # the boundary of these slices plus the margin of extra data for A1 and despeckle, but respecting the fact
+        # we can't go beyond the edge of the source data
+        left_Despeckle_edges = np.clip((chunkEdges - _TOTAL_DESIRED_MARGIN)[:-1],
+                                       0, np.inf).astype(np.int32)
+        right_Despeckle_edges = np.clip((chunkEdges + _TOTAL_DESIRED_MARGIN)[1:],
+                                        -np.inf, self.InputRasterProps.width).astype(np.int32)
 
         # the left and right task boundaries are _SEARCH_RADIUS bigger than the data that will be searched
         # within them so that all pixels can have neighbours, if possible (not at global edge)
@@ -110,16 +148,18 @@ class gapfiller:
 
         # can we pad the top and bottom? (not if we are doing a global run as y-slicing isn't implemented)
         topA1Edge = np.clip(self.yLims[0] - _A1_SEARCH_RADIUS, 0, np.inf).astype(np.int32)
-        bottomA1Edge = np.clip(self.yLims[1] + _A1_SEARCH_RADIUS, -np.inf, self.sourceDataHeight).astype(np.int32)
-        topDespeckleEdge = np.clip(self.yLims[0] - _TOTAL_REQ_MARGIN, 0, np.inf).astype(np.int32)
-        bottomDespeckleEdge = np.clip(self.yLims[1] + _TOTAL_REQ_MARGIN, -np.inf, self.sourceDataHeight).astype(np.int32)
+        bottomA1Edge = np.clip(self.yLims[1] + _A1_SEARCH_RADIUS,
+                               -np.inf, self.InputRasterProps.height).astype(np.int32)
+        topDespeckleEdge = np.clip(self.yLims[0] - _TOTAL_DESIRED_MARGIN, 0, np.inf).astype(np.int32)
+        bottomDespeckleEdge = np.clip(self.yLims[1] + _TOTAL_DESIRED_MARGIN,
+                                      -np.inf, self.InputRasterProps.height).astype(np.int32)
 
         taskList = list(itertools.product(
             x_offsets_overlapping,
-            [(topDespeckleEdge, topA1Edge, self.yLims[0], yLims[1], bottomA1Edge, bottomDespeckleEdge)]))
+            [(topDespeckleEdge, topA1Edge, self.yLims[0], self.yLims[1], bottomA1Edge, bottomDespeckleEdge)]))
         return taskList
 
-    def CalculateAvailableMargins(self, sliceInfo):
+    def CalculateAvailableJobMargins(self, sliceInfo):
         # Warning headfuck ensues with regard to which data has which margins!...:
         #
         # A1 needs a margin outside the area it is filling, if possible
@@ -158,7 +198,7 @@ class gapfiller:
         sliceFillHeight = g_sliceFillB - g_sliceFillT
         sliceDespeckleHeight = g_sliceDespeckleB - g_sliceDespeckleT
         sliceA1Height = g_sliceA1B - g_sliceA1T
-        assert sliceFillHeight == self.totalFillHeight  # not actually supporting y slices for now...
+        assert sliceFillHeight == self.yLims[1] - self.yLims[0]  # not actually supporting y slices for now...
 
         # at the edges of the input, a margin is not possible... so how big a margin does despeckle
         # actually have to work with?
@@ -189,27 +229,16 @@ class gapfiller:
         # E.g. "Africa" starts at global X of 18467 but this translates to X of zero in the output image
         # Hence get the coords of this slice within the output space coordiantes, prefixed with out_
         # - i.e. where the output slice fits into the overall output image
-        out_SliceFillL = g_sliceFillL - xLims[0]
+        out_SliceFillL = g_sliceFillL - self.xLims[0]
         out_SliceFillR = out_SliceFillL + sliceFillWidth
-        out_SliceFillT = g_sliceFillT - yLims[0]
+        out_SliceFillT = g_sliceFillT - self.yLims[0]
         out_SliceFillB = out_SliceFillT + sliceFillHeight
         # and as we aren't yet supporting slices in the vertical dimension:
         assert out_SliceFillT == 0
 
-        # The the means / stds we read in have a different coordinate space again: it's the same as the
-        # output, but with the overall (total) margins added. These give the coordinates of the output image
-        # within the space of the data that is read in
-        in_SliceDataL = out_SliceFillL + totalMarginL
-        in_SliceDataR = in_SliceDataL + sliceFillWidth
-        in_SliceDataT = out_SliceFillT + totalMarginT
-        in_SliceDataB = in_SliceDataT + sliceFillHeight
-
-        despeckleMargins = {
-            "TOP": sliceDespeckleMarginT,
-            "BOTTOM": sliceDespeckleMarginB,
-            "LEFT": sliceDespeckleMarginL,
-            "RIGHT": sliceDespeckleMarginR
-        }
+        despeckleMargins = PixelMargins(
+            top=sliceDespeckleMarginT, bottom=sliceDespeckleMarginB,
+            left=sliceDespeckleMarginL, right=sliceDespeckleMarginR)
 
         a1Margins = {
             "TOP": sliceTotalMarginT,
@@ -220,19 +249,15 @@ class gapfiller:
             "FILLWIDTH": sliceFillWidth
         }
 
-        dataReadWindow = {
-            "TOP": g_sliceDespeckleT,
-            "BOTTOM": g_sliceDespeckleB,
-            "LEFT": g_sliceDespeckleL,
-            "RIGHT": g_sliceDespeckleR
-        }
+        dataReadWindow = PixelMargins(
+            top=g_sliceDespeckleT, bottom=g_sliceDespeckleB,
+            left=g_sliceDespeckleL, right=g_sliceDespeckleR
+        )
 
-        dataWriteWindow = {
-            "TOP": out_SliceFillT,
-            "BOTTOM": out_SliceFillB,
-            "LEFT": out_SliceFillL,
-            "RIGHT": out_SliceFillR
-        }
+        dataWriteWindow = PixelMargins(
+            top=out_SliceFillT, bottom=out_SliceFillB,
+            left=out_SliceFillL, right=out_SliceFillR
+        )
 
         return {
             "despeckleMargins": despeckleMargins,
@@ -241,89 +266,90 @@ class gapfiller:
             "dataWriteWindow": dataWriteWindow
         }
 
-    def DespeckleAndA1Caller(self, sliceInfo):
+    def DespeckleAndA1JobRunner(self, sliceInfo, calendarDay, years):
 
-        res = self.CalculateAvailableMargins(sliceInfo)
-        despeckleMargins = res["despeckleMargins"]
-        a1Margins = res["a1Margins"]
-        dataReadWindow = res["dataReadWindow"]
-        dataWriteWindow = res["dataWriteWindow"]
+        margins = self.CalculateAvailableJobMargins(sliceInfo)
+        despeckleMargins = margins["despeckleMargins"]
+        a1Margins = margins["a1Margins"]
+        dataReadWindow = margins["dataReadWindow"]
+        dataWriteWindow = margins["dataWriteWindow"]
 
-        sliceDespeckleHeight = dataReadWindow["BOTTOM"] - dataReadWindow["TOP"]
-        sliceDespeckleWidth = dataReadWindow["RIGHT"] - dataReadWindow["LEFT"]
+        sliceDespeckleHeight = dataReadWindow.Bottom - dataReadWindow.Top
+        sliceDespeckleWidth = dataReadWindow.Right - dataReadWindow.Left
 
         meanReader = SingleBandTiffFile(self.meanFile)
-        sliceMeanArr = meanReader.ReadForPixelLims(xLims=(dataReadWindow["LEFT"], dataReadWindow["RIGHT"]),
-                                              yLims=(dataReadWindow["TOP"], dataReadWindow["BOTTOM"]))
+        sliceMeanArr , _, _, _ = meanReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
+                                              yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
         sdReader = SingleBandTiffFile(self.stdFile)
-        sliceSDArr = sdReader.ReadForPixelLims(xLims=(dataReadWindow["LEFT"], dataReadWindow["RIGHT"]),
-                                              yLims=(dataReadWindow["TOP"], dataReadWindow["BOTTOM"]))
+        sliceSDArr , _, _, _ = sdReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
+                                              yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
 
         coastReader = SingleBandTiffFile(self.coastFile)
-        sliceCoastArr = coastReader.ReadForPixelLims(xLims=(dataReadWindow["LEFT"], dataReadWindow["RIGHT"]),
-                                              yLims=(dataReadWindow["TOP"], dataReadWindow["BOTTOM"]))
+        sliceCoastArr , _, _, _ = coastReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
+                                              yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
 
         for calendarDay, fileList in self.inputFileDict.iteritems():
-            sliceDataStack = np.empty(shape=(len(fileList), sliceDespeckleHeight, sliceDespeckleWidth),
+
+            dataStack = A1DataStack()
+            dataStack.DataArray3D = np.empty(shape=(len(fileList), sliceDespeckleHeight, sliceDespeckleWidth),
                                  dtype='Float32')
+            dataStack.FlagsArray3D = np.zeros(shape=(len(fileList), sliceDespeckleHeight, sliceDespeckleWidth),
+                                    dtype=np.uint8)
+            dataStack.MeansArray2D = sliceMeanArr
+            dataStack.SDArray2D = sliceSDArr
+            dataStack.Coastline2D = sliceCoastArr
             for y in range(len(fileList)):
                 f = SingleBandTiffFile(fileList[y])
-                sliceDataStack[y] = f.ReadForPixelLims(xLims=(dataReadWindow["LEFT"], dataReadWindow["RIGHT"]),
-                                              yLims=(dataReadWindow["TOP"], dataReadWindow["BOTTOM"]))
-                assert f.GetNdv() == DataSpecificConfig["NODATA_VALUE"]
-            assert sliceDataStack.flags.c_contiguous
-            sliceFlagStack = np.zeros(shape=(len(fileList), sliceDespeckleHeight, sliceDespeckleWidth),
-                                    dtype=np.uint8)
+                dataStack.DataArray3D[y], _, _, _ = f.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
+                                                       yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
+                assert f.GetNdv() == DataSpecificConfig.NODATA_VALUE
+            assert dataStack.DataArray3D.flags.c_contiguous
 
-            dataDict = {
-                "Data": sliceDataStack,
-                "Flags": sliceFlagStack,
-                "Means": sliceMeanArr,
-                "Stds": sliceSDArr,
-                "LandMask": sliceCoastArr,
-                "DistTemplate": None,
-                "KnownUnfillable": None
-            }
+            #data.DistanceTemplate3D = None
+            #data.KnownUnfillable2D = None
 
             # Run the despeckle
-            despeckleResult = setSpeckleFlags(dataDict, despeckleMargins)
+            despeckleResult = setSpeckleFlags(dataStacks = dataStack, margins = despeckleMargins,
+                                              flagValues=self.flagValues, dataConfig=self.dataSpecificConfig,
+                                              speckleConfig=self.despeckleConfig, nCores=self.nCores)
 
             # Replace the data with the despeckled data, for A1
-            dataDict["Data"] = despeckleResult[0]
-            dataDict["Flags"] = despeckleResult[1]
+            dataStack.DataArray3D = despeckleResult[0]
+            dataStack.FlagsArray3D = despeckleResult[1]
 
             # todo enable a different start position
-            a1Result = a1_core(DataStacks=dataDict, Margins=a1Margins, RunFillFromPos=0)
+            # todo replace data  inplace on dataStacks and just return the diagnostics
+            a1Result = a1_core(dataStacks=dataStack, margins=a1Margins,
+                               flagValues=self.flagValues, dataConfig=self.dataSpecificConfig,
+                               a1Config = self.a1Config, nCores=self.nCores)
             # result is tuple of (output, dists, new flags, log info)
-            del dataDict
-            del sliceDataStack
-            del sliceFlagStack
+            del dataStack
 
-            if not ((DataSpecificConfig["DATA_UPPER_LIMIT"] == DataSpecificConfig["NODATA_VALUE"]) and
-                DataSpecificConfig["DATA_LOWER_LIMIT"] == DataSpecificConfig["NODATA_VALUE"]):
-                sliceMeanArr = np.copy(sliceMeanArr[a1Margins["TOP"]:a1Margins["TOP"]+a1Margins["FILLHEIGHT"],
-                                     a1Margins["LEFT"]:a1Margins["LEFT"]+a1Margins["FILLWIDTH"]])
-                sliceSDArr = np.copy(sliceSDArr[a1Margins["TOP"]:a1Margins["TOP"] + a1Margins["FILLHEIGHT"],
-                                       a1Margins["LEFT"]:a1Margins["LEFT"] + a1Margins["FILLWIDTH"]])
-                MinMaxClip3D( dataImage=a1Result[0], flagsImage=a1Result[2],
-                              meansImage=sliceMeanArr, stdImage=sliceSDArr,
-                              flagToCheck=FlagValues["A1_FILLED"],
-                              flagToSet=FlagValues["CLIPPED"],
-                              floor_ceiling_value=DataSpecificConfig["FLOOR_CEILING_ZSCORE"],
-                              _NDV=DataSpecificConfig["NODATA_VALUE"],
-                              upperHardLimit=DataSpecificConfig["DATA_UPPER_LIMIT"],
-                              lowerHardLimit=DataSpecificConfig["DATA_LOWER_LIMIT"])
+            if not ((self.dataSpecificConfig.CEILING_VALUE == self.dataSpecificConfig.NODATA_VALUE) and
+                self.dataSpecificConfig.DATA_LOWER_LIMIT == self.dataSpecificConfig.NODATA_VALUE):
+                # apply clip if either the floor / ceiling values are set
+                #TODO add the heights
+                sliceMeanArr = np.copy(sliceMeanArr[a1Margins.Top:a1Margins.Top+a1Margins["FILLHEIGHT"],
+                                     a1Margins.Left:a1Margins.Left+a1Margins["FILLWIDTH"]])
+                sliceSDArr = np.copy(sliceSDArr[a1Margins.Top:a1Margins.Top + a1Margins["FILLHEIGHT"],
+                                       a1Margins.Left:a1Margins.Left + a1Margins["FILLWIDTH"]])
+                MinMaxClip3D(dataStacks=dataStack,
+                             flagToCheck=self.flagValues.A1_FILLED,
+                             flagToSet=self.flagValues.CLIPPED,
+                             dataConfig=self.dataSpecificConfig,
+                             nCores=self.nCores)
+
             if len(self.slices) > 1:
                 # use intermediate files.
                 # in this code we're not saving separate tile files, we're saving global tiffs and just writing
                 # part of them at once
                 for y in range(len(fileList)):
-                    if y < stackFillFromPos:
+                    if y < dataStack.FillFromZPosition:
                         continue
                     inputFilename = os.path.basename(fileList[y])
-                    outNameData = os.path.join(tempDir, "A1IntermediateData_" + inputFilename)
-                    outNameDist = os.path.join(tempDir, "A1IntermediateDists_" + inputFilename)
-                    outNameFlag = os.path.join(tempDir, "A1IntermediateFlags_" + inputFilename)
+                    outNameData = os.path.join(self.tempDir, "A1IntermediateData_" + inputFilename)
+                    outNameDist = os.path.join(self.tempDir, "A1IntermediateDists_" + inputFilename)
+                    outNameFlag = os.path.join(self.tempDir, "A1IntermediateFlags_" + inputFilename)
                     d = SingleBandTiffFile(outNameData)
                     d.SavePart(np.asarray(a1Result[0][y], dataWriteWindow["LEFT"], dataWriteWindow["TOP"]))
                     d = SingleBandTiffFile(outNameDist)

@@ -3,15 +3,16 @@ from libc.math cimport fabs, sqrt
 cimport cython
 cimport openmp
 from cython.parallel import prange, parallel
-from gapfill_config import FlagValues, \
-    DespeckleSearchConfig as SpiralSearchConfig, \
-    DespeckleThresholdConfig as Limits, \
-    DataSpecificConfig as DataConfig
+from gapfill_config import DataCharacteristicsConfig, SpeckleSelectionConfig, SpiralSearchConfig, FlagItems, DespeckleDiagnostics
+from gapfill_utils import A1DataStack, PixelMargins
 
 @cython.cdivision(True)
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef setSpeckleFlags (dict DataStacks, dict Margins):
+cpdef setSpeckleFlags (A1DataStack dataStacks, PixelMargins margins, FlagItems flagValues,
+                       DataCharacteristicsConfig dataConfig,
+                       SpeckleSelectionConfig speckleConfig,
+                       Py_ssize_t nCores):
 
     '''
     Cython implementation of the "despeckle" algorithm; also applies land-sea mask and any systematic correction.
@@ -53,40 +54,44 @@ cpdef setSpeckleFlags (dict DataStacks, dict Margins):
 
         float _BLANK_ZSCORE
 
-    # unpack input dictionaries to typed variables
+
+    assert isinstance(speckleConfig.SPIRAL, SpiralSearchConfig)
+    # unpack input packages to simple typed variables to minimise changes to code / for fastest access
     cdef:
         # thresholds / consts
-        float hardLowerLimit = DataConfig["DATA_LOWER_LIMIT"]
-        float hardUpperLimit = DataConfig["DATA_UPPER_LIMIT"]
-        float _NDV = DataConfig["NODATA_VALUE"]
-        float _CORRECTION_OFFSET = DataConfig["DATA_CORRECTION_OFFSET"]
+        float hardLowerLimit = dataConfig.FLOOR_VALUE
+        float hardUpperLimit = dataConfig.CEILING_VALUE
+        float _NDV = dataConfig.NODATA_VALUE
+        float _CORRECTION_OFFSET = dataConfig.CORRECTION_OFFSET
 
-        float _SPECKLE_ZSCORE_THRESHOLD = Limits["SPECKLE_NBR_Z_THRESH"]
-        float stDevValidityThreshold = Limits["EXTREME_BEYOND_SD"]
-        float speckleDevThreshold = Limits["SPECKLE_BEYOND_SD"]
+        float _SPECKLE_ZSCORE_THRESHOLD = speckleConfig.SPECKLE_NBR_Z_THRESH
+        float stDevValidityThreshold = speckleConfig.EXTREME_BEYOND_SD
+        float speckleDevThreshold = speckleConfig.SPECKLE_BEYOND_SD
 
-        int _SPECKLE_NBR_MIN_THRESHOLD = SpiralSearchConfig["MIN_NBRS_REQUIRED"]
-        int _SPECKLE_NBR_MAX_THRESHOLD = SpiralSearchConfig["MAX_NBRS_REQUIRED"]
-        int _MAX_NEIGHBOURS_TO_CHECK = SpiralSearchConfig["MAX_NBRS_TO_SEARCH"]
+        int _SPECKLE_NBR_MIN_THRESHOLD = speckleConfig.SPIRAL.MIN_REQUIRED_NBRS
+        int _SPECKLE_NBR_MAX_THRESHOLD = speckleConfig.SPIRAL.MAX_USED_NBRS
+        int _MAX_NEIGHBOURS_TO_CHECK = speckleConfig.SPIRAL.MAX_NBRS_TO_SEARCH
 
-        short _OCEAN_FLAG = FlagValues["OCEAN"]
-        short _NEVERDATA_FLAG = FlagValues["FAILURE"]
-        short _EXTREME_FLAG = FlagValues["EXTREME"]
-        short _SPECKLE_FLAG = FlagValues["SPECKLE"]
+        short _OCEAN_FLAG = flagValues.OCEAN
+        short _NEVERDATA_FLAG = flagValues.FAILURE
+        short _EXTREME_FLAG = flagValues.EXTREME
+        short _SPECKLE_FLAG = flagValues.SPECKLE
 
-        int marginT = Margins["TOP"]
-        int marginB = Margins["BOTTOM"]
-        int marginL = Margins["LEFT"]
-        int marginR = Margins["RIGHT"]
+        Py_ssize_t marginT = margins.Top
+        Py_ssize_t marginB = margins.Bottom
+        Py_ssize_t marginL = margins.Left
+        Py_ssize_t marginR = margins.Right
 
-        float[:,:,::1] data = DataStacks["Data"]
-        unsigned char[:,:,::1] flags = DataStacks["Flags"]
-        float[:,::1] means = DataStacks["Means"]
-        float[:,::1] stds = DataStacks["Stds"]
-        char[:,::1] landMask = DataStacks["LandMask"]
+        float[:,:,::1] data = dataStacks.DataArray3D
+        unsigned char[:,:,::1] flags = dataStacks.FlagsArray3D
+        float[:,::1] means = dataStacks.MeansArray2D
+        float[:,::1] stds = dataStacks.SDArray2D
+        char[:,::1] landMask = dataStacks.Coastline2D
 
         float[:,:,::1] outputData
 
+
+    # TODO move shape checking to the data object
     zShape = data.shape[0]
     yShapeTotal = data.shape[1]
     xShapeTotal = data.shape[2]
@@ -118,6 +123,7 @@ cpdef setSpeckleFlags (dict DataStacks, dict Margins):
     oceanCount_Glob = 0
     clearedSpeckleCount_Glob = 0
 
+    # TODO replace print with logging
     print ("Despeckle: Rejecting data beyond {0!s}s.d. of mean. Nbr search on data beyond {1!s} s.d. of mean.".
            format(stDevValidityThreshold, speckleDevThreshold))
     print ("Nbr searching for {0!s} - {1!s} nbrs within {2!s} spiral steps for z-score tolerance of {3!s}".
@@ -159,7 +165,7 @@ cpdef setSpeckleFlags (dict DataStacks, dict Margins):
     # Apply any correction offset (to correct messed-up celsius-kelvin conversion!!)
     if _CORRECTION_OFFSET != 0:
         for z in range (zShape):
-            with nogil, parallel(num_threads=20):
+            with nogil, parallel(num_threads=nCores):
                 for yT in prange (yShapeTotal, schedule='static', chunksize=200):
                     xT_prv = -1
                     for xT_prv in range (xShapeTotal):
@@ -170,7 +176,7 @@ cpdef setSpeckleFlags (dict DataStacks, dict Margins):
     # some memory to avoid doing it 15 times (this is the only economy in calling this routine
     # with a 3d array, so if memory is an issue just modify to run on a 2d array one day at a time)
     # run for total shape i.e. including speckle margins
-    with nogil, parallel(num_threads=20):
+    with nogil, parallel(num_threads=nCores):
         for yT in prange (yShapeTotal, schedule='static', chunksize=200):
             xT_prv = -1
             for xT_prv in range (xShapeTotal):
@@ -191,7 +197,7 @@ cpdef setSpeckleFlags (dict DataStacks, dict Margins):
     for z in range (zShape):
         #re initialise zscoresday
         zScoresDay[:] = _BLANK_ZSCORE
-        with nogil,parallel(num_threads=20):
+        with nogil,parallel(num_threads=nCores):
             # do for everything, including speckle margins
             for yT in prange (yShapeTotal, schedule='static', chunksize=200):
                 # assign to the inner loop's variables so that Cython will make them thread-private
@@ -208,13 +214,9 @@ cpdef setSpeckleFlags (dict DataStacks, dict Margins):
                         # do not do anything where it is not in the land
                         # just set the flags image to record this
                         flags[z, yT, xT_prv] = flags[z, yT, xT_prv] | _OCEAN_FLAG
-
                         # Do not copy across any data existing in the sea. It's likely to be squiffy
                         # (EVI in particular) and if we leave it, the fill process inland could use these
-                        # dodgy values
-                        # (Output data is already NDV from initialisation)
-
-                        # Tracking
+                        # dodgy values. (Output data is already NDV from initialisation)
                         oceanCount_Glob += 1
                         continue
 
@@ -250,10 +252,10 @@ cpdef setSpeckleFlags (dict DataStacks, dict Margins):
                         flags[z, yT, xT_prv] = flags[z, yT, xT_prv] | _SPECKLE_FLAG
 
         # now go through again, the z-scores are all populated wherever possible so no need
-        # to re-calculate every time a nbr is checked as in orginal implementation
+        # to re-calculate every time a nbr is checked as in original implementation
         # do not run for speckle margins - use inner shape - but this will still include the A1 margins
         # if everything's been set up right!
-        with nogil,parallel(num_threads=20):
+        with nogil,parallel(num_threads=nCores):
             for yT in prange (yShapeToDespeckle, schedule='dynamic', chunksize=200):
 
                 xT_prv = -1
@@ -318,9 +320,18 @@ cpdef setSpeckleFlags (dict DataStacks, dict Margins):
                     speckleCount_Glob += 1
                     outputData[z, yD_prv, xD_prv] = _NDV
 
-    print ("Speckle count:    " + str(speckleCount_Glob))
-    print ("Extreme count:    " + str(extremeCount_Glob))
-    print ("Good count:       " + str(goodCount_Glob))
-    print ("Cleared Speckle:  " + str(clearedSpeckleCount_Glob))
-    print ("Ocean count:      " + str(oceanCount_Glob))
-    return (outputData, flags)
+
+    despeckleDiag = DespeckleDiagnostics(SpeckleCellCount=speckleCount_Glob,
+                                         ExtremeCellCount=extremeCount_Glob,
+                                         GoodCellCount=goodCount_Glob,
+                                         clearedSpeckleCount_Glob=clearedSpeckleCount_Glob,
+                                         OceanCellCount=oceanCount_Glob)
+    #print ("Speckle count:    " + str(speckleCount_Glob))
+    #print ("Extreme count:    " + str(extremeCount_Glob))
+    #print ("Good count:       " + str(goodCount_Glob))
+    #print ("Cleared Speckle:  " + str(clearedSpeckleCount_Glob))
+    #print ("Ocean count:      " + str(oceanCount_Glob))
+    #return (outputData, flags, despeckleDiag)
+    dataStacks.DataArray3D = outputData
+    dataStacks.FlagsArray3D = flags
+    return despeckleDiag

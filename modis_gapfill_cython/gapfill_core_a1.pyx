@@ -3,10 +3,8 @@ import numpy as np
 from libc.stdlib cimport abs
 from cython.parallel import prange, parallel
 from libc.math cimport sqrt
-from gapfill_config import FlagValues, \
-    A1SearchConfig , \
-    DataSpecificConfig as DataConfig
-
+from gapfill_config import FlagItems, DataCharacteristicsConfig, A1SearchConfig, A1Diagnostics
+from gapfill_utils import A1DataStack, PixelMargins
 
 
 @cython.boundscheck(False)
@@ -18,10 +16,13 @@ from gapfill_config import FlagValues, \
 # So for a tiled run data can (should) be provided with a padding of _SEARCH_RADIUS and the
 # margin set to this value also. That way the algorithm can get values for "edge pixels" of its
 # input data
-cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional), KnownUnfillable (optional)
-                    dict Margins, # has items Top, Bottom, Left, Right
-                    char RunFillFromPos = 0
-                ):
+cpdef a1_core(A1DataStack dataStacks,  # has items Data, Flags, DistTemplate (optional), KnownUnfillable (optional)
+              PixelMargins margins,
+              FlagItems flagValues,
+              DataCharacteristicsConfig dataConfig,
+              A1SearchConfig a1Config,
+              Py_ssize_t nCores
+              ):
 
     """
     Optimised, multithreaded Cython (C) implementation of the A1 gapfilling algorithm.
@@ -61,6 +62,7 @@ cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional),
         int [::1] deltas
         double posInf,negInf
 
+
         #thread-private ones:
         Py_ssize_t x_prv
         Py_ssize_t newZ_prv, xi_prv, yi_prv, xNbr_prv, yNbr_prv
@@ -88,34 +90,38 @@ cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional),
         Py_ssize_t xi, yi, x
         int nfound
 
-        # Unpack the parameter dictionaries to typed variables
+        # Unpack the parameter objects to typed variables
         # (the dictionaries were just to clean up the signature a bit in the absence of motivation
         # to make some specific type to pass the data more cleanly)
-        char _OCEAN_FLAG = FlagValues["OCEAN"]
-        char _FAILURE_FLAG = FlagValues["FAILURE"]
-        char _SUCCESS_FLAG = FlagValues["A1_FILLED"]
-        char _SUCCESS_WAS_FULL_FLAG = FlagValues["A1_FULL"]
-        int marginT = Margins["TOP"]
-        int marginB = Margins["BOTTOM"]
-        int marginL = Margins["LEFT"]
-        int marginR = Margins["RIGHT"]
+        char _OCEAN_FLAG = flagValues.OCEAN
+        char _FAILURE_FLAG = flagValues.FAILURE
+        char _SUCCESS_FLAG = flagValues.A1_FILLED
+        char _SUCCESS_WAS_FULL_FLAG = flagValues.A1_FULL
+        int marginT = margins.Top
+        int marginB = margins.Bottom
+        int marginL = margins.Left
+        int marginR = margins.Right
+        float _NDV = dataConfig.NODATA_VALUE
+        unsigned char RunFillFromPos = dataStacks.FillFromZPosition
+        unsigned char FillByRatios = A1SearchConfig.FILL_GENERATION_METHOD ==" RATIO"
+        unsigned char _TRIM_MIN_MAX = A1SearchConfig.TRIM_FULL_OUTLIERS
 
-        float [:,:,::1] dayDataStack = DataStacks["Data"]
-        unsigned char[:,:,::1] inputFlags = DataStacks["Flags"] # embeds the land-sea mask (sea=1 land =0)
+        float [:,:,::1] dayDataStack = dataStacks.DataArray3D
+        unsigned char[:,:,::1] inputFlags = dataStacks.FlagsArray3D # embeds the land-sea mask (sea=1 land =0)
         unsigned char[:,:,::1] dataDistTemplate = None
         unsigned char[:,::1] knownUnfillableLocs = None
-        float _AbsZeroPoint = DataConfig["DATA_ABSOLUTE_ZERO_OFFSET"]
-        float _MaxAllowableRatio = A1SearchConfig["MAX_ALLOWABLE_RATIO"]
+        float _AbsZeroPoint = dataConfig.ABSOLUTE_ZERO_OFFSET
+        float _MaxAllowableRatio = A1SearchConfig.MAX_ALLOWABLE_RATIO
         float _MinAllowableRatio = 1.0 / _MaxAllowableRatio
 
-        #  how many locations should be checked in spiral search (gives radius). #3142
-        int _MAX_NEIGHBOURS_TO_CHECK = A1SearchConfig["MAX_NBRS_TO_SEARCH"]
+        #  how many locations should be checked in spiral search (gives radius), historic defailt is 3142
+        int _MAX_NEIGHBOURS_TO_CHECK = A1SearchConfig.MAX_NBRS_TO_SEARCH
 
-        # Only use the values gleaned from up to this number of cells (Even if more are avail within radius) #640
-        int _FILL_THRESHOLD = A1SearchConfig["MAX_USED_NBRS"]
+        # Only use the values gleaned from up to this number of cells (Even if more are avail within radius) 640
+        int _FILL_THRESHOLD = A1SearchConfig.MAX_USED_NBRS
 
-        # 320 min number of values that must be found to have a valid fill
-        int _FILL_MIN = A1SearchConfig["MIN_REQ_NBRS"]
+        # min number of values that must be found to have a valid fill, historic default is 320
+        int _FILL_MIN = A1SearchConfig.MIN_REQUIRED_NBRS
 
         # calc the distance that is implied by the max spiral search length
         int _SEARCH_RADIUS = <int> (sqrt((_MAX_NEIGHBOURS_TO_CHECK*2.0) / 3.14))  + 1
@@ -128,13 +134,15 @@ cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional),
         long long filledBelowThreshold, noPairsFound, insufficientPairsFound, filledToThreshold
         long long gapsAtUnfillableLocs, gapsTooBig, dataGood
 
+
+
     # can precalc dist from gap to nearest data for more  efficient spiral search
     # (no need to start spiral search closer than the known nearest data pixel)
-    if DataStacks["DistTemplate"]:
-        dataDistTemplate = DataStacks["DistTemplate"]
+    if dataStacks.DistanceTemplate3D is not None:
+        dataDistTemplate = dataStacks.DistanceTemplate3D
     # can precalc locations where no alternate years exist (so no fill will be possible)
-    if DataStacks["KnownUnfillable"]:
-        knownUnfillableLocs = DataStacks["KnownUnfillable"]
+    if dataStacks.KnownUnfillable2D is not None:
+        knownUnfillableLocs = dataStacks.KnownUnfillable2D
 
     zShape = dayDataStack.shape[0]
     # size of the input data including search margins
@@ -194,7 +202,7 @@ cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional),
     # diagnostics; TODO use logging
     print ("Running A1 (Full Spiral Search).")
     print ("No data template: {0!s}. Using fill generation method: {1!s}. Searching for {2!s} - {3!s} nbrs within {4!s} spiral steps".
-           format(noTemplate, A1SearchConfig["FILL_GENERATION_METHOD"], _FILL_MIN, _FILL_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK))
+           format(noTemplate, A1SearchConfig.FILL_GENERATION_METHOD, _FILL_MIN, _FILL_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK))
     print ("Calculating nbr table out to radius of {0!s}.".format(_SEARCH_RADIUS))
     print ("Filling from stack position {0!s}.".format(RunFillFromPos))
 
@@ -202,7 +210,7 @@ cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional),
     assert inputFlags.shape[2] == xShapeTotal
 
     if knownUnfillableLocs is None: # i.e. has not been precalced with np.all
-        # knownUnfillableLocs will a 2D map of cells where there is no data in any year (z axis)
+        # knownUnfillableLocs will a 2D map of cells where there isk no data in any year (z axis)
         knownUnfillableLocs = np.ones(shape=(yShape, xShape), dtype=np.uint8, order='c')
         # locate cells that CAN be filled (negating it like this means we can keep
         # the loop order cache-friendly - as opposed to iterating through Z at each
@@ -212,7 +220,7 @@ cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional),
         with nogil:
             for z in range(zShape):
                 # work is trivial and fairly well balanced so use static schedule
-                for y in prange(yShape, schedule='static', num_threads=20):
+                for y in prange(yShape, schedule='static', num_threads=nCores):
                     x_prv = -1
                     yi_prv = y + marginT
                     for x_prv in range(xShape):
@@ -233,7 +241,7 @@ cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional),
         # (but not too large, to avoid FP errors)
         with nogil:
             for z in range(zShape):
-                for y in prange(yShapeTotal, schedule='static', num_threads=20):
+                for y in prange(yShapeTotal, schedule='static', num_threads=nCores):
                     x_prv = -1
                     for x_prv in range(xShapeTotal):
                         if dayDataStack[z, y, x_prv] != _NDV:
@@ -274,7 +282,7 @@ cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional),
     # Therefore all variables that need to be thread private must be made so by artifially assigning
     # (something) to them within the parallel block.
     # Check the generated C code to be sure it's worked as intended!
-    with nogil, parallel(num_threads=20): # change num cores here
+    with nogil, parallel(num_threads=nCores): # change num cores here
         for z in range(zShape):
             if z >= RunFillFromPos:
                 # experiments with chunksizes 500, 50, 20, 2, and parallelising on z axis instead,
@@ -545,39 +553,28 @@ cpdef a1_core(dict DataStacks, # has items Data, Flags, DistTemplate (optional),
                                 else:
                                     noPairsFound += 1
                             outputFlags [z, y, x_prv] = flag_prv
-    #print "Total cells scanned:     "+str(totalCells)
-    #print "Total cells with good data: "+str(dataGood)
-    #print "Total cells ocean: "+str(oceanCells)
-    #print "Total cells never-data: "+str(neverDataCells)
-    #print "Total processed gaps:    "+str(totalProcessedGapCells)
-    #print "Total gaps too large to fill: "+str(gapsTooBig)
-    #print "Total perma-gaps:        "+str(gapsAtUnfillableLocs)
-    #print "Total gaps filled fully: "+str(filledToThreshold)
-    #print "Total filled partially:  "+str(filledBelowThreshold)
-    #print "Total w/insufficient prs:"+str(insufficientPairsFound)
-    #print "Total with no nbr pairs: "+str(noPairsFound)
-    #print "Total yrs scanned f/b:   "+str(scannedLevels)
-    #print "Total nbr cells scanned: "+str(scannedNeighbours)
-    #print "Total used nbr pairs:    "+str(usedNeighbours)
-
-    objRes = {
-        "01_TotalCells":totalCells,
-        "02_GoodCells":dataGood,
-        "03_Ocean":oceanCells,
-        "04_NeverData":neverDataCells,
-        "05_TotalGaps":totalProcessedGapCells,
-        "06_GapsTooBig":gapsTooBig,
-        "07_PermanentGaps":gapsAtUnfillableLocs,
-        "08_FilledFull":filledToThreshold,
-        "09_FilledPartial":filledBelowThreshold,
-        "10_FailInsufficientPairs":insufficientPairsFound,
-        "11_FailNoPairs":noPairsFound,
-        "12_TotalAlternateYrs":scannedLevels,
-        "13_TotalNbrsChecked":scannedNeighbours,
-        "14_TotalNbrsUsed":usedNeighbours
-    }
-    #return (output,flags)# and dists!
-    return (outputData,outputDists,outputFlags,objRes)
+    resultDiagnostics = A1Diagnostics(
+        TotalCellsSearched=totalCells,
+        CellsWithGoodData=dataGood,
+        OceanCells=oceanCells,
+        NeverDataLocations=neverDataCells,
+        GapCellsTotal=totalProcessedGapCells,
+        GapCellsTooBig=gapsTooBig,
+        PermanentGapCells=gapsAtUnfillableLocs,
+        GapCellsFullyFilled=filledToThreshold,
+        GapCellsPartFilled=filledBelowThreshold,
+        FailedInsufficientPairs=insufficientPairsFound,
+        FailedNoPairs=noPairsFound,
+        TotalAlternateYearsScanned=scannedLevels,
+        TotalNbrsChecked=scannedNeighbours,
+        TotalNbrsUsed=usedNeighbours
+    )
+    dataStacks.DataArray3D = outputData
+    # todo check this is valid
+    dataStacks.DistanceTemplate3D = outputDists
+    dataStacks.FlagsArray3D = outputFlags
+    #return (outputData,outputDists,outputFlags,resultDiagnostics)
+    return resultDiagnostics
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
