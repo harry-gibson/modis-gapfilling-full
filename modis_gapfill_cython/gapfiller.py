@@ -11,7 +11,8 @@ import datetime.date
 from collections import defaultdict
 # io management functions
 from raster_utilities.utils.geotransform_calcs import CalculatePixelLims, CalculateClippedGeoTransform
-from raster_utilities.io.TiffFile import SingleBandTiffFile
+from raster_utilities.io.TiffFile import SingleBandTiffFile, RasterProps
+from raster_utilities.tileProcessor import tileProcessor
 
 # cython functions
 from gapfill_core_despeckle_and_flag import setSpeckleFlags
@@ -28,7 +29,7 @@ from gapfill_defaults import DefaultFlagValues, DespeckleThresholdDefaultConfig,
 
 class gapfiller:
     def __init__(self, fileWildcard, meanFile, sdFile, coastFile,
-                 fillForLatLims, fillForLonLims, memLimit=70e9):
+                 fillForLatLims=None, fillForLonLims=None, memLimit=70e9):
 
         # initialise input files and index by calendar day and year
 
@@ -45,19 +46,29 @@ class gapfiller:
         self.xLims, self.yLims = CalculatePixelLims(fillForLonLims, fillForLatLims)
 
         self.inputFileDict = defaultdict(defaultdict(list))
-        self.InitialiseFiles(fileWildcard, )
+        self.InitialiseFiles(fileWildcard)
         self.meanFile = meanFile
         self.stdFile = sdFile
         self.coastFile = coastFile
 
+        if fillForLatLims is None and fillForLonLims is None:
+            self.OutputProps = self.InputRasterProps
+        else:
+            outGT = CalculateClippedGeoTransform(self.InputRasterProps.gt, self.xLims, self.yLims)
+            outW = self.xLims[1] - self.xLims[0]
+            outH = self.yLims[1] - self.yLims[0]
+            outProj = self.InputRasterProps.proj
+            outNdv = self.InputRasterProps.ndv
+            outRes = self.InputRasterProps.res
+            outDT = self.InputRasterProps.datatype
+            self.OutputProps = RasterProps(gt=outGT, proj=outProj, ndv=outNdv, width=outW, height=outH,
+                                           res=outRes, datatype=outDT)
         self.flagValues = DefaultFlagValues
         self.dataSpecificConfig = DataSpecificDefaultConfig
         self.nCores = 20
         self.a1Config = A1DefaultParams
         self.a2Config = A2DefaultParams
         self.despeckleConfig = DespeckleThresholdDefaultConfig
-
-
 
 
     def RunFill(self, onlyDays=None, onlyYears=None):
@@ -91,8 +102,9 @@ class gapfiller:
         initialProps = SingleBandTiffFile(allFiles[0])
         self.InputRasterProps = initialProps.GetExistingProperties()
 
-    def __parseDailyFilename(self, f):
         base = os.path.basename(f)
+
+    def __parseDailyFilename(self, f):
         yr = base[1:5]
         day = base[5:8]
         return(day,yr)
@@ -293,6 +305,9 @@ class gapfiller:
         dataReadWindow = margins["dataReadWindow"]
         dataWriteWindow = margins["dataWriteWindow"]
 
+        sliceGT = CalculateClippedGeoTransform(self.OutputProps.gt,
+                                               xPixelLims=(dataWriteWindow.Left, dataWriteWindow.Right),
+                                               yPixelLims=(dataWriteWindow.Top, dataWriteWindow.Bottom))
         sliceDespeckleHeight = dataReadWindow.Bottom - dataReadWindow.Top
         sliceDespeckleWidth = dataReadWindow.Right - dataReadWindow.Left
 
@@ -357,6 +372,7 @@ class gapfiller:
                              flagToSet=self.flagValues.CLIPPED,
                              dataConfig=self.dataSpecificConfig,
                              nCores=self.nCores)
+
 
             if len(self.slices) > 1:
                 # use intermediate files.
