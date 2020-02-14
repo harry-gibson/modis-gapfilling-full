@@ -12,7 +12,7 @@ from gapfill_utils import A1DataStack, PixelMargins
 cpdef setSpeckleFlags (A1DataStack dataStacks, PixelMargins margins, FlagItems flagValues,
                        DataCharacteristicsConfig dataConfig,
                        SpeckleSelectionConfig speckleConfig,
-                       Py_ssize_t nCores):
+                       Py_ssize_t nCores) -> object:
 
     '''
     Cython implementation of the "despeckle" algorithm; also applies land-sea mask and any systematic correction.
