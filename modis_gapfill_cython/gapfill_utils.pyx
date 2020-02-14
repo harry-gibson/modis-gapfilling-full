@@ -122,11 +122,6 @@ cdef class A2PassData:
             raise ValueError()
 
 
-
-
-
-
-
 cdef class PixelMargins:
     """ Simple object to hold 4 values representing margins for processing data """
     cdef readonly Py_ssize_t Top, Bottom, Left, Right
