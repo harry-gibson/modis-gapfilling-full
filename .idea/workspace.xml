@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c63e01a0-e87b-4af8-8c5d-f7711f2a05e1" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/markdown-navigator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/markdown-navigator/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/other.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modis-gapfilling.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modis-gapfilling.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_config.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_config.pyx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_despeckle_and_flag.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_despeckle_and_flag.pyx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_defaults.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_defaults.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Gapfill_BySlice_Cython_v04.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Gapfill_BySlice_Cython_v04.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_utils.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_utils.pyx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py" afterDir="false" />
     </list>
@@ -175,7 +168,7 @@
       <option name="presentableId" value="Default" />
       <updated>1484584798755</updated>
       <workItem from="1581683704902" duration="1572000" />
-      <workItem from="1581690301551" duration="10336000" />
+      <workItem from="1581690301551" duration="11484000" />
     </task>
     <servers />
   </component>

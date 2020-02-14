@@ -429,6 +429,7 @@ class GapFiller:
                     d.SavePart(np.asarray(a1Result[2][y], dataWriteWindow["LEFT"], dataWriteWindow["TOP"]))
                     d = None
 
-    def A2BatchRunner(self):
+    def A2BatchRunner(self, intermediateImage):
+        # cf. a2Caller, but run for a provided filename
         for img in self.GetImages():
             A2ImageCaller(img, fla)
