@@ -13,8 +13,8 @@ SpiralSearchConfig = namedtuple("SpiralSearchConfig", [
     "MAX_USED_NBRS"
 ])
 
-SpeckleSelectionConfig = namedtuple("SpeckleSelectionConfig", [
-    "SPIRAL",
+DespeckleConfig = namedtuple("DespeckleConfig", [
+    "SPIRAL_CONFIG",
     "EXTREME_BEYOND_SD",
     "SPECKLE_BEYOND_SD",
     "SPECKLE_NBR_Z_THRESH"
@@ -24,9 +24,11 @@ DataCharacteristicsConfig = namedtuple("DataSpecificConfig", [
     "CEILING_VALUE", # Hard upper limit to clip fill values to. Use NODATA_VALUE to not clip in this direction
     "FLOOR_VALUE", # Hard lower limit to clip fill values to. Use NODATA_VALUE to not clip in this direction
     "FLOOR_CEILING_ZSCORE", # Clip fill values more than this number of SD from the mean, only if ceiling/floor also set
-    "CORRECTION_OFFSET", # Value to add to all data before further processing, e.g. -273.15 to convert celsius to kelvin
+    "CORRECTION_OFFSET", # Value to add to all data before further processing, e.g. 0.15 if celsius files were made a
+    # bit wrong with 273 degree offset instead of 271.15 (totally random example, asking for a friend)
     "NODATA_VALUE", # Should generally be the same as whatever nodata is stored as in the tiff files
-    "ABSOLUTE_ZERO_OFFSET" # Offset to convert data into an absolute scale if appropriate, e.g. celsius into kelvin
+    "ABSOLUTE_ZERO_OFFSET" # Offset to convert data into an absolute scale if appropriate, e.g. -273.15 to convert celsius
+    # into kelvin
 ])
 
 A1SearchConfig = namedtuple("A1SearchConfig", [
@@ -87,5 +89,14 @@ A2SearchConfig = namedtuple("A2SearchConfig", [
     # If the fill generation method is "RATIO" then what should be the maximum allowable ratio, to allow for
     # near-zero divisors?
     "MAX_ALLOWABLE_RATIO"
+])
+
+GapfillFilePaths = namedtuple("GapfillFilePaths", [
+    "DATA_FILES_GLOB_PATTERN",
+    "SYNOPTIC_MEAN_FILE",
+    "SYNOPTIC_SD_FILE",
+    "COASTLINE_FILE",
+    "OUTPUT_FOLDER",
+    "TEMP_FOLDER"
 ])
 
