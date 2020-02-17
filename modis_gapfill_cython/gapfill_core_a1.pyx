@@ -27,9 +27,12 @@ cpdef a1_core(A1DataStack dataStacks,  # has items Data, Flags, DistTemplate (op
     """
     Optimised, multithreaded Cython (C) implementation of the A1 gapfilling algorithm.
 
-    a1_core(dict DataStacks, dict Margins, char RunFillFromPos = 0)
-                    ->
-                    (float[:,:,::1] output, float[:,:,::1] distances, dict info)
+    a1_core(A1DataStack DataStacks, PixelMargins Margins, FlagItems flagValues,
+            DataCharacteristicsConfig dataConfig, A1SearchConfig a1Config, 
+            char RunFillFromPos = 0
+            Py_ssize_t nCores)
+                    -> A1Diagnostics
+                    (members of dataStacks are modified in-place)
 
     Runs A1 on a stack of data of a given calendar day; the stack should have one layer (0th dimension)
     for each year. The algorithm can be run in a tiled or sliced fashion by passing in a stack
@@ -38,7 +41,8 @@ cpdef a1_core(A1DataStack dataStacks,  # has items Data, Flags, DistTemplate (op
     margin parameters. These should be at least as big as the neighbourhood search radius which is set
     to 3142 cells area = ~31km radius.
     The flags should be the same shape as the data EXCLUDING the margins.
-    Returns a tuple containing the filled data and distances and fill statistics for logging.
+    Returns an object containing diagnostics from the fill process - the data, distance, and flags images within 
+    the A1DataStack are modified in-place.
     """
     cdef:
         # define all arrays (cython memoryview objects) as being c-contiguous

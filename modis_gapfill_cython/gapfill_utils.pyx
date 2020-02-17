@@ -15,6 +15,16 @@ cdef class A1DataStack:
     def __init__(self):
         pass
 
+cdef class A2DataStack:
+    cdef public float[:,::1] DataArray2D
+    cdef public unsigned char[:,::1] FlagsArray2D
+    cdef public float[:,::1] DistanceArray2D
+    cdef public float[:,::1] MeansArray2D
+
+    def __init__(self):
+        pass
+
+
 cdef class A2PassData:
     '''Holds the images necessary to run the a2_core algorithm, in the correct direction
     The core algorithm iterates through the data in c-native order for efficiency. To implement the 8 directional

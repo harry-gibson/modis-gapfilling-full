@@ -104,7 +104,7 @@ cpdef MinMaxClip3D(
         float[:,::1] meansImage = dataStacks.MeansArray2D
         float[:,::1] stdImage = dataStacks.SDArray2D
 
-    zSize = dataImages.shape[0]
+    zSize =  dataImages.shape[0]
     assert zSize == flagsImages.shape[0]
     for z in range(zSize):
         MinMaxClip(dataImages[z], flagsImages[z], meansImage, stdImage,
