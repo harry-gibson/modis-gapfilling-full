@@ -3,7 +3,7 @@ from libc.math cimport fabs, sqrt
 cimport cython
 cimport openmp
 from cython.parallel import prange, parallel
-from gapfill_config import DataCharacteristicsConfig, SpeckleSelectionConfig, SpiralSearchConfig, FlagItems, DespeckleDiagnostics
+from gapfill_config import DataCharacteristicsConfig, DespeckleConfig, SpiralSearchConfig, FlagItems, DespeckleDiagnostics
 from gapfill_utils import A1DataStack, PixelMargins
 
 @cython.cdivision(True)
@@ -11,7 +11,7 @@ from gapfill_utils import A1DataStack, PixelMargins
 @cython.wraparound(False)
 cpdef setSpeckleFlags (A1DataStack dataStacks, PixelMargins margins, FlagItems flagValues,
                        DataCharacteristicsConfig dataConfig,
-                       SpeckleSelectionConfig speckleConfig,
+                       DespeckleConfig speckleConfig,
                        Py_ssize_t nCores) -> object:
 
     '''
@@ -21,14 +21,14 @@ cpdef setSpeckleFlags (A1DataStack dataStacks, PixelMargins margins, FlagItems f
     based on the number of standard deviations they fall from the mean, and on the similarity with their
     spatial neighbours.
 
-    Two thresholds are provided specifying a number of standard deviations.
-    Cells that differ by more than N1 standard deviations from the local mean are determined to be
-    definite outliers and are replaced with nodata. Furthermore, cells that differ by more than N2 standard
-    deviations (where N1 > N2) from the local mean are also replaced with nodata iif
+    Two thresholds are provided (in DespeckleConfig) specifying a number of standard deviations.
+    Cells that differ by more than EXTREME_BEYOND_SD standard deviations from the local mean are determined to be
+    definite outliers and are replaced with nodata. Furthermore, cells that differ by more than SPECKLE_BEYOND_SD 
+    standard deviations (where the former is > the latter) from the local mean are also replaced with nodata iif
     their z nearest neighbours don't on average also do so.
 
-    Locations where these replacements have occurred are recorded with bit flags in the flags object that is
-    returned. Also recorded here are the absence of any data, and the absence of land.
+    Locations where these replacements have occurred are recorded with bit flags in the flags array of dataStacks. 
+    Also recorded here are the absence of any data, and the absence of land.
     '''
 
     # data, means, stds should have margins allowing the neighbour search to run

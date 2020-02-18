@@ -107,7 +107,7 @@ cpdef a1_core(A1DataStack dataStacks,  # has items Data, Flags, DistTemplate (op
         int marginR = margins.Right
         float _NDV = dataConfig.NODATA_VALUE
         unsigned char RunFillFromPos = dataStacks.FillFromZPosition
-        unsigned char FillByRatios = A1SearchConfig.FILL_GENERATION_METHOD ==" RATIO"
+        unsigned char FillByRatios = A1SearchConfig.FILL_GENERATION_METHOD == "RATIO"
         unsigned char _TRIM_MIN_MAX = A1SearchConfig.TRIM_FULL_OUTLIERS
 
         float [:,:,::1] dayDataStack = dataStacks.DataArray3D
@@ -239,10 +239,12 @@ cpdef a1_core(A1DataStack dataStacks,  # has items Data, Flags, DistTemplate (op
     if FillByRatios:
         # we need to work with ratios between cells but will be running this on non-ratio scale variables
         # (i.e. where 0 is an arbitrary point) such as temp in celsius. This could lead to div/0 giving infinite
-        # ratios, and it's not valid anyway (e.g. 20/10 != 10/-10 even though the interval is the same).
+        # ratios, and it's not valid anyway (e.g. 20/10 != 5/-5 even though the interval is the same).
         # The latter point doesn't matter _much_ because we only use the ratio to multiply back against an alternate
         # value which will be similar. Use a large "absolute zero" relative to the values and it matters even less
-        # (but not too large, to avoid FP errors)
+        # (but not too large, to avoid FP errors).
+        # Basically, filling by ratio is mathematically inappropriate and probably shouldn't be done but as it was
+        # done this way in the original gapfilling, the option has been made available.
         with nogil:
             for z in range(zShape):
                 for y in prange(yShapeTotal, schedule='static', num_threads=nCores):
@@ -278,14 +280,16 @@ cpdef a1_core(A1DataStack dataStacks,  # has items Data, Flags, DistTemplate (op
     # The arrays are C-ordered so it's fastest in terms of CPU cache to have
     # X on the innermost loop. Parallelise over the y axis.
 
-    # Telling cython how to parallelise the variables is done implicitly by how you access them.
+    # IMPORTANT! Note that telling cython how to parallelise the variables is done implicitly by how you
+    # access them. The biggest fucking elephant trap ever.
     # - assign to a variable if you want it to be thread-private i.e. x = x + 1
     # - increase it in-place if you want it to be shared i.e. x += 1
     # The latter case turns it into a "reduction" variable which cannot be read in the parallel
     # loop.
-    # Therefore all variables that need to be thread private must be made so by artifially assigning
-    # (something) to them within the parallel block.
-    # Check the generated C code to be sure it's worked as intended!
+    # Therefore all variables that need to be thread private must be made so by artificially assigning
+    # (something) to them within the parallel block. I'm not 100% sure that this needs to be done outside the
+    # innermost loop as well as inside, as here, but better safe than sorry, the documentation was pretty unclear.
+    # Check the generated C code to be sure it's worked as intended if you choose not to!
     with nogil, parallel(num_threads=nCores): # change num cores here
         for z in range(zShape):
             if z >= RunFillFromPos:
@@ -508,7 +512,7 @@ cpdef a1_core(A1DataStack dataStacks,  # has items Data, Flags, DistTemplate (op
                                         ws_prv += pfv_prv * weight_prv
                                         sw_prv += weight_prv
                                         # the only thing the replacement values array got used for in original IDL was
-                                        # calculating the mean contibuting distance. we don't need to
+                                        # calculating the mean contributing distance. we don't need to
                                         # do all those assignments for that
                                         sumDist_prv = sumDist_prv + nbrTable[2,nbrIndex_prv]
                                         # track the things we need to trim min/max

@@ -47,17 +47,23 @@ def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
     _A2_SUCCESS_FLAG = flagValues.A2_FILLED
 
     # The A2 cython code just runs in the same order each time on what it gets (y outer, x inner, 0-n).
-    # To get the 8 different directional passes we re-stride the inputs here, so that this causes them
-    # to be passed over in each of the directions. This means that some passes are _much_ slower than
-    # others as they aren't accessing the memory in the native contiguous order, but it saves us
-    # making a physical copy each time
+    # To get the 8 different directional passes we flip / mirror / transpose the inputs such that iterating in
+    # this standard order is equivalent to going in a different direction over the original values.
+    # In the notebook version of this code, we did this by simply re-striding the inputs here (basically creating
+    # a "view" on the arrays that presents the data from the same memory location in a different order).
+    # This means that some passes are _much_ slower than others as they aren't accessing the memory in the native
+    # contiguous order, but it saves us making a physical copy each time
+    # without copying, passes on a typical global image take approx:
+    # 0: 50s, 1: 50s, 2: 50s, 3: 50s, 4: 7s, 5: 9s,  6: 8s, 7: 8s
+    # In this version, the A2PassData object will actually create concrete copies of the data for iteration which
+    # means that all passes should occur at the same speed, but more memory is needed. There are now enough years
+    # in the MODIS record that the memory use of A1 has increased to the point that A2 is not really the dominant
+    # memory hog any more.
     for passNumber in range(0, 8):
         print ("Running A2 pass "+str(passNumber))
         tDelta = time.time()
         dataPassImage = None
         a2Data = A2PassData(passNumber, dataImageIn, flagsImageIn, distImageIn, meanImageIn, sumDistImage)
-        # without copying, passes take approx:
-        # 0: 50s, 1: 50s, 2: 50s, 3: 50s, 4: 7s, 5: 9s,  6: 8s, 7: 8s
 
         a2diag = a2_core(a2Data, dataConfig=dataConfig, a2Config=a2Config)
         dataPassStack[passNumber] = a2Data.getOutputData()
