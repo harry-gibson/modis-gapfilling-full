@@ -1,0 +1,48 @@
+DataParams:
+    nodata_value: float
+    ceiling_value: float
+    floor_value: float
+    floor_ceiling_zscore: float
+    correction_offset: float
+    absolute_zero: float
+
+Despeckle:
+    spiral:
+        max_nbrs_to_search: 3142
+        min_required_nbrs: 320
+        max_used_nbrs: 640
+    extreme_sd_threshold: 2.58
+    speckle_sd_threshold: 1.64
+    speckle_neighbour_zscore_threshold: 0.2
+
+A1:
+    spiral:
+        max_nbrs_to_search: 3142
+        min_required_nbrs: 320
+        max_used_nbrs: 640
+    use_ratio_fill: False
+    max_allowable_ratio: 0
+    trim_full_outliers: True
+
+A2:
+    spiral:
+        max_nbrs_to_search: 3142
+        min_required_nbrs: 320
+        max_used_nbrs: 640
+    use_ratio_fill: False
+    max_allowable_ratio: 0
+    pass_averaging_method: Mean
+
+Process:
+    clip_min_max: True
+    run_a2: True
+
+Flags:
+    ocean: 1
+    failure: 2
+    extreme: 4
+    speckle: 8
+    a1_filled: 16
+    a1_full: 32
+    a2_filled: 64
+    clipped: 128

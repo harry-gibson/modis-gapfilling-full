@@ -51,8 +51,8 @@ def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
     # this standard order is equivalent to going in a different direction over the original values.
     # In the notebook version of this code, we did this by simply re-striding the inputs here (basically creating
     # a "view" on the arrays that presents the data from the same memory location in a different order).
-    # This means that some passes are _much_ slower than others as they aren't accessing the memory in the native
-    # contiguous order, but it saves us making a physical copy each time
+    # This meant some passes were _much_ slower than others as they weren't accessing the memory in the native
+    # contiguous order, but it saved us making a physical copy each time
     # without copying, passes on a typical global image take approx:
     # 0: 50s, 1: 50s, 2: 50s, 3: 50s, 4: 7s, 5: 9s,  6: 8s, 7: 8s
     # In this version, the A2PassData object will actually create concrete copies of the data for iteration which
@@ -76,8 +76,8 @@ def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
     # process numpyisms on the A2 data stack tile-by-tile because it makes temp arrays,
     # and we probably can't afford that memory
     # create 6 * 6 tiled slices
-    xCorners = np.linspace(0,dataImageIn.shape[1],6).astype(np.int32)
-    yCorners = np.linspace(0,dataImageIn.shape[0],6).astype(np.int32)
+    xCorners = np.linspace(0, dataImageIn.shape[1], 6).astype(np.int32)
+    yCorners = np.linspace(0, dataImageIn.shape[0], 6).astype(np.int32)
     # create an output image for the average (mean or median) result overall
     passAverageImage = np.empty_like(dataImageIn) # or mean, depending on choice
     countVals = np.empty(shape=dataImageIn.shape,dtype='byte')
@@ -106,10 +106,10 @@ def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
     # A2 doesn't modify the flags image, so anywhere that the fill had failed is where it was
     # needed
 
-    a2FillWasNeeded = np.bitwise_and(flagsImageIn,_FILL_FAILED_FLAG)==_FILL_FAILED_FLAG
+    a2FillWasNeeded = np.bitwise_and(flagsImageIn, _FILL_FAILED_FLAG) == _FILL_FAILED_FLAG
     a2FillWasNeededCount = np.count_nonzero(a2FillWasNeeded)
     # we have a value for anywhere that the output isn't _NDV (now np.nan)
-    a2FilledLocs = np.logical_and(a2FillWasNeeded,~np.isnan(passAverageImage))
+    a2FilledLocs = np.logical_and(a2FillWasNeeded, ~np.isnan(passAverageImage))
     a2FilledCount = np.count_nonzero(a2FilledLocs)
 
     # so copy those a2 results into the original data image (overwriting it)
@@ -119,6 +119,6 @@ def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
     # set distance metric to be the total A2 distance divided by the number of A2 passes it was from
     distImageIn[a2FilledLocs] = sumDistImage[a2FilledLocs] / countVals[a2FilledLocs]
 
-    timeSeconds = time.time()-start_time
+    timeSeconds = time.time() - start_time
     # we just return diagnostics, the arrays have been modified in-place
     return A2Diagnostics(GapCellsTotal=a2FillWasNeededCount, GapCellsFilled=a2FilledCount, TimeSeconds=timeSeconds)

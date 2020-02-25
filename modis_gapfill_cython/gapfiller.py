@@ -50,7 +50,7 @@ class GapFiller:
         self._flagValues = flagValues
 
         # initialise input files and index by calendar day and year
-        self._inputFileDict = defaultdict(defaultdict(list))
+        self._inputFileDict = defaultdict(defaultdict(str))
         self.__InitialiseFiles(gapfillFilePaths.DATA_FILES_GLOB_PATTERN)
         self._filePaths = gapfillFilePaths
         self._outTemplate = "FILLED-OUTPUT{}.{}.{}.TemporalSummary.Res.SpatialSummary.tif"
@@ -80,18 +80,23 @@ class GapFiller:
         # calculate slices to run a1
         self._slices = self.CalculateSliceEdges()
 
-    def RunFill(self, onlyForDays=None, onlyForYears=None):
-        days = self._inputFileDict.keys()
-        if onlyForYears is None:
-            onlyForYears = set()
-            for d in self._inputFileDict.keys():
-                onlyForYears.update(self._inputFileDict[d].keys())
-        for calendarDay in days:
+    def RunFill(self, onlyForDays:set=None, startYear:int=None):
+        allDays = self._inputFileDict.keys()
+        if startYear is None:
+            startYear = 0 # just some value smaller than the first year
+        #if onlyForYears is None:
+        #    onlyForYears = set()
+        #    for day in self._inputFileDict.keys():
+        #        onlyForYears.update(self._inputFileDict[day].keys())
+        for calendarDay in allDays:
             if onlyForDays is not None and calendarDay not in onlyForDays:
+                # if we're not filling for this calendar day, we don't need to do anything
                 continue
             for slice in self._slices:
-                self.DespeckleAndA1JobRunner(slice, calendarDay, onlyForYears)
-            self.A2Caller(onlyForYears)
+                # years are slightly more complex as we always need to read the day's data for all years
+                # this populates the self._intermediateFiles dictionary
+                self.DespeckleAndA1SliceRunner(slice, calendarDay, startYear)
+            self.A2BatchRunner(startYear)
 
     def __InitialiseFiles(self, globPattern):
         dayMonths = {1: 1, 9: 1, 17: 1, 25: 1, 33: 2, 41: 2, 49: 2, 57: 2, 65: 3, 73: 3, 81: 3, 89: 3, 97: 4, 105: 4,
@@ -107,12 +112,16 @@ class GapFiller:
 
         for f in allFiles:
             year, calendarday = self.__parseDailyFilename(f)
-            self._inputFileDict[calendarday][year].append(f)
+            self._inputFileDict[calendarday][year] = f
         initialProps = SingleBandTiffFile(allFiles[0])
         self._InputRasterProps = initialProps.GetExistingProperties()
 
     def __parseDailyFilename(self, f):
-        '''Get julian day and year from a filename in old or new MAP MODIS filename formats'''
+        '''Get julian day and year from a filename in old or new MAP MODIS filename formats,
+        and set instance variable _outTemplate to match the non-temporally-varying parts of this
+        input file (or, on subsequent calls, check these are the same as last time).
+        _outTemplate will be set to e.g.
+            LST_Day{}.{}.{}.Data.1km.Data'''
         base = os.path.basename(f)
 
         tokens = base.split('.')
@@ -130,7 +139,8 @@ class GapFiller:
                 assert self._outTemplate == outTemplate
         return day, yr
 
-    def __CalculateSliceSize(self, readShapeZYX, memLimit):
+    @staticmethod
+    def __CalculateSliceSize(readShapeZYX, memLimit):
         '''Calculate the X-size of the slices we can run for the given Y, Z dimensions and mem limit'''
         # readShapeZYX is the dimension of the data we must READ to fill the required output area;
         #  i.e .the fill area plus margins. If we're filling globally it's the same thing.
@@ -209,10 +219,15 @@ class GapFiller:
         bottomDespeckleEdge = np.clip(self.yLims[1] + _TOTAL_DESIRED_MARGIN,
                                       -np.inf, self._InputRasterProps.height).astype(np.int32)
 
-        taskList = list(itertools.product(
+        # create a list of the slices needed for each calendar day, i.e. all the x slices and for each of these,
+        # all the y slices. Each dimension and slice coords are recorded as a 6-tuple which is a member of a list.
+        # As there is only 1 y slice for now, these are a single-item list.
+        # NB in the notebook version we also added the days themselves to the cartesian product for an overall
+        # tasklist, here we are not bothering with that part
+        taskListForEachDay = list(itertools.product(
             x_offsets_overlapping,
             [(topDespeckleEdge, topA1Edge, self.yLims[0], self.yLims[1], bottomA1Edge, bottomDespeckleEdge)]))
-        return taskList
+        return taskListForEachDay
 
 # = "despeckleAndA1Caller" - initial part
     def CalculateAvailableSliceMargins(self, sliceInfo):
@@ -330,8 +345,9 @@ class GapFiller:
         }
 
 # ="despeckleAndA1Caller" except for initial calcs
-    def DespeckleAndA1SliceRunner(self, sliceInfo, calendarDay, firstYearToFill=0):
-        '''Runs despeckle and A1 gapfill across all years for a given calendar day, for the slice specified.
+    def DespeckleAndA1SliceRunner(self, sliceInfo, calendarDay:int, startYear:set):
+        '''Runs despeckle and A1 gapfill across all required years for a given calendar day,
+        for the slice specified.
         Specify a value for firstYearToFill to only fill data from that and subsequent years.'''
 
         margins = self.CalculateAvailableSliceMargins(sliceInfo)
@@ -339,7 +355,9 @@ class GapFiller:
         a1Margins = margins["a1Margins"]
         dataReadWindow = margins["dataReadWindow"]
         dataWriteWindow = margins["dataWriteWindow"]
-
+        if not calendarDay in self._inputFileDict:
+            raise FileNotFoundError("No data files were identified for the requested calendar day ({})"
+                                    .format(calendarDay))
         sliceGT = CalculateClippedGeoTransform(self.OutputProps.gt,
                                                xPixelLims=(dataWriteWindow.Left, dataWriteWindow.Right),
                                                yPixelLims=(dataWriteWindow.Top, dataWriteWindow.Bottom))
@@ -356,116 +374,123 @@ class GapFiller:
         coastReader = SingleBandTiffFile(self._filePaths.COASTLINE_FILE)
         sliceCoastArr , _, _, _ = coastReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
                                               yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
+        yearFileDictThisDay = self._inputFileDict[calendarDay]
+        sortedFiles = [f for (y, f) in sorted(yearFileDictThisDay)]
+        if startYear != 0:
+            try:
+                startFillFromPos = sorted(yearFileDictThisDay.keys()).index(startYear)
+            except ValueError:
+                raise FileNotFoundError("No data files were identified for the requested calendar day and year({}/{})"
+                                        .format(startYear, calendarDay))
+        else:
+            startFillFromPos = 0
 
-        for calendarDay, yearFileDict in self._inputFileDict.items():
-            # inputFileDict is a nested dict of dicts, maps {day : {year : file}}
-            fileList = [file for yr, file in sorted(yearFileDict.items())]
-            if firstYearToFill != 0:
-                startFillFromPos = sorted(yearFileDict.keys()).index(firstYearToFill)
-            else:
-                startFillFromPos = 0
-            # we need to read all data regardless, as the algorithm can still draw on earlier years
-            # to derive fill values
-            dataStack = A1DataStack()
-            dataStack.FillFromZPosition = startFillFromPos
-            dataStack.DataArray3D = np.empty(shape=(len(fileList), sliceDespeckleHeight, sliceDespeckleWidth),
-                                 dtype='Float32')
-            dataStack.FlagsArray3D = np.zeros(shape=(len(fileList), sliceDespeckleHeight, sliceDespeckleWidth),
-                                    dtype=np.uint8)
-            dataStack.MeansArray2D = sliceMeanArr
-            dataStack.SDArray2D = sliceSDArr
-            dataStack.Coastline2D = sliceCoastArr
-            for zPos in range(len(fileList)):
-                f = SingleBandTiffFile(fileList[zPos])
-                dataStack.DataArray3D[zPos], _, _, _ = f.ReadForPixelLims(
-                    xLims=(dataReadWindow.Left, dataReadWindow.Right),
-                    yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
-                assert f.GetNdv() == self._dataSpecificConfig.NODATA_VALUE
-            assert dataStack.DataArray3D.flags.c_contiguous
+        # inputFileDict is a nested dict of dicts, maps {day : {year : file}}
+        # but in this version of the code we are only called for one day at once
+        #fileList = [file for yr, file in sorted(yearFileDict.items())]
+        # we need to read all data regardless, as the algorithm can still draw on earlier years
+        # to derive fill values
+        dataStack = A1DataStack()
+        dataStack.FillFromZPosition = startFillFromPos
+        dataStack.DataArray3D = np.empty(shape=(len(sortedFiles), sliceDespeckleHeight, sliceDespeckleWidth),
+                             dtype='Float32')
+        dataStack.FlagsArray3D = np.zeros(shape=(len(sortedFiles), sliceDespeckleHeight, sliceDespeckleWidth),
+                                dtype=np.uint8)
+        dataStack.MeansArray2D = sliceMeanArr
+        dataStack.SDArray2D = sliceSDArr
+        dataStack.Coastline2D = sliceCoastArr
+        for zPos in range(len(sortedFiles)):
+            f = SingleBandTiffFile(sortedFiles[zPos])
+            dataStack.DataArray3D[zPos], _, _, _ = f.ReadForPixelLims(
+                xLims=(dataReadWindow.Left, dataReadWindow.Right),
+                yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
+            assert f.GetNdv() == self._dataSpecificConfig.NODATA_VALUE
+        assert dataStack.DataArray3D.flags.c_contiguous
 
-            # Run the despeckle
-            # dataStack.DataArray3D and dataStack.FlagsArray3D are modified in place. They will have a different
-            # (smaller) shape as the speckle search margins will be removed.
-            # the returned object is an instance of DespeckleDiagnostics
-            # Note that despeckle runs on the whole stack, not taking account of firstYearToFill, this is
-            # because we don't want extreme values to remain to be usable in deriving fill values
-            despeckleResult = setSpeckleFlags(dataStacks=dataStack, margins=despeckleMargins,
-                                              flagValues=self._flagValues, dataConfig=self._dataSpecificConfig,
-                                              speckleConfig=self._despeckleConfig, nCores=self.nCores)
+        # Run the despeckle
+        # dataStack.DataArray3D and dataStack.FlagsArray3D are modified in place. They will have a different
+        # (smaller) shape as the speckle search margins will be removed.
+        # the returned object is an instance of DespeckleDiagnostics
+        # Note that despeckle runs on the whole stack, not taking account of firstYearToFill, this is
+        # because we don't want extreme values to remain to be usable in deriving fill values
+        despeckleResult = setSpeckleFlags(dataStacks=dataStack, margins=despeckleMargins,
+                                          flagValues=self._flagValues, dataConfig=self._dataSpecificConfig,
+                                          speckleConfig=self._despeckleConfig, nCores=self.nCores)
 
-            # Run A1
-            # dataStack.DataArray3D, dataStack.FlagsArray3D, and dataStack.DistanceTemplate3D are modified in place.
-            # They will have a different (smaller) shape as the A1 search margins will be removed.
-            # The returned object is an instance of A1Diagnostics
-            a1Result = a1_core(dataStacks=dataStack, margins=a1Margins,
-                               flagValues=self._flagValues, dataConfig=self._dataSpecificConfig,
-                               a1Config=self._a1Config,
-                               nCores=self.nCores)
-            # dataStack has been modified in place: DataArray32, FlagsArray3D and DistanceTemplate3D members
-            # now contain the results
+        # Run A1
+        # dataStack.DataArray3D, dataStack.FlagsArray3D, and dataStack.DistanceTemplate3D are modified in place.
+        # They will have a different (smaller) shape as the A1 search margins will be removed.
+        # The returned object is an instance of A1Diagnostics
+        a1Result = a1_core(dataStacks=dataStack, margins=a1Margins,
+                           flagValues=self._flagValues, dataConfig=self._dataSpecificConfig,
+                           a1Config=self._a1Config,
+                           nCores=self.nCores)
+        # dataStack has been modified in place: DataArray32, FlagsArray3D and DistanceTemplate3D members
+        # now contain the results
 
-            if not ((self._dataSpecificConfig.CEILING_VALUE == self._dataSpecificConfig.NODATA_VALUE) and
-                self._dataSpecificConfig.FLOOR_VALUE == self._dataSpecificConfig.NODATA_VALUE):
-                # apply clip if either the floor / ceiling values are set
-                #TODO add the heights
-                sliceMeanArr = np.copy(sliceMeanArr[a1Margins.Top:a1Margins.Top+a1Margins["FILLHEIGHT"],
-                                     a1Margins.Left:a1Margins.Left+a1Margins["FILLWIDTH"]])
-                sliceSDArr = np.copy(sliceSDArr[a1Margins.Top:a1Margins.Top + a1Margins["FILLHEIGHT"],
-                                       a1Margins.Left:a1Margins.Left + a1Margins["FILLWIDTH"]])
-                # TODO set this to respect firstYearToFill
-                MinMaxClip3D(dataStacks=dataStack,
-                             flagToCheck=self._flagValues.A1_FILLED,
-                             flagToSet=self._flagValues.CLIPPED,
-                             dataConfig=self._dataSpecificConfig,
-                             nCores=self.nCores)
+        if not ((self._dataSpecificConfig.CEILING_VALUE == self._dataSpecificConfig.NODATA_VALUE) and
+            self._dataSpecificConfig.FLOOR_VALUE == self._dataSpecificConfig.NODATA_VALUE):
+            # apply clip if either the floor / ceiling values are set
+            #TODO add the heights
+            sliceMeanArr = np.copy(sliceMeanArr[a1Margins.Top:a1Margins.Top+a1Margins["FILLHEIGHT"],
+                                 a1Margins.Left:a1Margins.Left+a1Margins["FILLWIDTH"]])
+            sliceSDArr = np.copy(sliceSDArr[a1Margins.Top:a1Margins.Top + a1Margins["FILLHEIGHT"],
+                                   a1Margins.Left:a1Margins.Left + a1Margins["FILLWIDTH"]])
+            # TODO set this to respect firstYearToFill
+            MinMaxClip3D(dataStacks=dataStack,
+                         flagToCheck=self._flagValues.A1_FILLED,
+                         flagToSet=self._flagValues.CLIPPED,
+                         dataConfig=self._dataSpecificConfig,
+                         nCores=self.nCores)
 
-            #TODO fix this
-            if True: #len(self._slices) > 1:
-                # use intermediate files.
-                # in this code we're not saving separate tile files, we're saving global tiffs and just writing
-                # part of them at once
-                for y in range(len(fileList)):
-                    if y < dataStack.FillFromZPosition:
-                        continue
-                    inputFilename = os.path.basename(fileList[y])
+        #TODO fix this
+        if True: #len(self._slices) > 1:
+            # use intermediate files.
+            # in this code we're not saving separate tile files, we're saving global tiffs and just writing
+            # part of them at once
+            for y in range(len(sortedFiles)):
+                if y < startFillFromPos:
+                    continue
+                inputFilename = os.path.basename(sortedFiles[y])
 
-                    day, yr = self.__parseDailyFilename(dataFile)
-                    outDataFile = self._outTemplate.format("-FilledData", yr, day)
-                    outDistFile = self._outTemplate.format("-FilledDists", yr, day)
-                    outFlagFile = self._outTemplate.format("-FillFlags", yr, day)
+                day, yr = self.__parseDailyFilename(inputFilename)
+                outDataFile = self._outTemplate.format("-A1IntermediateData", yr, day)
+                outDistFile = self._outTemplate.format("-A1IntermediateDists", yr, day)
+                outFlagFile = self._outTemplate.format("-A1IntermediateFlags", yr, day)
 
-                    outNameData = os.path.join(self._filePaths.TEMP_FOLDER, "A1IntermediateData_" + inputFilename)
-                    outNameDist = os.path.join(self._filePaths.TEMP_FOLDER, "A1IntermediateDists_" + inputFilename)
-                    outNameFlag = os.path.join(self._filePaths.TEMP_FOLDER, "A1IntermediateFlags_" + inputFilename)
-                    thisOutFile = SingleBandTiffFile(outNameData)
-                    try:
-                        thisOutFile.SetProperties(self.OutputProps)
-                        self._intermediateFiles[inputFilename]["Data"] = outNameData
-                    except RuntimeError:
-                        pass
-                    thisOutFile.SavePart(np.asarray(dataStack.DataArray3D[y],
-                                                    dataWriteWindow["LEFT"], dataWriteWindow["TOP"]))
-                    thisOutFile = SingleBandTiffFile(outNameDist)
-                    try:
-                        thisOutFile.SetProperties(self.OutputProps)
-                        self._intermediateFiles[inputFilename]["Distances"] = outNameDist
-                    except RuntimeError:
-                        pass
-                    thisOutFile.SavePart(np.asarray(dataStack.DistanceTemplate3D[y],
-                                                    dataWriteWindow["LEFT"], dataWriteWindow["TOP"]))
-                    thisOutFile = SingleBandTiffFile(outNameFlag)
-                    try:
-                        op = self.OutputProps
-                        flagProps = RasterProps(gt=op.gt, proj=op.proj, ndv=None,
-                                                width=op.width, height=op.height, res=op.res,
-                                                datatype=gdal.GDT_BYTE)
-                        thisOutFile.SetProperties(flagProps)
-                        self._intermediateFiles[inputFilename]["Flags"] = outNameFlag
-                    except RuntimeError:
-                        pass
-                    thisOutFile.SavePart(np.asarray(dataStack.FlagsArray3D[y],
-                                                    dataWriteWindow["LEFT"], dataWriteWindow["TOP"]))
-                    thisOutFile = None
+                outNameData = os.path.join(self._filePaths.TEMP_FOLDER, outDataFile)
+                outNameDist = os.path.join(self._filePaths.TEMP_FOLDER, outDistFile)
+                outNameFlag = os.path.join(self._filePaths.TEMP_FOLDER, outFlagFile)
+                thisOutFile = SingleBandTiffFile(outNameData)
+                try:
+                    thisOutFile.SetProperties(self.OutputProps)
+                    self._intermediateFiles[inputFilename]["Data"] = outNameData
+                except RuntimeError:
+                    pass
+                thisOutFile.SavePart(np.asarray(dataStack.DataArray3D[y],
+                                                dataWriteWindow["LEFT"], dataWriteWindow["TOP"]))
+                thisOutFile = SingleBandTiffFile(outNameDist)
+                try:
+                    thisOutFile.SetProperties(self.OutputProps)
+                    self._intermediateFiles[inputFilename]["Distances"] = outNameDist
+                except RuntimeError:
+                    pass
+                thisOutFile.SavePart(np.asarray(dataStack.DistanceTemplate3D[y],
+                                                dataWriteWindow["LEFT"], dataWriteWindow["TOP"]))
+                thisOutFile = SingleBandTiffFile(outNameFlag)
+                try:
+                    op = self.OutputProps
+                    flagProps = RasterProps(gt=op.gt, proj=op.proj, ndv=None,
+                                            width=op.width, height=op.height, res=op.res,
+                                            datatype=gdal.GDT_BYTE)
+                    thisOutFile.SetProperties(flagProps)
+                    self._intermediateFiles[inputFilename]["Flags"] = outNameFlag
+                except RuntimeError:
+                    pass
+                thisOutFile.SavePart(np.asarray(dataStack.FlagsArray3D[y],
+                                                dataWriteWindow["LEFT"], dataWriteWindow["TOP"]))
+                thisOutFile = None
+
 
     def A2BatchRunner(self):
         # cf. a2Caller, but run for a provided filename
@@ -473,13 +498,21 @@ class GapFiller:
         arr_Mean, _, _, _ = SingleBandTiffFile(self._filePaths.SYNOPTIC_MEAN_FILE).ReadAll()
         if self._CACHE_SD:
             arr_SD, _, _, _ = SingleBandTiffFile(self._filePaths.SYNOPTIC_SD_FILE).ReadAll()
-        for inputName, intermediateData in self._intermediateFiles:
-            dataFile = intermediateData["Data"]
-            distsFile = intermediateData["Distances"]
-            flagsFile = intermediateData["Flags"]
-            arr_Data, gt_Data, proj_Data, ndv_Data = SingleBandTiffFile(dataFile).ReadAll()
-            arr_Dists, gt_Dists, proj_Dists, ndv_Dists = SingleBandTiffFile(distsFile).ReadAll()
-            arr_Flags, gt_Flags, proj_Flags, ndv_Flags = SingleBandTiffFile(flagsFile).ReadAll()
+        for inputName, intermediateDataForDate in self._intermediateFiles:
+            dataFile = intermediateDataForDate["Data"]
+            dataReader = SingleBandTiffFile(dataFile)
+            arr_Data, gt_Data, proj_Data, ndv_Data = dataReader.ReadAll()
+            props_Data = dataReader.GetProperties()
+
+            distsFile = intermediateDataForDate["Distances"]
+            distsReader = SingleBandTiffFile(distsFile)
+            arr_Dists, gt_Dists, proj_Dists, ndv_Dists = distsReader.ReadAll()
+            props_Dists = distsReader.GetProperties()
+
+            flagsFile = intermediateDataForDate["Flags"]
+            flagsReader = SingleBandTiffFile(flagsFile)
+            arr_Flags, gt_Flags, proj_Flags, ndv_Flags = flagsReader.ReadAll()
+            props_Flags = flagsReader.GetProperties()
 
             if self.RUN_A2:
                 A2ImageCaller(dataImageIn=arr_Data, flagsImageIn=arr_Flags, distImageIn=arr_Dists, meanImageIn=arr_Mean,
@@ -495,9 +528,21 @@ class GapFiller:
                            upperHardLimit=self._dataSpecificConfig.CEILING_VALUE,
                            lowerHardLimit=self._dataSpecificConfig.FLOOR_VALUE,
                            nCores=self.nCores)
-            day, yr = self.__parseDailyFilename(dataFile)
+            day, yr = self.__parseDailyFilename(inputName)
             outDataFile = self._outTemplate.format("-FilledData", yr, day)
             outDistFile = self._outTemplate.format("-FilledDists", yr, day)
             outFlagFile = self._outTemplate.format("-FillFlags", yr, day)
             dataWriter = SingleBandTiffFile(os.path.join(self._filePaths.OUTPUT_FOLDER, outDataFile))
-            dataWriter.SetProperties(self._O)
+            dataWriter.SetProperties(props_Data)
+            dataWriter.Save(arr_Data)
+            distWriter = SingleBandTiffFile(os.path.join(self._filePaths.OUTPUT_FOLDER, outDistFile))
+            distWriter.SetProperties(props_Dists)
+            distWriter.Save(arr_Dists)
+            flagWriter = SingleBandTiffFile(os.path.join(self._filePaths.OUTPUT_FOLDER, outFlagFile))
+            flagWriter.SetProperties(props_Flags)
+            flagWriter.Save(arr_Flags)
+
+            os.remove(dataFile)
+            os.remove(distsFile)
+            os.remove(flagsFile)
+            self._intermediateFiles.clear()
