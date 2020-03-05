@@ -3,7 +3,7 @@ import numpy as np
 from libc.stdlib cimport abs
 from cython.parallel import prange, parallel
 from libc.math cimport sqrt
-from gapfill_config import FlagItems, DataCharacteristicsConfig, A1SearchConfig, A1Diagnostics
+from gapfill_config_types import FlagItems, DataCharacteristicsConfig, A1SearchConfig, A1Diagnostics
 from gapfill_utils import A1DataStack, PixelMargins
 
 

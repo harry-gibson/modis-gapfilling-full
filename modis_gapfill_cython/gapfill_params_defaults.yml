@@ -1,0 +1,43 @@
+# The despeckle and gapfill algorithms search for neighbour cells in an outward spiral i.e. an
+# increasing search radius until enough neighbours are found for the checks or until the maximum radius is reached.
+# Define the size of the search and the number of neighbours required. For A1 this determines the fill radius i.e.
+# the size of gap that can be filled.
+# All MODIS gapfilling done in MAP since 2014 has used the following parameters which give an effective search
+# radius of approx 31 pixels (i.e. sqrt(3142/pi)) and requires slightly more neighbours for fill than despeckle
+Despeckle:
+    spiral:
+        max_nbrs_to_search: 3142 # Determines the maximum search radius i.e. sqrt(val/pi)
+        min_required_nbrs: 320 # how many neighbours (out of the previous total) must we find to generate output
+        max_used_nbrs: 640 # max number of neighbours to use - search will terminate if we reach this value
+    extreme_sd_threshold: 2.58 # if a value differs by more than this number SDs from mean, discard it
+    speckle_sd_threshold: 1.64 # if a value differs by more than this number SDs from mean, check its neighbours
+    speckle_neighbour_zscore_threshold: 0.2 # if value noted above is more than this number SDs from neighbours, discard it
+
+A1:
+    spiral:
+        max_nbrs_to_search: 3142 # Determines the maximum search radius i.e. sqrt(val/pi), the largest fillable gap
+        min_required_nbrs: 480 # how many neighbours (out of the previous total) must we find to generate output
+        max_used_nbrs: 960 # max number of neighbours to use - search will terminate if we reach this value
+    use_ratio_fill: False # compare neighbour values to local by their ratio rather than difference? Recommend False!
+    max_allowable_ratio: 0 # sanity check value if using ratio fill: in case neighbour is close to zero
+    trim_full_outliers: True # Discard the contribution of the most extreme neighbours in spiral search?
+
+A2:
+    spiral:
+        max_nbrs_to_search: 8 # A2 is intended to inspect immediate neigbours only but can change this here
+        min_required_nbrs: 1 # See comment on A1
+        max_used_nbrs: 8 # See comment on A1
+    use_ratio_fill: False # See comment on A1
+    max_allowable_ratio: 0 # See comment on A1
+    pass_averaging_method: Mean # Mean/Median: how to pick from the 8 directional pass fill values. Mean is more efficient.
+
+Flags: # Flags are stored in a bitmask so must be powers of two. Do not adjust without careful thought
+    ocean: 1
+    failure: 2
+    extreme: 4
+    speckle: 8
+    a1_filled: 16
+    a1_full: 32
+    a2_filled: 64
+    clipped: 128
+

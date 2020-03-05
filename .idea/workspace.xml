@@ -1,180 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c63e01a0-e87b-4af8-8c5d-f7711f2a05e1" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/modis_gapfill_cython/data_defaults.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_config.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modis_gapfill_cython/run_gapfill.py" afterDir="false" />
+    <list default="true" id="25a570f8-1e0e-467f-92ac-53e8035bc2b4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_run_config_sample_master.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modis-gapfilling.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modis-gapfilling.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Gapfill_BySlice_Cython_v04.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Gapfill_BySlice_Cython_v04.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_prep_a2.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_prep_a2.pyx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/data_defaults.yml" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/MAP_limits_defaults.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_config.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_config_types.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_params_defaults.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_a1.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_a1.pyx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_defaults.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_defaults.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/run_gapfill.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/run_gapfill.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/modis_gapfilling$gapfill_core_a1_pyx.coverage" NAME="gapfill_core_a1.pyx Coverage Results" MODIFIED="1530637084791" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/modis_gapfill_cython" />
-  </component>
-  <component name="CreatePatchCommitExecutor">
-    <option name="PATCH_PATH" value="" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Python Script" />
-      </list>
-    </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>Save</find>
-      <find>CalculateSearchSlices</find>
-      <find>inputFlags</find>
-      <find>nbrDistSum</find>
-      <find>output</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="JupyterTrust" id="e58836ab-82f8-469c-9f91-976c2377eda1" />
-  <component name="ProjectId" id="1XnZE4DI39VgCCBzdNTjEMz1aYN" />
+  <component name="JupyterTrust" id="57f048a9-348b-42d2-95a1-8b5d32237971" />
+  <component name="ProjectId" id="1YaAn1w79VIHak6haJRWt3PoDA4" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
-    <property name="js.eslint.eslintPackage" value="" />
-    <property name="last_opened_file_path" value="C:/OSGeo4W64/bin/python.exe" />
+    <property name="last_opened_file_path" value="$USER_HOME$/AppData/Local/anaconda3/_conda.exe" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="nodejs_interpreter_path" value="C:/Program Files/nodejs/node" />
-    <property name="settings.editor.selected.configurable" value="preferences.externalDependencies" />
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="tests" factoryName="Attests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="modis-gapfilling" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
-      <module name="modis-gapfilling" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="ADDITIONAL_ARGS" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <module name="modis-gapfilling" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="true" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="gapfill_core_a1.pyx" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="modis-gapfilling" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/modis_gapfill_cython" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_a1.pyx" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="js.build_tools.gulp">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <gulpfile />
-      <tasks />
-      <arguments />
-      <envs />
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.gapfill_core_a1.pyx" />
-      </list>
-    </recent_temporary>
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c63e01a0-e87b-4af8-8c5d-f7711f2a05e1" name="Default" comment="" />
-      <created>1484584798755</created>
+      <changelist id="25a570f8-1e0e-467f-92ac-53e8035bc2b4" name="Default Changelist" comment="" />
+      <created>1583170496774</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1484584798755</updated>
-      <workItem from="1581683704902" duration="1572000" />
-      <workItem from="1581690301551" duration="12083000" />
-      <workItem from="1582023887474" duration="4395000" />
-      <workItem from="1582280847761" duration="2873000" />
-      <workItem from="1582627137375" duration="19466000" />
+      <updated>1583170496774</updated>
+      <workItem from="1583170501455" duration="659000" />
+      <workItem from="1583404652303" duration="20609000" />
     </task>
     <servers />
   </component>
@@ -182,63 +66,25 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="739" y="354" key="FileChooserDialogImpl" timestamp="1581691765136">
+    <state x="1269" y="413" key="FileChooserDialogImpl" timestamp="1583404965620">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="739" y="354" key="FileChooserDialogImpl/0.0.1920.1160/1920.0.1920.1200@0.0.1920.1160" timestamp="1581691765136" />
-    <state x="461" y="211" key="SettingsEditor" timestamp="1581691838997">
+    <state x="1269" y="413" key="FileChooserDialogImpl/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583404965620" />
+    <state x="461" y="222" key="SettingsEditor" timestamp="1583404995578">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="461" y="211" key="SettingsEditor/0.0.1920.1160/1920.0.1920.1200@0.0.1920.1160" timestamp="1581691838997" />
-    <state x="2575" y="422" key="com.intellij.ide.util.TipDialog" timestamp="1582627147566">
-      <screen x="1920" y="0" width="1920" height="1200" />
-    </state>
-    <state x="2575" y="422" key="com.intellij.ide.util.TipDialog/0.0.1920.1160/1920.0.1920.1200@0.0.1920.1160" timestamp="1582627147566" />
-    <state x="2257" y="0" width="1114" height="1135" key="dock-window-1" timestamp="1582647454645">
-      <screen x="1920" y="0" width="1920" height="1200" />
-    </state>
-    <state x="2257" y="0" width="1114" height="1135" key="dock-window-1/0.0.1920.1160/1920.0.1920.1200@0.0.1920.1160" timestamp="1582647454645" />
-    <state x="984" y="0" width="931" height="1036" key="dock-window-2" timestamp="1581695612157">
+    <state x="461" y="222" key="SettingsEditor/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583404995578" />
+    <state x="656" y="404" key="com.intellij.ide.util.TipDialog" timestamp="1583404745118">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="984" y="0" width="931" height="1036" key="dock-window-2/0.0.1920.1160/1920.0.1920.1200@0.0.1920.1160" timestamp="1581695612157" />
-    <state x="1972" y="0" width="931" height="1036" key="dock-window-3" timestamp="1581696061217">
-      <screen x="1920" y="0" width="1920" height="1200" />
+    <state x="656" y="404" key="com.intellij.ide.util.TipDialog/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583404745118" />
+    <state x="1920" y="0" width="1553" height="1147" key="dock-window-1" timestamp="1583405281715">
+      <screen x="1920" y="0" width="1920" height="1160" />
     </state>
-    <state x="1972" y="0" width="931" height="1036" key="dock-window-3/0.0.1920.1160/1920.0.1920.1200@0.0.1920.1160" timestamp="1581696061217" />
-    <state x="153" y="0" width="931" height="1036" key="dock-window-4" timestamp="1581937781215">
-      <screen x="0" y="0" width="1920" height="1160" />
+    <state x="1920" y="0" width="1553" height="1147" key="dock-window-1/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583405281715" />
+    <state x="2359" y="255" width="672" height="678" key="search.everywhere.popup" timestamp="1583406414964">
+      <screen x="1920" y="0" width="1920" height="1160" />
     </state>
-    <state x="2073" y="0" width="931" height="1036" key="dock-window-4/0.0.1920.1160/1920.0.1920.1200@0.0.1920.1160" timestamp="1581696829755" />
-    <state x="153" y="0" width="931" height="1036" key="dock-window-4/0.0.1920.1160@0.0.1920.1160" timestamp="1581937781215" />
-    <state x="601" y="295" width="700" height="530" key="recent.locations.popup" timestamp="1582641564714">
-      <screen x="0" y="0" width="1920" height="1160" />
-    </state>
-    <state x="601" y="295" width="700" height="530" key="recent.locations.popup/0.0.1920.1160/1920.0.1920.1200@0.0.1920.1160" timestamp="1582641564714" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py</url>
-          <line>232</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py</url>
-          <line>35</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py</url>
-          <line>33</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="cython-line">
-          <url>file://$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_clamp.pyx</url>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <state x="2359" y="255" width="672" height="678" key="search.everywhere.popup/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583406414964" />
   </component>
 </project>
