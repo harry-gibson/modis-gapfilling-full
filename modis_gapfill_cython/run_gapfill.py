@@ -1,22 +1,26 @@
-from gapfiller import Gapfiller
+from gapfiller import GapFiller
 
-from gapfill_defaults import DefaultFlagValues, DefaultDespeckleConfig, \
-    DefaultA1Config, DefaultA2Config, \
-    DefaultDataConfig_LST, DefaultDataConfig_EVI, DefaultDataConfig_TCB, DefaultDataConfig_TCW
+from gapfill_config_types import GapfillFilePaths, GapfillJobConfig, DataLimitsConfig, \
+    DespeckleConfig, A1SearchConfig, A2SearchConfig, FlagItems
 
-from modis_gapfill_cython.gapfill_config_types import GapfillFilePaths, DataSpecificConfig, GapfillJobConfig
 import argparse
 import os, sys
 import ruamel.yaml
 
 
-def main():
-    gapfiller = Gapfiller(gapfillFilePaths="",
-                          despeckleConfig=None, a1Config=None, a2Config=None,
-                          dataSpecificConfig=None, flagValues=None,
-                          fillForLatLims=None, fillForLonLims=None
+def main(gapfillFilePaths: GapfillFilePaths,
+         despeckleConfig: DespeckleConfig,
+         a1Config: A1SearchConfig,
+         a2Config: A2SearchConfig,
+         dataSpecificConfig: DataLimitsConfig,
+         flagValues: FlagItems,
+         jobDetails: GapfillJobConfig):
+    gapfiller = GapFiller(gapfillFilePaths=gapfillFilePaths,
+                          despeckleConfig=despeckleConfig, a1Config=a1Config, a2Config=a2Config,
+                          dataSpecificConfig=dataSpecificConfig, flagValues=flagValues,
+                          jobDetails=jobDetails
                           )
-    gapfiller.RunFill(onlyForDays=None, startYear=None)
+    gapfiller.RunFill()
 
 
 def is_valid_file(parser, arg):
@@ -33,6 +37,25 @@ def is_valid_directory(parser, arg):
     else:
         parser.error("The directory %s does not exist!" % arg)
         return False
+
+
+def try_load_default_limits(filePaths: GapfillFilePaths):
+    aFileName = filePaths.DATA_FILES_GLOB_PATTERN
+    basename = os.path.basename(aFileName)
+    start = (basename[0:3]).upper()
+    defaultYamlLimitsFile = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                             'MAP_limits_defaults.yml')
+    yamlParser = ruamel.yaml.YAML()
+    with open(defaultYamlLimitsFile) as stream:
+        allDefaultLimits = yamlParser.load(stream)
+    if start in allDefaultLimits:
+        print("Found default limit configuration for variable {} based on filename pattern {}".format(
+            start, aFileName))
+        return {'DataLimitParams': allDefaultLimits[start]}
+    else:
+        raise KeyError("No default limit configuration found for variable {} (based on filename pattern {})".format(
+            start, aFileName
+        ))
 
 
 if __name__ == "__main__":
@@ -86,6 +109,7 @@ if __name__ == "__main__":
         raise RuntimeError("Default parameters file not found!")
     with open(defaultYamlParamsFile) as stream:
         defaultParams = yamlParser.load(stream)
+
     if fillParamsYml is None:
         runParams = defaultParams
     elif fillParamsYml == 'SAMPLE':
@@ -100,55 +124,53 @@ if __name__ == "__main__":
 
     if not canRun:
         sys.exit(1)
+    try:
+        filePaths = GapfillFilePaths.from_yaml_config(runConfig)
+    except KeyError:
+        raise ValueError("Could not parse file paths from yaml config")
+    try:
+        dataLimits = DataLimitsConfig.from_yaml_config(runConfig)
+    except KeyError:
+        yamlishBlock = try_load_default_limits(filePaths)
+        dataLimits = DataLimitsConfig.from_yaml_config(yamlishBlock)
+    try:
+        jobConfig = GapfillJobConfig.from_yaml_config(runConfig)
+    except KeyError:
+        raise ValueError("Could not parse job request from yaml config")
+    try:
+        despeckleConfig = DespeckleConfig.from_yaml_config(runParams)
+    except KeyError:
+        try:
+            print("Loading default despeckle config as none was specified")
+            despeckleConfig = DespeckleConfig.from_yaml_config(defaultParams)
+        except KeyError:
+            raise ValueError("Could not parse despeckle configuration from default yaml config")
+    try:
+        a1Config = A1SearchConfig.from_yaml_config(runParams)
+    except KeyError:
+        try:
+            print("Loading default A1 config as none was specified")
+            a1Config = A1SearchConfig.from_yaml_config(defaultParams)
+        except:
+            raise ValueError("Could not parse A1 configuration from default yaml config")
+    try:
+        a2Config = A2SearchConfig.from_yaml_config(runParams)
+    except KeyError:
+        if jobConfig.RunA2:
+            try:
+                print("Loading default A2 config as none was specified")
+                a2Config = A2SearchConfig.from_yaml_config(defaultParams)
+            except:
+                raise ValueError("A2 fill was requested but could not parse A2 configuration from default yaml config")
+    try:
+        flagItems = FlagItems.from_yaml_config(runParams)
+    except KeyError:
+        try:
+            print("Loading default flag values")
+            flagItems = FlagItems.from_yaml_config(defaultParams)
+        except:
+            raise ValueError("Could not parse flag values from default yaml config")
 
-def parseFilePathsConfig(runConfig):
-    """ essentially maps the orderedDict from yaml parsing into the namedtuple we want to use.
-
-    Yes, we could just use orderedDict throughout but i prefer the security of the class-like namedtuple.
-    Returns GapfillFilePaths namedtuple object."""
-    fP = runConfig['FilePaths']
-    filePathsParsed = GapfillFilePaths(
-        DATA_FILES_GLOB_PATTERN=fP['UnfilledFilesGlobPattern'],
-        SYNOPTIC_MEAN_FILE=fP['UnfilledSynopticMean'],
-        SYNOPTIC_SD_FILE=fP['UnfilledSynopticSD'],
-        COASTLINE_FILE=fP['CoastlineTemplate'],
-        OUTPUT_FOLDER=fP['OutputFolder'],
-        TEMP_FOLDER=fP['TemporaryFolder'])
-    return filePathsParsed
-
-def parseDataLimitsConfig(runConfig):
-    """ essentially maps the orderedDict from yaml parsing into the namedtuple we want to use.
-
-    Yes, we could just use orderedDict throughout but i prefer the security of the class-like namedtuple.
-    Returns DataSpecificConfig namedtuple object."""
-    dP = runConfig['DataLimitParams']
-    dataLimitsParsed = DataSpecificConfig(
-        CEILING_VALUE=dP['ceiling_value'],
-        FLOOR_VALUE=dP['floor_value'],
-        FLOOR_CEILING_ZSCORE=dP['floor_ceiling_zscore'],
-        CORRECTION_OFFSET=dP['correction_offset'],
-        NODATA_VALUE=None, # not implementing this at present: read from files
-        ABSOLUTE_ZERO_OFFSET=dP['absolute_zero_for_ratio']
-    )
-    return dataLimitsParsed
-
-
-def parseJobConfig(runConfig):
-    """ essentially maps the orderedDict from yaml parsing into the namedtuple we want to use.
-
-    Yes, we could just use orderedDict throughout but i prefer the security of the class-like namedtuple.
-    Returns GapfillJobConfig namedtuple object."""
-    jC = runConfig['FillJob']
-    jobConfigParsed = GapfillJobConfig(
-        XMin=jC['XMin'],
-        XMax=jC['XMax'],
-        YMin=jC['YMin'],
-        YMax=jC['YMax'],
-        CalendarDaysToFill=jC['CalendarDaysToFill'],
-        StartYear=jC['StartYear'],
-        ClipMinMax=jC['ClipMinMax'],
-        RunA2=jC['RunA2']
-    )
-    return jobConfigParsed
-
-def
+    main(gapfillFilePaths=filePaths, despeckleConfig=despeckleConfig, a1Config=a1Config,
+         a2Config=a2Config, dataSpecificConfig=dataLimits, flagValues=flagItems,
+         jobDetails=jobConfig)

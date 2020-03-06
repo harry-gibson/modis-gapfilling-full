@@ -1,18 +1,18 @@
 # hack in the path to map raster utilities for I/O
 import sys
-sys.path.insert(0, r'C:\Users\zool1301.NDPH\Documents\Code_General\MAP-raster-utilities')
+
+sys.path.insert(0, r'E:\Data\Harry\Documents\Git\MAP-raster-utilities')
 # standard python libraries
 import os
 import math
 import numpy as np
 import itertools
 import glob
-import datetime.date
 from collections import defaultdict
 # io management functions
 from raster_utilities.utils.geotransform_calcs import CalculatePixelLims, CalculateClippedGeoTransform
 from raster_utilities.io.TiffFile import SingleBandTiffFile, RasterProps
-#from raster_utilities.tileProcessor import tileProcessor
+# from raster_utilities.tileProcessor import tileProcessor
 
 # cython functions
 from gapfill_core_despeckle_and_flag import setSpeckleFlags
@@ -20,34 +20,37 @@ from gapfill_core_a1 import a1_core
 from gapfill_core_clamp import MinMaxClip3D, MinMaxClip
 from gapfill_prep_a2 import A2ImageCaller
 
-#from gapfill_config import A1SearchConfig, A2SearchConfig, SpeckleSelectionConfig, DataCharacteristicsConfig, FlagItems
-from gapfill_config import GapfillFilePaths, A1SearchConfig, A2SearchConfig, \
-    DataCharacteristicsConfig, DespeckleConfig, FlagItems
+# configuration types (NamedTuples with yaml-parsing factory methods)
+from modis_gapfill_cython.gapfill_config_types import GapfillFilePaths, GapfillJobConfig, DataLimitsConfig, \
+    DespeckleConfig, A1SearchConfig, A2SearchConfig, FlagItems
 
 from gapfill_utils import PixelMargins, A1DataStack, A2PassData
 
 
-from gapfill_defaults import DefaultFlagValues, DefaultDespeckleConfig, \
-    DefaultA1Config, DefaultA2Config, \
-    DefaultDataConfig_LST, DefaultDataConfig_EVI, DefaultDataConfig_TCB, DefaultDataConfig_TCW
-
 class GapFiller:
-    def __init__(self, gapfillFilePaths, despeckleconfig, a1Config, a2Config, dataSpecificConfig,
-                 flagValues, fillForLatLims=None, fillForLonLims=None, memLimit=70e9):
-
+    def __init__(self, gapfillFilePaths: GapfillFilePaths,
+                 despeckleconfig: DespeckleConfig,
+                 a1Config: A1SearchConfig,
+                 a2Config: A2SearchConfig,
+                 dataSpecificConfig: DataLimitsConfig,
+                 flagValues: FlagItems,
+                 jobDetails: GapfillJobConfig
+                 ):
         self.nCores = 20
 
         assert isinstance(gapfillFilePaths, GapfillFilePaths)
         assert isinstance(despeckleconfig, DespeckleConfig)
         assert isinstance(a1Config, A1SearchConfig)
         assert isinstance(a2Config, A2SearchConfig)
-        assert isinstance(dataSpecificConfig, DataCharacteristicsConfig)
+        assert isinstance(dataSpecificConfig, DataLimitsConfig)
         assert isinstance(flagValues, FlagItems)
+        assert isinstance(jobDetails, GapfillJobConfig)
         self._despeckleConfig = despeckleconfig
         self._a1Config = a1Config
         self._a2Config = a2Config
         self._dataSpecificConfig = dataSpecificConfig
         self._flagValues = flagValues
+        self._jobDetails = jobDetails
 
         # initialise input files and index by calendar day and year
         self._inputFileDict = defaultdict(defaultdict(str))
@@ -57,16 +60,16 @@ class GapFiller:
         self._intermediateFiles = defaultdict(dict)
 
         # initialise limits of fill area in pixel coords of the input files
-        self._latLims = fillForLatLims
-        self._lonLims = fillForLonLims
+        _latLims = (jobDetails.XMax_Deg, jobDetails.XMin_Deg)
+        _lonLims = (jobDetails.YMin_Deg, jobDetails.YMax_Deg)
 
-        if fillForLatLims is None and fillForLonLims is None:
+        if None in _latLims and None in _lonLims:
             self.OutputProps = self.InputRasterProps
             self.xLims = (0, self.InputRasterProps.width)
             self.yLims = (0, self.InputRasterProps.height)
 
         else:
-            self.xLims, self.yLims = CalculatePixelLims(self.InputRasterProps.gt, fillForLonLims, fillForLatLims)
+            self.xLims, self.yLims = CalculatePixelLims(self.InputRasterProps.gt, _lonLims, _latLims)
             outGT = CalculateClippedGeoTransform(self.InputRasterProps.gt, self.xLims, self.yLims)
             outW = self.xLims[1] - self.xLims[0]
             outH = self.yLims[1] - self.yLims[0]
@@ -80,14 +83,12 @@ class GapFiller:
         # calculate slices to run a1
         self._slices = self.CalculateSliceEdges()
 
-    def RunFill(self, onlyForDays:set=None, startYear:int=None):
+    def RunFill(self):
         allDays = self._inputFileDict.keys()
+        startYear = self._jobDetails.StartYear
         if startYear is None:
-            startYear = 0 # just some value smaller than the first year
-        #if onlyForYears is None:
-        #    onlyForYears = set()
-        #    for day in self._inputFileDict.keys():
-        #        onlyForYears.update(self._inputFileDict[day].keys())
+            startYear = 0  # just some value smaller than the first year
+        onlyForDays = self._jobDetails.CalendarDaysToFill
         for calendarDay in allDays:
             if onlyForDays is not None and calendarDay not in onlyForDays:
                 # if we're not filling for this calendar day, we don't need to do anything
@@ -125,7 +126,7 @@ class GapFiller:
         base = os.path.basename(f)
 
         tokens = base.split('.')
-        if len(tokens)<6:
+        if len(tokens) < 6:
             # assume it's an old file in the format A2000089etcetc.tif i.e. ?YYYYDDD*
             yr = base[1:5]
             day = base[5:8]
@@ -145,7 +146,7 @@ class GapFiller:
         # readShapeZYX is the dimension of the data we must READ to fill the required output area;
         #  i.e .the fill area plus margins. If we're filling globally it's the same thing.
         dataBPP = 4
-        outputsBPP = dataBPP * 2 + 1 # the output data, distances, and flags
+        outputsBPP = dataBPP * 2 + 1  # the output data, distances, and flags
         # approximate total number of pixels we can read for each file
         sliceSqrd = memLimit / (readShapeZYX[0] * (dataBPP + outputsBPP))
         # not implementing slicing in y dimension so xSize is total pixels / total height
@@ -153,7 +154,7 @@ class GapFiller:
         return sliceXSize
 
     def CalculateSliceEdges(self, fillShapeZYX, memLimit):
-        '''
+        """
         Generate the slice boundaries, slicing only in the x dimension
         (we are using full data in y dimension for now, though this doesn't have to be so)
         The slice boundaries overlap by 2* _SEARCH_RADIUS pixels (_SEARCH_RADIUS on each slice)
@@ -165,10 +166,10 @@ class GapFiller:
         relative to the input data files, of:
         (W/N edge of despeckle data, W/N edge of A1 data, W/N edge of A1 Output,
         E/S edge of A1 Output, E/S edge of A1 data, E/S edge of Despeckle data)
-        '''
+        """
         # always round up as there's no harm done in passing slightly too much data
-        _A1_SEARCH_RADIUS = int(math.sqrt(self._a1Config.SPIRAL.MAX_NBRS_TO_SEARCH / 3.14) + 1)
-        _DESPECKLE_SEARCH_RADIUS = int(math.sqrt(self._despeckleConfig.SPIRAL.MAX_NBRS_TO_SEARCH / 3.14) + 1)
+        _A1_SEARCH_RADIUS = int(math.sqrt(self._a1Config.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH / 3.14) + 1)
+        _DESPECKLE_SEARCH_RADIUS = int(math.sqrt(self._despeckleConfig.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH / 3.14) + 1)
         _TOTAL_DESIRED_MARGIN = _A1_SEARCH_RADIUS + _DESPECKLE_SEARCH_RADIUS
 
         reqDataL = max(0, self.xLims[0] - _TOTAL_DESIRED_MARGIN)
@@ -229,14 +230,14 @@ class GapFiller:
             [(topDespeckleEdge, topA1Edge, self.yLims[0], self.yLims[1], bottomA1Edge, bottomDespeckleEdge)]))
         return taskListForEachDay
 
-# = "despeckleAndA1Caller" - initial part
+    # = "despeckleAndA1Caller" - initial part
     def CalculateAvailableSliceMargins(self, sliceInfo):
-        '''Calculates the windows to read from the input, and to write to the output, for a given slice
+        """Calculates the windows to read from the input, and to write to the output, for a given slice
         These are not the same thing, because to fill a given output area needs a double (concentric) margin around it
         from which to draw despeckle and then fill neighbour values.
         But these margins can't be achieved at the edge of the images. So we need to read what we can, then tell
         the despeckle and fill algorithms what margins to actually use on each side of the array, the final output
-        after despeckle and fill will be without margins and will be the piece we actually write to the output.'''
+        after despeckle and fill will be without margins and will be the piece we actually write to the output."""
 
         # Warning headfuck ensues with regard to which data has which margins!...:
         #
@@ -344,11 +345,11 @@ class GapFiller:
             "dataWriteWindow": dataWriteWindow
         }
 
-# ="despeckleAndA1Caller" except for initial calcs
-    def DespeckleAndA1SliceRunner(self, sliceInfo, calendarDay:int, startYear:set):
-        '''Runs despeckle and A1 gapfill across all required years for a given calendar day,
+    # ="despeckleAndA1Caller" except for initial calcs
+    def DespeckleAndA1SliceRunner(self, sliceInfo, calendarDay: int, startYear: set):
+        """Runs despeckle and A1 gapfill across all required years for a given calendar day,
         for the slice specified.
-        Specify a value for firstYearToFill to only fill data from that and subsequent years.'''
+        Specify a value for firstYearToFill to only fill data from that and subsequent years."""
 
         margins = self.CalculateAvailableSliceMargins(sliceInfo)
         despeckleMargins = margins["despeckleMargins"]
@@ -365,15 +366,15 @@ class GapFiller:
         sliceDespeckleWidth = dataReadWindow.Right - dataReadWindow.Left
 
         meanReader = SingleBandTiffFile(self._filePaths.SYNOPTIC_MEAN_FILE)
-        sliceMeanArr , _, _, _ = meanReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
-                                              yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
+        sliceMeanArr, _, _, _ = meanReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
+                                                            yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
         sdReader = SingleBandTiffFile(self._filePaths.SYNOPTIC_SD_FILE)
-        sliceSDArr , _, _, _ = sdReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
-                                              yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
+        sliceSDArr, _, _, _ = sdReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
+                                                        yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
 
         coastReader = SingleBandTiffFile(self._filePaths.COASTLINE_FILE)
-        sliceCoastArr , _, _, _ = coastReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
-                                              yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
+        sliceCoastArr, _, _, _ = coastReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
+                                                              yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
         yearFileDictThisDay = self._inputFileDict[calendarDay]
         sortedFiles = [f for (y, f) in sorted(yearFileDictThisDay)]
         if startYear != 0:
@@ -387,15 +388,15 @@ class GapFiller:
 
         # inputFileDict is a nested dict of dicts, maps {day : {year : file}}
         # but in this version of the code we are only called for one day at once
-        #fileList = [file for yr, file in sorted(yearFileDict.items())]
+        # fileList = [file for yr, file in sorted(yearFileDict.items())]
         # we need to read all data regardless, as the algorithm can still draw on earlier years
         # to derive fill values
         dataStack = A1DataStack()
         dataStack.FillFromZPosition = startFillFromPos
         dataStack.DataArray3D = np.empty(shape=(len(sortedFiles), sliceDespeckleHeight, sliceDespeckleWidth),
-                             dtype='Float32')
+                                         dtype='Float32')
         dataStack.FlagsArray3D = np.zeros(shape=(len(sortedFiles), sliceDespeckleHeight, sliceDespeckleWidth),
-                                dtype=np.uint8)
+                                          dtype=np.uint8)
         dataStack.MeansArray2D = sliceMeanArr
         dataStack.SDArray2D = sliceSDArr
         dataStack.Coastline2D = sliceCoastArr
@@ -429,13 +430,13 @@ class GapFiller:
         # now contain the results
 
         if not ((self._dataSpecificConfig.CEILING_VALUE == self._dataSpecificConfig.NODATA_VALUE) and
-            self._dataSpecificConfig.FLOOR_VALUE == self._dataSpecificConfig.NODATA_VALUE):
+                self._dataSpecificConfig.FLOOR_VALUE == self._dataSpecificConfig.NODATA_VALUE):
             # apply clip if either the floor / ceiling values are set
-            #TODO add the heights
-            sliceMeanArr = np.copy(sliceMeanArr[a1Margins.Top:a1Margins.Top+a1Margins["FILLHEIGHT"],
-                                 a1Margins.Left:a1Margins.Left+a1Margins["FILLWIDTH"]])
-            sliceSDArr = np.copy(sliceSDArr[a1Margins.Top:a1Margins.Top + a1Margins["FILLHEIGHT"],
+            # TODO add the heights
+            sliceMeanArr = np.copy(sliceMeanArr[a1Margins.Top:a1Margins.Top + a1Margins["FILLHEIGHT"],
                                    a1Margins.Left:a1Margins.Left + a1Margins["FILLWIDTH"]])
+            sliceSDArr = np.copy(sliceSDArr[a1Margins.Top:a1Margins.Top + a1Margins["FILLHEIGHT"],
+                                 a1Margins.Left:a1Margins.Left + a1Margins["FILLWIDTH"]])
             # TODO set this to respect firstYearToFill
             MinMaxClip3D(dataStacks=dataStack,
                          flagToCheck=self._flagValues.A1_FILLED,
@@ -443,8 +444,8 @@ class GapFiller:
                          dataConfig=self._dataSpecificConfig,
                          nCores=self.nCores)
 
-        #TODO fix this
-        if True: #len(self._slices) > 1:
+        # TODO fix this
+        if True:  # len(self._slices) > 1:
             # use intermediate files.
             # in this code we're not saving separate tile files, we're saving global tiffs and just writing
             # part of them at once
@@ -491,7 +492,6 @@ class GapFiller:
                                                 dataWriteWindow["LEFT"], dataWriteWindow["TOP"]))
                 thisOutFile = None
 
-
     def A2BatchRunner(self):
         # cf. a2Caller, but run for a provided filename
 
@@ -514,12 +514,13 @@ class GapFiller:
             arr_Flags, gt_Flags, proj_Flags, ndv_Flags = flagsReader.ReadAll()
             props_Flags = flagsReader.GetProperties()
 
-            if self.RUN_A2:
+            if self._jobDetails.RunA2:
                 A2ImageCaller(dataImageIn=arr_Data, flagsImageIn=arr_Flags, distImageIn=arr_Dists, meanImageIn=arr_Mean,
-                          a2Config=self._a2Config, flagValues=self._flagValues,
-                          dataConfig=self._dataSpecificConfig)
-            if self.APPLY_CLIP:
-                if not self._CACHE_SD:
+                              a2Config=self._a2Config, flagValues=self._flagValues,
+                              dataConfig=self._dataSpecificConfig)
+            if self._jobDetails.ClipMinMax:
+                #if not self._CACHE_SD: # TODO add this
+                if True:
                     arr_SD, _, _, _ = SingleBandTiffFile(self._filePaths.SYNOPTIC_SD_FILE).ReadAll()
                 MinMaxClip(dataImage=arr_Data, flagsImage=arr_Flags, meansImage=arr_Mean, stdImage=arr_SD,
                            flagToCheck=self._flagValues.A2_FILLED, flagToSet=self._flagValues.CLIPPED,

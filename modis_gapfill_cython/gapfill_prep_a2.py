@@ -6,11 +6,11 @@ cimport cython
 
 from gapfill_core_a2 import a2_core
 from gapfill_utils import A2PassData
-from gapfill_config import A2SearchConfig, FlagItems, DataCharacteristicsConfig, A2Diagnostics
+from gapfill_config_types import A2SearchConfig, FlagItems, DataLimitsConfig, A2Diagnostics
 
 
 def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
-             A2SearchConfig a2Config, FlagItems flagValues, DataCharacteristicsConfig dataConfig):
+             A2SearchConfig a2Config, FlagItems flagValues, DataLimitsConfig dataConfig):
     '''Runs the 8 directional passes of A2 for a single image and generates the output from the mean or median.
 
     The input parameters are modified in place and will end up as the filled arrays ready for writing'''
@@ -42,7 +42,7 @@ def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
     global _NDV
 
     # we're not tinkering with this one, A2 will always run with 8 neighbours
-    _A2_MAX_NBRS = a2Config.SPIRAL.MAX_NBRS_TO_SEARCH
+    _A2_MAX_NBRS = a2Config.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH
     _FILL_FAILED_FLAG = flagValues.FAILURE
     _A2_SUCCESS_FLAG = flagValues.A2_FILLED
 
