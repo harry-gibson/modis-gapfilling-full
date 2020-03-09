@@ -15,16 +15,16 @@ from raster_utilities.io.TiffFile import SingleBandTiffFile, RasterProps
 # from raster_utilities.tileProcessor import tileProcessor
 
 # cython functions
-from gapfill_core_despeckle_and_flag import setSpeckleFlags
-from gapfill_core_a1 import a1_core
-from gapfill_core_clamp import MinMaxClip3D, MinMaxClip
-from gapfill_prep_a2 import A2ImageCaller
+from .gapfill_core_despeckle_and_flag import setSpeckleFlags
+from .gapfill_core_a1 import a1_core
+from .gapfill_core_clamp import MinMaxClip3D, MinMaxClip
+from .gapfill_prep_a2 import A2ImageCaller
 
 # configuration types (NamedTuples with yaml-parsing factory methods)
-from modis_gapfill_cython.gapfill_config_types import GapfillFilePaths, GapfillJobConfig, DataLimitsConfig, \
+from .gapfill_config_types import GapfillFilePaths, GapfillJobConfig, DataLimitsConfig, \
     DespeckleConfig, A1SearchConfig, A2SearchConfig, FlagItems
 
-from gapfill_utils import PixelMargins, A1DataStack, A2PassData
+from .gapfill_utils import PixelMargins, A1DataStack, A2PassData
 
 
 class GapFiller:

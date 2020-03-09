@@ -1,5 +1,5 @@
 cimport cython
-cimport numpy as np
+import numpy as np
 
 cdef class A1DataStack:
     """ Holds the various data stacks needed to run the a1_core algorithm """
@@ -26,7 +26,7 @@ cdef class A2DataStack:
 
 
 cdef class A2PassData:
-    '''Holds the images necessary to run the a2_core algorithm, in the correct direction
+    """Holds the images necessary to run the a2_core algorithm, in the correct direction
     The core algorithm iterates through the data in c-native order for efficiency. To implement the 8 directional
     passes, we transpose the data we pass to it, such that this ordering over the transposed pixels is equivalent to
     the required direction over the source pixels.
@@ -35,7 +35,7 @@ cdef class A2PassData:
     In the original Jupyter Notebook implementation, we did this by just re-striding the arrays. This has the desired
     behaviour regarding data order, but because the data are not "really" flipped in memory, access is slow, and those
     passes of the A2 algorithm ran ~ 9* slower. So here we physically copy the arrays into the new order,
-    then copy them back again for output.'''
+    then copy them back again for output."""
 
     # all members are invisible to python, we want python code to only see things that are untransposed and can be
     # iterated in c-normal order, so use the getter methods to access the outputs

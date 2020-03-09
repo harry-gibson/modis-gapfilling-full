@@ -3,16 +3,20 @@
   <component name="ChangeListManager">
     <list default="true" id="25a570f8-1e0e-467f-92ac-53e8035bc2b4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/MAP_limits_defaults.yml" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/MAP_limits_defaults.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_config_types.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_config_types.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_a1.c" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_a1.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_a1.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_a1.pyx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_a2.c" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_a2.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_a2.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_a2.pyx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_prep_a2.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_prep_a2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_clamp.c" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_clamp.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_clamp.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_clamp.pyx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_despeckle_and_flag.c" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_despeckle_and_flag.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_despeckle_and_flag.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_despeckle_and_flag.pyx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_defaults.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_prep_a2.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_prep_a2.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_utils.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_utils.pyx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/run_gapfill.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/run_gapfill.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/setup.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +61,7 @@
       <option name="presentableId" value="Default" />
       <updated>1583170496774</updated>
       <workItem from="1583170501455" duration="659000" />
-      <workItem from="1583404652303" duration="32868000" />
+      <workItem from="1583404652303" duration="39888000" />
     </task>
     <servers />
   </component>
@@ -81,10 +85,10 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="656" y="404" key="com.intellij.ide.util.TipDialog/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583404745118" />
-    <state x="1920" y="0" width="1553" height="1147" key="dock-window-1" timestamp="1583405281715">
+    <state x="2065" y="-8" width="1553" height="1147" maximized="true" key="dock-window-1" timestamp="1583761471467">
       <screen x="1920" y="0" width="1920" height="1160" />
     </state>
-    <state x="1920" y="0" width="1553" height="1147" key="dock-window-1/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583405281715" />
+    <state x="2065" y="-8" width="1553" height="1147" maximized="true" key="dock-window-1/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583761471467" />
     <state x="2359" y="255" width="672" height="678" key="search.everywhere.popup" timestamp="1583406414964">
       <screen x="1920" y="0" width="1920" height="1160" />
     </state>

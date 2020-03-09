@@ -4,7 +4,7 @@ from libc.math cimport sqrt
 #cdef int _SEARCH_RADIUS = 10
 from cython.parallel import prange, parallel
 from gapfill_utils import A1DataStack
-from gapfill_config import DataCharacteristicsConfig
+from modis_gapfill_cython.gapfill_config_types import DataLimitsConfig
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -21,10 +21,10 @@ cpdef MinMaxClip(float[:,::1] dataImage,
                  float lowerHardLimit,
                  Py_ssize_t nCores
                  ):
-    '''
+    """
     Clips (clamps) an image to not exceed +- n std from the mean image, or a hard upper / lower limit
 
-    '''
+    """
     cdef:
         Py_ssize_t x, y, xShape, yShape
         float value, minAllowed, maxAllowed
@@ -56,18 +56,7 @@ cpdef MinMaxClip(float[:,::1] dataImage,
                     continue
                 maxAllowed = meansImage[y, x] + (floor_ceiling_value * stdImage[y, x])
                 minAllowed = meansImage[y, x] - (floor_ceiling_value * stdImage[y, x])
-                if maxAllowed>=200.0:
-                    print ("Whoops! Location {0!s},{1!s} had value {2!s}. Mean={3!s} and std={4!s} giving maxallowed of {5!s}"
-                           .format(x,y,value,meansImage[y,x],stdImage[y,x],maxAllowed)
-                    )
-                    # crash
-                    assert False
-                if minAllowed<=-200.0:
-                    print ("Whoops! Location {0!s},{1!s} had value {2!s}. Mean={3!s} and std={4!s} giving minallowed of {5!s}"
-                           .format(x,y,value,meansImage[y,x],stdImage[y,x],minAllowed)
-                    )
-                    # crash
-                    assert False
+
                 if maxAllowed > upperHardLimit:
                     maxAllowed = upperHardLimit
                 if minAllowed < lowerHardLimit:
@@ -83,15 +72,15 @@ cpdef MinMaxClip(float[:,::1] dataImage,
                     continue
 
 cpdef MinMaxClip3D(
-        A1DataStack dataStacks,
-        DataCharacteristicsConfig dataConfig,
+        dataStacks: A1DataStack,
+        dataConfig: DataLimitsConfig,
         unsigned char flagToCheck,
         unsigned char flagToSet,
         Py_ssize_t nCores
 ):
-    '''
+    """
     Clips / clamps a stack of images to not exceed +- n stds from a mean image or a hard upper/lower limit
-    '''
+    """
 
     cdef:
         Py_ssize_t zSize, z

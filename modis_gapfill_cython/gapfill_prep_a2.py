@@ -2,15 +2,14 @@ import time
 import numpy as np
 import gc
 import bottleneck as bn
-cimport cython
 
-from gapfill_core_a2 import a2_core
-from gapfill_utils import A2PassData
-from gapfill_config_types import A2SearchConfig, FlagItems, DataLimitsConfig, A2Diagnostics
+from .gapfill_core_a2 import a2_core
+from .gapfill_utils import A2PassData
+from .gapfill_config_types import A2SearchConfig, FlagItems, DataLimitsConfig, A2Diagnostics
 
 
 def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
-             A2SearchConfig a2Config, FlagItems flagValues, DataLimitsConfig dataConfig):
+                  a2Config:A2SearchConfig, flagValues:FlagItems, dataConfig:DataLimitsConfig):
     '''Runs the 8 directional passes of A2 for a single image and generates the output from the mean or median.
 
     The input parameters are modified in place and will end up as the filled arrays ready for writing'''

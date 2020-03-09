@@ -3,8 +3,8 @@ import numpy as np
 from libc.stdlib cimport abs
 from cython.parallel import prange, parallel
 from libc.math cimport sqrt
-from gapfill_config_types import FlagItems, DataCharacteristicsConfig, A1SearchConfig, A1Diagnostics
-from gapfill_utils import A1DataStack, PixelMargins
+from .gapfill_config_types import FlagItems, DataLimitsConfig, A1SearchConfig, A1Diagnostics
+from .gapfill_utils import A1DataStack, PixelMargins
 
 
 @cython.boundscheck(False)
@@ -16,11 +16,11 @@ from gapfill_utils import A1DataStack, PixelMargins
 # So for a tiled run data can (should) be provided with a padding of _SEARCH_RADIUS and the
 # margin set to this value also. That way the algorithm can get values for "edge pixels" of its
 # input data
-cpdef a1_core(A1DataStack dataStacks,  # has items Data, Flags, DistTemplate (optional), KnownUnfillable (optional)
-              PixelMargins margins,
-              FlagItems flagValues,
-              DataCharacteristicsConfig dataConfig,
-              A1SearchConfig a1Config,
+cpdef a1_core(dataStacks: A1DataStack,  # has items Data, Flags, DistTemplate (optional), KnownUnfillable (optional)
+              margins: PixelMargins,
+              flagValues: FlagItems,
+              dataConfig: DataLimitsConfig,
+              a1Config: A1SearchConfig,
               Py_ssize_t nCores
               ):
 
@@ -119,13 +119,13 @@ cpdef a1_core(A1DataStack dataStacks,  # has items Data, Flags, DistTemplate (op
         float _MinAllowableRatio = 1.0 / _MaxAllowableRatio
 
         #  how many locations should be checked in spiral search (gives radius), historic defailt is 3142
-        int _MAX_NEIGHBOURS_TO_CHECK = A1SearchConfig.MAX_NBRS_TO_SEARCH
+        int _MAX_NEIGHBOURS_TO_CHECK = A1SearchConfig.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH
 
         # Only use the values gleaned from up to this number of cells (Even if more are avail within radius) 640
-        int _FILL_THRESHOLD = A1SearchConfig.MAX_USED_NBRS
+        int _FILL_THRESHOLD = A1SearchConfig.SPIRAL_CONFIG.MAX_USED_NBRS
 
         # min number of values that must be found to have a valid fill, historic default is 320
-        int _FILL_MIN = A1SearchConfig.MIN_REQUIRED_NBRS
+        int _FILL_MIN = A1SearchConfig.SPIRAL_CONFIG.MIN_REQUIRED_NBRS
 
         # calc the distance that is implied by the max spiral search length
         int _SEARCH_RADIUS = <int> (sqrt((_MAX_NEIGHBOURS_TO_CHECK*2.0) / 3.14))  + 1
@@ -376,14 +376,14 @@ cpdef a1_core(A1DataStack dataStacks,  # has items Data, Flags, DistTemplate (op
 
                         totalCells += 1 # testing log
 
-                        if ((inputFlags[z, yi_prv, xi_prv] & _OCEAN_FLAG) == _OCEAN_FLAG):
+                        if (inputFlags[z, yi_prv, xi_prv] & _OCEAN_FLAG) == _OCEAN_FLAG:
                             oceanCells += 1
                             outputFlags[z, y, x_prv] = inputFlags[z, yi_prv, xi_prv]
                             #in the ocean do not copy across (even if there is data; MODIS may not match shore cleanly)
                             #output is already nodata and flag is alraady set so just
                             continue
 
-                        if ((inputFlags[z, yi_prv, xi_prv] & _FAILURE_FLAG) == _FAILURE_FLAG):
+                        if (inputFlags[z, yi_prv, xi_prv] & _FAILURE_FLAG) == _FAILURE_FLAG:
                             # also do this if failure flag (2) is set (by despeckle algorithm indicating that mean
                             # was ND thus never any data on any calendar day)
                             outputFlags[z, y, x_prv] = inputFlags[z, yi_prv, xi_prv]
@@ -418,7 +418,7 @@ cpdef a1_core(A1DataStack dataStacks,  # has items Data, Flags, DistTemplate (op
                         # be able to find anything. Precalculating this in scipy is generally somewhat faster
                         # than leaving the code to iterate through everything here IF we only use 1 core
                         # NB sc evaluation makes this safe whether or not dataDistTemplate exists
-                        if (noTemplate == 0 and dataDistTemplate[z, yi_prv, xi_prv] > _SEARCH_RADIUS + 1):
+                        if noTemplate == 0 and dataDistTemplate[z, yi_prv, xi_prv] > _SEARCH_RADIUS + 1:
                             # TODO set a flag for this
                             outputFlags[z, y, x_prv] = outputFlags[z, y, x_prv] | _FAILURE_FLAG
                             totalProcessedGapCells += 1
@@ -484,8 +484,8 @@ cpdef a1_core(A1DataStack dataStacks,  # has items Data, Flags, DistTemplate (op
                                     # Put current year check before alternate year check as current year is more
                                     # likely to not have data (given we are already at a gap) so it's more
                                     # efficient to bail out there first
-                                    if (xNbr_prv >= 0 and xNbr_prv < xShapeTotal and
-                                            yNbr_prv >= 0 and yNbr_prv < yShapeTotal and
+                                    if (0 <= xNbr_prv < xShapeTotal and
+                                            0 <= yNbr_prv < yShapeTotal and
                                             dayDataStack[z, yNbr_prv, xNbr_prv] != _NDV and
                                             dayDataStack[newZ_prv, yNbr_prv, xNbr_prv] != _NDV):
                                         # we're good to go! do the maths for this contributing cell
@@ -587,7 +587,7 @@ cpdef a1_core(A1DataStack dataStacks,  # has items Data, Flags, DistTemplate (op
 @cython.boundscheck(False)
 @cython.wraparound(False)
 cdef int[::1] alternates_cy(int lim):
-    ''' yields 1, -1, 2, -2, etc up to lim '''
+    """ yields 1, -1, 2, -2, etc up to lim """
     cdef int x
     x = 1
     cdef int[::1] arr = np.empty(shape=(lim*2),dtype=np.int32,order='c')

@@ -1,6 +1,5 @@
 # Set this to False if you don't have cython installed and want to use the pregenerated .c files
-USE_CYTHON = True
-
+USE_CYTHON = 'auto'
 
 from distutils.core import setup
 from distutils.extension import Extension
@@ -80,8 +79,8 @@ setup(
     name="MODIS Gapfilling algorithms",
     #version = _version.__version__,
     description='Cython version of the Weiss MODIS gapfilling models',
-    author = 'Harry Gibson',
+    author='Harry Gibson',
     author_email='harry.s.gibson@gmail.com',
-    cmdclass = cmdclass,
-    ext_modules = extensions
+    cmdclass=cmdclass,
+    ext_modules=extensions
 )

@@ -3,16 +3,16 @@ from libc.math cimport fabs, sqrt
 cimport cython
 cimport openmp
 from cython.parallel import prange, parallel
-from gapfill_config import DataCharacteristicsConfig, DespeckleConfig, SpiralSearchConfig, FlagItems, DespeckleDiagnostics
-from gapfill_utils import A1DataStack, PixelMargins
+from .gapfill_config_types import DataLimitsConfig, DespeckleConfig, SpiralSearchConfig, FlagItems, DespeckleDiagnostics
+from .gapfill_utils import A1DataStack, PixelMargins
 
 @cython.cdivision(True)
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef setSpeckleFlags (A1DataStack dataStacks, PixelMargins margins, FlagItems flagValues,
-                       DataCharacteristicsConfig dataConfig,
-                       DespeckleConfig speckleConfig,
-                       Py_ssize_t nCores) -> object:
+cpdef setSpeckleFlags (dataStacks: A1DataStack, margins:PixelMargins, flagValues: FlagItems,
+                       dataConfig: DataLimitsConfig,
+                       speckleConfig: DespeckleConfig,
+                       Py_ssize_t nCores):
 
     '''
     Cython implementation of the "despeckle" algorithm; also applies land-sea mask and any systematic correction.
@@ -55,7 +55,7 @@ cpdef setSpeckleFlags (A1DataStack dataStacks, PixelMargins margins, FlagItems f
         float _BLANK_ZSCORE
 
 
-    assert isinstance(speckleConfig.SPIRAL, SpiralSearchConfig)
+    assert isinstance(speckleConfig.SPIRAL_CONFIG, SpiralSearchConfig)
     # unpack input packages to simple typed variables to minimise changes to code / for fastest access
     cdef:
         # thresholds / consts
@@ -68,9 +68,9 @@ cpdef setSpeckleFlags (A1DataStack dataStacks, PixelMargins margins, FlagItems f
         float stDevValidityThreshold = speckleConfig.EXTREME_BEYOND_SD
         float speckleDevThreshold = speckleConfig.SPECKLE_BEYOND_SD
 
-        int _SPECKLE_NBR_MIN_THRESHOLD = speckleConfig.SPIRAL.MIN_REQUIRED_NBRS
-        int _SPECKLE_NBR_MAX_THRESHOLD = speckleConfig.SPIRAL.MAX_USED_NBRS
-        int _MAX_NEIGHBOURS_TO_CHECK = speckleConfig.SPIRAL.MAX_NBRS_TO_SEARCH
+        int _SPECKLE_NBR_MIN_THRESHOLD = speckleConfig.SPIRAL_CONFIG.MIN_REQUIRED_NBRS
+        int _SPECKLE_NBR_MAX_THRESHOLD = speckleConfig.SPIRAL_CONFIG.MAX_USED_NBRS
+        int _MAX_NEIGHBOURS_TO_CHECK = speckleConfig.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH
 
         short _OCEAN_FLAG = flagValues.OCEAN
         short _NEVERDATA_FLAG = flagValues.FAILURE
@@ -243,7 +243,7 @@ cpdef setSpeckleFlags (A1DataStack dataStacks, PixelMargins margins, FlagItems f
                     zScoresDay[yT, xT_prv] = (value_prv - means[yT, xT_prv]) / stds[yT, xT_prv]
                     outputData [z, yT, xT_prv] = value_prv
                     # see if the location is a possible speckle
-                    if value_prv >= dodgyLower[yT, xT_prv] and value_prv <= dodgyUpper[yT, xT_prv]:
+                    if dodgyLower[yT, xT_prv] <= value_prv <= dodgyUpper[yT, xT_prv]:
                         # it's within the local limits, so it counts as good data, so pass through
                         goodCount_Glob += 1
                     else:
@@ -297,8 +297,8 @@ cpdef setSpeckleFlags (A1DataStack dataStacks, PixelMargins margins, FlagItems f
                         yDNbr_prv = yD_prv + nbrIntCoords[1, nbrIndex_prv]
 
                         # is the requested neighbour cell within data bounds and with data?
-                        if (xDNbr_prv >= 0 and xDNbr_prv < xShapeTotal and
-                                yDNbr_prv >= 0 and yDNbr_prv < yShapeTotal and
+                        if (0 <= xDNbr_prv < xShapeTotal and
+                                0 <= yDNbr_prv < yShapeTotal and
                                 zScoresDay[yDNbr_prv, xDNbr_prv] != _BLANK_ZSCORE):
                             nbrZscoreCount_prv = nbrZscoreCount_prv + 1 # tracking
                             nbrZscoreTotal_prv = nbrZscoreTotal_prv + zScoresDay[yDNbr_prv, xDNbr_prv]

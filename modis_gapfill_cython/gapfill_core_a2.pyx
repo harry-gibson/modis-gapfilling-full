@@ -3,17 +3,17 @@ cimport cython
 from libc.math cimport sqrt
 #cdef int _SEARCH_RADIUS = 10
 from cython.parallel import prange, parallel
-from gapfill_config import A2SearchConfig, DataCharacteristicsConfig, FlagItems
-from gapfill_utils import  A2PassData
+from .gapfill_config_types import A2SearchConfig, DataLimitsConfig, FlagItems
+from .gapfill_utils import  A2PassData
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.cdivision(True)
 cpdef a2_core (
-            A2PassData dataStack,
-            DataCharacteristicsConfig dataConfig,
-            A2SearchConfig a2Config,
-            FlagItems flagValues
+            dataStack: A2PassData,
+            dataConfig: DataLimitsConfig,
+            a2Config: A2SearchConfig,
+            flagValues: FlagItems
             ):
     '''
     Cython (C) implementation of the A2 gapfilling algorithm main "pass" code. This function always iterates through 
@@ -74,7 +74,7 @@ cpdef a2_core (
         float _MinAllowableRatio = 1.0 / _MaxAllowableRatio
         unsigned char FillByRatios = a2Config.FILL_GENERATION_METHOD == "RATIO"
         float _NDV = dataConfig.NODATA_VALUE
-        Py_ssize_t A2_MAX_NBRS = a2Config.MAX_NBRS_TO_SEARCH
+        Py_ssize_t A2_MAX_NBRS = a2Config.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH
 
     yShape = dataImage.shape[0]
     xShape = dataImage.shape[1]
@@ -156,8 +156,8 @@ cpdef a2_core (
                     # +1 because the first row of nbr table is the current cell
                     xNbr = x + nbrIntCoords[0, nbrIndex]
                     yNbr = y + nbrIntCoords[1, nbrIndex]
-                    if (xNbr >= 0 and xNbr < xShape and
-                            yNbr >= 0 and yNbr < yShape and
+                    if (0 <= xNbr < xShape and
+                            0 <= yNbr < yShape and
                             diffImage_Local[yNbr, xNbr] != _NDV):
                         nbrDiffSum += diffImage_Local[yNbr, xNbr]
                         nbrDiffCount += 1
