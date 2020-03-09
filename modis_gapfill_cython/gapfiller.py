@@ -29,7 +29,7 @@ from .gapfill_utils import PixelMargins, A1DataStack, A2PassData
 
 class GapFiller:
     def __init__(self, gapfillFilePaths: GapfillFilePaths,
-                 despeckleconfig: DespeckleConfig,
+                 despeckleConfig: DespeckleConfig,
                  a1Config: A1SearchConfig,
                  a2Config: A2SearchConfig,
                  dataSpecificConfig: DataLimitsConfig,
@@ -39,13 +39,13 @@ class GapFiller:
         self.nCores = 20
 
         assert isinstance(gapfillFilePaths, GapfillFilePaths)
-        assert isinstance(despeckleconfig, DespeckleConfig)
+        assert isinstance(despeckleConfig, DespeckleConfig)
         assert isinstance(a1Config, A1SearchConfig)
         assert isinstance(a2Config, A2SearchConfig)
         assert isinstance(dataSpecificConfig, DataLimitsConfig)
         assert isinstance(flagValues, FlagItems)
         assert isinstance(jobDetails, GapfillJobConfig)
-        self._despeckleConfig = despeckleconfig
+        self._despeckleConfig = despeckleConfig
         self._a1Config = a1Config
         self._a2Config = a2Config
         self._dataSpecificConfig = dataSpecificConfig
@@ -53,7 +53,7 @@ class GapFiller:
         self._jobDetails = jobDetails
 
         # initialise input files and index by calendar day and year
-        self._inputFileDict = defaultdict(defaultdict(str))
+        self._inputFileDict = defaultdict(lambda: defaultdict(str))
         self.__InitialiseFiles(gapfillFilePaths.DATA_FILES_GLOB_PATTERN)
         self._filePaths = gapfillFilePaths
         self._outTemplate = "FILLED-OUTPUT{}.{}.{}.TemporalSummary.Res.SpatialSummary.tif"
@@ -115,7 +115,7 @@ class GapFiller:
             year, calendarday = self.__parseDailyFilename(f)
             self._inputFileDict[calendarday][year] = f
         initialProps = SingleBandTiffFile(allFiles[0])
-        self._InputRasterProps = initialProps.GetExistingProperties()
+        self.InputRasterProps = initialProps.GetProperties()
 
     def __parseDailyFilename(self, f):
         '''Get julian day and year from a filename in old or new MAP MODIS filename formats,
@@ -173,9 +173,9 @@ class GapFiller:
         _TOTAL_DESIRED_MARGIN = _A1_SEARCH_RADIUS + _DESPECKLE_SEARCH_RADIUS
 
         reqDataL = max(0, self.xLims[0] - _TOTAL_DESIRED_MARGIN)
-        reqDataR = min(self.xLims[1] + _TOTAL_DESIRED_MARGIN, self._InputRasterProps.width)
+        reqDataR = min(self.xLims[1] + _TOTAL_DESIRED_MARGIN, self.InputRasterProps.width)
         reqDataT = max(0, self.yLims[0] - _TOTAL_DESIRED_MARGIN)
-        reqDataB = min(self.yLims[1] + _TOTAL_DESIRED_MARGIN, self._InputRasterProps.height)
+        reqDataB = min(self.yLims[1] + _TOTAL_DESIRED_MARGIN, self.InputRasterProps.height)
         reqDataHeight = reqDataB - reqDataT
         reqDataWidth = reqDataR - reqDataL
 
@@ -199,13 +199,13 @@ class GapFiller:
         left_A1_edges = np.clip((chunkEdges - _A1_SEARCH_RADIUS)[:-1],
                                 0, np.inf).astype(np.int32)
         right_A1_edges = np.clip((chunkEdges + _A1_SEARCH_RADIUS)[1:],
-                                 -np.inf, self._InputRasterProps.width).astype(np.int32)
+                                 -np.inf, self.InputRasterProps.width).astype(np.int32)
         # the boundary of these slices plus the margin of extra data for A1 and despeckle, but respecting the fact
         # we can't go beyond the edge of the source data
         left_Despeckle_edges = np.clip((chunkEdges - _TOTAL_DESIRED_MARGIN)[:-1],
                                        0, np.inf).astype(np.int32)
         right_Despeckle_edges = np.clip((chunkEdges + _TOTAL_DESIRED_MARGIN)[1:],
-                                        -np.inf, self._InputRasterProps.width).astype(np.int32)
+                                        -np.inf, self.InputRasterProps.width).astype(np.int32)
 
         # the left and right task boundaries are _SEARCH_RADIUS bigger than the data that will be searched
         # within them so that all pixels can have neighbours, if possible (not at global edge)
@@ -215,10 +215,10 @@ class GapFiller:
         # can we pad the top and bottom? (not if we are doing a global run as y-slicing isn't implemented)
         topA1Edge = np.clip(self.yLims[0] - _A1_SEARCH_RADIUS, 0, np.inf).astype(np.int32)
         bottomA1Edge = np.clip(self.yLims[1] + _A1_SEARCH_RADIUS,
-                               -np.inf, self._InputRasterProps.height).astype(np.int32)
+                               -np.inf, self.InputRasterProps.height).astype(np.int32)
         topDespeckleEdge = np.clip(self.yLims[0] - _TOTAL_DESIRED_MARGIN, 0, np.inf).astype(np.int32)
         bottomDespeckleEdge = np.clip(self.yLims[1] + _TOTAL_DESIRED_MARGIN,
-                                      -np.inf, self._InputRasterProps.height).astype(np.int32)
+                                      -np.inf, self.InputRasterProps.height).astype(np.int32)
 
         # create a list of the slices needed for each calendar day, i.e. all the x slices and for each of these,
         # all the y slices. Each dimension and slice coords are recorded as a 6-tuple which is a member of a list.

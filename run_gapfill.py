@@ -1,6 +1,6 @@
-from gapfiller import GapFiller
+from modis_gapfill_cython.gapfiller import GapFiller
 
-from gapfill_config_types import GapfillFilePaths, GapfillJobConfig, DataLimitsConfig, \
+from modis_gapfill_cython.gapfill_config_types import GapfillFilePaths, GapfillJobConfig, DataLimitsConfig, \
     DespeckleConfig, A1SearchConfig, A2SearchConfig, FlagItems
 
 import argparse
@@ -23,7 +23,7 @@ def main(gapfillFilePaths: GapfillFilePaths,
     gapfiller.RunFill()
 
 
-def is_valid_file(parser, arg):
+def is_valid_file(arg):
     if not (arg == 'SAMPLE' or os.path.exists(arg)):
         parser.error("The file %s does not exist!" % arg)
         return False
@@ -42,20 +42,19 @@ def is_valid_directory(parser, arg):
 def try_load_default_limits(filePaths: GapfillFilePaths):
     aFileName = filePaths.DATA_FILES_GLOB_PATTERN
     basename = os.path.basename(aFileName)
-    start = (basename[0:3]).upper()
     defaultYamlLimitsFile = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                             'MAP_limits_defaults.yml')
+                                         'config_defaults',
+                                         'MAP_limits_defaults.yml')
     yamlParser = ruamel.yaml.YAML()
     with open(defaultYamlLimitsFile) as stream:
         allDefaultLimits = yamlParser.load(stream)
-    if start in allDefaultLimits:
+    matched = [o for o in allDefaultLimits.keys() if o.upper() in basename.upper()]
+    if len(matched) == 1:
         print("Found default limit configuration for variable {} based on filename pattern {}".format(
-            start, aFileName))
-        return {'DataLimitParams': allDefaultLimits[start]}
+            matched[0], aFileName))
+        return {'DataLimitParams': allDefaultLimits[matched[0]]}
     else:
-        raise KeyError("No default limit configuration found for variable {} (based on filename pattern {})".format(
-            start, aFileName
-        ))
+        raise KeyError("No default limit configuration found based on filename pattern {}".format(aFileName))
 
 
 if __name__ == "__main__":
@@ -71,7 +70,7 @@ if __name__ == "__main__":
                              "argument to write a sample file to the current folder which "
                              "you can edit.",
                         metavar="FILE",
-                        type=lambda x: is_valid_file(parser, x))
+                        type=is_valid_file)
     parser.add_argument("-p" "--params", dest="fillParams", required=False,
                         help="path to the gapfill_params_defaults.yml file which configures the search "
                              "parameters for gapfilling (radius of search, number of neighbours "
@@ -89,14 +88,18 @@ if __name__ == "__main__":
     yamlParser = ruamel.yaml.YAML()
     if runConfigYml == 'SAMPLE':
         defaultYamlConfigFile = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                             'config_defaults',
                                              'gapfill_run_config_sample_master.yml')
         if not is_valid_file(defaultYamlConfigFile):
             raise RuntimeError("Sample file not found!")
         with open(defaultYamlConfigFile) as stream:
             sampleConfig = yamlParser.load(stream)
-        outputYamlSampleConfigFile = os.path.join(os.getcwd(), 'gapfill_run_config_sample.yml')
-        yamlParser.dump(sampleConfig, outputYamlSampleConfigFile)
-        print("sample run config file written to {}. Please edit, and rerun using this as the -c parameter.")
+        outputYamlSampleConfigFile = os.path.join(os.getcwd(),
+                                                  'gapfill_run_config_sample.yml')
+        with open(outputYamlSampleConfigFile, 'w') as stream:
+            yamlParser.dump(sampleConfig, stream)
+        print("sample run config file written to {}. Please edit, and rerun using this as the -c parameter."
+              .format(outputYamlSampleConfigFile))
         canRun = False
     else:
         with open(runConfigYml) as stream:
@@ -104,18 +107,21 @@ if __name__ == "__main__":
 
     # load gapfill_params_defaults always (in case not all parts provided in input), and write as sample if requested
     defaultYamlParamsFile = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                             'gapfill_params_defaults.yml')
+                                         'config_defaults',
+                                        'gapfill_params_defaults.yml')
     if not is_valid_file(defaultYamlParamsFile):
         raise RuntimeError("Default parameters file not found!")
     with open(defaultYamlParamsFile) as stream:
         defaultParams = yamlParser.load(stream)
-
     if fillParamsYml is None:
         runParams = defaultParams
     elif fillParamsYml == 'SAMPLE':
-        outputYamlParamsFile = os.path.join(os.getcwd(), 'gapfill_run_params.yml')
-        yamlParser.dump(sampleConfig, outputYamlSampleConfigFile)
-        print("sample parameters file written to {}. Please edit, and rerun using this as the -p parameter.")
+        outputYamlParamsFile = os.path.join(os.getcwd(),
+                                            'gapfill_run_params_sample.yml')
+        with open(outputYamlParamsFile, 'w') as stream:
+            yamlParser.dump(sampleConfig, stream)
+        print("sample parameters file written to {}. Please edit, and rerun using this as the -p parameter."
+              .format(outputYamlParamsFile))
         canRun = False
     else:
         with open(fillParamsYml) as stream:

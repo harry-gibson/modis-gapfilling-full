@@ -38,11 +38,11 @@ class GapfillJobConfig(NamedTuple):
         """Factory method to create instance of this NamedTuple from YAML config, which must contain "FillJob" key"""
         jC = runConfig['FillJob']
         jobConfigParsed = cls(
-            XMin=float(jC['XMin']),
-            XMax=float(jC['XMax']),
-            YMin=float(jC['YMin']),
-            YMax=float(jC['YMax']),
-            CalendarDaysToFill=float(jC['CalendarDaysToFill']),
+            XMin_Deg=float(jC['XMin']),
+            XMax_Deg=float(jC['XMax']),
+            YMin_Deg=float(jC['YMin']),
+            YMax_Deg=float(jC['YMax']),
+            CalendarDaysToFill=list(jC['CalendarDaysToFill']),
             StartYear=float(jC['StartYear']),
             ClipMinMax=float(jC['ClipMinMax']),
             RunA2=float(jC['RunA2'])

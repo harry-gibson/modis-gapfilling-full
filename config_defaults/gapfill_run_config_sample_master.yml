@@ -14,6 +14,7 @@ DataLimitParams:
   correction_offset: float
   floor_ceiling_zscore: float
   absolute_zero_for_ratio: float
+  nodata_value: float
 
 FillJob:
   XMin: float
