@@ -32,6 +32,8 @@ class GapfillJobConfig(NamedTuple):
     StartYear: int = None
     ClipMinMax: bool = True
     RunA2: bool = True
+    NCores: int = None
+    MemTargetBytes: int = None
 
     @classmethod
     def from_yaml_config(cls, runConfig):
@@ -45,7 +47,9 @@ class GapfillJobConfig(NamedTuple):
             CalendarDaysToFill=list(jC['CalendarDaysToFill']),
             StartYear=float(jC['StartYear']),
             ClipMinMax=float(jC['ClipMinMax']),
-            RunA2=float(jC['RunA2'])
+            RunA2=float(jC['RunA2']),
+            NCores=int(jC['NCores']),
+            MemTargetBytes=int(jC['MemTargetBytes'])
         )
         return jobConfigParsed
 
@@ -88,7 +92,7 @@ class DespeckleConfig(NamedTuple):
 
     @classmethod
     def from_yaml_config(cls, runParams):
-        """Factory method to create instance of this NamedTuple from YAML config, which must contain "Desepckle" key"""
+        """Factory method to create instance of this NamedTuple from YAML config, which must contain "Despeckle" key"""
         dC = runParams['Despeckle']
         spiralParsed = SpiralSearchConfig.from_yaml_config(dC)
         configParsed = cls(

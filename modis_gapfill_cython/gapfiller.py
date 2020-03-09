@@ -36,7 +36,6 @@ class GapFiller:
                  flagValues: FlagItems,
                  jobDetails: GapfillJobConfig
                  ):
-        self.nCores = 20
 
         assert isinstance(gapfillFilePaths, GapfillFilePaths)
         assert isinstance(despeckleConfig, DespeckleConfig)
@@ -79,9 +78,9 @@ class GapFiller:
             outDT = self.InputRasterProps.datatype
             self.OutputProps = RasterProps(gt=outGT, proj=outProj, ndv=outNdv, width=outW, height=outH,
                                            res=outRes, datatype=outDT)
-
+        maxZSize = max([len(v) for k,v in self._inputFileDict.items()])
         # calculate slices to run a1
-        self._slices = self.CalculateSliceEdges()
+        self._slices = self.CalculateSliceEdges(maxZSize)
 
     def RunFill(self):
         allDays = self._inputFileDict.keys()
@@ -90,7 +89,7 @@ class GapFiller:
             startYear = 0  # just some value smaller than the first year
         onlyForDays = self._jobDetails.CalendarDaysToFill
         for calendarDay in allDays:
-            if onlyForDays is not None and calendarDay not in onlyForDays:
+            if onlyForDays is not None and int(calendarDay) not in onlyForDays:
                 # if we're not filling for this calendar day, we don't need to do anything
                 continue
             for slice in self._slices:
@@ -112,17 +111,17 @@ class GapFiller:
         allFiles = glob.glob(globPattern)
 
         for f in allFiles:
-            year, calendarday = self.__parseDailyFilename(f)
+            calendarday, year = self.__parseDailyFilename(f)
             self._inputFileDict[calendarday][year] = f
         initialProps = SingleBandTiffFile(allFiles[0])
         self.InputRasterProps = initialProps.GetProperties()
 
     def __parseDailyFilename(self, f):
-        '''Get julian day and year from a filename in old or new MAP MODIS filename formats,
+        """Get julian day and year from a filename in old or new MAP MODIS filename formats,
         and set instance variable _outTemplate to match the non-temporally-varying parts of this
         input file (or, on subsequent calls, check these are the same as last time).
         _outTemplate will be set to e.g.
-            LST_Day{}.{}.{}.Data.1km.Data'''
+            LST_Day{}.{}.{}.Data.1km.Data"""
         base = os.path.basename(f)
 
         tokens = base.split('.')
@@ -140,12 +139,12 @@ class GapFiller:
                 assert self._outTemplate == outTemplate
         return day, yr
 
-    @staticmethod
-    def __CalculateSliceSize(readShapeZYX, memLimit):
-        '''Calculate the X-size of the slices we can run for the given Y, Z dimensions and mem limit'''
+    def __CalculateSliceSize(self, readShapeZYX):
+        """Calculate the X-size of the slices we can run for the given Y, Z dimensions and mem limit"""
         # readShapeZYX is the dimension of the data we must READ to fill the required output area;
         #  i.e .the fill area plus margins. If we're filling globally it's the same thing.
         dataBPP = 4
+        memLimit = self._jobDetails.MemTargetBytes
         outputsBPP = dataBPP * 2 + 1  # the output data, distances, and flags
         # approximate total number of pixels we can read for each file
         sliceSqrd = memLimit / (readShapeZYX[0] * (dataBPP + outputsBPP))
@@ -153,7 +152,7 @@ class GapFiller:
         sliceXSize = sliceSqrd / readShapeZYX[1]
         return sliceXSize
 
-    def CalculateSliceEdges(self, fillShapeZYX, memLimit):
+    def CalculateSliceEdges(self, maxZSize):
         """
         Generate the slice boundaries, slicing only in the x dimension
         (we are using full data in y dimension for now, though this doesn't have to be so)
@@ -181,12 +180,12 @@ class GapFiller:
 
         # get an estimated maximum width for the slices based on the available memory and the number of years (vertical
         # size of the stack) and height (y dimension) of the data (not slicing in Y dimension)
-        readShapeZYX = (fillShapeZYX[0], reqDataHeight, reqDataWidth)
-        sliceXSize = self.__CalculateSliceSize(readShapeZYX, memLimit)
+        readShapeZYX = (maxZSize, reqDataHeight, reqDataWidth)
+        sliceXSize = self.__CalculateSliceSize(readShapeZYX=readShapeZYX)
 
         # how many slices are we going to need
-        totalFillWidth = fillShapeZYX[2]
-        nChunks = (totalFillWidth / sliceXSize) + 1
+        totalFillWidth = self.xLims[1] - self.xLims[0]
+        nChunks = int((totalFillWidth // sliceXSize) + 1)
 
         # generate the "chunk" boundaries that will represent the data processed in one thread's job, in terms of the
         # pixel coordinates of the source data files.
@@ -376,10 +375,10 @@ class GapFiller:
         sliceCoastArr, _, _, _ = coastReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
                                                               yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
         yearFileDictThisDay = self._inputFileDict[calendarDay]
-        sortedFiles = [f for (y, f) in sorted(yearFileDictThisDay)]
+        sortedFiles = [f for (y, f) in sorted(yearFileDictThisDay.items())]
         if startYear != 0:
             try:
-                startFillFromPos = sorted(yearFileDictThisDay.keys()).index(startYear)
+                startFillFromPos = sorted(yearFileDictThisDay.keys()).index(str(int(startYear)))
             except ValueError:
                 raise FileNotFoundError("No data files were identified for the requested calendar day and year({}/{})"
                                         .format(startYear, calendarDay))

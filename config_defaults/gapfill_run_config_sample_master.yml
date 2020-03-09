@@ -28,5 +28,7 @@ FillJob:
   StartYear: 2000
   ClipMinMax: True
   RunA2: True
+  NCores: int
+  MemTargetBytes: 40e9
 
 
