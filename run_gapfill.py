@@ -31,7 +31,7 @@ def is_valid_file(arg):
         return arg
 
 
-def is_valid_directory(parser, arg):
+def is_valid_directory(arg):
     if os.path.isdir(arg):
         return arg
     else:
@@ -78,7 +78,7 @@ if __name__ == "__main__":
                              "values will be used. Run with 'SAMPLE' for this argument to write "
                              "a sample file to the current folder which you can edit.",
                         metavar="FILE",
-                        type=lambda x: is_valid_file(parser, x))
+                        type=is_valid_file)
     args = parser.parse_args()
 
     runConfigYml = args.runConfig
