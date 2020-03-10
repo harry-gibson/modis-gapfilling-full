@@ -23,7 +23,7 @@ def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
     assert flagsImageIn.shape == distImageIn.shape
     assert distImageIn.shape == meanImageIn.shape
 
-    start_time = time.time()
+    time_start = time.time()
 
     #(dataImageIn + distImageIn + meanImageIn + dataPassStack*8 + sumDistImage + distImageLocal + ratioImageLocal)*4 + flagsImageIn
     # = 57 bytes per pixel required, 933.1M pixels, ~50Gb RAM required.
@@ -58,19 +58,18 @@ def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
     # means that all passes should occur at the same speed, but more memory is needed. There are now enough years
     # in the MODIS record that the memory use of A1 has increased to the point that A2 is not really the dominant
     # memory hog any more.
+    nFilledByPass = []
+    timeByPass = []
     for passNumber in range(0, 8):
         print ("Running A2 pass "+str(passNumber))
         tDelta = time.time()
-        dataPassImage = None
-        a2Data = A2PassData(passNumber, dataImageIn, flagsImageIn, distImageIn, meanImageIn, sumDistImage)
-
-        a2diag = a2_core(a2Data, dataConfig=dataConfig, a2Config=a2Config)
+        a2Data = A2PassData(passNumber, dataArray=dataImageIn, flagsArray=flagsImageIn, distanceArray=distImageIn,
+                            meanArray=meanImageIn, sumDistArray=sumDistImage)
+        numFilledThisPass = a2_core(a2Data, dataConfig=dataConfig, a2Config=a2Config, flagValues=flagValues)
         dataPassStack[passNumber] = a2Data.getOutputData()
         sumDistImage += a2Data.getOutputDists()
-
-        #print "done in "+str(time.time()-tDelta)+" seconds"
-
-    tDelta = time.time()
+        timeByPass.append(time.time()-tDelta)
+        nFilledByPass.append(numFilledThisPass)
 
     # process numpyisms on the A2 data stack tile-by-tile because it makes temp arrays,
     # and we probably can't afford that memory
@@ -89,9 +88,9 @@ def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
             # a view of the results stack
             dataPassSlice = dataPassStack[:,y0:y1,x0:x1]
             countSlice = countVals[y0:y1,x0:x1]
-            np.sum(dataPassSlice != _NDV, axis=0, out=countSlice)
+            np.sum(dataPassSlice != dataConfig.NODATA_VALUE, axis=0, out=countSlice)
             # exclude no-data from mean / median calculation by using nan-aware functions
-            dataPassSlice[dataPassSlice == _NDV] = np.nan
+            dataPassSlice[dataPassSlice == dataConfig.NODATA_VALUE] = np.nan
             passAverageSlice = passAverageImage[y0:y1,x0:x1]
             if a2Config.PASS_AVERAGE_TYPE == "MEAN":
                 passAverageSlice[:] = bn.nanmean(dataPassSlice, axis=0)
@@ -118,6 +117,12 @@ def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
     # set distance metric to be the total A2 distance divided by the number of A2 passes it was from
     distImageIn[a2FilledLocs] = sumDistImage[a2FilledLocs] / countVals[a2FilledLocs]
 
-    timeSeconds = time.time() - start_time
+    timeSeconds = time.time() - time_start
     # we just return diagnostics, the arrays have been modified in-place
-    return A2Diagnostics(GapCellsTotal=a2FillWasNeededCount, GapCellsFilled=a2FilledCount, TimeSeconds=timeSeconds)
+    return A2Diagnostics(
+        GapCellsTotal=a2FillWasNeededCount,
+        GapCellsFilled=a2FilledCount,
+        TimeSeconds=timeSeconds,
+        GapCellsFilledByPass=nFilledByPass,
+        TimeSecondsByPass=timeByPass
+    )

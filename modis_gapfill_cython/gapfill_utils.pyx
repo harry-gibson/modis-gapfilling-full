@@ -39,106 +39,108 @@ cdef class A2PassData:
 
     # all members are invisible to python, we want python code to only see things that are untransposed and can be
     # iterated in c-normal order, so use the getter methods to access the outputs
-    cdef float[:,::1] DataArray2D
-    cdef unsigned char[:,::1] FlagsArray2D
-    cdef float[:,::1] DistanceArray2D
-    cdef float[:,::1] MeanArray2D
-    cdef float[:,::1] DataArrayOutput2D
+    cdef readonly float[:,::1] TransformedDataArray2D
+    cdef readonly unsigned char[:,::1] TransformedFlagsArray2D
+    cdef readonly float[:,::1] TransformedDistanceArray2D
+    cdef readonly float[:,::1] TransformedMeanArray2D
+    cdef public float[:,::1] TransformedDataArrayOutput2D
+    cdef readonly float[:,::1] TransformedSumOfPassDistancesArray2D
+
     cdef char passNumber
     cdef float[:,::1] outputData
-    cdef float[:,::1] SumOfPassDistancesArray2D
 
     def __cinit__(self, passNumber, dataArray, flagsArray, distanceArray, meanArray, sumDistArray):
 
-        self.DataArray2D = dataArray
-        self.FlagsArray2D = flagsArray
-        self.DistanceArray2D = distanceArray
-        self.MeanArray2D = meanArray
-        self.SumOfPassDistancesArray2D = sumDistArray
+        self.TransformedDataArray2D = dataArray
+        self.TransformedFlagsArray2D = flagsArray
+        self.TransformedDistanceArray2D = distanceArray
+        self.TransformedMeanArray2D = meanArray
+        self.TransformedSumOfPassDistancesArray2D = sumDistArray
 
         self.passNumber = passNumber
-        self.dataBits=[self.DataArray2D, self.FlagsArray2D, self.DistanceArray2D, self.MeanArray2D, self.SumOfPassDistancesArray2D]
+        #self.dataBits=[self.DataArray2D, self.FlagsArray2D, self.DistanceArray2D, self.MeanArray2D, self.SumOfPassDistancesArray2D]
 
         self.__TransformData()
 
-        self.outputData = np.empty_like(dataArray)
+        self.TransformedDataArrayOutput2D = np.empty_like(dataArray)
 
     def getOutputData(self):
         """Returns the filled data array held in this object, transformed back to c-normal order"""
         if self.passNumber == 0:
-            return np.copy(self.outputData.T)
+            return np.copy(self.TransformedDataArrayOutput2D.T)
         elif self.passNumber == 1:
-            return np.copy(self.outputData[:,::-1].T)
+            return np.copy(self.TransformedDataArrayOutput2D[:,::-1].T)
         elif self.passNumber == 2:
-            return np.copy(self.outputData[::-1,:].T)
+            return np.copy(self.TransformedDataArrayOutput2D[::-1,:].T)
         elif self.passNumber == 3:
-            return np.copy(self.outputData[::-1,::-1].T)
+            return np.copy(self.TransformedDataArrayOutput2D[::-1,::-1].T)
         elif self.passNumber == 4:
-            return np.copy(self.outputData)
+            return np.copy(self.TransformedDataArrayOutput2D)
         elif self.passNumber == 5:
-            return np.copy(self.outputData[:,::-1])
+            return np.copy(self.TransformedDataArrayOutput2D[:,::-1])
         elif self.passNumber == 6:
-            return np.copy(self.outputData[::-1,:])
+            return np.copy(self.TransformedDataArrayOutput2D[::-1,:])
         elif self.passNumber ==7:
-            return np.copy(self.outputData[::-1,::-1])
+            return np.copy(self.TransformedDataArrayOutput2D[::-1,::-1])
         else:
             raise ValueError()
 
     def getOutputDists(self):
         """Returns the sum-of-fill-distances array held in this object transformed back to c-normal order"""
         if self.passNumber == 0:
-            return np.copy(self.SumOfPassDistancesArray2D.T)
+            return np.copy(self.TransformedSumOfPassDistancesArray2D.T)
         elif self.passNumber == 1:
-            return np.copy(self.SumOfPassDistancesArray2D[:,::-1].T)
+            return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1].T)
         elif self.passNumber == 2:
-            return np.copy(self.SumOfPassDistancesArray2D[::-1,:].T)
+            return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:].T)
         elif self.passNumber == 3:
-            return np.copy(self.SumOfPassDistancesArray2D[::-1,::-1].T)
+            return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,::-1].T)
         elif self.passNumber == 4:
-            return np.copy(self.SumOfPassDistancesArray2D)
+            return np.copy(self.TransformedSumOfPassDistancesArray2D)
         elif self.passNumber == 5:
-            return np.copy(self.SumOfPassDistancesArray2D[:,::-1])
+            return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1])
         elif self.passNumber == 6:
-            return np.copy(self.SumOfPassDistancesArray2D[::-1,:])
+            return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:])
         elif self.passNumber ==7:
-            return np.copy(self.SumOfPassDistancesArray2D[::-1,::-1])
+            return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,::-1])
         else:
             raise ValueError()
 
-    def __TransformData(self, passNumber):
+    def __TransformData(self):
         """Transforms the input data arrays such that iterating over them in C-normal order will effectively
         pass over the data in one of the 8 cardinal directions. This implementation actually copies the data into
         a new C-normal array, so that all A2 pass runs should take the same amount of time. Not copying the data
         i.e. not using np.copy results in the transposed passed 1-4 being ~ 9* slower due to the inefficient
         memory access"""
+        dataBits = [self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
+                    self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
+        passNumber = self.passNumber
         if passNumber == 0:
-            for i in range(len(self.dataBits)):
-                self.dataBits[i] = np.copy(self.dataBits[i].T)
+            for i in range(len(dataBits)):
+                dataBits[i] = np.copy(dataBits[i].T)
         elif passNumber == 1:
-            for i in range(len(self.dataBits)):
-                self.dataBits[i] = np.copy(self.dataBits[i].T[:,::-1])
+            for i in range(len(dataBits)):
+                dataBits[i] = np.copy(dataBits[i].T[:,::-1])
         elif passNumber == 1:
-            for i in range(len(self.dataBits)):
-                self.dataBits[i] = np.copy(self.dataBits[i].T[:,::-1])
+            for i in range(len(dataBits)):
+                dataBits[i] = np.copy(dataBits[i].T[:,::-1])
         elif passNumber == 2:
-            for i in range(len(self.dataBits)):
-                self.dataBits[i] = np.copy(self.dataBits[i].T[::-1,:])
+            for i in range(len(dataBits)):
+                dataBits[i] = np.copy(dataBits[i].T[::-1,:])
         elif passNumber == 3:
-            for i in range(len(self.dataBits)):
-                self.dataBits[i] = np.copy(self.dataBits[i].T[::-1,::-1])
+            for i in range(len(dataBits)):
+                dataBits[i] = np.copy(dataBits[i].T[::-1,::-1])
         elif passNumber == 4:
             pass
         elif passNumber == 5:
-            for i in range(len(self.dataBits)):
-                self.dataBits[i] = np.copy(self.dataBits[i][:,::-1])
-
+            for i in range(len(dataBits)):
+                dataBits[i] = np.copy(dataBits[i][:,::-1])
         elif passNumber == 6:
-            for i in range(len(self.dataBits)):
-                self.dataBits[i] = np.copy(self.dataBits[i][::-1,:])
-
+            for i in range(len(dataBits)):
+                dataBits[i] = np.copy(dataBits[i][::-1,:])
         elif passNumber == 7:
-            for i in range(len(self.dataBits)):
-                self.dataBits[i] = np.copy(self.dataBits[i][::-1,::-1])
+            for i in range(len(dataBits)):
+                dataBits[i] = np.copy(dataBits[i][::-1,::-1])
         else:
             raise ValueError()
 

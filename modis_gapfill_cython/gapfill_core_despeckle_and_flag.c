@@ -1202,12 +1202,27 @@ static PyObject *__Pyx_PyFunction_FastCallDict(PyObject *func, PyObject **args, 
     (assert(__pyx_pyframe_localsplus_offset), (PyObject **)(((char *)(frame)) + __pyx_pyframe_localsplus_offset))
 #endif
 
+/* PyObjectCallMethO.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
+#endif
+
+/* PyObjectCallNoArg.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
+#else
+#define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
+#endif
+
 /* PyCFunctionFastCall.proto */
 #if CYTHON_FAST_PYCCALL
 static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
 #else
 #define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
 #endif
+
+/* PyObjectCallOneArg.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
 
 /* PyIntBinop.proto */
 #if !CYTHON_COMPILING_IN_PYPY
@@ -1217,23 +1232,8 @@ static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, 
     (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
 #endif
 
-/* PyObjectCallMethO.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
-#endif
-
-/* PyObjectCallOneArg.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
-
 /* PyObjectCall2Args.proto */
 static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
-
-/* PyObjectCallNoArg.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
-#else
-#define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
-#endif
 
 /* GetItemInt.proto */
 #define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
@@ -1820,6 +1820,7 @@ static const char __pyx_k_step[] = "step";
 static const char __pyx_k_stop[] = "stop";
 static const char __pyx_k_take[] = "take";
 static const char __pyx_k_test[] = "__test__";
+static const char __pyx_k_time[] = "time";
 static const char __pyx_k_ASCII[] = "ASCII";
 static const char __pyx_k_OCEAN[] = "OCEAN";
 static const char __pyx_k_Right[] = "Right";
@@ -1885,6 +1886,7 @@ static const char __pyx_k_DataArray3D[] = "DataArray3D";
 static const char __pyx_k_FLOOR_VALUE[] = "FLOOR_VALUE";
 static const char __pyx_k_MemoryError[] = "MemoryError";
 static const char __pyx_k_PickleError[] = "PickleError";
+static const char __pyx_k_TimeSeconds[] = "TimeSeconds";
 static const char __pyx_k_FlagsArray3D[] = "FlagsArray3D";
 static const char __pyx_k_MeansArray2D[] = "MeansArray2D";
 static const char __pyx_k_NODATA_VALUE[] = "NODATA_VALUE";
@@ -1925,10 +1927,10 @@ static const char __pyx_k_gapfill_config_types[] = "gapfill_config_types";
 static const char __pyx_k_strided_and_indirect[] = "<strided and indirect>";
 static const char __pyx_k_contiguous_and_direct[] = "<contiguous and direct>";
 static const char __pyx_k_MemoryView_of_r_object[] = "<MemoryView of %r object>";
+static const char __pyx_k_ClearedSpeckleCellCount[] = "ClearedSpeckleCellCount";
 static const char __pyx_k_MemoryView_of_r_at_0x_x[] = "<MemoryView of %r at 0x%x>";
 static const char __pyx_k_contiguous_and_indirect[] = "<contiguous and indirect>";
 static const char __pyx_k_Cannot_index_with_type_s[] = "Cannot index with type '%s'";
-static const char __pyx_k_clearedSpeckleCount_Glob[] = "clearedSpeckleCount_Glob";
 static const char __pyx_k_Invalid_shape_in_axis_d_d[] = "Invalid shape in axis %d: %d.";
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
@@ -1958,6 +1960,7 @@ static PyObject *__pyx_kp_s_Can_only_create_a_buffer_that_is;
 static PyObject *__pyx_kp_s_Cannot_assign_to_read_only_memor;
 static PyObject *__pyx_kp_s_Cannot_create_writable_memory_vi;
 static PyObject *__pyx_kp_s_Cannot_index_with_type_s;
+static PyObject *__pyx_n_s_ClearedSpeckleCellCount;
 static PyObject *__pyx_n_s_Coastline2D;
 static PyObject *__pyx_n_s_DataArray3D;
 static PyObject *__pyx_n_s_DataLimitsConfig;
@@ -2005,6 +2008,7 @@ static PyObject *__pyx_n_s_SPIRAL_CONFIG;
 static PyObject *__pyx_n_s_SpeckleCellCount;
 static PyObject *__pyx_n_s_SpiralSearchConfig;
 static PyObject *__pyx_n_s_T;
+static PyObject *__pyx_n_s_TimeSeconds;
 static PyObject *__pyx_n_s_Top;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_kp_s_Unable_to_convert_item_to_object;
@@ -2019,7 +2023,6 @@ static PyObject *__pyx_n_s_base;
 static PyObject *__pyx_n_s_c;
 static PyObject *__pyx_n_u_c;
 static PyObject *__pyx_n_s_class;
-static PyObject *__pyx_n_s_clearedSpeckleCount_Glob;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_kp_s_contiguous_and_direct;
 static PyObject *__pyx_kp_s_contiguous_and_indirect;
@@ -2101,6 +2104,7 @@ static PyObject *__pyx_n_s_struct;
 static PyObject *__pyx_n_s_sum;
 static PyObject *__pyx_n_s_take;
 static PyObject *__pyx_n_s_test;
+static PyObject *__pyx_n_s_time;
 static PyObject *__pyx_kp_s_unable_to_allocate_array_data;
 static PyObject *__pyx_kp_s_unable_to_allocate_shape_and_str;
 static PyObject *__pyx_n_s_unpack;
@@ -2190,7 +2194,7 @@ static PyObject *__pyx_tuple__30;
 static PyObject *__pyx_codeobj__31;
 /* Late includes */
 
-/* "gapfill_core_despeckle_and_flag.pyx":12
+/* "gapfill_core_despeckle_and_flag.pyx":13
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef setSpeckleFlags (dataStacks: A1DataStack, margins:PixelMargins, flagValues: FlagItems,             # <<<<<<<<<<<<<<
@@ -2253,6 +2257,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   __Pyx_memviewslice __pyx_v_stds = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_landMask = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_outputData = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_v_time_start = NULL;
   PyObject *__pyx_v__SEARCH_RADIUS = NULL;
   PyObject *__pyx_v_diam = NULL;
   PyObject *__pyx_v_inds = NULL;
@@ -2261,6 +2266,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   PyObject *__pyx_v_order = NULL;
   PyObject *__pyx_v_nbrTable = NULL;
   Py_ssize_t __pyx_v_z;
+  PyObject *__pyx_v_time_end = NULL;
   PyObject *__pyx_v_despeckleDiag = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -2408,7 +2414,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   Py_ssize_t __pyx_t_142;
   __Pyx_RefNannySetupContext("setSpeckleFlags", 0);
 
-  /* "gapfill_core_despeckle_and_flag.pyx":58
+  /* "gapfill_core_despeckle_and_flag.pyx":59
  * 
  * 
  *     assert isinstance(speckleConfig.SPIRAL_CONFIG, SpiralSearchConfig)             # <<<<<<<<<<<<<<
@@ -2417,339 +2423,339 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
   #ifndef CYTHON_WITHOUT_ASSERTIONS
   if (unlikely(!Py_OptimizeFlag)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_SPIRAL_CONFIG); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_SPIRAL_CONFIG); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 59, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_SpiralSearchConfig); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_SpiralSearchConfig); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyObject_IsInstance(__pyx_t_1, __pyx_t_2); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 58, __pyx_L1_error)
+    __pyx_t_3 = PyObject_IsInstance(__pyx_t_1, __pyx_t_2); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 59, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (unlikely(!(__pyx_t_3 != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 58, __pyx_L1_error)
+      __PYX_ERR(0, 59, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "gapfill_core_despeckle_and_flag.pyx":62
+  /* "gapfill_core_despeckle_and_flag.pyx":63
  *     cdef:
  *         # thresholds / consts
  *         float hardLowerLimit = dataConfig.FLOOR_VALUE             # <<<<<<<<<<<<<<
  *         float hardUpperLimit = dataConfig.CEILING_VALUE
  *         float _NDV = dataConfig.NODATA_VALUE
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataConfig, __pyx_n_s_FLOOR_VALUE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataConfig, __pyx_n_s_FLOOR_VALUE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_hardLowerLimit = __pyx_t_4;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":63
+  /* "gapfill_core_despeckle_and_flag.pyx":64
  *         # thresholds / consts
  *         float hardLowerLimit = dataConfig.FLOOR_VALUE
  *         float hardUpperLimit = dataConfig.CEILING_VALUE             # <<<<<<<<<<<<<<
  *         float _NDV = dataConfig.NODATA_VALUE
  *         float _CORRECTION_OFFSET = dataConfig.CORRECTION_OFFSET
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataConfig, __pyx_n_s_CEILING_VALUE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataConfig, __pyx_n_s_CEILING_VALUE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 64, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_hardUpperLimit = __pyx_t_4;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":64
+  /* "gapfill_core_despeckle_and_flag.pyx":65
  *         float hardLowerLimit = dataConfig.FLOOR_VALUE
  *         float hardUpperLimit = dataConfig.CEILING_VALUE
  *         float _NDV = dataConfig.NODATA_VALUE             # <<<<<<<<<<<<<<
  *         float _CORRECTION_OFFSET = dataConfig.CORRECTION_OFFSET
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataConfig, __pyx_n_s_NODATA_VALUE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataConfig, __pyx_n_s_NODATA_VALUE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v__NDV = __pyx_t_4;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":65
+  /* "gapfill_core_despeckle_and_flag.pyx":66
  *         float hardUpperLimit = dataConfig.CEILING_VALUE
  *         float _NDV = dataConfig.NODATA_VALUE
  *         float _CORRECTION_OFFSET = dataConfig.CORRECTION_OFFSET             # <<<<<<<<<<<<<<
  * 
  *         float _SPECKLE_ZSCORE_THRESHOLD = speckleConfig.SPECKLE_NBR_Z_THRESH
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataConfig, __pyx_n_s_CORRECTION_OFFSET); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataConfig, __pyx_n_s_CORRECTION_OFFSET); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v__CORRECTION_OFFSET = __pyx_t_4;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":67
+  /* "gapfill_core_despeckle_and_flag.pyx":68
  *         float _CORRECTION_OFFSET = dataConfig.CORRECTION_OFFSET
  * 
  *         float _SPECKLE_ZSCORE_THRESHOLD = speckleConfig.SPECKLE_NBR_Z_THRESH             # <<<<<<<<<<<<<<
  *         float stDevValidityThreshold = speckleConfig.EXTREME_BEYOND_SD
  *         float speckleDevThreshold = speckleConfig.SPECKLE_BEYOND_SD
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_SPECKLE_NBR_Z_THRESH); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_SPECKLE_NBR_Z_THRESH); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v__SPECKLE_ZSCORE_THRESHOLD = __pyx_t_4;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":68
+  /* "gapfill_core_despeckle_and_flag.pyx":69
  * 
  *         float _SPECKLE_ZSCORE_THRESHOLD = speckleConfig.SPECKLE_NBR_Z_THRESH
  *         float stDevValidityThreshold = speckleConfig.EXTREME_BEYOND_SD             # <<<<<<<<<<<<<<
  *         float speckleDevThreshold = speckleConfig.SPECKLE_BEYOND_SD
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_EXTREME_BEYOND_SD); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_EXTREME_BEYOND_SD); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_stDevValidityThreshold = __pyx_t_4;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":69
+  /* "gapfill_core_despeckle_and_flag.pyx":70
  *         float _SPECKLE_ZSCORE_THRESHOLD = speckleConfig.SPECKLE_NBR_Z_THRESH
  *         float stDevValidityThreshold = speckleConfig.EXTREME_BEYOND_SD
  *         float speckleDevThreshold = speckleConfig.SPECKLE_BEYOND_SD             # <<<<<<<<<<<<<<
  * 
  *         int _SPECKLE_NBR_MIN_THRESHOLD = speckleConfig.SPIRAL_CONFIG.MIN_REQUIRED_NBRS
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_SPECKLE_BEYOND_SD); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_SPECKLE_BEYOND_SD); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_4 = __pyx_PyFloat_AsFloat(__pyx_t_2); if (unlikely((__pyx_t_4 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_speckleDevThreshold = __pyx_t_4;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":71
+  /* "gapfill_core_despeckle_and_flag.pyx":72
  *         float speckleDevThreshold = speckleConfig.SPECKLE_BEYOND_SD
  * 
  *         int _SPECKLE_NBR_MIN_THRESHOLD = speckleConfig.SPIRAL_CONFIG.MIN_REQUIRED_NBRS             # <<<<<<<<<<<<<<
  *         int _SPECKLE_NBR_MAX_THRESHOLD = speckleConfig.SPIRAL_CONFIG.MAX_USED_NBRS
  *         int _MAX_NEIGHBOURS_TO_CHECK = speckleConfig.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_SPIRAL_CONFIG); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_SPIRAL_CONFIG); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_MIN_REQUIRED_NBRS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_MIN_REQUIRED_NBRS); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__SPECKLE_NBR_MIN_THRESHOLD = __pyx_t_5;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":72
+  /* "gapfill_core_despeckle_and_flag.pyx":73
  * 
  *         int _SPECKLE_NBR_MIN_THRESHOLD = speckleConfig.SPIRAL_CONFIG.MIN_REQUIRED_NBRS
  *         int _SPECKLE_NBR_MAX_THRESHOLD = speckleConfig.SPIRAL_CONFIG.MAX_USED_NBRS             # <<<<<<<<<<<<<<
  *         int _MAX_NEIGHBOURS_TO_CHECK = speckleConfig.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_SPIRAL_CONFIG); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_SPIRAL_CONFIG); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_MAX_USED_NBRS); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_MAX_USED_NBRS); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v__SPECKLE_NBR_MAX_THRESHOLD = __pyx_t_5;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":73
+  /* "gapfill_core_despeckle_and_flag.pyx":74
  *         int _SPECKLE_NBR_MIN_THRESHOLD = speckleConfig.SPIRAL_CONFIG.MIN_REQUIRED_NBRS
  *         int _SPECKLE_NBR_MAX_THRESHOLD = speckleConfig.SPIRAL_CONFIG.MAX_USED_NBRS
  *         int _MAX_NEIGHBOURS_TO_CHECK = speckleConfig.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH             # <<<<<<<<<<<<<<
  * 
  *         short _OCEAN_FLAG = flagValues.OCEAN
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_SPIRAL_CONFIG); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_speckleConfig, __pyx_n_s_SPIRAL_CONFIG); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_MAX_NBRS_TO_SEARCH); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_MAX_NBRS_TO_SEARCH); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__MAX_NEIGHBOURS_TO_CHECK = __pyx_t_5;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":75
+  /* "gapfill_core_despeckle_and_flag.pyx":76
  *         int _MAX_NEIGHBOURS_TO_CHECK = speckleConfig.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH
  * 
  *         short _OCEAN_FLAG = flagValues.OCEAN             # <<<<<<<<<<<<<<
  *         short _NEVERDATA_FLAG = flagValues.FAILURE
  *         short _EXTREME_FLAG = flagValues.EXTREME
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_flagValues, __pyx_n_s_OCEAN); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_flagValues, __pyx_n_s_OCEAN); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyInt_As_short(__pyx_t_1); if (unlikely((__pyx_t_6 == (short)-1) && PyErr_Occurred())) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_short(__pyx_t_1); if (unlikely((__pyx_t_6 == (short)-1) && PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__OCEAN_FLAG = __pyx_t_6;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":76
+  /* "gapfill_core_despeckle_and_flag.pyx":77
  * 
  *         short _OCEAN_FLAG = flagValues.OCEAN
  *         short _NEVERDATA_FLAG = flagValues.FAILURE             # <<<<<<<<<<<<<<
  *         short _EXTREME_FLAG = flagValues.EXTREME
  *         short _SPECKLE_FLAG = flagValues.SPECKLE
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_flagValues, __pyx_n_s_FAILURE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_flagValues, __pyx_n_s_FAILURE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyInt_As_short(__pyx_t_1); if (unlikely((__pyx_t_6 == (short)-1) && PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_short(__pyx_t_1); if (unlikely((__pyx_t_6 == (short)-1) && PyErr_Occurred())) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__NEVERDATA_FLAG = __pyx_t_6;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":77
+  /* "gapfill_core_despeckle_and_flag.pyx":78
  *         short _OCEAN_FLAG = flagValues.OCEAN
  *         short _NEVERDATA_FLAG = flagValues.FAILURE
  *         short _EXTREME_FLAG = flagValues.EXTREME             # <<<<<<<<<<<<<<
  *         short _SPECKLE_FLAG = flagValues.SPECKLE
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_flagValues, __pyx_n_s_EXTREME); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_flagValues, __pyx_n_s_EXTREME); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyInt_As_short(__pyx_t_1); if (unlikely((__pyx_t_6 == (short)-1) && PyErr_Occurred())) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_short(__pyx_t_1); if (unlikely((__pyx_t_6 == (short)-1) && PyErr_Occurred())) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__EXTREME_FLAG = __pyx_t_6;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":78
+  /* "gapfill_core_despeckle_and_flag.pyx":79
  *         short _NEVERDATA_FLAG = flagValues.FAILURE
  *         short _EXTREME_FLAG = flagValues.EXTREME
  *         short _SPECKLE_FLAG = flagValues.SPECKLE             # <<<<<<<<<<<<<<
  * 
  *         Py_ssize_t marginT = margins.Top
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_flagValues, __pyx_n_s_SPECKLE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_flagValues, __pyx_n_s_SPECKLE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyInt_As_short(__pyx_t_1); if (unlikely((__pyx_t_6 == (short)-1) && PyErr_Occurred())) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_As_short(__pyx_t_1); if (unlikely((__pyx_t_6 == (short)-1) && PyErr_Occurred())) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__SPECKLE_FLAG = __pyx_t_6;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":80
+  /* "gapfill_core_despeckle_and_flag.pyx":81
  *         short _SPECKLE_FLAG = flagValues.SPECKLE
  * 
  *         Py_ssize_t marginT = margins.Top             # <<<<<<<<<<<<<<
  *         Py_ssize_t marginB = margins.Bottom
  *         Py_ssize_t marginL = margins.Left
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_margins, __pyx_n_s_Top); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_margins, __pyx_n_s_Top); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 80, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_marginT = __pyx_t_7;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":81
+  /* "gapfill_core_despeckle_and_flag.pyx":82
  * 
  *         Py_ssize_t marginT = margins.Top
  *         Py_ssize_t marginB = margins.Bottom             # <<<<<<<<<<<<<<
  *         Py_ssize_t marginL = margins.Left
  *         Py_ssize_t marginR = margins.Right
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_margins, __pyx_n_s_Bottom); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_margins, __pyx_n_s_Bottom); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_marginB = __pyx_t_7;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":82
+  /* "gapfill_core_despeckle_and_flag.pyx":83
  *         Py_ssize_t marginT = margins.Top
  *         Py_ssize_t marginB = margins.Bottom
  *         Py_ssize_t marginL = margins.Left             # <<<<<<<<<<<<<<
  *         Py_ssize_t marginR = margins.Right
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_margins, __pyx_n_s_Left); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_margins, __pyx_n_s_Left); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 82, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_marginL = __pyx_t_7;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":83
+  /* "gapfill_core_despeckle_and_flag.pyx":84
  *         Py_ssize_t marginB = margins.Bottom
  *         Py_ssize_t marginL = margins.Left
  *         Py_ssize_t marginR = margins.Right             # <<<<<<<<<<<<<<
  * 
  *         float[:,:,::1] data = dataStacks.DataArray3D
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_margins, __pyx_n_s_Right); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_margins, __pyx_n_s_Right); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_marginR = __pyx_t_7;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":85
+  /* "gapfill_core_despeckle_and_flag.pyx":86
  *         Py_ssize_t marginR = margins.Right
  * 
  *         float[:,:,::1] data = dataStacks.DataArray3D             # <<<<<<<<<<<<<<
  *         unsigned char[:,:,::1] flags = dataStacks.FlagsArray3D
  *         float[:,::1] means = dataStacks.MeansArray2D
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStacks, __pyx_n_s_DataArray3D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStacks, __pyx_n_s_DataArray3D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_d_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_d_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_data = __pyx_t_8;
   __pyx_t_8.memview = NULL;
   __pyx_t_8.data = NULL;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":86
+  /* "gapfill_core_despeckle_and_flag.pyx":87
  * 
  *         float[:,:,::1] data = dataStacks.DataArray3D
  *         unsigned char[:,:,::1] flags = dataStacks.FlagsArray3D             # <<<<<<<<<<<<<<
  *         float[:,::1] means = dataStacks.MeansArray2D
  *         float[:,::1] stds = dataStacks.SDArray2D
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStacks, __pyx_n_s_FlagsArray3D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStacks, __pyx_n_s_FlagsArray3D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_9 = __Pyx_PyObject_to_MemoryviewSlice_d_d_dc_unsigned_char(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_9.memview)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_to_MemoryviewSlice_d_d_dc_unsigned_char(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_9.memview)) __PYX_ERR(0, 87, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_flags = __pyx_t_9;
   __pyx_t_9.memview = NULL;
   __pyx_t_9.data = NULL;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":87
+  /* "gapfill_core_despeckle_and_flag.pyx":88
  *         float[:,:,::1] data = dataStacks.DataArray3D
  *         unsigned char[:,:,::1] flags = dataStacks.FlagsArray3D
  *         float[:,::1] means = dataStacks.MeansArray2D             # <<<<<<<<<<<<<<
  *         float[:,::1] stds = dataStacks.SDArray2D
  *         char[:,::1] landMask = dataStacks.Coastline2D
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStacks, __pyx_n_s_MeansArray2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStacks, __pyx_n_s_MeansArray2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_means = __pyx_t_10;
   __pyx_t_10.memview = NULL;
   __pyx_t_10.data = NULL;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":88
+  /* "gapfill_core_despeckle_and_flag.pyx":89
  *         unsigned char[:,:,::1] flags = dataStacks.FlagsArray3D
  *         float[:,::1] means = dataStacks.MeansArray2D
  *         float[:,::1] stds = dataStacks.SDArray2D             # <<<<<<<<<<<<<<
  *         char[:,::1] landMask = dataStacks.Coastline2D
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStacks, __pyx_n_s_SDArray2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStacks, __pyx_n_s_SDArray2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 88, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 89, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_stds = __pyx_t_10;
   __pyx_t_10.memview = NULL;
   __pyx_t_10.data = NULL;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":89
+  /* "gapfill_core_despeckle_and_flag.pyx":90
  *         float[:,::1] means = dataStacks.MeansArray2D
  *         float[:,::1] stds = dataStacks.SDArray2D
  *         char[:,::1] landMask = dataStacks.Coastline2D             # <<<<<<<<<<<<<<
  * 
  *         float[:,:,::1] outputData
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStacks, __pyx_n_s_Coastline2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStacks, __pyx_n_s_Coastline2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_11 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_char(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_char(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_11.memview)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_landMask = __pyx_t_11;
   __pyx_t_11.memview = NULL;
   __pyx_t_11.data = NULL;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":95
+  /* "gapfill_core_despeckle_and_flag.pyx":96
  * 
  *     # TODO move shape checking to the data object
  *     zShape = data.shape[0]             # <<<<<<<<<<<<<<
@@ -2758,7 +2764,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
   __pyx_v_zShape = (__pyx_v_data.shape[0]);
 
-  /* "gapfill_core_despeckle_and_flag.pyx":96
+  /* "gapfill_core_despeckle_and_flag.pyx":97
  *     # TODO move shape checking to the data object
  *     zShape = data.shape[0]
  *     yShapeTotal = data.shape[1]             # <<<<<<<<<<<<<<
@@ -2767,7 +2773,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
   __pyx_v_yShapeTotal = (__pyx_v_data.shape[1]);
 
-  /* "gapfill_core_despeckle_and_flag.pyx":97
+  /* "gapfill_core_despeckle_and_flag.pyx":98
  *     zShape = data.shape[0]
  *     yShapeTotal = data.shape[1]
  *     xShapeTotal = data.shape[2]             # <<<<<<<<<<<<<<
@@ -2776,7 +2782,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
   __pyx_v_xShapeTotal = (__pyx_v_data.shape[2]);
 
-  /* "gapfill_core_despeckle_and_flag.pyx":99
+  /* "gapfill_core_despeckle_and_flag.pyx":100
  *     xShapeTotal = data.shape[2]
  *     # we will only iterate thru cells that are not in the margins
  *     yShapeToDespeckle = data.shape[1] - (marginT + marginB)             # <<<<<<<<<<<<<<
@@ -2785,7 +2791,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
   __pyx_v_yShapeToDespeckle = ((__pyx_v_data.shape[1]) - (__pyx_v_marginT + __pyx_v_marginB));
 
-  /* "gapfill_core_despeckle_and_flag.pyx":100
+  /* "gapfill_core_despeckle_and_flag.pyx":101
  *     # we will only iterate thru cells that are not in the margins
  *     yShapeToDespeckle = data.shape[1] - (marginT + marginB)
  *     xShapeToDespeckle = data.shape[2] - (marginL + marginR)             # <<<<<<<<<<<<<<
@@ -2794,7 +2800,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
   __pyx_v_xShapeToDespeckle = ((__pyx_v_data.shape[2]) - (__pyx_v_marginL + __pyx_v_marginR));
 
-  /* "gapfill_core_despeckle_and_flag.pyx":105
+  /* "gapfill_core_despeckle_and_flag.pyx":106
  *     #xShapeActual = data.shape[2] - (marginLTot + marginRTot)
  * 
  *     assert means.shape[0] == stds.shape[0] == yShapeTotal             # <<<<<<<<<<<<<<
@@ -2809,12 +2815,12 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
     }
     if (unlikely(!(__pyx_t_3 != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 105, __pyx_L1_error)
+      __PYX_ERR(0, 106, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "gapfill_core_despeckle_and_flag.pyx":106
+  /* "gapfill_core_despeckle_and_flag.pyx":107
  * 
  *     assert means.shape[0] == stds.shape[0] == yShapeTotal
  *     assert means.shape[1] == stds.shape[1] == xShapeTotal             # <<<<<<<<<<<<<<
@@ -2829,12 +2835,12 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
     }
     if (unlikely(!(__pyx_t_3 != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 106, __pyx_L1_error)
+      __PYX_ERR(0, 107, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "gapfill_core_despeckle_and_flag.pyx":107
+  /* "gapfill_core_despeckle_and_flag.pyx":108
  *     assert means.shape[0] == stds.shape[0] == yShapeTotal
  *     assert means.shape[1] == stds.shape[1] == xShapeTotal
  *     assert landMask.shape[0] == yShapeTotal             # <<<<<<<<<<<<<<
@@ -2845,12 +2851,12 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!(((__pyx_v_landMask.shape[0]) == __pyx_v_yShapeTotal) != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 107, __pyx_L1_error)
+      __PYX_ERR(0, 108, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "gapfill_core_despeckle_and_flag.pyx":108
+  /* "gapfill_core_despeckle_and_flag.pyx":109
  *     assert means.shape[1] == stds.shape[1] == xShapeTotal
  *     assert landMask.shape[0] == yShapeTotal
  *     assert landMask.shape[1] == xShapeTotal             # <<<<<<<<<<<<<<
@@ -2861,12 +2867,12 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!(((__pyx_v_landMask.shape[1]) == __pyx_v_xShapeTotal) != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 108, __pyx_L1_error)
+      __PYX_ERR(0, 109, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "gapfill_core_despeckle_and_flag.pyx":110
+  /* "gapfill_core_despeckle_and_flag.pyx":111
  *     assert landMask.shape[1] == xShapeTotal
  * 
  *     assert flags.shape[1] == yShapeTotal             # <<<<<<<<<<<<<<
@@ -2877,12 +2883,12 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!(((__pyx_v_flags.shape[1]) == __pyx_v_yShapeTotal) != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 110, __pyx_L1_error)
+      __PYX_ERR(0, 111, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "gapfill_core_despeckle_and_flag.pyx":111
+  /* "gapfill_core_despeckle_and_flag.pyx":112
  * 
  *     assert flags.shape[1] == yShapeTotal
  *     assert flags.shape[2] == xShapeTotal             # <<<<<<<<<<<<<<
@@ -2893,30 +2899,30 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!(((__pyx_v_flags.shape[2]) == __pyx_v_xShapeTotal) != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 111, __pyx_L1_error)
+      __PYX_ERR(0, 112, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "gapfill_core_despeckle_and_flag.pyx":113
+  /* "gapfill_core_despeckle_and_flag.pyx":114
  *     assert flags.shape[2] == xShapeTotal
  * 
  *     validLower = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')             # <<<<<<<<<<<<<<
  *     validUpper = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  *     dodgyLower = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_12 = PyInt_FromSsize_t(__pyx_v_yShapeTotal); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_12 = PyInt_FromSsize_t(__pyx_v_yShapeTotal); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_13 = PyInt_FromSsize_t(__pyx_v_xShapeTotal); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_13 = PyInt_FromSsize_t(__pyx_v_xShapeTotal); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
-  __pyx_t_14 = PyTuple_New(2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_14 = PyTuple_New(2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_GIVEREF(__pyx_t_12);
   PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_12);
@@ -2924,39 +2930,39 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   PyTuple_SET_ITEM(__pyx_t_14, 1, __pyx_t_13);
   __pyx_t_12 = 0;
   __pyx_t_13 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_shape, __pyx_t_14) < 0) __PYX_ERR(0, 113, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_shape, __pyx_t_14) < 0) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_n_s_float32) < 0) __PYX_ERR(0, 113, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 113, __pyx_L1_error)
-  __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 113, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_n_s_float32) < 0) __PYX_ERR(0, 114, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_14, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_14, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   __pyx_v_validLower = __pyx_t_10;
   __pyx_t_10.memview = NULL;
   __pyx_t_10.data = NULL;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":114
+  /* "gapfill_core_despeckle_and_flag.pyx":115
  * 
  *     validLower = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  *     validUpper = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')             # <<<<<<<<<<<<<<
  *     dodgyLower = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  *     dodgyUpper = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_np); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_np); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_empty); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  __pyx_t_14 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_2 = PyInt_FromSsize_t(__pyx_v_yShapeTotal); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_2 = PyInt_FromSsize_t(__pyx_v_yShapeTotal); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_13 = PyInt_FromSsize_t(__pyx_v_xShapeTotal); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_13 = PyInt_FromSsize_t(__pyx_v_xShapeTotal); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
-  __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_12 = PyTuple_New(2); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_2);
@@ -2964,39 +2970,39 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   PyTuple_SET_ITEM(__pyx_t_12, 1, __pyx_t_13);
   __pyx_t_2 = 0;
   __pyx_t_13 = 0;
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_shape, __pyx_t_12) < 0) __PYX_ERR(0, 114, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_shape, __pyx_t_12) < 0) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_dtype, __pyx_n_s_float32) < 0) __PYX_ERR(0, 114, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 114, __pyx_L1_error)
-  __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_14); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 114, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_dtype, __pyx_n_s_float32) < 0) __PYX_ERR(0, 115, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_14); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_12, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_12, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __pyx_v_validUpper = __pyx_t_10;
   __pyx_t_10.memview = NULL;
   __pyx_t_10.data = NULL;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":115
+  /* "gapfill_core_despeckle_and_flag.pyx":116
  *     validLower = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  *     validUpper = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  *     dodgyLower = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')             # <<<<<<<<<<<<<<
  *     dodgyUpper = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  *     zScoresDay = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_empty); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_empty); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_12 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_yShapeTotal); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_yShapeTotal); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_13 = PyInt_FromSsize_t(__pyx_v_xShapeTotal); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_13 = PyInt_FromSsize_t(__pyx_v_xShapeTotal); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
@@ -3004,39 +3010,39 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_13);
   __pyx_t_1 = 0;
   __pyx_t_13 = 0;
-  if (PyDict_SetItem(__pyx_t_12, __pyx_n_s_shape, __pyx_t_2) < 0) __PYX_ERR(0, 115, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_12, __pyx_n_s_shape, __pyx_t_2) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_t_12, __pyx_n_s_dtype, __pyx_n_s_float32) < 0) __PYX_ERR(0, 115, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_12, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 115, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_14, __pyx_empty_tuple, __pyx_t_12); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_12, __pyx_n_s_dtype, __pyx_n_s_float32) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_12, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_14, __pyx_empty_tuple, __pyx_t_12); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_dodgyLower = __pyx_t_10;
   __pyx_t_10.memview = NULL;
   __pyx_t_10.data = NULL;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":116
+  /* "gapfill_core_despeckle_and_flag.pyx":117
  *     validUpper = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  *     dodgyLower = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  *     dodgyUpper = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')             # <<<<<<<<<<<<<<
  *     zScoresDay = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_empty); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_14 = PyInt_FromSsize_t(__pyx_v_yShapeTotal); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_14 = PyInt_FromSsize_t(__pyx_v_yShapeTotal); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_13 = PyInt_FromSsize_t(__pyx_v_xShapeTotal); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_13 = PyInt_FromSsize_t(__pyx_v_xShapeTotal); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_14);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_14);
@@ -3044,39 +3050,39 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_13);
   __pyx_t_14 = 0;
   __pyx_t_13 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_shape, __pyx_t_1) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_shape, __pyx_t_1) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_n_s_float32) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 116, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_dtype, __pyx_n_s_float32) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_empty_tuple, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 116, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 117, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_dodgyUpper = __pyx_t_10;
   __pyx_t_10.memview = NULL;
   __pyx_t_10.data = NULL;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":117
+  /* "gapfill_core_despeckle_and_flag.pyx":118
  *     dodgyLower = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  *     dodgyUpper = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  *     zScoresDay = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')             # <<<<<<<<<<<<<<
  * 
  *     _BLANK_ZSCORE = -999.0
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_12 = PyInt_FromSsize_t(__pyx_v_yShapeTotal); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_12 = PyInt_FromSsize_t(__pyx_v_yShapeTotal); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_13 = PyInt_FromSsize_t(__pyx_v_xShapeTotal); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_13 = PyInt_FromSsize_t(__pyx_v_xShapeTotal); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
-  __pyx_t_14 = PyTuple_New(2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_14 = PyTuple_New(2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_GIVEREF(__pyx_t_12);
   PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_12);
@@ -3084,21 +3090,21 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   PyTuple_SET_ITEM(__pyx_t_14, 1, __pyx_t_13);
   __pyx_t_12 = 0;
   __pyx_t_13 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_shape, __pyx_t_14) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_shape, __pyx_t_14) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_n_s_float32) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 117, __pyx_L1_error)
-  __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 117, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_n_s_float32) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_14, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_14, PyBUF_WRITABLE); if (unlikely(!__pyx_t_10.memview)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   __pyx_v_zScoresDay = __pyx_t_10;
   __pyx_t_10.memview = NULL;
   __pyx_t_10.data = NULL;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":119
+  /* "gapfill_core_despeckle_and_flag.pyx":120
  *     zScoresDay = np.empty(shape=(yShapeTotal, xShapeTotal), dtype='float32', order='c')
  * 
  *     _BLANK_ZSCORE = -999.0             # <<<<<<<<<<<<<<
@@ -3107,7 +3113,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
   __pyx_v__BLANK_ZSCORE = -999.0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":120
+  /* "gapfill_core_despeckle_and_flag.pyx":121
  * 
  *     _BLANK_ZSCORE = -999.0
  *     speckleCount_Glob = 0             # <<<<<<<<<<<<<<
@@ -3116,7 +3122,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
   __pyx_v_speckleCount_Glob = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":121
+  /* "gapfill_core_despeckle_and_flag.pyx":122
  *     _BLANK_ZSCORE = -999.0
  *     speckleCount_Glob = 0
  *     extremeCount_Glob = 0             # <<<<<<<<<<<<<<
@@ -3125,7 +3131,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
   __pyx_v_extremeCount_Glob = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":122
+  /* "gapfill_core_despeckle_and_flag.pyx":123
  *     speckleCount_Glob = 0
  *     extremeCount_Glob = 0
  *     goodCount_Glob = 0             # <<<<<<<<<<<<<<
@@ -3134,7 +3140,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
   __pyx_v_goodCount_Glob = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":123
+  /* "gapfill_core_despeckle_and_flag.pyx":124
  *     extremeCount_Glob = 0
  *     goodCount_Glob = 0
  *     oceanCount_Glob = 0             # <<<<<<<<<<<<<<
@@ -3143,159 +3149,189 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
   __pyx_v_oceanCount_Glob = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":124
+  /* "gapfill_core_despeckle_and_flag.pyx":125
  *     goodCount_Glob = 0
  *     oceanCount_Glob = 0
  *     clearedSpeckleCount_Glob = 0             # <<<<<<<<<<<<<<
  * 
- *     # TODO replace print with logging
+ *     time_start = time.time()
  */
   __pyx_v_clearedSpeckleCount_Glob = 0;
 
   /* "gapfill_core_despeckle_and_flag.pyx":127
+ *     clearedSpeckleCount_Glob = 0
+ * 
+ *     time_start = time.time()             # <<<<<<<<<<<<<<
+ * 
+ *     # TODO replace print with logging
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_time); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_time); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_1)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_1);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  __pyx_t_14 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_14);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_time_start = __pyx_t_14;
+  __pyx_t_14 = 0;
+
+  /* "gapfill_core_despeckle_and_flag.pyx":130
  * 
  *     # TODO replace print with logging
  *     print ("Despeckle: Rejecting data beyond {0!s}s.d. of mean. Nbr search on data beyond {1!s} s.d. of mean.".             # <<<<<<<<<<<<<<
  *            format(stDevValidityThreshold, speckleDevThreshold))
  *     print ("Nbr searching for {0!s} - {1!s} nbrs within {2!s} spiral steps for z-score tolerance of {3!s}".
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Despeckle_Rejecting_data_beyond, __pyx_n_s_format); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Despeckle_Rejecting_data_beyond, __pyx_n_s_format); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
 
-  /* "gapfill_core_despeckle_and_flag.pyx":128
+  /* "gapfill_core_despeckle_and_flag.pyx":131
  *     # TODO replace print with logging
  *     print ("Despeckle: Rejecting data beyond {0!s}s.d. of mean. Nbr search on data beyond {1!s} s.d. of mean.".
  *            format(stDevValidityThreshold, speckleDevThreshold))             # <<<<<<<<<<<<<<
  *     print ("Nbr searching for {0!s} - {1!s} nbrs within {2!s} spiral steps for z-score tolerance of {3!s}".
  *            format( _SPECKLE_NBR_MIN_THRESHOLD, _SPECKLE_NBR_MAX_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK,
  */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_stDevValidityThreshold); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_13 = PyFloat_FromDouble(__pyx_v_speckleDevThreshold); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_stDevValidityThreshold); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_13 = PyFloat_FromDouble(__pyx_v_speckleDevThreshold); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
   __pyx_t_12 = NULL;
   __pyx_t_5 = 0;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_1);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_2);
     if (likely(__pyx_t_12)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
       __Pyx_INCREF(__pyx_t_12);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_1, function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
       __pyx_t_5 = 1;
     }
   }
   #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_1)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_t_2, __pyx_t_13};
-    __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (PyFunction_Check(__pyx_t_2)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_t_1, __pyx_t_13};
+    __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
     __Pyx_GOTREF(__pyx_t_14);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_t_2, __pyx_t_13};
-    __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
+    PyObject *__pyx_temp[3] = {__pyx_t_12, __pyx_t_1, __pyx_t_13};
+    __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
     __Pyx_GOTREF(__pyx_t_14);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
   } else
   #endif
   {
-    __pyx_t_15 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_15 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_15);
     if (__pyx_t_12) {
       __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_12); __pyx_t_12 = NULL;
     }
-    __Pyx_GIVEREF(__pyx_t_2);
-    PyTuple_SET_ITEM(__pyx_t_15, 0+__pyx_t_5, __pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_15, 0+__pyx_t_5, __pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_13);
     PyTuple_SET_ITEM(__pyx_t_15, 1+__pyx_t_5, __pyx_t_13);
-    __pyx_t_2 = 0;
+    __pyx_t_1 = 0;
     __pyx_t_13 = 0;
-    __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_15, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_15, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_14) < 0) __PYX_ERR(0, 127, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (__Pyx_PrintOne(0, __pyx_t_14) < 0) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":129
+  /* "gapfill_core_despeckle_and_flag.pyx":132
  *     print ("Despeckle: Rejecting data beyond {0!s}s.d. of mean. Nbr search on data beyond {1!s} s.d. of mean.".
  *            format(stDevValidityThreshold, speckleDevThreshold))
  *     print ("Nbr searching for {0!s} - {1!s} nbrs within {2!s} spiral steps for z-score tolerance of {3!s}".             # <<<<<<<<<<<<<<
  *            format( _SPECKLE_NBR_MIN_THRESHOLD, _SPECKLE_NBR_MAX_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK,
  *                   _SPECKLE_ZSCORE_THRESHOLD))
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Nbr_searching_for_0_s_1_s_nbrs_w, __pyx_n_s_format); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 129, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Nbr_searching_for_0_s_1_s_nbrs_w, __pyx_n_s_format); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 132, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
 
-  /* "gapfill_core_despeckle_and_flag.pyx":130
+  /* "gapfill_core_despeckle_and_flag.pyx":133
  *            format(stDevValidityThreshold, speckleDevThreshold))
  *     print ("Nbr searching for {0!s} - {1!s} nbrs within {2!s} spiral steps for z-score tolerance of {3!s}".
  *            format( _SPECKLE_NBR_MIN_THRESHOLD, _SPECKLE_NBR_MAX_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK,             # <<<<<<<<<<<<<<
  *                   _SPECKLE_ZSCORE_THRESHOLD))
  * 
  */
-  __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v__SPECKLE_NBR_MIN_THRESHOLD); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v__SPECKLE_NBR_MIN_THRESHOLD); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_15);
-  __pyx_t_13 = __Pyx_PyInt_From_int(__pyx_v__SPECKLE_NBR_MAX_THRESHOLD); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 130, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyInt_From_int(__pyx_v__SPECKLE_NBR_MAX_THRESHOLD); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v__MAX_NEIGHBOURS_TO_CHECK); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 130, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v__MAX_NEIGHBOURS_TO_CHECK); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
 
-  /* "gapfill_core_despeckle_and_flag.pyx":131
+  /* "gapfill_core_despeckle_and_flag.pyx":134
  *     print ("Nbr searching for {0!s} - {1!s} nbrs within {2!s} spiral steps for z-score tolerance of {3!s}".
  *            format( _SPECKLE_NBR_MIN_THRESHOLD, _SPECKLE_NBR_MAX_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK,
  *                   _SPECKLE_ZSCORE_THRESHOLD))             # <<<<<<<<<<<<<<
  * 
  *     # Generate the neighbour spiral search table out to "a bit" further than needed
  */
-  __pyx_t_12 = PyFloat_FromDouble(__pyx_v__SPECKLE_ZSCORE_THRESHOLD); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_12 = PyFloat_FromDouble(__pyx_v__SPECKLE_ZSCORE_THRESHOLD); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 134, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
   __pyx_t_16 = NULL;
   __pyx_t_5 = 0;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
-    __pyx_t_16 = PyMethod_GET_SELF(__pyx_t_1);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_16 = PyMethod_GET_SELF(__pyx_t_2);
     if (likely(__pyx_t_16)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
       __Pyx_INCREF(__pyx_t_16);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_1, function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
       __pyx_t_5 = 1;
     }
   }
   #if CYTHON_FAST_PYCALL
-  if (PyFunction_Check(__pyx_t_1)) {
-    PyObject *__pyx_temp[5] = {__pyx_t_16, __pyx_t_15, __pyx_t_13, __pyx_t_2, __pyx_t_12};
-    __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_5, 4+__pyx_t_5); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 130, __pyx_L1_error)
+  if (PyFunction_Check(__pyx_t_2)) {
+    PyObject *__pyx_temp[5] = {__pyx_t_16, __pyx_t_15, __pyx_t_13, __pyx_t_1, __pyx_t_12};
+    __pyx_t_14 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 4+__pyx_t_5); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 133, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
-  if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
-    PyObject *__pyx_temp[5] = {__pyx_t_16, __pyx_t_15, __pyx_t_13, __pyx_t_2, __pyx_t_12};
-    __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_5, 4+__pyx_t_5); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 130, __pyx_L1_error)
+  if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
+    PyObject *__pyx_temp[5] = {__pyx_t_16, __pyx_t_15, __pyx_t_13, __pyx_t_1, __pyx_t_12};
+    __pyx_t_14 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 4+__pyx_t_5); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 133, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   } else
   #endif
   {
-    __pyx_t_17 = PyTuple_New(4+__pyx_t_5); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 130, __pyx_L1_error)
+    __pyx_t_17 = PyTuple_New(4+__pyx_t_5); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 133, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_17);
     if (__pyx_t_16) {
       __Pyx_GIVEREF(__pyx_t_16); PyTuple_SET_ITEM(__pyx_t_17, 0, __pyx_t_16); __pyx_t_16 = NULL;
@@ -3304,84 +3340,84 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
     PyTuple_SET_ITEM(__pyx_t_17, 0+__pyx_t_5, __pyx_t_15);
     __Pyx_GIVEREF(__pyx_t_13);
     PyTuple_SET_ITEM(__pyx_t_17, 1+__pyx_t_5, __pyx_t_13);
-    __Pyx_GIVEREF(__pyx_t_2);
-    PyTuple_SET_ITEM(__pyx_t_17, 2+__pyx_t_5, __pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_17, 2+__pyx_t_5, __pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_12);
     PyTuple_SET_ITEM(__pyx_t_17, 3+__pyx_t_5, __pyx_t_12);
     __pyx_t_15 = 0;
     __pyx_t_13 = 0;
-    __pyx_t_2 = 0;
+    __pyx_t_1 = 0;
     __pyx_t_12 = 0;
-    __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_17, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 130, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_17, NULL); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 133, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
   }
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_14) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (__Pyx_PrintOne(0, __pyx_t_14) < 0) __PYX_ERR(0, 132, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":134
+  /* "gapfill_core_despeckle_and_flag.pyx":137
  * 
  *     # Generate the neighbour spiral search table out to "a bit" further than needed
  *     _SEARCH_RADIUS =  <int> ((sqrt(_MAX_NEIGHBOURS_TO_CHECK / 3.14)) + 5)             # <<<<<<<<<<<<<<
  *     diam = _SEARCH_RADIUS * 2 + 1
  *     print ("Despeckle diam = " + str(diam))
  */
-  __pyx_t_14 = __Pyx_PyInt_From_int(((int)(sqrt((__pyx_v__MAX_NEIGHBOURS_TO_CHECK / 3.14)) + 5.0))); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyInt_From_int(((int)(sqrt((__pyx_v__MAX_NEIGHBOURS_TO_CHECK / 3.14)) + 5.0))); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 137, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __pyx_v__SEARCH_RADIUS = __pyx_t_14;
   __pyx_t_14 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":135
+  /* "gapfill_core_despeckle_and_flag.pyx":138
  *     # Generate the neighbour spiral search table out to "a bit" further than needed
  *     _SEARCH_RADIUS =  <int> ((sqrt(_MAX_NEIGHBOURS_TO_CHECK / 3.14)) + 5)
  *     diam = _SEARCH_RADIUS * 2 + 1             # <<<<<<<<<<<<<<
  *     print ("Despeckle diam = " + str(diam))
  *     inds = np.indices([diam, diam]) - _SEARCH_RADIUS
  */
-  __pyx_t_14 = PyNumber_Multiply(__pyx_v__SEARCH_RADIUS, __pyx_int_2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_14 = PyNumber_Multiply(__pyx_v__SEARCH_RADIUS, __pyx_int_2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 138, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_1 = __Pyx_PyInt_AddObjC(__pyx_t_14, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyInt_AddObjC(__pyx_t_14, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  __pyx_v_diam = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_v_diam = __pyx_t_2;
+  __pyx_t_2 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":136
+  /* "gapfill_core_despeckle_and_flag.pyx":139
  *     _SEARCH_RADIUS =  <int> ((sqrt(_MAX_NEIGHBOURS_TO_CHECK / 3.14)) + 5)
  *     diam = _SEARCH_RADIUS * 2 + 1
  *     print ("Despeckle diam = " + str(diam))             # <<<<<<<<<<<<<<
  *     inds = np.indices([diam, diam]) - _SEARCH_RADIUS
  *     distTmp = np.sqrt((inds ** 2).sum(0))
  */
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyString_Type)), __pyx_v_diam); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_14 = PyNumber_Add(__pyx_kp_s_Despeckle_diam, __pyx_t_1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyString_Type)), __pyx_v_diam); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_14 = PyNumber_Add(__pyx_kp_s_Despeckle_diam, __pyx_t_2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_14) < 0) __PYX_ERR(0, 136, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (__Pyx_PrintOne(0, __pyx_t_14) < 0) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":137
+  /* "gapfill_core_despeckle_and_flag.pyx":140
  *     diam = _SEARCH_RADIUS * 2 + 1
  *     print ("Despeckle diam = " + str(diam))
  *     inds = np.indices([diam, diam]) - _SEARCH_RADIUS             # <<<<<<<<<<<<<<
  *     distTmp = np.sqrt((inds ** 2).sum(0))
  *     npTmpTable = ((inds.T).reshape(diam ** 2, 2))
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_indices); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_indices); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 140, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_diam);
   __Pyx_GIVEREF(__pyx_v_diam);
-  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_v_diam);
+  PyList_SET_ITEM(__pyx_t_2, 0, __pyx_v_diam);
   __Pyx_INCREF(__pyx_v_diam);
   __Pyx_GIVEREF(__pyx_v_diam);
-  PyList_SET_ITEM(__pyx_t_1, 1, __pyx_v_diam);
+  PyList_SET_ITEM(__pyx_t_2, 1, __pyx_v_diam);
   __pyx_t_12 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_17))) {
     __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_17);
@@ -3392,90 +3428,90 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
       __Pyx_DECREF_SET(__pyx_t_17, function);
     }
   }
-  __pyx_t_14 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_17, __pyx_t_12, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_17, __pyx_t_1);
+  __pyx_t_14 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_17, __pyx_t_12, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_17, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 140, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-  __pyx_t_17 = PyNumber_Subtract(__pyx_t_14, __pyx_v__SEARCH_RADIUS); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_t_17 = PyNumber_Subtract(__pyx_t_14, __pyx_v__SEARCH_RADIUS); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 140, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   __pyx_v_inds = __pyx_t_17;
   __pyx_t_17 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":138
+  /* "gapfill_core_despeckle_and_flag.pyx":141
  *     print ("Despeckle diam = " + str(diam))
  *     inds = np.indices([diam, diam]) - _SEARCH_RADIUS
  *     distTmp = np.sqrt((inds ** 2).sum(0))             # <<<<<<<<<<<<<<
  *     npTmpTable = ((inds.T).reshape(diam ** 2, 2))
  *     npTmpTable = np.append(npTmpTable, distTmp.ravel()[:, None], axis=1)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_np); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_np); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  __pyx_t_12 = PyNumber_Power(__pyx_v_inds, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 138, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_sum); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 138, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+  __pyx_t_12 = PyNumber_Power(__pyx_v_inds, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_12);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_sum); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __pyx_t_12 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_2);
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_1);
     if (likely(__pyx_t_12)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_12);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  __pyx_t_14 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_12, __pyx_int_0) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_int_0);
-  __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-  if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 138, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_14);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
-    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_1);
-    if (likely(__pyx_t_2)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-      __Pyx_INCREF(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_12);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_1, function);
     }
   }
-  __pyx_t_17 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_2, __pyx_t_14) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_14);
-  __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 138, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_17);
+  __pyx_t_14 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_12, __pyx_int_0) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_int_0);
+  __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
+  if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_1)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_1);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  __pyx_t_17 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_1, __pyx_t_14) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_14);
+  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+  if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_distTmp = __pyx_t_17;
   __pyx_t_17 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":139
+  /* "gapfill_core_despeckle_and_flag.pyx":142
  *     inds = np.indices([diam, diam]) - _SEARCH_RADIUS
  *     distTmp = np.sqrt((inds ** 2).sum(0))
  *     npTmpTable = ((inds.T).reshape(diam ** 2, 2))             # <<<<<<<<<<<<<<
  *     npTmpTable = np.append(npTmpTable, distTmp.ravel()[:, None], axis=1)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_inds, __pyx_n_s_T); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_reshape); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_inds, __pyx_n_s_T); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_reshape); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Power(__pyx_v_diam, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = NULL;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyNumber_Power(__pyx_v_diam, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = NULL;
   __pyx_t_5 = 0;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_14))) {
-    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_14);
-    if (likely(__pyx_t_2)) {
+    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_14);
+    if (likely(__pyx_t_1)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
-      __Pyx_INCREF(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_1);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_14, function);
       __pyx_t_5 = 1;
@@ -3483,35 +3519,35 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_14)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_2, __pyx_t_1, __pyx_int_2};
-    __pyx_t_17 = __Pyx_PyFunction_FastCall(__pyx_t_14, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 139, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    PyObject *__pyx_temp[3] = {__pyx_t_1, __pyx_t_2, __pyx_int_2};
+    __pyx_t_17 = __Pyx_PyFunction_FastCall(__pyx_t_14, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 142, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_GOTREF(__pyx_t_17);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_14)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_2, __pyx_t_1, __pyx_int_2};
-    __pyx_t_17 = __Pyx_PyCFunction_FastCall(__pyx_t_14, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 139, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+    PyObject *__pyx_temp[3] = {__pyx_t_1, __pyx_t_2, __pyx_int_2};
+    __pyx_t_17 = __Pyx_PyCFunction_FastCall(__pyx_t_14, __pyx_temp+1-__pyx_t_5, 2+__pyx_t_5); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 142, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_GOTREF(__pyx_t_17);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else
   #endif
   {
-    __pyx_t_12 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 139, __pyx_L1_error)
+    __pyx_t_12 = PyTuple_New(2+__pyx_t_5); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 142, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
-    if (__pyx_t_2) {
-      __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_2); __pyx_t_2 = NULL;
+    if (__pyx_t_1) {
+      __Pyx_GIVEREF(__pyx_t_1); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_1); __pyx_t_1 = NULL;
     }
-    __Pyx_GIVEREF(__pyx_t_1);
-    PyTuple_SET_ITEM(__pyx_t_12, 0+__pyx_t_5, __pyx_t_1);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_12, 0+__pyx_t_5, __pyx_t_2);
     __Pyx_INCREF(__pyx_int_2);
     __Pyx_GIVEREF(__pyx_int_2);
     PyTuple_SET_ITEM(__pyx_t_12, 1+__pyx_t_5, __pyx_int_2);
-    __pyx_t_1 = 0;
-    __pyx_t_17 = __Pyx_PyObject_Call(__pyx_t_14, __pyx_t_12, NULL); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 139, __pyx_L1_error)
+    __pyx_t_2 = 0;
+    __pyx_t_17 = __Pyx_PyObject_Call(__pyx_t_14, __pyx_t_12, NULL); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 142, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_17);
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   }
@@ -3519,39 +3555,39 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   __pyx_v_npTmpTable = __pyx_t_17;
   __pyx_t_17 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":140
+  /* "gapfill_core_despeckle_and_flag.pyx":143
  *     distTmp = np.sqrt((inds ** 2).sum(0))
  *     npTmpTable = ((inds.T).reshape(diam ** 2, 2))
  *     npTmpTable = np.append(npTmpTable, distTmp.ravel()[:, None], axis=1)             # <<<<<<<<<<<<<<
  * 
  *     # sort the table by distance then x then y (the arguments are last-sort-first)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_17, __pyx_n_s_np); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_17, __pyx_n_s_np); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_append); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_append); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_distTmp, __pyx_n_s_ravel); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_distTmp, __pyx_n_s_ravel); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_1 = NULL;
+  __pyx_t_2 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_12))) {
-    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_12);
-    if (likely(__pyx_t_1)) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_12);
+    if (likely(__pyx_t_2)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_12);
-      __Pyx_INCREF(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_2);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_12, function);
     }
   }
-  __pyx_t_17 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_12);
-  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_t_17 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_12);
+  __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_12 = __Pyx_PyObject_GetItem(__pyx_t_17, __pyx_tuple__2); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyObject_GetItem(__pyx_t_17, __pyx_tuple__2); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-  __pyx_t_17 = PyTuple_New(2); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_t_17 = PyTuple_New(2); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
   __Pyx_INCREF(__pyx_v_npTmpTable);
   __Pyx_GIVEREF(__pyx_v_npTmpTable);
@@ -3559,148 +3595,148 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   __Pyx_GIVEREF(__pyx_t_12);
   PyTuple_SET_ITEM(__pyx_t_17, 1, __pyx_t_12);
   __pyx_t_12 = 0;
-  __pyx_t_12 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  if (PyDict_SetItem(__pyx_t_12, __pyx_n_s_axis, __pyx_int_1) < 0) __PYX_ERR(0, 140, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_14, __pyx_t_17, __pyx_t_12); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_t_12, __pyx_n_s_axis, __pyx_int_1) < 0) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_14, __pyx_t_17, __pyx_t_12); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __Pyx_DECREF_SET(__pyx_v_npTmpTable, __pyx_t_1);
-  __pyx_t_1 = 0;
+  __Pyx_DECREF_SET(__pyx_v_npTmpTable, __pyx_t_2);
+  __pyx_t_2 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":143
+  /* "gapfill_core_despeckle_and_flag.pyx":146
  * 
  *     # sort the table by distance then x then y (the arguments are last-sort-first)
  *     order = np.lexsort((npTmpTable[:, 1],npTmpTable[:, 0],npTmpTable[:, 2]))             # <<<<<<<<<<<<<<
  *     npTmpTable = np.take(npTmpTable, order, axis=0)
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_lexsort); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_lexsort); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_12 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__3); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__3); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_14 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__4); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__4); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 143, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_13 = PyTuple_New(3); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_13 = PyTuple_New(3); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
   __Pyx_GIVEREF(__pyx_t_12);
   PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_12);
   __Pyx_GIVEREF(__pyx_t_14);
   PyTuple_SET_ITEM(__pyx_t_13, 1, __pyx_t_14);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_13, 2, __pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_13, 2, __pyx_t_1);
   __pyx_t_12 = 0;
   __pyx_t_14 = 0;
-  __pyx_t_2 = 0;
-  __pyx_t_2 = NULL;
+  __pyx_t_1 = 0;
+  __pyx_t_1 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_17))) {
-    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_17);
-    if (likely(__pyx_t_2)) {
+    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_17);
+    if (likely(__pyx_t_1)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_17);
-      __Pyx_INCREF(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_1);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_17, function);
     }
   }
-  __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_17, __pyx_t_2, __pyx_t_13) : __Pyx_PyObject_CallOneArg(__pyx_t_17, __pyx_t_13);
-  __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_17, __pyx_t_1, __pyx_t_13) : __Pyx_PyObject_CallOneArg(__pyx_t_17, __pyx_t_13);
+  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 143, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 146, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-  __pyx_v_order = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_v_order = __pyx_t_2;
+  __pyx_t_2 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":144
+  /* "gapfill_core_despeckle_and_flag.pyx":147
  *     # sort the table by distance then x then y (the arguments are last-sort-first)
  *     order = np.lexsort((npTmpTable[:, 1],npTmpTable[:, 0],npTmpTable[:, 2]))
  *     npTmpTable = np.take(npTmpTable, order, axis=0)             # <<<<<<<<<<<<<<
  * 
  *     # transfer to a C-side object transposed to have three rows and many columns and in
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_take); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_take); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_npTmpTable);
   __Pyx_GIVEREF(__pyx_v_npTmpTable);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_npTmpTable);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_npTmpTable);
   __Pyx_INCREF(__pyx_v_order);
   __Pyx_GIVEREF(__pyx_v_order);
-  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_order);
-  __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 144, __pyx_L1_error)
+  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_order);
+  __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
-  if (PyDict_SetItem(__pyx_t_13, __pyx_n_s_axis, __pyx_int_0) < 0) __PYX_ERR(0, 144, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_17, __pyx_t_1, __pyx_t_13); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_t_13, __pyx_n_s_axis, __pyx_int_0) < 0) __PYX_ERR(0, 147, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_17, __pyx_t_2, __pyx_t_13); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __Pyx_DECREF_SET(__pyx_v_npTmpTable, __pyx_t_2);
-  __pyx_t_2 = 0;
+  __Pyx_DECREF_SET(__pyx_v_npTmpTable, __pyx_t_1);
+  __pyx_t_1 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":148
+  /* "gapfill_core_despeckle_and_flag.pyx":151
  *     # transfer to a C-side object transposed to have three rows and many columns and in
  *     # C-contiguous layout, so that cython can access individual nbr coord sets more quickly
  *     nbrTable = np.copy((npTmpTable[npTmpTable[:,2] <= _SEARCH_RADIUS]).T, order='c')             # <<<<<<<<<<<<<<
  *     # cast the columns that will be used as array indices to int type once here, rather
  *     # than casting repeatedly inside the inner loop
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_copy); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_copy); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = PyObject_RichCompare(__pyx_t_1, __pyx_v__SEARCH_RADIUS, Py_LE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_v__SEARCH_RADIUS, Py_LE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_T); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_T); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
+  __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
-  __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
-  __pyx_t_17 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 148, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 151, __pyx_L1_error)
+  __pyx_t_17 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_nbrTable = __pyx_t_17;
   __pyx_t_17 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":151
+  /* "gapfill_core_despeckle_and_flag.pyx":154
  *     # cast the columns that will be used as array indices to int type once here, rather
  *     # than casting repeatedly inside the inner loop
  *     nbrIntCoords = np.asarray(nbrTable[0:2,:]).astype(np.int32)             # <<<<<<<<<<<<<<
  * 
  *     # We can't modify the input in this algorithm as we have parallelised it
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 151, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_asarray); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 154, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_v_nbrTable, __pyx_tuple__7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 151, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_nbrTable, __pyx_tuple__7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_14 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_13))) {
     __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_13);
@@ -3711,76 +3747,76 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
       __Pyx_DECREF_SET(__pyx_t_13, function);
     }
   }
-  __pyx_t_1 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_14, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_t_2);
+  __pyx_t_2 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_14, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_t_1);
   __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_astype); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 151, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_13);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_int32); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 151, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 154, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = NULL;
+  __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_astype); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_13);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_int32); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_13))) {
-    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_13);
-    if (likely(__pyx_t_1)) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_13);
+    if (likely(__pyx_t_2)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_13);
-      __Pyx_INCREF(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_2);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_13, function);
     }
   }
-  __pyx_t_17 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_1, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __pyx_t_17 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_2, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 154, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __pyx_t_18 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_int(__pyx_t_17, PyBUF_WRITABLE); if (unlikely(!__pyx_t_18.memview)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __pyx_t_18 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_int(__pyx_t_17, PyBUF_WRITABLE); if (unlikely(!__pyx_t_18.memview)) __PYX_ERR(0, 154, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
   __pyx_v_nbrIntCoords = __pyx_t_18;
   __pyx_t_18.memview = NULL;
   __pyx_t_18.data = NULL;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":156
+  /* "gapfill_core_despeckle_and_flag.pyx":159
  *     # and we look at adjacent results in setting the cell's value - we only want to use
  *     # original data for this check, so we have to keep a pristine copy
  *     outputData = np.empty_like(data, order='c')             # <<<<<<<<<<<<<<
  *     outputData[:] = _NDV
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_17, __pyx_n_s_np); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_17, __pyx_n_s_np); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
-  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_empty_like); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_empty_like); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
   __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-  __pyx_t_17 = __pyx_memoryview_fromslice(__pyx_v_data, 3, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_17 = __pyx_memoryview_fromslice(__pyx_v_data, 3, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_17);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 156, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_17);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_17);
-  __pyx_t_17 = 0;
-  __pyx_t_17 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 156, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_17);
-  if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 156, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_t_2, __pyx_t_17); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_17);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_17);
+  __pyx_t_17 = 0;
+  __pyx_t_17 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_t_1, __pyx_t_17); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_d_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_d_d_dc_float(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_outputData = __pyx_t_8;
   __pyx_t_8.memview = NULL;
   __pyx_t_8.data = NULL;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":157
+  /* "gapfill_core_despeckle_and_flag.pyx":160
  *     # original data for this check, so we have to keep a pristine copy
  *     outputData = np.empty_like(data, order='c')
  *     outputData[:] = _NDV             # <<<<<<<<<<<<<<
@@ -3800,7 +3836,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
       }
   }
 
-  /* "gapfill_core_despeckle_and_flag.pyx":166
+  /* "gapfill_core_despeckle_and_flag.pyx":169
  * 
  *     # Apply any correction offset (to correct messed-up celsius-kelvin conversion!!)
  *     if _CORRECTION_OFFSET != 0:             # <<<<<<<<<<<<<<
@@ -3810,7 +3846,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   __pyx_t_3 = ((__pyx_v__CORRECTION_OFFSET != 0.0) != 0);
   if (__pyx_t_3) {
 
-    /* "gapfill_core_despeckle_and_flag.pyx":167
+    /* "gapfill_core_despeckle_and_flag.pyx":170
  *     # Apply any correction offset (to correct messed-up celsius-kelvin conversion!!)
  *     if _CORRECTION_OFFSET != 0:
  *         for z in range (zShape):             # <<<<<<<<<<<<<<
@@ -3822,7 +3858,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
     for (__pyx_t_20 = 0; __pyx_t_20 < __pyx_t_19; __pyx_t_20+=1) {
       __pyx_v_z = __pyx_t_20;
 
-      /* "gapfill_core_despeckle_and_flag.pyx":168
+      /* "gapfill_core_despeckle_and_flag.pyx":171
  *     if _CORRECTION_OFFSET != 0:
  *         for z in range (zShape):
  *             with nogil, parallel(num_threads=nCores):             # <<<<<<<<<<<<<<
@@ -3848,7 +3884,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                 #endif /* _OPENMP */
                 {
 
-                    /* "gapfill_core_despeckle_and_flag.pyx":169
+                    /* "gapfill_core_despeckle_and_flag.pyx":172
  *         for z in range (zShape):
  *             with nogil, parallel(num_threads=nCores):
  *                 for yT in prange (yShapeTotal, schedule='static', chunksize=200):             # <<<<<<<<<<<<<<
@@ -3871,7 +3907,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     /* Initialize private variables to invalid values */
                                     __pyx_v_xT_prv = ((Py_ssize_t)0xbad0bad0);
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":170
+                                    /* "gapfill_core_despeckle_and_flag.pyx":173
  *             with nogil, parallel(num_threads=nCores):
  *                 for yT in prange (yShapeTotal, schedule='static', chunksize=200):
  *                     xT_prv = -1             # <<<<<<<<<<<<<<
@@ -3880,7 +3916,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     __pyx_v_xT_prv = -1L;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":171
+                                    /* "gapfill_core_despeckle_and_flag.pyx":174
  *                 for yT in prange (yShapeTotal, schedule='static', chunksize=200):
  *                     xT_prv = -1
  *                     for xT_prv in range (xShapeTotal):             # <<<<<<<<<<<<<<
@@ -3892,7 +3928,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     for (__pyx_t_26 = 0; __pyx_t_26 < __pyx_t_25; __pyx_t_26+=1) {
                                       __pyx_v_xT_prv = __pyx_t_26;
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":172
+                                      /* "gapfill_core_despeckle_and_flag.pyx":175
  *                     xT_prv = -1
  *                     for xT_prv in range (xShapeTotal):
  *                         if data[z, yT, xT_prv] != _NDV:             # <<<<<<<<<<<<<<
@@ -3905,7 +3941,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       __pyx_t_3 = (((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_data.data + __pyx_t_27 * __pyx_v_data.strides[0]) ) + __pyx_t_28 * __pyx_v_data.strides[1]) )) + __pyx_t_29)) ))) != __pyx_v__NDV) != 0);
                                       if (__pyx_t_3) {
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":173
+                                        /* "gapfill_core_despeckle_and_flag.pyx":176
  *                     for xT_prv in range (xShapeTotal):
  *                         if data[z, yT, xT_prv] != _NDV:
  *                             data[z, yT, xT_prv] = data[z, yT, xT_prv] + _CORRECTION_OFFSET             # <<<<<<<<<<<<<<
@@ -3920,7 +3956,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                         __pyx_t_35 = __pyx_v_xT_prv;
                                         *((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_data.data + __pyx_t_33 * __pyx_v_data.strides[0]) ) + __pyx_t_34 * __pyx_v_data.strides[1]) )) + __pyx_t_35)) )) = ((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_data.data + __pyx_t_30 * __pyx_v_data.strides[0]) ) + __pyx_t_31 * __pyx_v_data.strides[1]) )) + __pyx_t_32)) ))) + __pyx_v__CORRECTION_OFFSET);
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":172
+                                        /* "gapfill_core_despeckle_and_flag.pyx":175
  *                     xT_prv = -1
  *                     for xT_prv in range (xShapeTotal):
  *                         if data[z, yT, xT_prv] != _NDV:             # <<<<<<<<<<<<<<
@@ -3943,7 +3979,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
             #endif
           }
 
-          /* "gapfill_core_despeckle_and_flag.pyx":168
+          /* "gapfill_core_despeckle_and_flag.pyx":171
  *     if _CORRECTION_OFFSET != 0:
  *         for z in range (zShape):
  *             with nogil, parallel(num_threads=nCores):             # <<<<<<<<<<<<<<
@@ -3963,7 +3999,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
       }
     }
 
-    /* "gapfill_core_despeckle_and_flag.pyx":166
+    /* "gapfill_core_despeckle_and_flag.pyx":169
  * 
  *     # Apply any correction offset (to correct messed-up celsius-kelvin conversion!!)
  *     if _CORRECTION_OFFSET != 0:             # <<<<<<<<<<<<<<
@@ -3972,7 +4008,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
   }
 
-  /* "gapfill_core_despeckle_and_flag.pyx":179
+  /* "gapfill_core_despeckle_and_flag.pyx":182
  *     # with a 3d array, so if memory is an issue just modify to run on a 2d array one day at a time)
  *     # run for total shape i.e. including speckle margins
  *     with nogil, parallel(num_threads=nCores):             # <<<<<<<<<<<<<<
@@ -3998,7 +4034,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
             #endif /* _OPENMP */
             {
 
-                /* "gapfill_core_despeckle_and_flag.pyx":180
+                /* "gapfill_core_despeckle_and_flag.pyx":183
  *     # run for total shape i.e. including speckle margins
  *     with nogil, parallel(num_threads=nCores):
  *         for yT in prange (yShapeTotal, schedule='static', chunksize=200):             # <<<<<<<<<<<<<<
@@ -4021,7 +4057,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                 /* Initialize private variables to invalid values */
                                 __pyx_v_xT_prv = ((Py_ssize_t)0xbad0bad0);
 
-                                /* "gapfill_core_despeckle_and_flag.pyx":181
+                                /* "gapfill_core_despeckle_and_flag.pyx":184
  *     with nogil, parallel(num_threads=nCores):
  *         for yT in prange (yShapeTotal, schedule='static', chunksize=200):
  *             xT_prv = -1             # <<<<<<<<<<<<<<
@@ -4030,7 +4066,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                 __pyx_v_xT_prv = -1L;
 
-                                /* "gapfill_core_despeckle_and_flag.pyx":182
+                                /* "gapfill_core_despeckle_and_flag.pyx":185
  *         for yT in prange (yShapeTotal, schedule='static', chunksize=200):
  *             xT_prv = -1
  *             for xT_prv in range (xShapeTotal):             # <<<<<<<<<<<<<<
@@ -4042,7 +4078,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                 for (__pyx_t_21 = 0; __pyx_t_21 < __pyx_t_22; __pyx_t_21+=1) {
                                   __pyx_v_xT_prv = __pyx_t_21;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":183
+                                  /* "gapfill_core_despeckle_and_flag.pyx":186
  *             xT_prv = -1
  *             for xT_prv in range (xShapeTotal):
  *                 if landMask[yT,xT_prv] == 0:             # <<<<<<<<<<<<<<
@@ -4054,7 +4090,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                   __pyx_t_3 = (((*((char *) ( /* dim=1 */ ((char *) (((char *) ( /* dim=0 */ (__pyx_v_landMask.data + __pyx_t_36 * __pyx_v_landMask.strides[0]) )) + __pyx_t_37)) ))) == 0) != 0);
                                   if (__pyx_t_3) {
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":184
+                                    /* "gapfill_core_despeckle_and_flag.pyx":187
  *             for xT_prv in range (xShapeTotal):
  *                 if landMask[yT,xT_prv] == 0:
  *                     continue             # <<<<<<<<<<<<<<
@@ -4063,7 +4099,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     goto __pyx_L37_continue;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":183
+                                    /* "gapfill_core_despeckle_and_flag.pyx":186
  *             xT_prv = -1
  *             for xT_prv in range (xShapeTotal):
  *                 if landMask[yT,xT_prv] == 0:             # <<<<<<<<<<<<<<
@@ -4072,7 +4108,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   }
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":185
+                                  /* "gapfill_core_despeckle_and_flag.pyx":188
  *                 if landMask[yT,xT_prv] == 0:
  *                     continue
  *                 if means[yT, xT_prv] == _NDV:             # <<<<<<<<<<<<<<
@@ -4084,7 +4120,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                   __pyx_t_3 = (((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_means.data + __pyx_t_38 * __pyx_v_means.strides[0]) )) + __pyx_t_39)) ))) == __pyx_v__NDV) != 0);
                                   if (__pyx_t_3) {
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":186
+                                    /* "gapfill_core_despeckle_and_flag.pyx":189
  *                     continue
  *                 if means[yT, xT_prv] == _NDV:
  *                     continue             # <<<<<<<<<<<<<<
@@ -4093,7 +4129,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     goto __pyx_L37_continue;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":185
+                                    /* "gapfill_core_despeckle_and_flag.pyx":188
  *                 if landMask[yT,xT_prv] == 0:
  *                     continue
  *                 if means[yT, xT_prv] == _NDV:             # <<<<<<<<<<<<<<
@@ -4102,7 +4138,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   }
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":187
+                                  /* "gapfill_core_despeckle_and_flag.pyx":190
  *                 if means[yT, xT_prv] == _NDV:
  *                     continue
  *                 if _CORRECTION_OFFSET != 0:             # <<<<<<<<<<<<<<
@@ -4112,7 +4148,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                   __pyx_t_3 = ((__pyx_v__CORRECTION_OFFSET != 0.0) != 0);
                                   if (__pyx_t_3) {
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":188
+                                    /* "gapfill_core_despeckle_and_flag.pyx":191
  *                     continue
  *                 if _CORRECTION_OFFSET != 0:
  *                     means[yT, xT_prv] = means[yT, xT_prv] + _CORRECTION_OFFSET             # <<<<<<<<<<<<<<
@@ -4125,7 +4161,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     __pyx_t_43 = __pyx_v_xT_prv;
                                     *((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_means.data + __pyx_t_42 * __pyx_v_means.strides[0]) )) + __pyx_t_43)) )) = ((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_means.data + __pyx_t_40 * __pyx_v_means.strides[0]) )) + __pyx_t_41)) ))) + __pyx_v__CORRECTION_OFFSET);
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":187
+                                    /* "gapfill_core_despeckle_and_flag.pyx":190
  *                 if means[yT, xT_prv] == _NDV:
  *                     continue
  *                 if _CORRECTION_OFFSET != 0:             # <<<<<<<<<<<<<<
@@ -4134,7 +4170,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   }
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":189
+                                  /* "gapfill_core_despeckle_and_flag.pyx":192
  *                 if _CORRECTION_OFFSET != 0:
  *                     means[yT, xT_prv] = means[yT, xT_prv] + _CORRECTION_OFFSET
  *                 validLower[yT,xT_prv] = means[yT,xT_prv] - stds[yT,xT_prv] * stDevValidityThreshold             # <<<<<<<<<<<<<<
@@ -4149,7 +4185,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                   __pyx_t_49 = __pyx_v_xT_prv;
                                   *((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_validLower.data + __pyx_t_48 * __pyx_v_validLower.strides[0]) )) + __pyx_t_49)) )) = ((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_means.data + __pyx_t_44 * __pyx_v_means.strides[0]) )) + __pyx_t_45)) ))) - ((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_stds.data + __pyx_t_46 * __pyx_v_stds.strides[0]) )) + __pyx_t_47)) ))) * __pyx_v_stDevValidityThreshold));
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":190
+                                  /* "gapfill_core_despeckle_and_flag.pyx":193
  *                     means[yT, xT_prv] = means[yT, xT_prv] + _CORRECTION_OFFSET
  *                 validLower[yT,xT_prv] = means[yT,xT_prv] - stds[yT,xT_prv] * stDevValidityThreshold
  *                 validUpper[yT,xT_prv] = means[yT,xT_prv] + stds[yT,xT_prv] * stDevValidityThreshold             # <<<<<<<<<<<<<<
@@ -4164,7 +4200,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                   __pyx_t_55 = __pyx_v_xT_prv;
                                   *((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_validUpper.data + __pyx_t_54 * __pyx_v_validUpper.strides[0]) )) + __pyx_t_55)) )) = ((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_means.data + __pyx_t_50 * __pyx_v_means.strides[0]) )) + __pyx_t_51)) ))) + ((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_stds.data + __pyx_t_52 * __pyx_v_stds.strides[0]) )) + __pyx_t_53)) ))) * __pyx_v_stDevValidityThreshold));
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":191
+                                  /* "gapfill_core_despeckle_and_flag.pyx":194
  *                 validLower[yT,xT_prv] = means[yT,xT_prv] - stds[yT,xT_prv] * stDevValidityThreshold
  *                 validUpper[yT,xT_prv] = means[yT,xT_prv] + stds[yT,xT_prv] * stDevValidityThreshold
  *                 dodgyLower[yT,xT_prv] = means[yT,xT_prv] - stds[yT,xT_prv] * speckleDevThreshold             # <<<<<<<<<<<<<<
@@ -4179,7 +4215,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                   __pyx_t_61 = __pyx_v_xT_prv;
                                   *((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_dodgyLower.data + __pyx_t_60 * __pyx_v_dodgyLower.strides[0]) )) + __pyx_t_61)) )) = ((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_means.data + __pyx_t_56 * __pyx_v_means.strides[0]) )) + __pyx_t_57)) ))) - ((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_stds.data + __pyx_t_58 * __pyx_v_stds.strides[0]) )) + __pyx_t_59)) ))) * __pyx_v_speckleDevThreshold));
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":192
+                                  /* "gapfill_core_despeckle_and_flag.pyx":195
  *                 validUpper[yT,xT_prv] = means[yT,xT_prv] + stds[yT,xT_prv] * stDevValidityThreshold
  *                 dodgyLower[yT,xT_prv] = means[yT,xT_prv] - stds[yT,xT_prv] * speckleDevThreshold
  *                 dodgyUpper[yT,xT_prv] = means[yT,xT_prv] + stds[yT,xT_prv] * speckleDevThreshold             # <<<<<<<<<<<<<<
@@ -4209,7 +4245,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
         #endif
       }
 
-      /* "gapfill_core_despeckle_and_flag.pyx":179
+      /* "gapfill_core_despeckle_and_flag.pyx":182
  *     # with a 3d array, so if memory is an issue just modify to run on a 2d array one day at a time)
  *     # run for total shape i.e. including speckle margins
  *     with nogil, parallel(num_threads=nCores):             # <<<<<<<<<<<<<<
@@ -4228,7 +4264,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
       }
   }
 
-  /* "gapfill_core_despeckle_and_flag.pyx":197
+  /* "gapfill_core_despeckle_and_flag.pyx":200
  *     # also apply land-sea mask and calculate z scores in this pass
  *     # Run on full dataset incl margins
  *     for z in range (zShape):             # <<<<<<<<<<<<<<
@@ -4240,7 +4276,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_19; __pyx_t_7+=1) {
     __pyx_v_z = __pyx_t_7;
 
-    /* "gapfill_core_despeckle_and_flag.pyx":199
+    /* "gapfill_core_despeckle_and_flag.pyx":202
  *     for z in range (zShape):
  *         #re initialise zscoresday
  *         zScoresDay[:] = _BLANK_ZSCORE             # <<<<<<<<<<<<<<
@@ -4260,7 +4296,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
         }
     }
 
-    /* "gapfill_core_despeckle_and_flag.pyx":200
+    /* "gapfill_core_despeckle_and_flag.pyx":203
  *         #re initialise zscoresday
  *         zScoresDay[:] = _BLANK_ZSCORE
  *         with nogil,parallel(num_threads=nCores):             # <<<<<<<<<<<<<<
@@ -4286,7 +4322,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
               #endif /* _OPENMP */
               {
 
-                  /* "gapfill_core_despeckle_and_flag.pyx":202
+                  /* "gapfill_core_despeckle_and_flag.pyx":205
  *         with nogil,parallel(num_threads=nCores):
  *             # do for everything, including speckle margins
  *             for yT in prange (yShapeTotal, schedule='static', chunksize=200):             # <<<<<<<<<<<<<<
@@ -4315,7 +4351,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                   __pyx_v_xT_prv = ((Py_ssize_t)0xbad0bad0);
                                   __pyx_v_zscoreDiff_prv = ((float)__PYX_NAN());
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":204
+                                  /* "gapfill_core_despeckle_and_flag.pyx":207
  *             for yT in prange (yShapeTotal, schedule='static', chunksize=200):
  *                 # assign to the inner loop's variables so that Cython will make them thread-private
  *                 xT_prv = -1             # <<<<<<<<<<<<<<
@@ -4324,7 +4360,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_xT_prv = -1L;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":205
+                                  /* "gapfill_core_despeckle_and_flag.pyx":208
  *                 # assign to the inner loop's variables so that Cython will make them thread-private
  *                 xT_prv = -1
  *                 value_prv = _NDV             # <<<<<<<<<<<<<<
@@ -4333,7 +4369,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_value_prv = __pyx_v__NDV;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":206
+                                  /* "gapfill_core_despeckle_and_flag.pyx":209
  *                 xT_prv = -1
  *                 value_prv = _NDV
  *                 nbrIndex_prv = -1             # <<<<<<<<<<<<<<
@@ -4342,7 +4378,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_nbrIndex_prv = -1L;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":207
+                                  /* "gapfill_core_despeckle_and_flag.pyx":210
  *                 value_prv = _NDV
  *                 nbrIndex_prv = -1
  *                 nbrZscoreCount_prv = 0             # <<<<<<<<<<<<<<
@@ -4351,7 +4387,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_nbrZscoreCount_prv = 0;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":208
+                                  /* "gapfill_core_despeckle_and_flag.pyx":211
  *                 nbrIndex_prv = -1
  *                 nbrZscoreCount_prv = 0
  *                 nbrZscoreTotal_prv = 0.0             # <<<<<<<<<<<<<<
@@ -4360,7 +4396,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_nbrZscoreTotal_prv = 0.0;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":209
+                                  /* "gapfill_core_despeckle_and_flag.pyx":212
  *                 nbrZscoreCount_prv = 0
  *                 nbrZscoreTotal_prv = 0.0
  *                 nbrZscore_prv = 0.0             # <<<<<<<<<<<<<<
@@ -4369,7 +4405,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_nbrZscore_prv = 0.0;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":210
+                                  /* "gapfill_core_despeckle_and_flag.pyx":213
  *                 nbrZscoreTotal_prv = 0.0
  *                 nbrZscore_prv = 0.0
  *                 zscoreDiff_prv = 0.0             # <<<<<<<<<<<<<<
@@ -4378,7 +4414,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_zscoreDiff_prv = 0.0;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":212
+                                  /* "gapfill_core_despeckle_and_flag.pyx":215
  *                 zscoreDiff_prv = 0.0
  * 
  *                 for xT_prv in range(xShapeTotal):             # <<<<<<<<<<<<<<
@@ -4390,7 +4426,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                   for (__pyx_t_26 = 0; __pyx_t_26 < __pyx_t_25; __pyx_t_26+=1) {
                                     __pyx_v_xT_prv = __pyx_t_26;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":213
+                                    /* "gapfill_core_despeckle_and_flag.pyx":216
  * 
  *                 for xT_prv in range(xShapeTotal):
  *                     if landMask[yT, xT_prv] == 0:             # <<<<<<<<<<<<<<
@@ -4402,7 +4438,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     __pyx_t_3 = (((*((char *) ( /* dim=1 */ ((char *) (((char *) ( /* dim=0 */ (__pyx_v_landMask.data + __pyx_t_68 * __pyx_v_landMask.strides[0]) )) + __pyx_t_69)) ))) == 0) != 0);
                                     if (__pyx_t_3) {
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":216
+                                      /* "gapfill_core_despeckle_and_flag.pyx":219
  *                         # do not do anything where it is not in the land
  *                         # just set the flags image to record this
  *                         flags[z, yT, xT_prv] = flags[z, yT, xT_prv] | _OCEAN_FLAG             # <<<<<<<<<<<<<<
@@ -4417,7 +4453,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       __pyx_t_75 = __pyx_v_xT_prv;
                                       *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_flags.data + __pyx_t_73 * __pyx_v_flags.strides[0]) ) + __pyx_t_74 * __pyx_v_flags.strides[1]) )) + __pyx_t_75)) )) = ((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_flags.data + __pyx_t_70 * __pyx_v_flags.strides[0]) ) + __pyx_t_71 * __pyx_v_flags.strides[1]) )) + __pyx_t_72)) ))) | __pyx_v__OCEAN_FLAG);
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":220
+                                      /* "gapfill_core_despeckle_and_flag.pyx":223
  *                         # (EVI in particular) and if we leave it, the fill process inland could use these
  *                         # dodgy values. (Output data is already NDV from initialisation)
  *                         oceanCount_Glob += 1             # <<<<<<<<<<<<<<
@@ -4426,7 +4462,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                       __pyx_v_oceanCount_Glob = (__pyx_v_oceanCount_Glob + 1);
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":221
+                                      /* "gapfill_core_despeckle_and_flag.pyx":224
  *                         # dodgy values. (Output data is already NDV from initialisation)
  *                         oceanCount_Glob += 1
  *                         continue             # <<<<<<<<<<<<<<
@@ -4435,7 +4471,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                       goto __pyx_L61_continue;
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":213
+                                      /* "gapfill_core_despeckle_and_flag.pyx":216
  * 
  *                 for xT_prv in range(xShapeTotal):
  *                     if landMask[yT, xT_prv] == 0:             # <<<<<<<<<<<<<<
@@ -4444,7 +4480,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     }
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":225
+                                    /* "gapfill_core_despeckle_and_flag.pyx":228
  *                     # if no mean then it means we never have data in the stack and will not be able to
  *                     # produce a fill
  *                     if means[yT, xT_prv] == _NDV:             # <<<<<<<<<<<<<<
@@ -4456,7 +4492,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     __pyx_t_3 = (((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_means.data + __pyx_t_76 * __pyx_v_means.strides[0]) )) + __pyx_t_77)) ))) == __pyx_v__NDV) != 0);
                                     if (__pyx_t_3) {
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":226
+                                      /* "gapfill_core_despeckle_and_flag.pyx":229
  *                     # produce a fill
  *                     if means[yT, xT_prv] == _NDV:
  *                         flags[z, yT, xT_prv] = flags[z, yT, xT_prv] | _NEVERDATA_FLAG             # <<<<<<<<<<<<<<
@@ -4471,7 +4507,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       __pyx_t_83 = __pyx_v_xT_prv;
                                       *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_flags.data + __pyx_t_81 * __pyx_v_flags.strides[0]) ) + __pyx_t_82 * __pyx_v_flags.strides[1]) )) + __pyx_t_83)) )) = ((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_flags.data + __pyx_t_78 * __pyx_v_flags.strides[0]) ) + __pyx_t_79 * __pyx_v_flags.strides[1]) )) + __pyx_t_80)) ))) | __pyx_v__NEVERDATA_FLAG);
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":227
+                                      /* "gapfill_core_despeckle_and_flag.pyx":230
  *                     if means[yT, xT_prv] == _NDV:
  *                         flags[z, yT, xT_prv] = flags[z, yT, xT_prv] | _NEVERDATA_FLAG
  *                         continue             # <<<<<<<<<<<<<<
@@ -4480,7 +4516,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                       goto __pyx_L61_continue;
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":225
+                                      /* "gapfill_core_despeckle_and_flag.pyx":228
  *                     # if no mean then it means we never have data in the stack and will not be able to
  *                     # produce a fill
  *                     if means[yT, xT_prv] == _NDV:             # <<<<<<<<<<<<<<
@@ -4489,7 +4525,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     }
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":229
+                                    /* "gapfill_core_despeckle_and_flag.pyx":232
  *                         continue
  * 
  *                     value_prv = data[z, yT, xT_prv]             # <<<<<<<<<<<<<<
@@ -4501,7 +4537,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     __pyx_t_86 = __pyx_v_xT_prv;
                                     __pyx_v_value_prv = (*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_data.data + __pyx_t_84 * __pyx_v_data.strides[0]) ) + __pyx_t_85 * __pyx_v_data.strides[1]) )) + __pyx_t_86)) )));
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":231
+                                    /* "gapfill_core_despeckle_and_flag.pyx":234
  *                     value_prv = data[z, yT, xT_prv]
  *                     # is the value outside extreme thresholds? delete if so
  *                     if (value_prv < hardLowerLimit or value_prv > hardUpperLimit or             # <<<<<<<<<<<<<<
@@ -4521,7 +4557,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       goto __pyx_L66_bool_binop_done;
                                     }
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":232
+                                    /* "gapfill_core_despeckle_and_flag.pyx":235
  *                     # is the value outside extreme thresholds? delete if so
  *                     if (value_prv < hardLowerLimit or value_prv > hardUpperLimit or
  *                         value_prv < validLower[yT, xT_prv] or value_prv > validUpper[yT, xT_prv]             # <<<<<<<<<<<<<<
@@ -4537,7 +4573,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       goto __pyx_L66_bool_binop_done;
                                     }
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":233
+                                    /* "gapfill_core_despeckle_and_flag.pyx":236
  *                     if (value_prv < hardLowerLimit or value_prv > hardUpperLimit or
  *                         value_prv < validLower[yT, xT_prv] or value_prv > validUpper[yT, xT_prv]
  *                         or value_prv == _NDV):             # <<<<<<<<<<<<<<
@@ -4547,7 +4583,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     __pyx_t_90 = __pyx_v_yT;
                                     __pyx_t_91 = __pyx_v_xT_prv;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":232
+                                    /* "gapfill_core_despeckle_and_flag.pyx":235
  *                     # is the value outside extreme thresholds? delete if so
  *                     if (value_prv < hardLowerLimit or value_prv > hardUpperLimit or
  *                         value_prv < validLower[yT, xT_prv] or value_prv > validUpper[yT, xT_prv]             # <<<<<<<<<<<<<<
@@ -4561,7 +4597,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       goto __pyx_L66_bool_binop_done;
                                     }
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":233
+                                    /* "gapfill_core_despeckle_and_flag.pyx":236
  *                     if (value_prv < hardLowerLimit or value_prv > hardUpperLimit or
  *                         value_prv < validLower[yT, xT_prv] or value_prv > validUpper[yT, xT_prv]
  *                         or value_prv == _NDV):             # <<<<<<<<<<<<<<
@@ -4572,7 +4608,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     __pyx_t_3 = __pyx_t_87;
                                     __pyx_L66_bool_binop_done:;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":231
+                                    /* "gapfill_core_despeckle_and_flag.pyx":234
  *                     value_prv = data[z, yT, xT_prv]
  *                     # is the value outside extreme thresholds? delete if so
  *                     if (value_prv < hardLowerLimit or value_prv > hardUpperLimit or             # <<<<<<<<<<<<<<
@@ -4581,7 +4617,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     if (__pyx_t_3) {
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":234
+                                      /* "gapfill_core_despeckle_and_flag.pyx":237
  *                         value_prv < validLower[yT, xT_prv] or value_prv > validUpper[yT, xT_prv]
  *                         or value_prv == _NDV):
  *                         if value_prv != _NDV:             # <<<<<<<<<<<<<<
@@ -4591,7 +4627,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       __pyx_t_3 = ((__pyx_v_value_prv != __pyx_v__NDV) != 0);
                                       if (__pyx_t_3) {
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":235
+                                        /* "gapfill_core_despeckle_and_flag.pyx":238
  *                         or value_prv == _NDV):
  *                         if value_prv != _NDV:
  *                             flags[z, yT, xT_prv] = flags[z, yT, xT_prv] | _EXTREME_FLAG             # <<<<<<<<<<<<<<
@@ -4606,7 +4642,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                         __pyx_t_97 = __pyx_v_xT_prv;
                                         *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_flags.data + __pyx_t_95 * __pyx_v_flags.strides[0]) ) + __pyx_t_96 * __pyx_v_flags.strides[1]) )) + __pyx_t_97)) )) = ((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_flags.data + __pyx_t_92 * __pyx_v_flags.strides[0]) ) + __pyx_t_93 * __pyx_v_flags.strides[1]) )) + __pyx_t_94)) ))) | __pyx_v__EXTREME_FLAG);
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":236
+                                        /* "gapfill_core_despeckle_and_flag.pyx":239
  *                         if value_prv != _NDV:
  *                             flags[z, yT, xT_prv] = flags[z, yT, xT_prv] | _EXTREME_FLAG
  *                             extremeCount_Glob += 1             # <<<<<<<<<<<<<<
@@ -4615,7 +4651,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                         __pyx_v_extremeCount_Glob = (__pyx_v_extremeCount_Glob + 1);
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":234
+                                        /* "gapfill_core_despeckle_and_flag.pyx":237
  *                         value_prv < validLower[yT, xT_prv] or value_prv > validUpper[yT, xT_prv]
  *                         or value_prv == _NDV):
  *                         if value_prv != _NDV:             # <<<<<<<<<<<<<<
@@ -4624,7 +4660,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                       }
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":239
+                                      /* "gapfill_core_despeckle_and_flag.pyx":242
  *                         # no flag to set if it IS nodata because the fact it is nodata is all the flag
  *                         # we need...
  *                         continue             # <<<<<<<<<<<<<<
@@ -4633,7 +4669,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                       goto __pyx_L61_continue;
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":231
+                                      /* "gapfill_core_despeckle_and_flag.pyx":234
  *                     value_prv = data[z, yT, xT_prv]
  *                     # is the value outside extreme thresholds? delete if so
  *                     if (value_prv < hardLowerLimit or value_prv > hardUpperLimit or             # <<<<<<<<<<<<<<
@@ -4642,7 +4678,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     }
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":243
+                                    /* "gapfill_core_despeckle_and_flag.pyx":246
  *                     # implicit else
  *                     # pre-calculate the z-scores for all cells that are not definitely invalid
  *                     zScoresDay[yT, xT_prv] = (value_prv - means[yT, xT_prv]) / stds[yT, xT_prv]             # <<<<<<<<<<<<<<
@@ -4657,7 +4693,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     __pyx_t_103 = __pyx_v_xT_prv;
                                     *((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_zScoresDay.data + __pyx_t_102 * __pyx_v_zScoresDay.strides[0]) )) + __pyx_t_103)) )) = ((__pyx_v_value_prv - (*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_means.data + __pyx_t_98 * __pyx_v_means.strides[0]) )) + __pyx_t_99)) )))) / (*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_stds.data + __pyx_t_100 * __pyx_v_stds.strides[0]) )) + __pyx_t_101)) ))));
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":244
+                                    /* "gapfill_core_despeckle_and_flag.pyx":247
  *                     # pre-calculate the z-scores for all cells that are not definitely invalid
  *                     zScoresDay[yT, xT_prv] = (value_prv - means[yT, xT_prv]) / stds[yT, xT_prv]
  *                     outputData [z, yT, xT_prv] = value_prv             # <<<<<<<<<<<<<<
@@ -4669,7 +4705,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     __pyx_t_106 = __pyx_v_xT_prv;
                                     *((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputData.data + __pyx_t_104 * __pyx_v_outputData.strides[0]) ) + __pyx_t_105 * __pyx_v_outputData.strides[1]) )) + __pyx_t_106)) )) = __pyx_v_value_prv;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":246
+                                    /* "gapfill_core_despeckle_and_flag.pyx":249
  *                     outputData [z, yT, xT_prv] = value_prv
  *                     # see if the location is a possible speckle
  *                     if dodgyLower[yT, xT_prv] <= value_prv <= dodgyUpper[yT, xT_prv]:             # <<<<<<<<<<<<<<
@@ -4687,7 +4723,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     __pyx_t_87 = (__pyx_t_3 != 0);
                                     if (__pyx_t_87) {
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":248
+                                      /* "gapfill_core_despeckle_and_flag.pyx":251
  *                     if dodgyLower[yT, xT_prv] <= value_prv <= dodgyUpper[yT, xT_prv]:
  *                         # it's within the local limits, so it counts as good data, so pass through
  *                         goodCount_Glob += 1             # <<<<<<<<<<<<<<
@@ -4696,7 +4732,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                       __pyx_v_goodCount_Glob = (__pyx_v_goodCount_Glob + 1);
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":246
+                                      /* "gapfill_core_despeckle_and_flag.pyx":249
  *                     outputData [z, yT, xT_prv] = value_prv
  *                     # see if the location is a possible speckle
  *                     if dodgyLower[yT, xT_prv] <= value_prv <= dodgyUpper[yT, xT_prv]:             # <<<<<<<<<<<<<<
@@ -4706,7 +4742,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       goto __pyx_L72;
                                     }
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":252
+                                    /* "gapfill_core_despeckle_and_flag.pyx":255
  *                         # it's outside the speckle thresholds, but within the validity thresholds
  *                         # so set the speckle flag (we may remove it again later after the nbr check)
  *                         flags[z, yT, xT_prv] = flags[z, yT, xT_prv] | _SPECKLE_FLAG             # <<<<<<<<<<<<<<
@@ -4739,7 +4775,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
           #endif
         }
 
-        /* "gapfill_core_despeckle_and_flag.pyx":200
+        /* "gapfill_core_despeckle_and_flag.pyx":203
  *         #re initialise zscoresday
  *         zScoresDay[:] = _BLANK_ZSCORE
  *         with nogil,parallel(num_threads=nCores):             # <<<<<<<<<<<<<<
@@ -4758,7 +4794,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
         }
     }
 
-    /* "gapfill_core_despeckle_and_flag.pyx":258
+    /* "gapfill_core_despeckle_and_flag.pyx":261
  *         # do not run for speckle margins - use inner shape - but this will still include the A1 margins
  *         # if everything's been set up right!
  *         with nogil,parallel(num_threads=nCores):             # <<<<<<<<<<<<<<
@@ -4784,7 +4820,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
               #endif /* _OPENMP */
               {
 
-                  /* "gapfill_core_despeckle_and_flag.pyx":259
+                  /* "gapfill_core_despeckle_and_flag.pyx":262
  *         # if everything's been set up right!
  *         with nogil,parallel(num_threads=nCores):
  *             for yT in prange (yShapeToDespeckle, schedule='dynamic', chunksize=200):             # <<<<<<<<<<<<<<
@@ -4816,7 +4852,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                   __pyx_v_yD_prv = ((Py_ssize_t)0xbad0bad0);
                                   __pyx_v_zscoreDiff_prv = ((float)__PYX_NAN());
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":261
+                                  /* "gapfill_core_despeckle_and_flag.pyx":264
  *             for yT in prange (yShapeToDespeckle, schedule='dynamic', chunksize=200):
  * 
  *                 xT_prv = -1             # <<<<<<<<<<<<<<
@@ -4825,7 +4861,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_xT_prv = -1L;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":262
+                                  /* "gapfill_core_despeckle_and_flag.pyx":265
  * 
  *                 xT_prv = -1
  *                 xD_prv = -1             # <<<<<<<<<<<<<<
@@ -4834,7 +4870,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_xD_prv = -1L;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":263
+                                  /* "gapfill_core_despeckle_and_flag.pyx":266
  *                 xT_prv = -1
  *                 xD_prv = -1
  *                 yD_prv = yT + marginT             # <<<<<<<<<<<<<<
@@ -4843,7 +4879,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_yD_prv = (__pyx_v_yT + __pyx_v_marginT);
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":264
+                                  /* "gapfill_core_despeckle_and_flag.pyx":267
  *                 xD_prv = -1
  *                 yD_prv = yT + marginT
  *                 xDNbr_prv = -1             # <<<<<<<<<<<<<<
@@ -4852,7 +4888,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_xDNbr_prv = -1L;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":265
+                                  /* "gapfill_core_despeckle_and_flag.pyx":268
  *                 yD_prv = yT + marginT
  *                 xDNbr_prv = -1
  *                 yDNbr_prv = -1             # <<<<<<<<<<<<<<
@@ -4861,7 +4897,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_yDNbr_prv = -1L;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":267
+                                  /* "gapfill_core_despeckle_and_flag.pyx":270
  *                 yDNbr_prv = -1
  * 
  *                 nbrIndex_prv = -1             # <<<<<<<<<<<<<<
@@ -4870,7 +4906,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_nbrIndex_prv = -1L;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":268
+                                  /* "gapfill_core_despeckle_and_flag.pyx":271
  * 
  *                 nbrIndex_prv = -1
  *                 nbrZscoreCount_prv = 0             # <<<<<<<<<<<<<<
@@ -4879,7 +4915,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_nbrZscoreCount_prv = 0;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":269
+                                  /* "gapfill_core_despeckle_and_flag.pyx":272
  *                 nbrIndex_prv = -1
  *                 nbrZscoreCount_prv = 0
  *                 nbrZscoreTotal_prv = 0.0             # <<<<<<<<<<<<<<
@@ -4888,7 +4924,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_nbrZscoreTotal_prv = 0.0;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":270
+                                  /* "gapfill_core_despeckle_and_flag.pyx":273
  *                 nbrZscoreCount_prv = 0
  *                 nbrZscoreTotal_prv = 0.0
  *                 nbrZscore_prv = 0.0             # <<<<<<<<<<<<<<
@@ -4897,7 +4933,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_nbrZscore_prv = 0.0;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":271
+                                  /* "gapfill_core_despeckle_and_flag.pyx":274
  *                 nbrZscoreTotal_prv = 0.0
  *                 nbrZscore_prv = 0.0
  *                 zscoreDiff_prv = 0.0             # <<<<<<<<<<<<<<
@@ -4906,7 +4942,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                   __pyx_v_zscoreDiff_prv = 0.0;
 
-                                  /* "gapfill_core_despeckle_and_flag.pyx":273
+                                  /* "gapfill_core_despeckle_and_flag.pyx":276
  *                 zscoreDiff_prv = 0.0
  * 
  *                 for xT_prv in range(xShapeToDespeckle):             # <<<<<<<<<<<<<<
@@ -4918,7 +4954,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                   for (__pyx_t_26 = 0; __pyx_t_26 < __pyx_t_25; __pyx_t_26+=1) {
                                     __pyx_v_xT_prv = __pyx_t_26;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":274
+                                    /* "gapfill_core_despeckle_and_flag.pyx":277
  * 
  *                 for xT_prv in range(xShapeToDespeckle):
  *                     xD_prv = xT_prv + marginL             # <<<<<<<<<<<<<<
@@ -4927,7 +4963,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     __pyx_v_xD_prv = (__pyx_v_xT_prv + __pyx_v_marginL);
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":275
+                                    /* "gapfill_core_despeckle_and_flag.pyx":278
  *                 for xT_prv in range(xShapeToDespeckle):
  *                     xD_prv = xT_prv + marginL
  *                     nbrIndex_prv = -1             # <<<<<<<<<<<<<<
@@ -4936,7 +4972,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     __pyx_v_nbrIndex_prv = -1L;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":276
+                                    /* "gapfill_core_despeckle_and_flag.pyx":279
  *                     xD_prv = xT_prv + marginL
  *                     nbrIndex_prv = -1
  *                     nbrZscoreCount_prv = 0             # <<<<<<<<<<<<<<
@@ -4945,7 +4981,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     __pyx_v_nbrZscoreCount_prv = 0;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":277
+                                    /* "gapfill_core_despeckle_and_flag.pyx":280
  *                     nbrIndex_prv = -1
  *                     nbrZscoreCount_prv = 0
  *                     nbrZscoreTotal_prv = 0.0             # <<<<<<<<<<<<<<
@@ -4954,7 +4990,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     __pyx_v_nbrZscoreTotal_prv = 0.0;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":278
+                                    /* "gapfill_core_despeckle_and_flag.pyx":281
  *                     nbrZscoreCount_prv = 0
  *                     nbrZscoreTotal_prv = 0.0
  *                     nbrZscore_prv = 0.0             # <<<<<<<<<<<<<<
@@ -4963,7 +4999,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     __pyx_v_nbrZscore_prv = 0.0;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":279
+                                    /* "gapfill_core_despeckle_and_flag.pyx":282
  *                     nbrZscoreTotal_prv = 0.0
  *                     nbrZscore_prv = 0.0
  *                     zscoreDiff_prv = 0.0             # <<<<<<<<<<<<<<
@@ -4972,7 +5008,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     __pyx_v_zscoreDiff_prv = 0.0;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":280
+                                    /* "gapfill_core_despeckle_and_flag.pyx":283
  *                     nbrZscore_prv = 0.0
  *                     zscoreDiff_prv = 0.0
  *                     if (flags[z, yD_prv, xD_prv] & _SPECKLE_FLAG) != _SPECKLE_FLAG:             # <<<<<<<<<<<<<<
@@ -4985,7 +5021,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     __pyx_t_87 = ((((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_flags.data + __pyx_t_117 * __pyx_v_flags.strides[0]) ) + __pyx_t_118 * __pyx_v_flags.strides[1]) )) + __pyx_t_119)) ))) & __pyx_v__SPECKLE_FLAG) != __pyx_v__SPECKLE_FLAG) != 0);
                                     if (__pyx_t_87) {
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":281
+                                      /* "gapfill_core_despeckle_and_flag.pyx":284
  *                     zscoreDiff_prv = 0.0
  *                     if (flags[z, yD_prv, xD_prv] & _SPECKLE_FLAG) != _SPECKLE_FLAG:
  *                         continue             # <<<<<<<<<<<<<<
@@ -4994,7 +5030,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                       goto __pyx_L90_continue;
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":280
+                                      /* "gapfill_core_despeckle_and_flag.pyx":283
  *                     nbrZscore_prv = 0.0
  *                     zscoreDiff_prv = 0.0
  *                     if (flags[z, yD_prv, xD_prv] & _SPECKLE_FLAG) != _SPECKLE_FLAG:             # <<<<<<<<<<<<<<
@@ -5003,7 +5039,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     }
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":284
+                                    /* "gapfill_core_despeckle_and_flag.pyx":287
  * 
  *                     # else we are on a possible speckle
  *                     nbrZscoreCount_prv = 0             # <<<<<<<<<<<<<<
@@ -5012,7 +5048,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     __pyx_v_nbrZscoreCount_prv = 0;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":285
+                                    /* "gapfill_core_despeckle_and_flag.pyx":288
  *                     # else we are on a possible speckle
  *                     nbrZscoreCount_prv = 0
  *                     nbrZscoreTotal_prv = 0.0             # <<<<<<<<<<<<<<
@@ -5021,7 +5057,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     __pyx_v_nbrZscoreTotal_prv = 0.0;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":288
+                                    /* "gapfill_core_despeckle_and_flag.pyx":291
  *                     # spiral search of the nbrs to see if they too are far from
  *                     # the mean in which case this isn't a speckle after all
  *                     for nbrIndex_prv in range(1, _MAX_NEIGHBOURS_TO_CHECK + 1):             # <<<<<<<<<<<<<<
@@ -5033,7 +5069,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     for (__pyx_t_122 = 1; __pyx_t_122 < __pyx_t_121; __pyx_t_122+=1) {
                                       __pyx_v_nbrIndex_prv = __pyx_t_122;
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":292
+                                      /* "gapfill_core_despeckle_and_flag.pyx":295
  *                         # speckle cell, i.e. potentially trillions of times.
  *                         # So it's really important to get this loop fast.
  *                         if nbrZscoreCount_prv == _SPECKLE_NBR_MAX_THRESHOLD:             # <<<<<<<<<<<<<<
@@ -5043,7 +5079,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       __pyx_t_87 = ((__pyx_v_nbrZscoreCount_prv == __pyx_v__SPECKLE_NBR_MAX_THRESHOLD) != 0);
                                       if (__pyx_t_87) {
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":294
+                                        /* "gapfill_core_despeckle_and_flag.pyx":297
  *                         if nbrZscoreCount_prv == _SPECKLE_NBR_MAX_THRESHOLD:
  *                             # we've found sufficient neighbours so stop looking
  *                             break             # <<<<<<<<<<<<<<
@@ -5052,7 +5088,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                         goto __pyx_L94_break;
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":292
+                                        /* "gapfill_core_despeckle_and_flag.pyx":295
  *                         # speckle cell, i.e. potentially trillions of times.
  *                         # So it's really important to get this loop fast.
  *                         if nbrZscoreCount_prv == _SPECKLE_NBR_MAX_THRESHOLD:             # <<<<<<<<<<<<<<
@@ -5061,7 +5097,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                       }
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":296
+                                      /* "gapfill_core_despeckle_and_flag.pyx":299
  *                             break
  *                         # use int-type coords array to avoid cast op in tight loop
  *                         xDNbr_prv = xD_prv + nbrIntCoords[0, nbrIndex_prv]             # <<<<<<<<<<<<<<
@@ -5072,7 +5108,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       __pyx_t_124 = __pyx_v_nbrIndex_prv;
                                       __pyx_v_xDNbr_prv = (__pyx_v_xD_prv + (*((int *) ( /* dim=1 */ ((char *) (((int *) ( /* dim=0 */ (__pyx_v_nbrIntCoords.data + __pyx_t_123 * __pyx_v_nbrIntCoords.strides[0]) )) + __pyx_t_124)) ))));
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":297
+                                      /* "gapfill_core_despeckle_and_flag.pyx":300
  *                         # use int-type coords array to avoid cast op in tight loop
  *                         xDNbr_prv = xD_prv + nbrIntCoords[0, nbrIndex_prv]
  *                         yDNbr_prv = yD_prv + nbrIntCoords[1, nbrIndex_prv]             # <<<<<<<<<<<<<<
@@ -5083,7 +5119,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       __pyx_t_126 = __pyx_v_nbrIndex_prv;
                                       __pyx_v_yDNbr_prv = (__pyx_v_yD_prv + (*((int *) ( /* dim=1 */ ((char *) (((int *) ( /* dim=0 */ (__pyx_v_nbrIntCoords.data + __pyx_t_125 * __pyx_v_nbrIntCoords.strides[0]) )) + __pyx_t_126)) ))));
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":300
+                                      /* "gapfill_core_despeckle_and_flag.pyx":303
  * 
  *                         # is the requested neighbour cell within data bounds and with data?
  *                         if (0 <= xDNbr_prv < xShapeTotal and             # <<<<<<<<<<<<<<
@@ -5101,7 +5137,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                         goto __pyx_L97_bool_binop_done;
                                       }
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":301
+                                      /* "gapfill_core_despeckle_and_flag.pyx":304
  *                         # is the requested neighbour cell within data bounds and with data?
  *                         if (0 <= xDNbr_prv < xShapeTotal and
  *                                 0 <= yDNbr_prv < yShapeTotal and             # <<<<<<<<<<<<<<
@@ -5119,7 +5155,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                         goto __pyx_L97_bool_binop_done;
                                       }
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":302
+                                      /* "gapfill_core_despeckle_and_flag.pyx":305
  *                         if (0 <= xDNbr_prv < xShapeTotal and
  *                                 0 <= yDNbr_prv < yShapeTotal and
  *                                 zScoresDay[yDNbr_prv, xDNbr_prv] != _BLANK_ZSCORE):             # <<<<<<<<<<<<<<
@@ -5132,7 +5168,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       __pyx_t_87 = __pyx_t_3;
                                       __pyx_L97_bool_binop_done:;
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":300
+                                      /* "gapfill_core_despeckle_and_flag.pyx":303
  * 
  *                         # is the requested neighbour cell within data bounds and with data?
  *                         if (0 <= xDNbr_prv < xShapeTotal and             # <<<<<<<<<<<<<<
@@ -5141,7 +5177,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                       if (__pyx_t_87) {
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":303
+                                        /* "gapfill_core_despeckle_and_flag.pyx":306
  *                                 0 <= yDNbr_prv < yShapeTotal and
  *                                 zScoresDay[yDNbr_prv, xDNbr_prv] != _BLANK_ZSCORE):
  *                             nbrZscoreCount_prv = nbrZscoreCount_prv + 1 # tracking             # <<<<<<<<<<<<<<
@@ -5150,7 +5186,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                         __pyx_v_nbrZscoreCount_prv = (__pyx_v_nbrZscoreCount_prv + 1);
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":304
+                                        /* "gapfill_core_despeckle_and_flag.pyx":307
  *                                 zScoresDay[yDNbr_prv, xDNbr_prv] != _BLANK_ZSCORE):
  *                             nbrZscoreCount_prv = nbrZscoreCount_prv + 1 # tracking
  *                             nbrZscoreTotal_prv = nbrZscoreTotal_prv + zScoresDay[yDNbr_prv, xDNbr_prv]             # <<<<<<<<<<<<<<
@@ -5161,7 +5197,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                         __pyx_t_131 = __pyx_v_xDNbr_prv;
                                         __pyx_v_nbrZscoreTotal_prv = (__pyx_v_nbrZscoreTotal_prv + (*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_zScoresDay.data + __pyx_t_130 * __pyx_v_zScoresDay.strides[0]) )) + __pyx_t_131)) ))));
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":300
+                                        /* "gapfill_core_despeckle_and_flag.pyx":303
  * 
  *                         # is the requested neighbour cell within data bounds and with data?
  *                         if (0 <= xDNbr_prv < xShapeTotal and             # <<<<<<<<<<<<<<
@@ -5172,7 +5208,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     }
                                     __pyx_L94_break:;
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":307
+                                    /* "gapfill_core_despeckle_and_flag.pyx":310
  * 
  *                     # did we find enough neighbours?
  *                     if nbrZscoreCount_prv >= _SPECKLE_NBR_MIN_THRESHOLD:             # <<<<<<<<<<<<<<
@@ -5182,7 +5218,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                     __pyx_t_87 = ((__pyx_v_nbrZscoreCount_prv >= __pyx_v__SPECKLE_NBR_MIN_THRESHOLD) != 0);
                                     if (__pyx_t_87) {
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":309
+                                      /* "gapfill_core_despeckle_and_flag.pyx":312
  *                     if nbrZscoreCount_prv >= _SPECKLE_NBR_MIN_THRESHOLD:
  *                         # were the neighbours similar to this cell in terms of distance from mean?
  *                         nbrZscore_prv = nbrZscoreTotal_prv / nbrZscoreCount_prv             # <<<<<<<<<<<<<<
@@ -5191,7 +5227,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                       __pyx_v_nbrZscore_prv = (__pyx_v_nbrZscoreTotal_prv / __pyx_v_nbrZscoreCount_prv);
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":310
+                                      /* "gapfill_core_despeckle_and_flag.pyx":313
  *                         # were the neighbours similar to this cell in terms of distance from mean?
  *                         nbrZscore_prv = nbrZscoreTotal_prv / nbrZscoreCount_prv
  *                         zscoreDiff_prv = fabs(nbrZscore_prv - zScoresDay[yD_prv, xD_prv])             # <<<<<<<<<<<<<<
@@ -5202,7 +5238,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       __pyx_t_133 = __pyx_v_xD_prv;
                                       __pyx_v_zscoreDiff_prv = fabs((__pyx_v_nbrZscore_prv - (*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_zScoresDay.data + __pyx_t_132 * __pyx_v_zScoresDay.strides[0]) )) + __pyx_t_133)) )))));
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":311
+                                      /* "gapfill_core_despeckle_and_flag.pyx":314
  *                         nbrZscore_prv = nbrZscoreTotal_prv / nbrZscoreCount_prv
  *                         zscoreDiff_prv = fabs(nbrZscore_prv - zScoresDay[yD_prv, xD_prv])
  *                         if zscoreDiff_prv < _SPECKLE_ZSCORE_THRESHOLD:             # <<<<<<<<<<<<<<
@@ -5212,7 +5248,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                       __pyx_t_87 = ((__pyx_v_zscoreDiff_prv < __pyx_v__SPECKLE_ZSCORE_THRESHOLD) != 0);
                                       if (__pyx_t_87) {
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":315
+                                        /* "gapfill_core_despeckle_and_flag.pyx":318
  *                             # a volcano or a country that caught fire or something, so we'll believe it,
  *                             # clear the flag, and carry through the original value
  *                             flags[z, yD_prv, xD_prv] = flags[z, yD_prv, xD_prv] ^ _SPECKLE_FLAG             # <<<<<<<<<<<<<<
@@ -5227,7 +5263,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
                                         __pyx_t_139 = __pyx_v_xD_prv;
                                         *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_flags.data + __pyx_t_137 * __pyx_v_flags.strides[0]) ) + __pyx_t_138 * __pyx_v_flags.strides[1]) )) + __pyx_t_139)) )) = ((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_flags.data + __pyx_t_134 * __pyx_v_flags.strides[0]) ) + __pyx_t_135 * __pyx_v_flags.strides[1]) )) + __pyx_t_136)) ))) ^ __pyx_v__SPECKLE_FLAG);
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":316
+                                        /* "gapfill_core_despeckle_and_flag.pyx":319
  *                             # clear the flag, and carry through the original value
  *                             flags[z, yD_prv, xD_prv] = flags[z, yD_prv, xD_prv] ^ _SPECKLE_FLAG
  *                             clearedSpeckleCount_Glob += 1             # <<<<<<<<<<<<<<
@@ -5236,7 +5272,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                         __pyx_v_clearedSpeckleCount_Glob = (__pyx_v_clearedSpeckleCount_Glob + 1);
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":317
+                                        /* "gapfill_core_despeckle_and_flag.pyx":320
  *                             flags[z, yD_prv, xD_prv] = flags[z, yD_prv, xD_prv] ^ _SPECKLE_FLAG
  *                             clearedSpeckleCount_Glob += 1
  *                             continue             # <<<<<<<<<<<<<<
@@ -5245,7 +5281,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                         goto __pyx_L90_continue;
 
-                                        /* "gapfill_core_despeckle_and_flag.pyx":311
+                                        /* "gapfill_core_despeckle_and_flag.pyx":314
  *                         nbrZscore_prv = nbrZscoreTotal_prv / nbrZscoreCount_prv
  *                         zscoreDiff_prv = fabs(nbrZscore_prv - zScoresDay[yD_prv, xD_prv])
  *                         if zscoreDiff_prv < _SPECKLE_ZSCORE_THRESHOLD:             # <<<<<<<<<<<<<<
@@ -5254,7 +5290,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                       }
 
-                                      /* "gapfill_core_despeckle_and_flag.pyx":307
+                                      /* "gapfill_core_despeckle_and_flag.pyx":310
  * 
  *                     # did we find enough neighbours?
  *                     if nbrZscoreCount_prv >= _SPECKLE_NBR_MIN_THRESHOLD:             # <<<<<<<<<<<<<<
@@ -5263,7 +5299,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     }
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":320
+                                    /* "gapfill_core_despeckle_and_flag.pyx":323
  *                     # insufficient neighbours or the neighbours are less extreme.
  *                     # so this is a speckle; delete the data
  *                     speckleCount_Glob += 1             # <<<<<<<<<<<<<<
@@ -5272,12 +5308,12 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
  */
                                     __pyx_v_speckleCount_Glob = (__pyx_v_speckleCount_Glob + 1);
 
-                                    /* "gapfill_core_despeckle_and_flag.pyx":321
+                                    /* "gapfill_core_despeckle_and_flag.pyx":324
  *                     # so this is a speckle; delete the data
  *                     speckleCount_Glob += 1
  *                     outputData[z, yD_prv, xD_prv] = _NDV             # <<<<<<<<<<<<<<
  * 
- * 
+ *     time_end = time.time()
  */
                                     __pyx_t_140 = __pyx_v_z;
                                     __pyx_t_141 = __pyx_v_yD_prv;
@@ -5299,7 +5335,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
           #endif
         }
 
-        /* "gapfill_core_despeckle_and_flag.pyx":258
+        /* "gapfill_core_despeckle_and_flag.pyx":261
  *         # do not run for speckle margins - use inner shape - but this will still include the A1 margins
  *         # if everything's been set up right!
  *         with nogil,parallel(num_threads=nCores):             # <<<<<<<<<<<<<<
@@ -5319,108 +5355,150 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
     }
   }
 
-  /* "gapfill_core_despeckle_and_flag.pyx":324
+  /* "gapfill_core_despeckle_and_flag.pyx":326
+ *                     outputData[z, yD_prv, xD_prv] = _NDV
  * 
+ *     time_end = time.time()             # <<<<<<<<<<<<<<
+ *     despeckleDiag = DespeckleDiagnostics(SpeckleCellCount=speckleCount_Glob,
+ *                                          ExtremeCellCount=extremeCount_Glob,
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_17, __pyx_n_s_time); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 326, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_time); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 326, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+  __pyx_t_17 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_17 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_17)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_17);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_17) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_17) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_17); __pyx_t_17 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 326, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_time_end = __pyx_t_2;
+  __pyx_t_2 = 0;
+
+  /* "gapfill_core_despeckle_and_flag.pyx":327
  * 
+ *     time_end = time.time()
  *     despeckleDiag = DespeckleDiagnostics(SpeckleCellCount=speckleCount_Glob,             # <<<<<<<<<<<<<<
  *                                          ExtremeCellCount=extremeCount_Glob,
  *                                          GoodCellCount=goodCount_Glob,
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_DespeckleDiagnostics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 324, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_17 = __Pyx_PyDict_NewPresized(5); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 324, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_17);
-  __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_speckleCount_Glob); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 324, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_DespeckleDiagnostics); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 327, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_SpeckleCellCount, __pyx_t_2) < 0) __PYX_ERR(0, 324, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_17 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_speckleCount_Glob); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_SpeckleCellCount, __pyx_t_17) < 0) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":325
- * 
+  /* "gapfill_core_despeckle_and_flag.pyx":328
+ *     time_end = time.time()
  *     despeckleDiag = DespeckleDiagnostics(SpeckleCellCount=speckleCount_Glob,
  *                                          ExtremeCellCount=extremeCount_Glob,             # <<<<<<<<<<<<<<
  *                                          GoodCellCount=goodCount_Glob,
- *                                          clearedSpeckleCount_Glob=clearedSpeckleCount_Glob,
+ *                                          ClearedSpeckleCellCount=clearedSpeckleCount_Glob,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_extremeCount_Glob); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 325, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_ExtremeCellCount, __pyx_t_2) < 0) __PYX_ERR(0, 324, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_17 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_extremeCount_Glob); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 328, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_ExtremeCellCount, __pyx_t_17) < 0) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":326
+  /* "gapfill_core_despeckle_and_flag.pyx":329
  *     despeckleDiag = DespeckleDiagnostics(SpeckleCellCount=speckleCount_Glob,
  *                                          ExtremeCellCount=extremeCount_Glob,
  *                                          GoodCellCount=goodCount_Glob,             # <<<<<<<<<<<<<<
- *                                          clearedSpeckleCount_Glob=clearedSpeckleCount_Glob,
- *                                          OceanCellCount=oceanCount_Glob)
+ *                                          ClearedSpeckleCellCount=clearedSpeckleCount_Glob,
+ *                                          OceanCellCount=oceanCount_Glob,
  */
-  __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_goodCount_Glob); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 326, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_GoodCellCount, __pyx_t_2) < 0) __PYX_ERR(0, 324, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_17 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_goodCount_Glob); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 329, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_GoodCellCount, __pyx_t_17) < 0) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":327
+  /* "gapfill_core_despeckle_and_flag.pyx":330
  *                                          ExtremeCellCount=extremeCount_Glob,
  *                                          GoodCellCount=goodCount_Glob,
- *                                          clearedSpeckleCount_Glob=clearedSpeckleCount_Glob,             # <<<<<<<<<<<<<<
- *                                          OceanCellCount=oceanCount_Glob)
- *     #print ("Speckle count:    " + str(speckleCount_Glob))
+ *                                          ClearedSpeckleCellCount=clearedSpeckleCount_Glob,             # <<<<<<<<<<<<<<
+ *                                          OceanCellCount=oceanCount_Glob,
+ *                                          TimeSeconds=time_end-time_start)
  */
-  __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_clearedSpeckleCount_Glob); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 327, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_clearedSpeckleCount_Glob, __pyx_t_2) < 0) __PYX_ERR(0, 324, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_17 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_clearedSpeckleCount_Glob); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 330, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_ClearedSpeckleCellCount, __pyx_t_17) < 0) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":328
+  /* "gapfill_core_despeckle_and_flag.pyx":331
  *                                          GoodCellCount=goodCount_Glob,
- *                                          clearedSpeckleCount_Glob=clearedSpeckleCount_Glob,
- *                                          OceanCellCount=oceanCount_Glob)             # <<<<<<<<<<<<<<
- *     #print ("Speckle count:    " + str(speckleCount_Glob))
- *     #print ("Extreme count:    " + str(extremeCount_Glob))
+ *                                          ClearedSpeckleCellCount=clearedSpeckleCount_Glob,
+ *                                          OceanCellCount=oceanCount_Glob,             # <<<<<<<<<<<<<<
+ *                                          TimeSeconds=time_end-time_start)
+ *     dataStacks.DataArray3D = outputData
  */
-  __pyx_t_2 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_oceanCount_Glob); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 328, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_OceanCellCount, __pyx_t_2) < 0) __PYX_ERR(0, 324, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_17 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_oceanCount_Glob); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 331, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_OceanCellCount, __pyx_t_17) < 0) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":324
+  /* "gapfill_core_despeckle_and_flag.pyx":332
+ *                                          ClearedSpeckleCellCount=clearedSpeckleCount_Glob,
+ *                                          OceanCellCount=oceanCount_Glob,
+ *                                          TimeSeconds=time_end-time_start)             # <<<<<<<<<<<<<<
+ *     dataStacks.DataArray3D = outputData
+ *     dataStacks.FlagsArray3D = flags
+ */
+  __pyx_t_17 = PyNumber_Subtract(__pyx_v_time_end, __pyx_v_time_start); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 332, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_TimeSeconds, __pyx_t_17) < 0) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+
+  /* "gapfill_core_despeckle_and_flag.pyx":327
  * 
- * 
+ *     time_end = time.time()
  *     despeckleDiag = DespeckleDiagnostics(SpeckleCellCount=speckleCount_Glob,             # <<<<<<<<<<<<<<
  *                                          ExtremeCellCount=extremeCount_Glob,
  *                                          GoodCellCount=goodCount_Glob,
  */
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_empty_tuple, __pyx_t_17); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 324, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_17 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 327, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-  __pyx_v_despeckleDiag = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __pyx_v_despeckleDiag = __pyx_t_17;
+  __pyx_t_17 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":335
- *     #print ("Ocean count:      " + str(oceanCount_Glob))
- *     #return (outputData, flags, despeckleDiag)
+  /* "gapfill_core_despeckle_and_flag.pyx":333
+ *                                          OceanCellCount=oceanCount_Glob,
+ *                                          TimeSeconds=time_end-time_start)
  *     dataStacks.DataArray3D = outputData             # <<<<<<<<<<<<<<
  *     dataStacks.FlagsArray3D = flags
  *     return despeckleDiag
  */
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_outputData, 3, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 335, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_dataStacks, __pyx_n_s_DataArray3D, __pyx_t_2) < 0) __PYX_ERR(0, 335, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_17 = __pyx_memoryview_fromslice(__pyx_v_outputData, 3, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 333, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_dataStacks, __pyx_n_s_DataArray3D, __pyx_t_17) < 0) __PYX_ERR(0, 333, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":336
- *     #return (outputData, flags, despeckleDiag)
+  /* "gapfill_core_despeckle_and_flag.pyx":334
+ *                                          TimeSeconds=time_end-time_start)
  *     dataStacks.DataArray3D = outputData
  *     dataStacks.FlagsArray3D = flags             # <<<<<<<<<<<<<<
  *     return despeckleDiag
  */
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_flags, 3, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_char, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_char, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 336, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_dataStacks, __pyx_n_s_FlagsArray3D, __pyx_t_2) < 0) __PYX_ERR(0, 336, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_17 = __pyx_memoryview_fromslice(__pyx_v_flags, 3, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_char, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_char, 0);; if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 334, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_17);
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_dataStacks, __pyx_n_s_FlagsArray3D, __pyx_t_17) < 0) __PYX_ERR(0, 334, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":337
+  /* "gapfill_core_despeckle_and_flag.pyx":335
  *     dataStacks.DataArray3D = outputData
  *     dataStacks.FlagsArray3D = flags
  *     return despeckleDiag             # <<<<<<<<<<<<<<
@@ -5430,7 +5508,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   __pyx_r = __pyx_v_despeckleDiag;
   goto __pyx_L0;
 
-  /* "gapfill_core_despeckle_and_flag.pyx":12
+  /* "gapfill_core_despeckle_and_flag.pyx":13
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cpdef setSpeckleFlags (dataStacks: A1DataStack, margins:PixelMargins, flagValues: FlagItems,             # <<<<<<<<<<<<<<
@@ -5468,6 +5546,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   __PYX_XDEC_MEMVIEW(&__pyx_v_stds, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_landMask, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_outputData, 1);
+  __Pyx_XDECREF(__pyx_v_time_start);
   __Pyx_XDECREF(__pyx_v__SEARCH_RADIUS);
   __Pyx_XDECREF(__pyx_v_diam);
   __Pyx_XDECREF(__pyx_v_inds);
@@ -5475,6 +5554,7 @@ static PyObject *__pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(PyObj
   __Pyx_XDECREF(__pyx_v_npTmpTable);
   __Pyx_XDECREF(__pyx_v_order);
   __Pyx_XDECREF(__pyx_v_nbrTable);
+  __Pyx_XDECREF(__pyx_v_time_end);
   __Pyx_XDECREF(__pyx_v_despeckleDiag);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -5525,35 +5605,35 @@ static PyObject *__pyx_pw_31gapfill_core_despeckle_and_flag_1setSpeckleFlags(PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_margins)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("setSpeckleFlags", 1, 6, 6, 1); __PYX_ERR(0, 12, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("setSpeckleFlags", 1, 6, 6, 1); __PYX_ERR(0, 13, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_flagValues)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("setSpeckleFlags", 1, 6, 6, 2); __PYX_ERR(0, 12, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("setSpeckleFlags", 1, 6, 6, 2); __PYX_ERR(0, 13, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dataConfig)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("setSpeckleFlags", 1, 6, 6, 3); __PYX_ERR(0, 12, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("setSpeckleFlags", 1, 6, 6, 3); __PYX_ERR(0, 13, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_speckleConfig)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("setSpeckleFlags", 1, 6, 6, 4); __PYX_ERR(0, 12, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("setSpeckleFlags", 1, 6, 6, 4); __PYX_ERR(0, 13, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_nCores)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("setSpeckleFlags", 1, 6, 6, 5); __PYX_ERR(0, 12, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("setSpeckleFlags", 1, 6, 6, 5); __PYX_ERR(0, 13, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "setSpeckleFlags") < 0)) __PYX_ERR(0, 12, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "setSpeckleFlags") < 0)) __PYX_ERR(0, 13, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 6) {
       goto __pyx_L5_argtuple_error;
@@ -5570,11 +5650,11 @@ static PyObject *__pyx_pw_31gapfill_core_despeckle_and_flag_1setSpeckleFlags(PyO
     __pyx_v_flagValues = values[2];
     __pyx_v_dataConfig = values[3];
     __pyx_v_speckleConfig = values[4];
-    __pyx_v_nCores = __Pyx_PyIndex_AsSsize_t(values[5]); if (unlikely((__pyx_v_nCores == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 15, __pyx_L3_error)
+    __pyx_v_nCores = __Pyx_PyIndex_AsSsize_t(values[5]); if (unlikely((__pyx_v_nCores == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 16, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("setSpeckleFlags", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 12, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("setSpeckleFlags", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 13, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("gapfill_core_despeckle_and_flag.setSpeckleFlags", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5593,7 +5673,7 @@ static PyObject *__pyx_pf_31gapfill_core_despeckle_and_flag_setSpeckleFlags(CYTH
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("setSpeckleFlags", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(__pyx_v_dataStacks, __pyx_v_margins, __pyx_v_flagValues, __pyx_v_dataConfig, __pyx_v_speckleConfig, __pyx_v_nCores, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_31gapfill_core_despeckle_and_flag_setSpeckleFlags(__pyx_v_dataStacks, __pyx_v_margins, __pyx_v_flagValues, __pyx_v_dataConfig, __pyx_v_speckleConfig, __pyx_v_nCores, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -19205,6 +19285,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Cannot_assign_to_read_only_memor, __pyx_k_Cannot_assign_to_read_only_memor, sizeof(__pyx_k_Cannot_assign_to_read_only_memor), 0, 0, 1, 0},
   {&__pyx_kp_s_Cannot_create_writable_memory_vi, __pyx_k_Cannot_create_writable_memory_vi, sizeof(__pyx_k_Cannot_create_writable_memory_vi), 0, 0, 1, 0},
   {&__pyx_kp_s_Cannot_index_with_type_s, __pyx_k_Cannot_index_with_type_s, sizeof(__pyx_k_Cannot_index_with_type_s), 0, 0, 1, 0},
+  {&__pyx_n_s_ClearedSpeckleCellCount, __pyx_k_ClearedSpeckleCellCount, sizeof(__pyx_k_ClearedSpeckleCellCount), 0, 0, 1, 1},
   {&__pyx_n_s_Coastline2D, __pyx_k_Coastline2D, sizeof(__pyx_k_Coastline2D), 0, 0, 1, 1},
   {&__pyx_n_s_DataArray3D, __pyx_k_DataArray3D, sizeof(__pyx_k_DataArray3D), 0, 0, 1, 1},
   {&__pyx_n_s_DataLimitsConfig, __pyx_k_DataLimitsConfig, sizeof(__pyx_k_DataLimitsConfig), 0, 0, 1, 1},
@@ -19252,6 +19333,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_SpeckleCellCount, __pyx_k_SpeckleCellCount, sizeof(__pyx_k_SpeckleCellCount), 0, 0, 1, 1},
   {&__pyx_n_s_SpiralSearchConfig, __pyx_k_SpiralSearchConfig, sizeof(__pyx_k_SpiralSearchConfig), 0, 0, 1, 1},
   {&__pyx_n_s_T, __pyx_k_T, sizeof(__pyx_k_T), 0, 0, 1, 1},
+  {&__pyx_n_s_TimeSeconds, __pyx_k_TimeSeconds, sizeof(__pyx_k_TimeSeconds), 0, 0, 1, 1},
   {&__pyx_n_s_Top, __pyx_k_Top, sizeof(__pyx_k_Top), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_kp_s_Unable_to_convert_item_to_object, __pyx_k_Unable_to_convert_item_to_object, sizeof(__pyx_k_Unable_to_convert_item_to_object), 0, 0, 1, 0},
@@ -19266,7 +19348,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_c, __pyx_k_c, sizeof(__pyx_k_c), 0, 0, 1, 1},
   {&__pyx_n_u_c, __pyx_k_c, sizeof(__pyx_k_c), 0, 1, 0, 1},
   {&__pyx_n_s_class, __pyx_k_class, sizeof(__pyx_k_class), 0, 0, 1, 1},
-  {&__pyx_n_s_clearedSpeckleCount_Glob, __pyx_k_clearedSpeckleCount_Glob, sizeof(__pyx_k_clearedSpeckleCount_Glob), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_kp_s_contiguous_and_direct, __pyx_k_contiguous_and_direct, sizeof(__pyx_k_contiguous_and_direct), 0, 0, 1, 0},
   {&__pyx_kp_s_contiguous_and_indirect, __pyx_k_contiguous_and_indirect, sizeof(__pyx_k_contiguous_and_indirect), 0, 0, 1, 0},
@@ -19348,6 +19429,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_sum, __pyx_k_sum, sizeof(__pyx_k_sum), 0, 0, 1, 1},
   {&__pyx_n_s_take, __pyx_k_take, sizeof(__pyx_k_take), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
+  {&__pyx_n_s_time, __pyx_k_time, sizeof(__pyx_k_time), 0, 0, 1, 1},
   {&__pyx_kp_s_unable_to_allocate_array_data, __pyx_k_unable_to_allocate_array_data, sizeof(__pyx_k_unable_to_allocate_array_data), 0, 0, 1, 0},
   {&__pyx_kp_s_unable_to_allocate_shape_and_str, __pyx_k_unable_to_allocate_shape_and_str, sizeof(__pyx_k_unable_to_allocate_shape_and_str), 0, 0, 1, 0},
   {&__pyx_n_s_unpack, __pyx_k_unpack, sizeof(__pyx_k_unpack), 0, 0, 1, 1},
@@ -19355,7 +19437,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 170, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 133, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 148, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 151, __pyx_L1_error)
@@ -19372,48 +19454,48 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "gapfill_core_despeckle_and_flag.pyx":140
+  /* "gapfill_core_despeckle_and_flag.pyx":143
  *     distTmp = np.sqrt((inds ** 2).sum(0))
  *     npTmpTable = ((inds.T).reshape(diam ** 2, 2))
  *     npTmpTable = np.append(npTmpTable, distTmp.ravel()[:, None], axis=1)             # <<<<<<<<<<<<<<
  * 
  *     # sort the table by distance then x then y (the arguments are last-sort-first)
  */
-  __pyx_slice_ = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice_)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_slice_ = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice_)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice_);
   __Pyx_GIVEREF(__pyx_slice_);
-  __pyx_tuple__2 = PyTuple_Pack(2, __pyx_slice_, Py_None); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 140, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(2, __pyx_slice_, Py_None); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 143, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "gapfill_core_despeckle_and_flag.pyx":143
+  /* "gapfill_core_despeckle_and_flag.pyx":146
  * 
  *     # sort the table by distance then x then y (the arguments are last-sort-first)
  *     order = np.lexsort((npTmpTable[:, 1],npTmpTable[:, 0],npTmpTable[:, 2]))             # <<<<<<<<<<<<<<
  *     npTmpTable = np.take(npTmpTable, order, axis=0)
  * 
  */
-  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_slice_, __pyx_int_1); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_slice_, __pyx_int_1); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_slice_, __pyx_int_0); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_slice_, __pyx_int_0); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
-  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_slice_, __pyx_int_2); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 143, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_slice_, __pyx_int_2); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "gapfill_core_despeckle_and_flag.pyx":151
+  /* "gapfill_core_despeckle_and_flag.pyx":154
  *     # cast the columns that will be used as array indices to int type once here, rather
  *     # than casting repeatedly inside the inner loop
  *     nbrIntCoords = np.asarray(nbrTable[0:2,:]).astype(np.int32)             # <<<<<<<<<<<<<<
  * 
  *     # We can't modify the input in this algorithm as we have parallelised it
  */
-  __pyx_slice__6 = PySlice_New(__pyx_int_0, __pyx_int_2, Py_None); if (unlikely(!__pyx_slice__6)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __pyx_slice__6 = PySlice_New(__pyx_int_0, __pyx_int_2, Py_None); if (unlikely(!__pyx_slice__6)) __PYX_ERR(0, 154, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__6);
   __Pyx_GIVEREF(__pyx_slice__6);
-  __pyx_tuple__7 = PyTuple_Pack(2, __pyx_slice__6, __pyx_slice_); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(2, __pyx_slice__6, __pyx_slice_); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 154, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
@@ -20025,7 +20107,7 @@ if (!__Pyx_RefNanny) {
  * from cython.parallel import prange, parallel
  * from .gapfill_config_types import DataLimitsConfig, DespeckleConfig, SpiralSearchConfig, FlagItems, DespeckleDiagnostics             # <<<<<<<<<<<<<<
  * from .gapfill_utils import A1DataStack, PixelMargins
- * 
+ * import time
  */
   __pyx_t_1 = PyList_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -20073,8 +20155,8 @@ if (!__Pyx_RefNanny) {
  * from cython.parallel import prange, parallel
  * from .gapfill_config_types import DataLimitsConfig, DespeckleConfig, SpiralSearchConfig, FlagItems, DespeckleDiagnostics
  * from .gapfill_utils import A1DataStack, PixelMargins             # <<<<<<<<<<<<<<
+ * import time
  * 
- * @cython.cdivision(True)
  */
   __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -20095,6 +20177,18 @@ if (!__Pyx_RefNanny) {
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_PixelMargins, __pyx_t_2) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "gapfill_core_despeckle_and_flag.pyx":8
+ * from .gapfill_config_types import DataLimitsConfig, DespeckleConfig, SpiralSearchConfig, FlagItems, DespeckleDiagnostics
+ * from .gapfill_utils import A1DataStack, PixelMargins
+ * import time             # <<<<<<<<<<<<<<
+ * 
+ * @cython.cdivision(True)
+ */
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_time, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_time, __pyx_t_1) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "gapfill_core_despeckle_and_flag.pyx":1
@@ -20531,6 +20625,48 @@ done:
 #endif
 #endif
 
+/* PyObjectCallMethO */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
+    PyObject *self, *result;
+    PyCFunction cfunc;
+    cfunc = PyCFunction_GET_FUNCTION(func);
+    self = PyCFunction_GET_SELF(func);
+    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
+        return NULL;
+    result = cfunc(self, arg);
+    Py_LeaveRecursiveCall();
+    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
+        PyErr_SetString(
+            PyExc_SystemError,
+            "NULL result without error in PyObject_Call");
+    }
+    return result;
+}
+#endif
+
+/* PyObjectCallNoArg */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
+#if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(func)) {
+        return __Pyx_PyFunction_FastCall(func, NULL, 0);
+    }
+#endif
+#ifdef __Pyx_CyFunction_USED
+    if (likely(PyCFunction_Check(func) || __Pyx_CyFunction_Check(func)))
+#else
+    if (likely(PyCFunction_Check(func)))
+#endif
+    {
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
+            return __Pyx_PyObject_CallMethO(func, NULL);
+        }
+    }
+    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
+}
+#endif
+
 /* PyCFunctionFastCall */
 #if CYTHON_FAST_PYCCALL
 static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
@@ -20551,6 +20687,46 @@ static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, P
     } else {
         return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
     }
+}
+#endif
+
+/* PyObjectCallOneArg */
+#if CYTHON_COMPILING_IN_CPYTHON
+static PyObject* __Pyx__PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+    PyObject *result;
+    PyObject *args = PyTuple_New(1);
+    if (unlikely(!args)) return NULL;
+    Py_INCREF(arg);
+    PyTuple_SET_ITEM(args, 0, arg);
+    result = __Pyx_PyObject_Call(func, args, NULL);
+    Py_DECREF(args);
+    return result;
+}
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+#if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(func)) {
+        return __Pyx_PyFunction_FastCall(func, &arg, 1);
+    }
+#endif
+    if (likely(PyCFunction_Check(func))) {
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_O)) {
+            return __Pyx_PyObject_CallMethO(func, arg);
+#if CYTHON_FAST_PYCCALL
+        } else if (PyCFunction_GET_FLAGS(func) & METH_FASTCALL) {
+            return __Pyx_PyCFunction_FastCall(func, &arg, 1);
+#endif
+        }
+    }
+    return __Pyx__PyObject_CallOneArg(func, arg);
+}
+#else
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
+    PyObject *result;
+    PyObject *args = PyTuple_Pack(1, arg);
+    if (unlikely(!args)) return NULL;
+    result = __Pyx_PyObject_Call(func, args, NULL);
+    Py_DECREF(args);
+    return result;
 }
 #endif
 
@@ -20678,66 +20854,6 @@ static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED
 }
 #endif
 
-/* PyObjectCallMethO */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
-    PyObject *self, *result;
-    PyCFunction cfunc;
-    cfunc = PyCFunction_GET_FUNCTION(func);
-    self = PyCFunction_GET_SELF(func);
-    if (unlikely(Py_EnterRecursiveCall((char*)" while calling a Python object")))
-        return NULL;
-    result = cfunc(self, arg);
-    Py_LeaveRecursiveCall();
-    if (unlikely(!result) && unlikely(!PyErr_Occurred())) {
-        PyErr_SetString(
-            PyExc_SystemError,
-            "NULL result without error in PyObject_Call");
-    }
-    return result;
-}
-#endif
-
-/* PyObjectCallOneArg */
-#if CYTHON_COMPILING_IN_CPYTHON
-static PyObject* __Pyx__PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-    PyObject *result;
-    PyObject *args = PyTuple_New(1);
-    if (unlikely(!args)) return NULL;
-    Py_INCREF(arg);
-    PyTuple_SET_ITEM(args, 0, arg);
-    result = __Pyx_PyObject_Call(func, args, NULL);
-    Py_DECREF(args);
-    return result;
-}
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-#if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(func)) {
-        return __Pyx_PyFunction_FastCall(func, &arg, 1);
-    }
-#endif
-    if (likely(PyCFunction_Check(func))) {
-        if (likely(PyCFunction_GET_FLAGS(func) & METH_O)) {
-            return __Pyx_PyObject_CallMethO(func, arg);
-#if CYTHON_FAST_PYCCALL
-        } else if (PyCFunction_GET_FLAGS(func) & METH_FASTCALL) {
-            return __Pyx_PyCFunction_FastCall(func, &arg, 1);
-#endif
-        }
-    }
-    return __Pyx__PyObject_CallOneArg(func, arg);
-}
-#else
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg) {
-    PyObject *result;
-    PyObject *args = PyTuple_Pack(1, arg);
-    if (unlikely(!args)) return NULL;
-    result = __Pyx_PyObject_Call(func, args, NULL);
-    Py_DECREF(args);
-    return result;
-}
-#endif
-
 /* PyObjectCall2Args */
 static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
     PyObject *args, *result = NULL;
@@ -20766,28 +20882,6 @@ static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyOb
 done:
     return result;
 }
-
-/* PyObjectCallNoArg */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
-#if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(func)) {
-        return __Pyx_PyFunction_FastCall(func, NULL, 0);
-    }
-#endif
-#ifdef __Pyx_CyFunction_USED
-    if (likely(PyCFunction_Check(func) || __Pyx_CyFunction_Check(func)))
-#else
-    if (likely(PyCFunction_Check(func)))
-#endif
-    {
-        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
-            return __Pyx_PyObject_CallMethO(func, NULL);
-        }
-    }
-    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
-}
-#endif
 
 /* GetItemInt */
 static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {

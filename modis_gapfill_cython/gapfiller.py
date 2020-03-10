@@ -12,6 +12,7 @@ from collections import defaultdict
 # io management functions
 from raster_utilities.utils.geotransform_calcs import CalculatePixelLims, CalculateClippedGeoTransform
 from raster_utilities.io.TiffFile import SingleBandTiffFile, RasterProps
+from osgeo import gdal
 # from raster_utilities.tileProcessor import tileProcessor
 
 # cython functions
@@ -96,7 +97,7 @@ class GapFiller:
                 # years are slightly more complex as we always need to read the day's data for all years
                 # this populates the self._intermediateFiles dictionary
                 self.DespeckleAndA1SliceRunner(slice, calendarDay, startYear)
-            self.A2BatchRunner(startYear)
+            self.A2BatchRunner()
 
     def __InitialiseFiles(self, globPattern):
         dayMonths = {1: 1, 9: 1, 17: 1, 25: 1, 33: 2, 41: 2, 49: 2, 57: 2, 65: 3, 73: 3, 81: 3, 89: 3, 97: 4, 105: 4,
@@ -318,14 +319,21 @@ class GapFiller:
             top=sliceDespeckleMarginT, bottom=sliceDespeckleMarginB,
             left=sliceDespeckleMarginL, right=sliceDespeckleMarginR)
 
-        a1Margins = {
-            "TOP": sliceTotalMarginT,
-            "BOTTOM": sliceTotalMarginB,
-            "LEFT": sliceTotalMarginL,
-            "RIGHT": sliceTotalMarginR,
-            "FILLHEIGHT": sliceFillHeight,
-            "FILLWIDTH": sliceFillWidth
-        }
+        a1Margins = PixelMargins(
+            top=sliceTotalMarginT,
+            bottom=sliceTotalMarginB,
+            left=sliceTotalMarginL,
+            right=sliceTotalMarginR
+        )
+
+        #a1Margins = {
+        #    "TOP": sliceTotalMarginT,
+        #    "BOTTOM": sliceTotalMarginB,
+        #    "LEFT": sliceTotalMarginL,
+        #    "RIGHT": sliceTotalMarginR,
+        #    "FILLHEIGHT": sliceFillHeight,
+        #    "FILLWIDTH": sliceFillWidth
+        #}
 
         dataReadWindow = PixelMargins(
             top=g_sliceDespeckleT, bottom=g_sliceDespeckleB,
@@ -353,6 +361,8 @@ class GapFiller:
         margins = self.CalculateAvailableSliceMargins(sliceInfo)
         despeckleMargins = margins["despeckleMargins"]
         a1Margins = margins["a1Margins"]
+        sliceFillWidth = sliceInfo[0][3] - sliceInfo[0][2]
+        sliceFillHeight = sliceInfo[1][3] - sliceInfo[1][2]
         dataReadWindow = margins["dataReadWindow"]
         dataWriteWindow = margins["dataWriteWindow"]
         if not calendarDay in self._inputFileDict:
@@ -399,13 +409,15 @@ class GapFiller:
         dataStack.MeansArray2D = sliceMeanArr
         dataStack.SDArray2D = sliceSDArr
         dataStack.Coastline2D = sliceCoastArr
+        dataStack.DistanceTemplate3D = None
+        dataStack.KnownUnfillable2D = None
         for zPos in range(len(sortedFiles)):
             f = SingleBandTiffFile(sortedFiles[zPos])
             dataStack.DataArray3D[zPos], _, _, _ = f.ReadForPixelLims(
                 xLims=(dataReadWindow.Left, dataReadWindow.Right),
                 yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
             assert f.GetNdv() == self._dataSpecificConfig.NODATA_VALUE
-        assert dataStack.DataArray3D.flags.c_contiguous
+        #assert dataStack.DataArray3D.flags.c_contiguous
 
         # Run the despeckle
         # dataStack.DataArray3D and dataStack.FlagsArray3D are modified in place. They will have a different
@@ -415,8 +427,9 @@ class GapFiller:
         # because we don't want extreme values to remain to be usable in deriving fill values
         despeckleResult = setSpeckleFlags(dataStacks=dataStack, margins=despeckleMargins,
                                           flagValues=self._flagValues, dataConfig=self._dataSpecificConfig,
-                                          speckleConfig=self._despeckleConfig, nCores=self.nCores)
+                                          speckleConfig=self._despeckleConfig, nCores=self._jobDetails.NCores)
 
+        print(despeckleResult.GetSummaryMessage())
         # Run A1
         # dataStack.DataArray3D, dataStack.FlagsArray3D, and dataStack.DistanceTemplate3D are modified in place.
         # They will have a different (smaller) shape as the A1 search margins will be removed.
@@ -424,7 +437,8 @@ class GapFiller:
         a1Result = a1_core(dataStacks=dataStack, margins=a1Margins,
                            flagValues=self._flagValues, dataConfig=self._dataSpecificConfig,
                            a1Config=self._a1Config,
-                           nCores=self.nCores)
+                           nCores=self._jobDetails.NCores)
+        print(a1Result.GetSummaryMessage())
         # dataStack has been modified in place: DataArray32, FlagsArray3D and DistanceTemplate3D members
         # now contain the results
 
@@ -432,16 +446,18 @@ class GapFiller:
                 self._dataSpecificConfig.FLOOR_VALUE == self._dataSpecificConfig.NODATA_VALUE):
             # apply clip if either the floor / ceiling values are set
             # TODO add the heights
-            sliceMeanArr = np.copy(sliceMeanArr[a1Margins.Top:a1Margins.Top + a1Margins["FILLHEIGHT"],
-                                   a1Margins.Left:a1Margins.Left + a1Margins["FILLWIDTH"]])
-            sliceSDArr = np.copy(sliceSDArr[a1Margins.Top:a1Margins.Top + a1Margins["FILLHEIGHT"],
-                                 a1Margins.Left:a1Margins.Left + a1Margins["FILLWIDTH"]])
+            sliceMeanArr = np.copy(sliceMeanArr[a1Margins.Top:a1Margins.Top + sliceFillHeight,
+                                   a1Margins.Left:a1Margins.Left + sliceFillWidth])
+            sliceSDArr = np.copy(sliceSDArr[a1Margins.Top:a1Margins.Top + sliceFillHeight,
+                                 a1Margins.Left:a1Margins.Left + sliceFillWidth])
+            dataStack.MeansArray2D = sliceMeanArr
+            dataStack.SDArray2D = sliceSDArr
             # TODO set this to respect firstYearToFill
             MinMaxClip3D(dataStacks=dataStack,
                          flagToCheck=self._flagValues.A1_FILLED,
                          flagToSet=self._flagValues.CLIPPED,
                          dataConfig=self._dataSpecificConfig,
-                         nCores=self.nCores)
+                         nCores=self._jobDetails.NCores)
 
         # TODO fix this
         if True:  # len(self._slices) > 1:
@@ -467,37 +483,41 @@ class GapFiller:
                     self._intermediateFiles[inputFilename]["Data"] = outNameData
                 except RuntimeError:
                     pass
-                thisOutFile.SavePart(np.asarray(dataStack.DataArray3D[y],
-                                                dataWriteWindow["LEFT"], dataWriteWindow["TOP"]))
+                thisOutFile.SavePart(np.asarray(dataStack.DataArray3D[y]),
+                                     (dataWriteWindow.Left, dataWriteWindow.Top))
                 thisOutFile = SingleBandTiffFile(outNameDist)
                 try:
                     thisOutFile.SetProperties(self.OutputProps)
                     self._intermediateFiles[inputFilename]["Distances"] = outNameDist
                 except RuntimeError:
                     pass
-                thisOutFile.SavePart(np.asarray(dataStack.DistanceTemplate3D[y],
-                                                dataWriteWindow["LEFT"], dataWriteWindow["TOP"]))
+                thisOutFile.SavePart(np.asarray(dataStack.DistanceTemplate3D[y]),
+                                     (dataWriteWindow.Left, dataWriteWindow.Top))
                 thisOutFile = SingleBandTiffFile(outNameFlag)
                 try:
                     op = self.OutputProps
                     flagProps = RasterProps(gt=op.gt, proj=op.proj, ndv=None,
                                             width=op.width, height=op.height, res=op.res,
-                                            datatype=gdal.GDT_BYTE)
+                                            datatype=gdal.gdalconst.GDT_Byte)
                     thisOutFile.SetProperties(flagProps)
                     self._intermediateFiles[inputFilename]["Flags"] = outNameFlag
                 except RuntimeError:
                     pass
-                thisOutFile.SavePart(np.asarray(dataStack.FlagsArray3D[y],
-                                                dataWriteWindow["LEFT"], dataWriteWindow["TOP"]))
+                thisOutFile.SavePart(np.asarray(dataStack.FlagsArray3D[y]),
+                                     (dataWriteWindow.Left, dataWriteWindow.Top))
                 thisOutFile = None
 
     def A2BatchRunner(self):
         # cf. a2Caller, but run for a provided filename
 
-        arr_Mean, _, _, _ = SingleBandTiffFile(self._filePaths.SYNOPTIC_MEAN_FILE).ReadAll()
-        if self._CACHE_SD:
-            arr_SD, _, _, _ = SingleBandTiffFile(self._filePaths.SYNOPTIC_SD_FILE).ReadAll()
-        for inputName, intermediateDataForDate in self._intermediateFiles:
+        arr_Mean, _, _, _ = SingleBandTiffFile(self._filePaths.SYNOPTIC_MEAN_FILE).ReadForPixelLims(
+            xLims=self.xLims, yLims=self.yLims
+        )
+        if False: # self._CACHE_SD:
+            arr_SD, _, _, _ = SingleBandTiffFile(self._filePaths.SYNOPTIC_SD_FILE).ReadForPixelLims(
+                xLims=self.xLims, yLims=self.yLims
+            )
+        for inputName, intermediateDataForDate in self._intermediateFiles.items():
             dataFile = intermediateDataForDate["Data"]
             dataReader = SingleBandTiffFile(dataFile)
             arr_Data, gt_Data, proj_Data, ndv_Data = dataReader.ReadAll()
@@ -514,20 +534,23 @@ class GapFiller:
             props_Flags = flagsReader.GetProperties()
 
             if self._jobDetails.RunA2:
-                A2ImageCaller(dataImageIn=arr_Data, flagsImageIn=arr_Flags, distImageIn=arr_Dists, meanImageIn=arr_Mean,
-                              a2Config=self._a2Config, flagValues=self._flagValues,
-                              dataConfig=self._dataSpecificConfig)
+                A2Diagnostics = A2ImageCaller(dataImageIn=arr_Data, flagsImageIn=arr_Flags, distImageIn=arr_Dists,
+                                              meanImageIn=arr_Mean,
+                                              a2Config=self._a2Config, flagValues=self._flagValues,
+                                              dataConfig=self._dataSpecificConfig)
+                print(A2Diagnostics.GetSummaryMessage())
             if self._jobDetails.ClipMinMax:
                 #if not self._CACHE_SD: # TODO add this
                 if True:
-                    arr_SD, _, _, _ = SingleBandTiffFile(self._filePaths.SYNOPTIC_SD_FILE).ReadAll()
+                    arr_SD, _, _, _ = SingleBandTiffFile(self._filePaths.SYNOPTIC_SD_FILE).ReadForPixelLims(
+                        xLims=self.xLims, yLims=self.yLims)
                 MinMaxClip(dataImage=arr_Data, flagsImage=arr_Flags, meansImage=arr_Mean, stdImage=arr_SD,
                            flagToCheck=self._flagValues.A2_FILLED, flagToSet=self._flagValues.CLIPPED,
                            floor_ceiling_value=self._dataSpecificConfig.FLOOR_CEILING_ZSCORE,
                            _NDV=self._dataSpecificConfig.NODATA_VALUE,
                            upperHardLimit=self._dataSpecificConfig.CEILING_VALUE,
                            lowerHardLimit=self._dataSpecificConfig.FLOOR_VALUE,
-                           nCores=self.nCores)
+                           nCores=self._jobDetails.NCores)
             day, yr = self.__parseDailyFilename(inputName)
             outDataFile = self._outTemplate.format("-FilledData", yr, day)
             outDistFile = self._outTemplate.format("-FilledDists", yr, day)

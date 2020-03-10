@@ -70,9 +70,9 @@ class SpiralSearchConfig(NamedTuple):
         """Factory method to create instance of this NamedTuple from YAML config, which must contain "Spiral" key"""
         sC = singleFillConfig['spiral']
         spiralParsed = cls(
-            MAX_NBRS_TO_SEARCH=float(sC['max_nbrs_to_search']),
-            MIN_REQUIRED_NBRS=float(sC['min_required_nbrs']),
-            MAX_USED_NBRS=float(sC['max_used_nbrs'])
+            MAX_NBRS_TO_SEARCH=int(sC['max_nbrs_to_search']),
+            MIN_REQUIRED_NBRS=int(sC['min_required_nbrs']),
+            MAX_USED_NBRS=int(sC['max_used_nbrs'])
         )
         return spiralParsed
 
@@ -200,6 +200,12 @@ class DataLimitsConfig(NamedTuple):
         )
         return configParsed
 
+    def GetSummaryMessage(self):
+        print("Despeckle: Rejecting data beyond {0!s}s.d. of mean. Nbr search on data beyond {1!s} s.d. of mean.".
+              format(stDevValidityThreshold, speckleDevThreshold))
+        print("Nbr searching for {0!s} - {1!s} nbrs within {2!s} spiral steps for z-score tolerance of {3!s}".
+              format(_SPECKLE_NBR_MIN_THRESHOLD, _SPECKLE_NBR_MAX_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK,
+                     _SPECKLE_ZSCORE_THRESHOLD))
 
 class GapfillFilePaths(NamedTuple):
     DATA_FILES_GLOB_PATTERN: str
@@ -233,6 +239,18 @@ class DespeckleDiagnostics(NamedTuple):
     ClearedSpeckleCellCount: int
     TimeSeconds: float
 
+    def GetSummaryMessage(self):
+        message = f"""
+    Despeckle report:
+        Speckle cell count:             {self.SpeckleCellCount}
+        Extreme cell count:             {self.ExtremeCellCount}
+        Good cell count:                {self.GoodCellCount}
+        Ocean cell count:               {self.OceanCellCount}
+        Cleared speckle count:          {self.ClearedSpeckleCellCount}
+        Total time for despeckle:       {round(self.TimeSeconds, 2)}s
+        """
+        return message
+
 
 class A1Diagnostics(NamedTuple):
     TotalCellsSearched: int
@@ -251,11 +269,47 @@ class A1Diagnostics(NamedTuple):
     TotalNbrsUsed: int
     TimeSeconds: float
 
+    def GetSummaryMessage(self):
+        message = f"""
+    A1 report:
+        Total cells scanned:            {self.TotalCellsSearched}
+        Total cells with good data:     {self.CellsWithGoodData}
+        Total cells ocean:              {self.OceanCells}
+        Total cells never-data:         {self.NeverDataLocations}
+        Total processed gaps:           {self.GapCellsTotal}
+        Total gaps too large too fill:  {self.GapCellsTooBig}
+        Total gaps at unfillable locs   {self.PermanentGapCells}
+            (i.e. never-data * years)
+        Total cells filled fully:       {self.GapCellsFullyFilled}
+        Total cells filled partially:   {self.GapCellsPartFilled}
+        Total w/insufficient nbr pairs: {self.FailedInsufficientPairs}
+        Total with no nbr pairs:        {self.FailedNoPairs}
+        Total yrs scanned f/b in stack: {self.TotalAlternateYearsScanned}
+        Total nbr cells scanned:        {self.TotalNbrsChecked}
+        Total used nbr pairs:           {self.TotalNbrsUsed}
+        Total time for A1:              {round(self.TimeSeconds, 2)}s
+        """
+        return message
+
 
 class A2Diagnostics(NamedTuple):
     GapCellsTotal: int
     GapCellsFilled: int
+    GapCellsFilledByPass: list
     TimeSeconds: float
+    TimeSecondsByPass: list
 
+    def GetSummaryMessage(self):
+        tByPass = " / ".join([f"{p}: {round(t, 2)}s" for p, t in enumerate(self.TimeSecondsByPass)])
+        nByPass = " / ".join([f"{p}: {n}" for p, n in enumerate(self.GapCellsFilledByPass)])
+        message = f"""
+    A2 report:
+        Total processed gaps:           {self.GapCellsTotal}
+        Total cells filled:             {self.GapCellsFilled}
+            Filled by pass:             {nByPass}
+        Total time for A2:              {self.TimeSeconds}s
+            Time by pass:               {tByPass}
+        """
+        return message
 
 

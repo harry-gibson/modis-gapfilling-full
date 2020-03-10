@@ -1849,11 +1849,8 @@ static const char __pyx_k_empty_like[] = "empty_like";
 static const char __pyx_k_flagValues[] = "flagValues";
 static const char __pyx_k_pyx_result[] = "__pyx_result";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
-static const char __pyx_k_DataArray2D[] = "DataArray2D";
-static const char __pyx_k_MeanArray2D[] = "MeanArray2D";
 static const char __pyx_k_MemoryError[] = "MemoryError";
 static const char __pyx_k_PickleError[] = "PickleError";
-static const char __pyx_k_FlagsArray2D[] = "FlagsArray2D";
 static const char __pyx_k_NODATA_VALUE[] = "NODATA_VALUE";
 static const char __pyx_k_pyx_checksum[] = "__pyx_checksum";
 static const char __pyx_k_stringsource[] = "stringsource";
@@ -1868,7 +1865,6 @@ static const char __pyx_k_dtype_is_object[] = "dtype_is_object";
 static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_DataLimitsConfig[] = "DataLimitsConfig";
-static const char __pyx_k_DataArrayOutput2D[] = "DataArrayOutput2D";
 static const char __pyx_k_pyx_unpickle_Enum[] = "__pyx_unpickle_Enum";
 static const char __pyx_k_MAX_NBRS_TO_SEARCH[] = "MAX_NBRS_TO_SEARCH";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
@@ -1881,12 +1877,16 @@ static const char __pyx_k_strided_and_indirect[] = "<strided and indirect>";
 static const char __pyx_k_contiguous_and_direct[] = "<contiguous and direct>";
 static const char __pyx_k_FILL_GENERATION_METHOD[] = "FILL_GENERATION_METHOD";
 static const char __pyx_k_MemoryView_of_r_object[] = "<MemoryView of %r object>";
+static const char __pyx_k_TransformedDataArray2D[] = "TransformedDataArray2D";
+static const char __pyx_k_TransformedMeanArray2D[] = "TransformedMeanArray2D";
 static const char __pyx_k_MemoryView_of_r_at_0x_x[] = "<MemoryView of %r at 0x%x>";
+static const char __pyx_k_TransformedFlagsArray2D[] = "TransformedFlagsArray2D";
 static const char __pyx_k_contiguous_and_indirect[] = "<contiguous and indirect>";
 static const char __pyx_k_Cannot_index_with_type_s[] = "Cannot index with type '%s'";
 static const char __pyx_k_Invalid_shape_in_axis_d_d[] = "Invalid shape in axis %d: %d.";
-static const char __pyx_k_SumOfPassDistancesArray2D[] = "SumOfPassDistancesArray2D";
+static const char __pyx_k_TransformedDistanceArray2D[] = "TransformedDistanceArray2D";
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
+static const char __pyx_k_TransformedDataArrayOutput2D[] = "TransformedDataArrayOutput2D";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
 static const char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
 static const char __pyx_k_Buffer_view_does_not_expose_stri[] = "Buffer view does not expose strides";
@@ -1898,6 +1898,7 @@ static const char __pyx_k_Incompatible_checksums_s_vs_0xb0[] = "Incompatible che
 static const char __pyx_k_Indirect_dimensions_not_supporte[] = "Indirect dimensions not supported";
 static const char __pyx_k_Invalid_mode_expected_c_or_fortr[] = "Invalid mode, expected 'c' or 'fortran', got %s";
 static const char __pyx_k_Out_of_bounds_on_buffer_access_a[] = "Out of bounds on buffer access (axis %d)";
+static const char __pyx_k_TransformedSumOfPassDistancesArr[] = "TransformedSumOfPassDistancesArray2D";
 static const char __pyx_k_Unable_to_convert_item_to_object[] = "Unable to convert item to object";
 static const char __pyx_k_got_differing_extents_in_dimensi[] = "got differing extents in dimension %d (got %d and %d)";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
@@ -1912,15 +1913,12 @@ static PyObject *__pyx_kp_s_Can_only_create_a_buffer_that_is;
 static PyObject *__pyx_kp_s_Cannot_assign_to_read_only_memor;
 static PyObject *__pyx_kp_s_Cannot_create_writable_memory_vi;
 static PyObject *__pyx_kp_s_Cannot_index_with_type_s;
-static PyObject *__pyx_n_s_DataArray2D;
-static PyObject *__pyx_n_s_DataArrayOutput2D;
 static PyObject *__pyx_n_s_DataLimitsConfig;
 static PyObject *__pyx_n_s_Ellipsis;
 static PyObject *__pyx_kp_s_Empty_shape_tuple_for_cython_arr;
 static PyObject *__pyx_n_s_FAILURE;
 static PyObject *__pyx_n_s_FILL_GENERATION_METHOD;
 static PyObject *__pyx_n_s_FlagItems;
-static PyObject *__pyx_n_s_FlagsArray2D;
 static PyObject *__pyx_kp_s_Incompatible_checksums_s_vs_0xb0;
 static PyObject *__pyx_n_s_IndexError;
 static PyObject *__pyx_kp_s_Indirect_dimensions_not_supporte;
@@ -1928,7 +1926,6 @@ static PyObject *__pyx_kp_s_Invalid_mode_expected_c_or_fortr;
 static PyObject *__pyx_kp_s_Invalid_shape_in_axis_d_d;
 static PyObject *__pyx_n_s_MAX_ALLOWABLE_RATIO;
 static PyObject *__pyx_n_s_MAX_NBRS_TO_SEARCH;
-static PyObject *__pyx_n_s_MeanArray2D;
 static PyObject *__pyx_n_s_MemoryError;
 static PyObject *__pyx_kp_s_MemoryView_of_r_at_0x_x;
 static PyObject *__pyx_kp_s_MemoryView_of_r_object;
@@ -1939,8 +1936,13 @@ static PyObject *__pyx_kp_s_Out_of_bounds_on_buffer_access_a;
 static PyObject *__pyx_n_s_PickleError;
 static PyObject *__pyx_n_s_RATIO;
 static PyObject *__pyx_n_s_SPIRAL_CONFIG;
-static PyObject *__pyx_n_s_SumOfPassDistancesArray2D;
 static PyObject *__pyx_n_s_T;
+static PyObject *__pyx_n_s_TransformedDataArray2D;
+static PyObject *__pyx_n_s_TransformedDataArrayOutput2D;
+static PyObject *__pyx_n_s_TransformedDistanceArray2D;
+static PyObject *__pyx_n_s_TransformedFlagsArray2D;
+static PyObject *__pyx_n_s_TransformedMeanArray2D;
+static PyObject *__pyx_n_s_TransformedSumOfPassDistancesArr;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_kp_s_Unable_to_convert_item_to_object;
 static PyObject *__pyx_n_s_ValueError;
@@ -2117,7 +2119,7 @@ static PyObject *__pyx_tuple__28;
 static PyObject *__pyx_codeobj__29;
 /* Late includes */
 
-/* "gapfill_core_a2.pyx":12
+/* "gapfill_core_a2.pyx":11
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * cpdef a2_core (             # <<<<<<<<<<<<<<
@@ -2252,7 +2254,7 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
   Py_ssize_t __pyx_t_84;
   __Pyx_RefNannySetupContext("a2_core", 0);
 
-  /* "gapfill_core_a2.pyx":56
+  /* "gapfill_core_a2.pyx":55
  * 
  *         # metrics
  *         long long gotPixelVals = 0             # <<<<<<<<<<<<<<
@@ -2261,149 +2263,149 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
  */
   __pyx_v_gotPixelVals = 0;
 
-  /* "gapfill_core_a2.pyx":61
+  /* "gapfill_core_a2.pyx":60
  *         # nb we can use [:,::1] here (rather than [:,:] *iif* we have transformed the data with a np.copy rather than
  *         # just re-striding it in the caller function
- *         float[:,::1] dataImage = dataStack.DataArray2D             # <<<<<<<<<<<<<<
- *         unsigned char[:,::1] flagsImage = dataStack.FlagsArray2D
- *         float[:,::1] distImageIn = dataStack.DataArray2D
+ *         float[:,::1] dataImage = dataStack.TransformedDataArray2D             # <<<<<<<<<<<<<<
+ *         unsigned char[:,::1] flagsImage = dataStack.TransformedFlagsArray2D
+ *         float[:,::1] distImageIn = dataStack.TransformedDistanceArray2D
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStack, __pyx_n_s_DataArray2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStack, __pyx_n_s_TransformedDataArray2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_dataImage = __pyx_t_2;
   __pyx_t_2.memview = NULL;
   __pyx_t_2.data = NULL;
 
-  /* "gapfill_core_a2.pyx":62
+  /* "gapfill_core_a2.pyx":61
  *         # just re-striding it in the caller function
- *         float[:,::1] dataImage = dataStack.DataArray2D
- *         unsigned char[:,::1] flagsImage = dataStack.FlagsArray2D             # <<<<<<<<<<<<<<
- *         float[:,::1] distImageIn = dataStack.DataArray2D
- *         float[:,::1] meanImage = dataStack.MeanArray2D
+ *         float[:,::1] dataImage = dataStack.TransformedDataArray2D
+ *         unsigned char[:,::1] flagsImage = dataStack.TransformedFlagsArray2D             # <<<<<<<<<<<<<<
+ *         float[:,::1] distImageIn = dataStack.TransformedDistanceArray2D
+ *         float[:,::1] meanImage = dataStack.TransformedMeanArray2D
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStack, __pyx_n_s_FlagsArray2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStack, __pyx_n_s_TransformedFlagsArray2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_unsigned_char(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_3.memview)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_unsigned_char(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_3.memview)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_flagsImage = __pyx_t_3;
   __pyx_t_3.memview = NULL;
   __pyx_t_3.data = NULL;
 
-  /* "gapfill_core_a2.pyx":63
- *         float[:,::1] dataImage = dataStack.DataArray2D
- *         unsigned char[:,::1] flagsImage = dataStack.FlagsArray2D
- *         float[:,::1] distImageIn = dataStack.DataArray2D             # <<<<<<<<<<<<<<
- *         float[:,::1] meanImage = dataStack.MeanArray2D
+  /* "gapfill_core_a2.pyx":62
+ *         float[:,::1] dataImage = dataStack.TransformedDataArray2D
+ *         unsigned char[:,::1] flagsImage = dataStack.TransformedFlagsArray2D
+ *         float[:,::1] distImageIn = dataStack.TransformedDistanceArray2D             # <<<<<<<<<<<<<<
+ *         float[:,::1] meanImage = dataStack.TransformedMeanArray2D
  *         # these inputs get modified, i.e. they are "out" parameters
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStack, __pyx_n_s_DataArray2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStack, __pyx_n_s_TransformedDistanceArray2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 63, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 62, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_distImageIn = __pyx_t_2;
   __pyx_t_2.memview = NULL;
   __pyx_t_2.data = NULL;
 
-  /* "gapfill_core_a2.pyx":64
- *         unsigned char[:,::1] flagsImage = dataStack.FlagsArray2D
- *         float[:,::1] distImageIn = dataStack.DataArray2D
- *         float[:,::1] meanImage = dataStack.MeanArray2D             # <<<<<<<<<<<<<<
+  /* "gapfill_core_a2.pyx":63
+ *         unsigned char[:,::1] flagsImage = dataStack.TransformedFlagsArray2D
+ *         float[:,::1] distImageIn = dataStack.TransformedDistanceArray2D
+ *         float[:,::1] meanImage = dataStack.TransformedMeanArray2D             # <<<<<<<<<<<<<<
  *         # these inputs get modified, i.e. they are "out" parameters
- *         float[:,::1] outputImageDist = dataStack.SumOfPassDistancesArray2D
+ *         float[:,::1] outputImageDist = dataStack.TransformedSumOfPassDistancesArray2D
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStack, __pyx_n_s_MeanArray2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStack, __pyx_n_s_TransformedMeanArray2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_meanImage = __pyx_t_2;
   __pyx_t_2.memview = NULL;
   __pyx_t_2.data = NULL;
 
-  /* "gapfill_core_a2.pyx":66
- *         float[:,::1] meanImage = dataStack.MeanArray2D
+  /* "gapfill_core_a2.pyx":65
+ *         float[:,::1] meanImage = dataStack.TransformedMeanArray2D
  *         # these inputs get modified, i.e. they are "out" parameters
- *         float[:,::1] outputImageDist = dataStack.SumOfPassDistancesArray2D             # <<<<<<<<<<<<<<
- *         float[:,::1] outputImageData = dataStack.DataArrayOutput2D
+ *         float[:,::1] outputImageDist = dataStack.TransformedSumOfPassDistancesArray2D             # <<<<<<<<<<<<<<
+ *         float[:,::1] outputImageData = dataStack.TransformedDataArrayOutput2D
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStack, __pyx_n_s_SumOfPassDistancesArray2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStack, __pyx_n_s_TransformedSumOfPassDistancesArr); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_outputImageDist = __pyx_t_2;
   __pyx_t_2.memview = NULL;
   __pyx_t_2.data = NULL;
 
-  /* "gapfill_core_a2.pyx":67
+  /* "gapfill_core_a2.pyx":66
  *         # these inputs get modified, i.e. they are "out" parameters
- *         float[:,::1] outputImageDist = dataStack.SumOfPassDistancesArray2D
- *         float[:,::1] outputImageData = dataStack.DataArrayOutput2D             # <<<<<<<<<<<<<<
+ *         float[:,::1] outputImageDist = dataStack.TransformedSumOfPassDistancesArray2D
+ *         float[:,::1] outputImageData = dataStack.TransformedDataArrayOutput2D             # <<<<<<<<<<<<<<
  * 
  *         char _FILL_FAILED_FLAG = flagValues.FAILURE
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStack, __pyx_n_s_DataArrayOutput2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataStack, __pyx_n_s_TransformedDataArrayOutput2D); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_1, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_outputImageData = __pyx_t_2;
   __pyx_t_2.memview = NULL;
   __pyx_t_2.data = NULL;
 
-  /* "gapfill_core_a2.pyx":69
- *         float[:,::1] outputImageData = dataStack.DataArrayOutput2D
+  /* "gapfill_core_a2.pyx":68
+ *         float[:,::1] outputImageData = dataStack.TransformedDataArrayOutput2D
  * 
  *         char _FILL_FAILED_FLAG = flagValues.FAILURE             # <<<<<<<<<<<<<<
  *         char _OCEAN_FLAG = flagValues.OCEAN
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_flagValues, __pyx_n_s_FAILURE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_flagValues, __pyx_n_s_FAILURE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyInt_As_char(__pyx_t_1); if (unlikely((__pyx_t_4 == (char)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_char(__pyx_t_1); if (unlikely((__pyx_t_4 == (char)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__FILL_FAILED_FLAG = __pyx_t_4;
 
-  /* "gapfill_core_a2.pyx":70
+  /* "gapfill_core_a2.pyx":69
  * 
  *         char _FILL_FAILED_FLAG = flagValues.FAILURE
  *         char _OCEAN_FLAG = flagValues.OCEAN             # <<<<<<<<<<<<<<
  * 
  *         float _AbsZeroPoint = dataConfig.ABSOLUTE_ZERO_OFFSET
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_flagValues, __pyx_n_s_OCEAN); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_flagValues, __pyx_n_s_OCEAN); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyInt_As_char(__pyx_t_1); if (unlikely((__pyx_t_4 == (char)-1) && PyErr_Occurred())) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_char(__pyx_t_1); if (unlikely((__pyx_t_4 == (char)-1) && PyErr_Occurred())) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__OCEAN_FLAG = __pyx_t_4;
 
-  /* "gapfill_core_a2.pyx":72
+  /* "gapfill_core_a2.pyx":71
  *         char _OCEAN_FLAG = flagValues.OCEAN
  * 
  *         float _AbsZeroPoint = dataConfig.ABSOLUTE_ZERO_OFFSET             # <<<<<<<<<<<<<<
  *         float _MaxAllowableRatio = a2Config.MAX_ALLOWABLE_RATIO
  *         float _MinAllowableRatio = 1.0 / _MaxAllowableRatio
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataConfig, __pyx_n_s_ABSOLUTE_ZERO_OFFSET); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataConfig, __pyx_n_s_ABSOLUTE_ZERO_OFFSET); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_5 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_5 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_5 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 71, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__AbsZeroPoint = __pyx_t_5;
 
-  /* "gapfill_core_a2.pyx":73
+  /* "gapfill_core_a2.pyx":72
  * 
  *         float _AbsZeroPoint = dataConfig.ABSOLUTE_ZERO_OFFSET
  *         float _MaxAllowableRatio = a2Config.MAX_ALLOWABLE_RATIO             # <<<<<<<<<<<<<<
  *         float _MinAllowableRatio = 1.0 / _MaxAllowableRatio
  *         unsigned char FillByRatios = a2Config.FILL_GENERATION_METHOD == "RATIO"
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_a2Config, __pyx_n_s_MAX_ALLOWABLE_RATIO); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_a2Config, __pyx_n_s_MAX_ALLOWABLE_RATIO); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_5 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_5 = __pyx_PyFloat_AsFloat(__pyx_t_1); if (unlikely((__pyx_t_5 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v__MaxAllowableRatio = __pyx_t_5;
 
-  /* "gapfill_core_a2.pyx":74
+  /* "gapfill_core_a2.pyx":73
  *         float _AbsZeroPoint = dataConfig.ABSOLUTE_ZERO_OFFSET
  *         float _MaxAllowableRatio = a2Config.MAX_ALLOWABLE_RATIO
  *         float _MinAllowableRatio = 1.0 / _MaxAllowableRatio             # <<<<<<<<<<<<<<
@@ -2412,51 +2414,51 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
  */
   __pyx_v__MinAllowableRatio = (1.0 / __pyx_v__MaxAllowableRatio);
 
-  /* "gapfill_core_a2.pyx":75
+  /* "gapfill_core_a2.pyx":74
  *         float _MaxAllowableRatio = a2Config.MAX_ALLOWABLE_RATIO
  *         float _MinAllowableRatio = 1.0 / _MaxAllowableRatio
  *         unsigned char FillByRatios = a2Config.FILL_GENERATION_METHOD == "RATIO"             # <<<<<<<<<<<<<<
  *         float _NDV = dataConfig.NODATA_VALUE
  *         Py_ssize_t A2_MAX_NBRS = a2Config.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_a2Config, __pyx_n_s_FILL_GENERATION_METHOD); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_a2Config, __pyx_n_s_FILL_GENERATION_METHOD); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = PyObject_RichCompare(__pyx_t_1, __pyx_n_s_RATIO, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_6 = PyObject_RichCompare(__pyx_t_1, __pyx_n_s_RATIO, Py_EQ); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_7 = __Pyx_PyInt_As_unsigned_char(__pyx_t_6); if (unlikely((__pyx_t_7 == (unsigned char)-1) && PyErr_Occurred())) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_As_unsigned_char(__pyx_t_6); if (unlikely((__pyx_t_7 == (unsigned char)-1) && PyErr_Occurred())) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_v_FillByRatios = __pyx_t_7;
 
-  /* "gapfill_core_a2.pyx":76
+  /* "gapfill_core_a2.pyx":75
  *         float _MinAllowableRatio = 1.0 / _MaxAllowableRatio
  *         unsigned char FillByRatios = a2Config.FILL_GENERATION_METHOD == "RATIO"
  *         float _NDV = dataConfig.NODATA_VALUE             # <<<<<<<<<<<<<<
  *         Py_ssize_t A2_MAX_NBRS = a2Config.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH
  * 
  */
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataConfig, __pyx_n_s_NODATA_VALUE); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dataConfig, __pyx_n_s_NODATA_VALUE); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_5 = __pyx_PyFloat_AsFloat(__pyx_t_6); if (unlikely((__pyx_t_5 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_5 = __pyx_PyFloat_AsFloat(__pyx_t_6); if (unlikely((__pyx_t_5 == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 75, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_v__NDV = __pyx_t_5;
 
-  /* "gapfill_core_a2.pyx":77
+  /* "gapfill_core_a2.pyx":76
  *         unsigned char FillByRatios = a2Config.FILL_GENERATION_METHOD == "RATIO"
  *         float _NDV = dataConfig.NODATA_VALUE
  *         Py_ssize_t A2_MAX_NBRS = a2Config.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH             # <<<<<<<<<<<<<<
  * 
  *     yShape = dataImage.shape[0]
  */
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_a2Config, __pyx_n_s_SPIRAL_CONFIG); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_a2Config, __pyx_n_s_SPIRAL_CONFIG); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_MAX_NBRS_TO_SEARCH); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_MAX_NBRS_TO_SEARCH); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_8 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_8 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_8 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_A2_MAX_NBRS = __pyx_t_8;
 
-  /* "gapfill_core_a2.pyx":79
+  /* "gapfill_core_a2.pyx":78
  *         Py_ssize_t A2_MAX_NBRS = a2Config.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH
  * 
  *     yShape = dataImage.shape[0]             # <<<<<<<<<<<<<<
@@ -2465,7 +2467,7 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
  */
   __pyx_v_yShape = (__pyx_v_dataImage.shape[0]);
 
-  /* "gapfill_core_a2.pyx":80
+  /* "gapfill_core_a2.pyx":79
  * 
  *     yShape = dataImage.shape[0]
  *     xShape = dataImage.shape[1]             # <<<<<<<<<<<<<<
@@ -2474,46 +2476,46 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
  */
   __pyx_v_xShape = (__pyx_v_dataImage.shape[1]);
 
-  /* "gapfill_core_a2.pyx":84
+  /* "gapfill_core_a2.pyx":83
  *     # it's actually the max neigbours value that defines how far out the search runs.
  *     # this just makes sure that the nbr table is generated far enough out.
  *     _SEARCH_RADIUS = <int>sqrt(A2_MAX_NBRS / 3.14) + 10             # <<<<<<<<<<<<<<
  *     diam = _SEARCH_RADIUS * 2 + 1
  *     inds = np.indices([diam,diam]) - _SEARCH_RADIUS
  */
-  __pyx_t_1 = __Pyx_PyInt_From_long((((int)sqrt((__pyx_v_A2_MAX_NBRS / 3.14))) + 10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_long((((int)sqrt((__pyx_v_A2_MAX_NBRS / 3.14))) + 10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v__SEARCH_RADIUS = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "gapfill_core_a2.pyx":85
+  /* "gapfill_core_a2.pyx":84
  *     # this just makes sure that the nbr table is generated far enough out.
  *     _SEARCH_RADIUS = <int>sqrt(A2_MAX_NBRS / 3.14) + 10
  *     diam = _SEARCH_RADIUS * 2 + 1             # <<<<<<<<<<<<<<
  *     inds = np.indices([diam,diam]) - _SEARCH_RADIUS
  *     distTmp = np.sqrt((inds ** 2).sum(0))
  */
-  __pyx_t_1 = PyNumber_Multiply(__pyx_v__SEARCH_RADIUS, __pyx_int_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Multiply(__pyx_v__SEARCH_RADIUS, __pyx_int_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyInt_AddObjC(__pyx_t_1, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyInt_AddObjC(__pyx_t_1, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_diam = __pyx_t_6;
   __pyx_t_6 = 0;
 
-  /* "gapfill_core_a2.pyx":86
+  /* "gapfill_core_a2.pyx":85
  *     _SEARCH_RADIUS = <int>sqrt(A2_MAX_NBRS / 3.14) + 10
  *     diam = _SEARCH_RADIUS * 2 + 1
  *     inds = np.indices([diam,diam]) - _SEARCH_RADIUS             # <<<<<<<<<<<<<<
  *     distTmp = np.sqrt((inds ** 2).sum(0))
  *     npTmpTable = ((inds.T).reshape(diam**2, 2))
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_indices); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_indices); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_diam);
   __Pyx_GIVEREF(__pyx_v_diam);
@@ -2534,30 +2536,30 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
   __pyx_t_6 = (__pyx_t_10) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_10, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_1);
   __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 86, __pyx_L1_error)
+  if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = PyNumber_Subtract(__pyx_t_6, __pyx_v__SEARCH_RADIUS); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_9 = PyNumber_Subtract(__pyx_t_6, __pyx_v__SEARCH_RADIUS); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 85, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_v_inds = __pyx_t_9;
   __pyx_t_9 = 0;
 
-  /* "gapfill_core_a2.pyx":87
+  /* "gapfill_core_a2.pyx":86
  *     diam = _SEARCH_RADIUS * 2 + 1
  *     inds = np.indices([diam,diam]) - _SEARCH_RADIUS
  *     distTmp = np.sqrt((inds ** 2).sum(0))             # <<<<<<<<<<<<<<
  *     npTmpTable = ((inds.T).reshape(diam**2, 2))
  *     npTmpTable = np.append(npTmpTable, distTmp.ravel()[:,None],axis=1)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_sqrt); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_10 = PyNumber_Power(__pyx_v_inds, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_t_10 = PyNumber_Power(__pyx_v_inds, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_sum); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_sum); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __pyx_t_10 = NULL;
@@ -2572,7 +2574,7 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
   }
   __pyx_t_6 = (__pyx_t_10) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_10, __pyx_int_0) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_int_0);
   __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-  if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 87, __pyx_L1_error)
+  if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __pyx_t_11 = NULL;
@@ -2588,25 +2590,25 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
   __pyx_t_9 = (__pyx_t_11) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_11, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_6);
   __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 87, __pyx_L1_error)
+  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_distTmp = __pyx_t_9;
   __pyx_t_9 = 0;
 
-  /* "gapfill_core_a2.pyx":88
+  /* "gapfill_core_a2.pyx":87
  *     inds = np.indices([diam,diam]) - _SEARCH_RADIUS
  *     distTmp = np.sqrt((inds ** 2).sum(0))
  *     npTmpTable = ((inds.T).reshape(diam**2, 2))             # <<<<<<<<<<<<<<
  *     npTmpTable = np.append(npTmpTable, distTmp.ravel()[:,None],axis=1)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_inds, __pyx_n_s_T); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_inds, __pyx_n_s_T); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_reshape); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 88, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_reshape); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 87, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Power(__pyx_v_diam, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Power(__pyx_v_diam, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_11 = NULL;
   __pyx_t_12 = 0;
@@ -2623,7 +2625,7 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_6)) {
     PyObject *__pyx_temp[3] = {__pyx_t_11, __pyx_t_1, __pyx_int_2};
-    __pyx_t_9 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 87, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2632,14 +2634,14 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
     PyObject *__pyx_temp[3] = {__pyx_t_11, __pyx_t_1, __pyx_int_2};
-    __pyx_t_9 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_12, 2+__pyx_t_12); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 87, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else
   #endif
   {
-    __pyx_t_10 = PyTuple_New(2+__pyx_t_12); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_10 = PyTuple_New(2+__pyx_t_12); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 87, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
     if (__pyx_t_11) {
       __Pyx_GIVEREF(__pyx_t_11); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_11); __pyx_t_11 = NULL;
@@ -2650,7 +2652,7 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
     __Pyx_GIVEREF(__pyx_int_2);
     PyTuple_SET_ITEM(__pyx_t_10, 1+__pyx_t_12, __pyx_int_2);
     __pyx_t_1 = 0;
-    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_10, NULL); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 87, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   }
@@ -2658,19 +2660,19 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
   __pyx_v_npTmpTable = __pyx_t_9;
   __pyx_t_9 = 0;
 
-  /* "gapfill_core_a2.pyx":89
+  /* "gapfill_core_a2.pyx":88
  *     distTmp = np.sqrt((inds ** 2).sum(0))
  *     npTmpTable = ((inds.T).reshape(diam**2, 2))
  *     npTmpTable = np.append(npTmpTable, distTmp.ravel()[:,None],axis=1)             # <<<<<<<<<<<<<<
  * 
  *     # sort the table by distance then x then y (the arguments are last-sort-first)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_np); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_9, __pyx_n_s_np); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_append); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_append); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_v_distTmp, __pyx_n_s_ravel); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_v_distTmp, __pyx_n_s_ravel); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __pyx_t_1 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_10))) {
@@ -2684,13 +2686,13 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
   }
   __pyx_t_9 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_10, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 89, __pyx_L1_error)
+  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = __Pyx_PyObject_GetItem(__pyx_t_9, __pyx_tuple__2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_GetItem(__pyx_t_9, __pyx_tuple__2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_INCREF(__pyx_v_npTmpTable);
   __Pyx_GIVEREF(__pyx_v_npTmpTable);
@@ -2698,10 +2700,10 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
   __Pyx_GIVEREF(__pyx_t_10);
   PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_10);
   __pyx_t_10 = 0;
-  __pyx_t_10 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_axis, __pyx_int_1) < 0) __PYX_ERR(0, 89, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, __pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_axis, __pyx_int_1) < 0) __PYX_ERR(0, 88, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_9, __pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
@@ -2709,25 +2711,25 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
   __Pyx_DECREF_SET(__pyx_v_npTmpTable, __pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "gapfill_core_a2.pyx":92
+  /* "gapfill_core_a2.pyx":91
  * 
  *     # sort the table by distance then x then y (the arguments are last-sort-first)
  *     order = np.lexsort((npTmpTable[:,1],npTmpTable[:,0],npTmpTable[:,2]))             # <<<<<<<<<<<<<<
  *     npTmpTable = np.take(npTmpTable,order,axis=0)
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_np); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_np); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_lexsort); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_lexsort); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__3); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__3); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_11 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__5); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__5); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_13 = PyTuple_New(3); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_13 = PyTuple_New(3); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
   __Pyx_GIVEREF(__pyx_t_10);
   PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_10);
@@ -2751,25 +2753,25 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
   __pyx_t_1 = (__pyx_t_11) ? __Pyx_PyObject_Call2Args(__pyx_t_9, __pyx_t_11, __pyx_t_13) : __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_13);
   __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __pyx_v_order = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "gapfill_core_a2.pyx":93
+  /* "gapfill_core_a2.pyx":92
  *     # sort the table by distance then x then y (the arguments are last-sort-first)
  *     order = np.lexsort((npTmpTable[:,1],npTmpTable[:,0],npTmpTable[:,2]))
  *     npTmpTable = np.take(npTmpTable,order,axis=0)             # <<<<<<<<<<<<<<
  * 
  *     # the C-side result of the distance table calculations
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_take); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_take); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_npTmpTable);
   __Pyx_GIVEREF(__pyx_v_npTmpTable);
@@ -2777,10 +2779,10 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
   __Pyx_INCREF(__pyx_v_order);
   __Pyx_GIVEREF(__pyx_v_order);
   PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_order);
-  __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
-  if (PyDict_SetItem(__pyx_t_13, __pyx_n_s_axis, __pyx_int_0) < 0) __PYX_ERR(0, 93, __pyx_L1_error)
-  __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_1, __pyx_t_13); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 93, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_13, __pyx_n_s_axis, __pyx_int_0) < 0) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_1, __pyx_t_13); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2788,57 +2790,57 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
   __Pyx_DECREF_SET(__pyx_v_npTmpTable, __pyx_t_11);
   __pyx_t_11 = 0;
 
-  /* "gapfill_core_a2.pyx":98
+  /* "gapfill_core_a2.pyx":97
  *     # transpose it to have three rows and many columns and take a C contiguous copy of this
  *     # so that access to individual nbr coord sets is optimised
  *     nbrTable = np.copy((npTmpTable[npTmpTable[:,2] <= _SEARCH_RADIUS]).T,order='c')             # <<<<<<<<<<<<<<
  *     # the distance table is stored with a float type but we need ints for indexing
  *     # based on its coords. we can cast at the time we get them out, but as this happens
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_np); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_np); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_copy); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_copy); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_11 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__5); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_tuple__5); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_1 = PyObject_RichCompare(__pyx_t_11, __pyx_v__SEARCH_RADIUS, Py_LE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_t_11, __pyx_v__SEARCH_RADIUS, Py_LE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_11 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_t_1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_GetItem(__pyx_v_npTmpTable, __pyx_t_1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_T); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_T); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 98, __pyx_L1_error)
-  __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_t_11, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 98, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_t_11, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(__pyx_t_9, PyBUF_WRITABLE); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_double(__pyx_t_9, PyBUF_WRITABLE); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __pyx_v_nbrTable = __pyx_t_14;
   __pyx_t_14.memview = NULL;
   __pyx_t_14.data = NULL;
 
-  /* "gapfill_core_a2.pyx":103
+  /* "gapfill_core_a2.pyx":102
  *     # in the innermost loop it is done trillions of times and so the time penalty of that
  *     # becomes signficant. So, store an int version of the coords array
  *     nbrIntCoords = np.asarray(nbrTable[0:2,:]).astype(np.int32)             # <<<<<<<<<<<<<<
  * 
  *     print ("Beginning pass of A2...")
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_np); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_np); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_asarray); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_asarray); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __pyx_t_14.data = __pyx_v_nbrTable.data;
@@ -2859,14 +2861,14 @@ static PyObject *__pyx_f_15gapfill_core_a2_a2_core(PyObject *__pyx_v_dataStack, 
     0,
     1) < 0))
 {
-    __PYX_ERR(0, 103, __pyx_L1_error)
+    __PYX_ERR(0, 102, __pyx_L1_error)
 }
 
 __pyx_t_14.shape[1] = __pyx_v_nbrTable.shape[1];
 __pyx_t_14.strides[1] = __pyx_v_nbrTable.strides[1];
     __pyx_t_14.suboffsets[1] = -1;
 
-__pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 103, __pyx_L1_error)
+__pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) __pyx_memview_get_double, (int (*)(char *, PyObject *)) __pyx_memview_set_double, 0);; if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __PYX_XDEC_MEMVIEW(&__pyx_t_14, 1);
   __pyx_t_14.memview = NULL;
@@ -2884,15 +2886,15 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
   __pyx_t_1 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_6, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_t_11);
   __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_astype); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_astype); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_int32); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_int32); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = NULL;
@@ -2908,37 +2910,37 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
   __pyx_t_9 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_1, __pyx_t_11) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_t_11);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 103, __pyx_L1_error)
+  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __pyx_t_15 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_int(__pyx_t_9, PyBUF_WRITABLE); if (unlikely(!__pyx_t_15.memview)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_15 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_int(__pyx_t_9, PyBUF_WRITABLE); if (unlikely(!__pyx_t_15.memview)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __pyx_v_nbrIntCoords = __pyx_t_15;
   __pyx_t_15.memview = NULL;
   __pyx_t_15.data = NULL;
 
-  /* "gapfill_core_a2.pyx":105
+  /* "gapfill_core_a2.pyx":104
  *     nbrIntCoords = np.asarray(nbrTable[0:2,:]).astype(np.int32)
  * 
  *     print ("Beginning pass of A2...")             # <<<<<<<<<<<<<<
  *     # populate the ratio or difference image,
  *     # this is just (data / mean) or (data - mean) (whether the data are original or from A1)
  */
-  if (__Pyx_PrintOne(0, __pyx_kp_s_Beginning_pass_of_A2) < 0) __PYX_ERR(0, 105, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_kp_s_Beginning_pass_of_A2) < 0) __PYX_ERR(0, 104, __pyx_L1_error)
 
-  /* "gapfill_core_a2.pyx":108
+  /* "gapfill_core_a2.pyx":107
  *     # populate the ratio or difference image,
  *     # this is just (data / mean) or (data - mean) (whether the data are original or from A1)
  *     diffImage_Local = np.empty_like(dataImage)             # <<<<<<<<<<<<<<
  *     diffImage_Local[:] = _NDV
  *     with nogil, parallel(num_threads=20):
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_13, __pyx_n_s_np); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_13, __pyx_n_s_np); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_empty_like); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_empty_like); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __pyx_t_13 = __pyx_memoryview_fromslice(__pyx_v_dataImage, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_13 = __pyx_memoryview_fromslice(__pyx_v_dataImage, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
   __pyx_t_1 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
@@ -2953,16 +2955,16 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
   __pyx_t_9 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_1, __pyx_t_13) : __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_13);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 108, __pyx_L1_error)
+  if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_9, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_9, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __pyx_v_diffImage_Local = __pyx_t_2;
   __pyx_t_2.memview = NULL;
   __pyx_t_2.data = NULL;
 
-  /* "gapfill_core_a2.pyx":109
+  /* "gapfill_core_a2.pyx":108
  *     # this is just (data / mean) or (data - mean) (whether the data are original or from A1)
  *     diffImage_Local = np.empty_like(dataImage)
  *     diffImage_Local[:] = _NDV             # <<<<<<<<<<<<<<
@@ -2982,7 +2984,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
       }
   }
 
-  /* "gapfill_core_a2.pyx":110
+  /* "gapfill_core_a2.pyx":109
  *     diffImage_Local = np.empty_like(dataImage)
  *     diffImage_Local[:] = _NDV
  *     with nogil, parallel(num_threads=20):             # <<<<<<<<<<<<<<
@@ -3008,7 +3010,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
             #endif /* _OPENMP */
             {
 
-                /* "gapfill_core_a2.pyx":112
+                /* "gapfill_core_a2.pyx":111
  *     with nogil, parallel(num_threads=20):
  *         #outerIdx = -1
  *         for y in prange(0, yShape):             # <<<<<<<<<<<<<<
@@ -3030,7 +3032,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                 /* Initialize private variables to invalid values */
                                 __pyx_v_x = ((Py_ssize_t)0xbad0bad0);
 
-                                /* "gapfill_core_a2.pyx":113
+                                /* "gapfill_core_a2.pyx":112
  *         #outerIdx = -1
  *         for y in prange(0, yShape):
  *             x = -1             # <<<<<<<<<<<<<<
@@ -3039,7 +3041,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
                                 __pyx_v_x = -1L;
 
-                                /* "gapfill_core_a2.pyx":114
+                                /* "gapfill_core_a2.pyx":113
  *         for y in prange(0, yShape):
  *             x = -1
  *             for x in range(0, xShape):             # <<<<<<<<<<<<<<
@@ -3051,7 +3053,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                 for (__pyx_t_20 = 0; __pyx_t_20 < __pyx_t_19; __pyx_t_20+=1) {
                                   __pyx_v_x = __pyx_t_20;
 
-                                  /* "gapfill_core_a2.pyx":115
+                                  /* "gapfill_core_a2.pyx":114
  *             x = -1
  *             for x in range(0, xShape):
  *                 if ((flagsImage[y, x] & _OCEAN_FLAG) == _OCEAN_FLAG             # <<<<<<<<<<<<<<
@@ -3067,7 +3069,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                     goto __pyx_L17_bool_binop_done;
                                   }
 
-                                  /* "gapfill_core_a2.pyx":117
+                                  /* "gapfill_core_a2.pyx":116
  *                 if ((flagsImage[y, x] & _OCEAN_FLAG) == _OCEAN_FLAG
  *                     # or meanImage_Global_R[y, x] == 0 # we need to be able to cope with mean = 0
  *                     or meanImage[y, x] == _NDV             # <<<<<<<<<<<<<<
@@ -3083,7 +3085,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                     goto __pyx_L17_bool_binop_done;
                                   }
 
-                                  /* "gapfill_core_a2.pyx":118
+                                  /* "gapfill_core_a2.pyx":117
  *                     # or meanImage_Global_R[y, x] == 0 # we need to be able to cope with mean = 0
  *                     or meanImage[y, x] == _NDV
  *                     or dataImage[y, x] == _NDV             # <<<<<<<<<<<<<<
@@ -3096,7 +3098,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                   __pyx_t_21 = __pyx_t_24;
                                   __pyx_L17_bool_binop_done:;
 
-                                  /* "gapfill_core_a2.pyx":115
+                                  /* "gapfill_core_a2.pyx":114
  *             x = -1
  *             for x in range(0, xShape):
  *                 if ((flagsImage[y, x] & _OCEAN_FLAG) == _OCEAN_FLAG             # <<<<<<<<<<<<<<
@@ -3105,7 +3107,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
                                   if (__pyx_t_21) {
 
-                                    /* "gapfill_core_a2.pyx":120
+                                    /* "gapfill_core_a2.pyx":119
  *                     or dataImage[y, x] == _NDV
  *                     ):
  *                     continue             # <<<<<<<<<<<<<<
@@ -3114,7 +3116,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
                                     goto __pyx_L14_continue;
 
-                                    /* "gapfill_core_a2.pyx":115
+                                    /* "gapfill_core_a2.pyx":114
  *             x = -1
  *             for x in range(0, xShape):
  *                 if ((flagsImage[y, x] & _OCEAN_FLAG) == _OCEAN_FLAG             # <<<<<<<<<<<<<<
@@ -3123,7 +3125,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
                                   }
 
-                                  /* "gapfill_core_a2.pyx":121
+                                  /* "gapfill_core_a2.pyx":120
  *                     ):
  *                     continue
  *                 if FillByRatios == 0:             # <<<<<<<<<<<<<<
@@ -3133,7 +3135,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                   __pyx_t_21 = ((__pyx_v_FillByRatios == 0) != 0);
                                   if (__pyx_t_21) {
 
-                                    /* "gapfill_core_a2.pyx":122
+                                    /* "gapfill_core_a2.pyx":121
  *                     continue
  *                 if FillByRatios == 0:
  *                     diffImage_Local[y, x] = (dataImage[y, x] - meanImage[y, x])             # <<<<<<<<<<<<<<
@@ -3148,7 +3150,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                     __pyx_t_34 = __pyx_v_x;
                                     *((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_diffImage_Local.data + __pyx_t_33 * __pyx_v_diffImage_Local.strides[0]) )) + __pyx_t_34)) )) = ((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_dataImage.data + __pyx_t_29 * __pyx_v_dataImage.strides[0]) )) + __pyx_t_30)) ))) - (*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_meanImage.data + __pyx_t_31 * __pyx_v_meanImage.strides[0]) )) + __pyx_t_32)) ))));
 
-                                    /* "gapfill_core_a2.pyx":121
+                                    /* "gapfill_core_a2.pyx":120
  *                     ):
  *                     continue
  *                 if FillByRatios == 0:             # <<<<<<<<<<<<<<
@@ -3158,7 +3160,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                     goto __pyx_L20;
                                   }
 
-                                  /* "gapfill_core_a2.pyx":124
+                                  /* "gapfill_core_a2.pyx":123
  *                     diffImage_Local[y, x] = (dataImage[y, x] - meanImage[y, x])
  *                 else:
  *                     diffImage_Local[y, x] =((dataImage[y, x] - _AbsZeroPoint)             # <<<<<<<<<<<<<<
@@ -3167,7 +3169,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
                                   /*else*/ {
 
-                                    /* "gapfill_core_a2.pyx":125
+                                    /* "gapfill_core_a2.pyx":124
  *                 else:
  *                     diffImage_Local[y, x] =((dataImage[y, x] - _AbsZeroPoint)
  *                         / (meanImage[y, x] - _AbsZeroPoint))             # <<<<<<<<<<<<<<
@@ -3177,7 +3179,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                     __pyx_t_35 = __pyx_v_y;
                                     __pyx_t_36 = __pyx_v_x;
 
-                                    /* "gapfill_core_a2.pyx":124
+                                    /* "gapfill_core_a2.pyx":123
  *                     diffImage_Local[y, x] = (dataImage[y, x] - meanImage[y, x])
  *                 else:
  *                     diffImage_Local[y, x] =((dataImage[y, x] - _AbsZeroPoint)             # <<<<<<<<<<<<<<
@@ -3187,7 +3189,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                     __pyx_t_37 = __pyx_v_y;
                                     __pyx_t_38 = __pyx_v_x;
 
-                                    /* "gapfill_core_a2.pyx":125
+                                    /* "gapfill_core_a2.pyx":124
  *                 else:
  *                     diffImage_Local[y, x] =((dataImage[y, x] - _AbsZeroPoint)
  *                         / (meanImage[y, x] - _AbsZeroPoint))             # <<<<<<<<<<<<<<
@@ -3198,7 +3200,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                     __pyx_t_40 = __pyx_v_x;
                                     *((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_diffImage_Local.data + __pyx_t_39 * __pyx_v_diffImage_Local.strides[0]) )) + __pyx_t_40)) )) = (((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_dataImage.data + __pyx_t_35 * __pyx_v_dataImage.strides[0]) )) + __pyx_t_36)) ))) - __pyx_v__AbsZeroPoint) / ((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_meanImage.data + __pyx_t_37 * __pyx_v_meanImage.strides[0]) )) + __pyx_t_38)) ))) - __pyx_v__AbsZeroPoint));
 
-                                    /* "gapfill_core_a2.pyx":126
+                                    /* "gapfill_core_a2.pyx":125
  *                     diffImage_Local[y, x] =((dataImage[y, x] - _AbsZeroPoint)
  *                         / (meanImage[y, x] - _AbsZeroPoint))
  *                     if diffImage_Local[y, x] > _MaxAllowableRatio:             # <<<<<<<<<<<<<<
@@ -3210,7 +3212,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                     __pyx_t_21 = (((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_diffImage_Local.data + __pyx_t_41 * __pyx_v_diffImage_Local.strides[0]) )) + __pyx_t_42)) ))) > __pyx_v__MaxAllowableRatio) != 0);
                                     if (__pyx_t_21) {
 
-                                      /* "gapfill_core_a2.pyx":127
+                                      /* "gapfill_core_a2.pyx":126
  *                         / (meanImage[y, x] - _AbsZeroPoint))
  *                     if diffImage_Local[y, x] > _MaxAllowableRatio:
  *                         diffImage_Local[y, x] = _MaxAllowableRatio             # <<<<<<<<<<<<<<
@@ -3221,7 +3223,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                       __pyx_t_44 = __pyx_v_x;
                                       *((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_diffImage_Local.data + __pyx_t_43 * __pyx_v_diffImage_Local.strides[0]) )) + __pyx_t_44)) )) = __pyx_v__MaxAllowableRatio;
 
-                                      /* "gapfill_core_a2.pyx":126
+                                      /* "gapfill_core_a2.pyx":125
  *                     diffImage_Local[y, x] =((dataImage[y, x] - _AbsZeroPoint)
  *                         / (meanImage[y, x] - _AbsZeroPoint))
  *                     if diffImage_Local[y, x] > _MaxAllowableRatio:             # <<<<<<<<<<<<<<
@@ -3231,7 +3233,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                       goto __pyx_L21;
                                     }
 
-                                    /* "gapfill_core_a2.pyx":128
+                                    /* "gapfill_core_a2.pyx":127
  *                     if diffImage_Local[y, x] > _MaxAllowableRatio:
  *                         diffImage_Local[y, x] = _MaxAllowableRatio
  *                     elif diffImage_Local[y, x] < _MinAllowableRatio:             # <<<<<<<<<<<<<<
@@ -3243,7 +3245,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                     __pyx_t_21 = (((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_diffImage_Local.data + __pyx_t_45 * __pyx_v_diffImage_Local.strides[0]) )) + __pyx_t_46)) ))) < __pyx_v__MinAllowableRatio) != 0);
                                     if (__pyx_t_21) {
 
-                                      /* "gapfill_core_a2.pyx":129
+                                      /* "gapfill_core_a2.pyx":128
  *                         diffImage_Local[y, x] = _MaxAllowableRatio
  *                     elif diffImage_Local[y, x] < _MinAllowableRatio:
  *                         diffImage_Local[y, x] = _MinAllowableRatio             # <<<<<<<<<<<<<<
@@ -3254,7 +3256,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                                       __pyx_t_48 = __pyx_v_x;
                                       *((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_diffImage_Local.data + __pyx_t_47 * __pyx_v_diffImage_Local.strides[0]) )) + __pyx_t_48)) )) = __pyx_v__MinAllowableRatio;
 
-                                      /* "gapfill_core_a2.pyx":128
+                                      /* "gapfill_core_a2.pyx":127
  *                     if diffImage_Local[y, x] > _MaxAllowableRatio:
  *                         diffImage_Local[y, x] = _MaxAllowableRatio
  *                     elif diffImage_Local[y, x] < _MinAllowableRatio:             # <<<<<<<<<<<<<<
@@ -3281,7 +3283,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
         #endif
       }
 
-      /* "gapfill_core_a2.pyx":110
+      /* "gapfill_core_a2.pyx":109
  *     diffImage_Local = np.empty_like(dataImage)
  *     diffImage_Local[:] = _NDV
  *     with nogil, parallel(num_threads=20):             # <<<<<<<<<<<<<<
@@ -3300,7 +3302,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
       }
   }
 
-  /* "gapfill_core_a2.pyx":136
+  /* "gapfill_core_a2.pyx":135
  *     # However we are now creating the fresh copy in the caller function for clarity
  *     #origDistImage_LocalCopy = np.copy(origDistImage_Global_R)
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -3315,7 +3317,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
       #endif
       /*try:*/ {
 
-        /* "gapfill_core_a2.pyx":137
+        /* "gapfill_core_a2.pyx":136
  *     #origDistImage_LocalCopy = np.copy(origDistImage_Global_R)
  *     with nogil:
  *         for y in range (0, yShape): # can't do parallel here,  boooo             # <<<<<<<<<<<<<<
@@ -3327,7 +3329,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
         for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_16; __pyx_t_8+=1) {
           __pyx_v_y = __pyx_t_8;
 
-          /* "gapfill_core_a2.pyx":138
+          /* "gapfill_core_a2.pyx":137
  *     with nogil:
  *         for y in range (0, yShape): # can't do parallel here,  boooo
  *             for x in range (0, xShape):             # <<<<<<<<<<<<<<
@@ -3339,7 +3341,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
           for (__pyx_t_20 = 0; __pyx_t_20 < __pyx_t_19; __pyx_t_20+=1) {
             __pyx_v_x = __pyx_t_20;
 
-            /* "gapfill_core_a2.pyx":140
+            /* "gapfill_core_a2.pyx":139
  *             for x in range (0, xShape):
  *                 #flag = flagsImage[y,x]
  *                 if (flagsImage[y, x] & _FILL_FAILED_FLAG) != _FILL_FAILED_FLAG:             # <<<<<<<<<<<<<<
@@ -3351,7 +3353,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
             __pyx_t_21 = ((((*((unsigned char *) ( /* dim=1 */ ((char *) (((unsigned char *) ( /* dim=0 */ (__pyx_v_flagsImage.data + __pyx_t_49 * __pyx_v_flagsImage.strides[0]) )) + __pyx_t_50)) ))) & __pyx_v__FILL_FAILED_FLAG) != __pyx_v__FILL_FAILED_FLAG) != 0);
             if (__pyx_t_21) {
 
-              /* "gapfill_core_a2.pyx":142
+              /* "gapfill_core_a2.pyx":141
  *                 if (flagsImage[y, x] & _FILL_FAILED_FLAG) != _FILL_FAILED_FLAG:
  *                     # it's already good data, or filled with A1
  *                     continue             # <<<<<<<<<<<<<<
@@ -3360,7 +3362,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
               goto __pyx_L31_continue;
 
-              /* "gapfill_core_a2.pyx":140
+              /* "gapfill_core_a2.pyx":139
  *             for x in range (0, xShape):
  *                 #flag = flagsImage[y,x]
  *                 if (flagsImage[y, x] & _FILL_FAILED_FLAG) != _FILL_FAILED_FLAG:             # <<<<<<<<<<<<<<
@@ -3369,7 +3371,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
             }
 
-            /* "gapfill_core_a2.pyx":143
+            /* "gapfill_core_a2.pyx":142
  *                     # it's already good data, or filled with A1
  *                     continue
  *                 if meanImage[y, x] == _NDV:             # <<<<<<<<<<<<<<
@@ -3381,7 +3383,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
             __pyx_t_21 = (((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_meanImage.data + __pyx_t_51 * __pyx_v_meanImage.strides[0]) )) + __pyx_t_52)) ))) == __pyx_v__NDV) != 0);
             if (__pyx_t_21) {
 
-              /* "gapfill_core_a2.pyx":146
+              /* "gapfill_core_a2.pyx":145
  *                     #we can't fill, but, if we are here then the flag is already set
  *                     #to failure (from A1)... could optionally set a separate A2 failure flag (128)
  *                     continue             # <<<<<<<<<<<<<<
@@ -3390,7 +3392,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
               goto __pyx_L31_continue;
 
-              /* "gapfill_core_a2.pyx":143
+              /* "gapfill_core_a2.pyx":142
  *                     # it's already good data, or filled with A1
  *                     continue
  *                 if meanImage[y, x] == _NDV:             # <<<<<<<<<<<<<<
@@ -3399,7 +3401,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
             }
 
-            /* "gapfill_core_a2.pyx":148
+            /* "gapfill_core_a2.pyx":147
  *                     continue
  *                 # else...
  *                 nbrDiffSum = 0             # <<<<<<<<<<<<<<
@@ -3408,7 +3410,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
             __pyx_v_nbrDiffSum = 0.0;
 
-            /* "gapfill_core_a2.pyx":149
+            /* "gapfill_core_a2.pyx":148
  *                 # else...
  *                 nbrDiffSum = 0
  *                 nbrDiffCount = 0             # <<<<<<<<<<<<<<
@@ -3417,7 +3419,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
             __pyx_v_nbrDiffCount = 0.0;
 
-            /* "gapfill_core_a2.pyx":150
+            /* "gapfill_core_a2.pyx":149
  *                 nbrDiffSum = 0
  *                 nbrDiffCount = 0
  *                 nbrDistSum = 0             # <<<<<<<<<<<<<<
@@ -3426,7 +3428,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
             __pyx_v_nbrDistSum = 0.0;
 
-            /* "gapfill_core_a2.pyx":155
+            /* "gapfill_core_a2.pyx":154
  *                 # offsets / ratios in diffImageLocal are updated in the loop,
  *                 # affecting later iterations, hence why we can't parallelise simply
  *                 for nbrIndex in range(1, A2_MAX_NBRS+1):             # <<<<<<<<<<<<<<
@@ -3438,7 +3440,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
             for (__pyx_t_55 = 1; __pyx_t_55 < __pyx_t_54; __pyx_t_55+=1) {
               __pyx_v_nbrIndex = __pyx_t_55;
 
-              /* "gapfill_core_a2.pyx":157
+              /* "gapfill_core_a2.pyx":156
  *                 for nbrIndex in range(1, A2_MAX_NBRS+1):
  *                     # +1 because the first row of nbr table is the current cell
  *                     xNbr = x + nbrIntCoords[0, nbrIndex]             # <<<<<<<<<<<<<<
@@ -3449,7 +3451,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
               __pyx_t_57 = __pyx_v_nbrIndex;
               __pyx_v_xNbr = (__pyx_v_x + (*((int *) ( /* dim=1 */ ((char *) (((int *) ( /* dim=0 */ (__pyx_v_nbrIntCoords.data + __pyx_t_56 * __pyx_v_nbrIntCoords.strides[0]) )) + __pyx_t_57)) ))));
 
-              /* "gapfill_core_a2.pyx":158
+              /* "gapfill_core_a2.pyx":157
  *                     # +1 because the first row of nbr table is the current cell
  *                     xNbr = x + nbrIntCoords[0, nbrIndex]
  *                     yNbr = y + nbrIntCoords[1, nbrIndex]             # <<<<<<<<<<<<<<
@@ -3460,7 +3462,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
               __pyx_t_59 = __pyx_v_nbrIndex;
               __pyx_v_yNbr = (__pyx_v_y + (*((int *) ( /* dim=1 */ ((char *) (((int *) ( /* dim=0 */ (__pyx_v_nbrIntCoords.data + __pyx_t_58 * __pyx_v_nbrIntCoords.strides[0]) )) + __pyx_t_59)) ))));
 
-              /* "gapfill_core_a2.pyx":159
+              /* "gapfill_core_a2.pyx":158
  *                     xNbr = x + nbrIntCoords[0, nbrIndex]
  *                     yNbr = y + nbrIntCoords[1, nbrIndex]
  *                     if (0 <= xNbr < xShape and             # <<<<<<<<<<<<<<
@@ -3478,7 +3480,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                 goto __pyx_L38_bool_binop_done;
               }
 
-              /* "gapfill_core_a2.pyx":160
+              /* "gapfill_core_a2.pyx":159
  *                     yNbr = y + nbrIntCoords[1, nbrIndex]
  *                     if (0 <= xNbr < xShape and
  *                             0 <= yNbr < yShape and             # <<<<<<<<<<<<<<
@@ -3496,7 +3498,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                 goto __pyx_L38_bool_binop_done;
               }
 
-              /* "gapfill_core_a2.pyx":161
+              /* "gapfill_core_a2.pyx":160
  *                     if (0 <= xNbr < xShape and
  *                             0 <= yNbr < yShape and
  *                             diffImage_Local[yNbr, xNbr] != _NDV):             # <<<<<<<<<<<<<<
@@ -3509,7 +3511,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
               __pyx_t_21 = __pyx_t_24;
               __pyx_L38_bool_binop_done:;
 
-              /* "gapfill_core_a2.pyx":159
+              /* "gapfill_core_a2.pyx":158
  *                     xNbr = x + nbrIntCoords[0, nbrIndex]
  *                     yNbr = y + nbrIntCoords[1, nbrIndex]
  *                     if (0 <= xNbr < xShape and             # <<<<<<<<<<<<<<
@@ -3518,7 +3520,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
               if (__pyx_t_21) {
 
-                /* "gapfill_core_a2.pyx":162
+                /* "gapfill_core_a2.pyx":161
  *                             0 <= yNbr < yShape and
  *                             diffImage_Local[yNbr, xNbr] != _NDV):
  *                         nbrDiffSum += diffImage_Local[yNbr, xNbr]             # <<<<<<<<<<<<<<
@@ -3529,7 +3531,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                 __pyx_t_64 = __pyx_v_xNbr;
                 __pyx_v_nbrDiffSum = (__pyx_v_nbrDiffSum + (*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_diffImage_Local.data + __pyx_t_63 * __pyx_v_diffImage_Local.strides[0]) )) + __pyx_t_64)) ))));
 
-                /* "gapfill_core_a2.pyx":163
+                /* "gapfill_core_a2.pyx":162
  *                             diffImage_Local[yNbr, xNbr] != _NDV):
  *                         nbrDiffSum += diffImage_Local[yNbr, xNbr]
  *                         nbrDiffCount += 1             # <<<<<<<<<<<<<<
@@ -3538,7 +3540,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
                 __pyx_v_nbrDiffCount = (__pyx_v_nbrDiffCount + 1.0);
 
-                /* "gapfill_core_a2.pyx":164
+                /* "gapfill_core_a2.pyx":163
  *                         nbrDiffSum += diffImage_Local[yNbr, xNbr]
  *                         nbrDiffCount += 1
  *                         if distImageIn[yNbr, xNbr] != _NDV:             # <<<<<<<<<<<<<<
@@ -3550,7 +3552,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                 __pyx_t_21 = (((*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_distImageIn.data + __pyx_t_65 * __pyx_v_distImageIn.strides[0]) )) + __pyx_t_66)) ))) != __pyx_v__NDV) != 0);
                 if (__pyx_t_21) {
 
-                  /* "gapfill_core_a2.pyx":165
+                  /* "gapfill_core_a2.pyx":164
  *                         nbrDiffCount += 1
  *                         if distImageIn[yNbr, xNbr] != _NDV:
  *                             nbrDist = distImageIn[yNbr, xNbr]             # <<<<<<<<<<<<<<
@@ -3561,7 +3563,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                   __pyx_t_68 = __pyx_v_xNbr;
                   __pyx_v_nbrDist = (*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_distImageIn.data + __pyx_t_67 * __pyx_v_distImageIn.strides[0]) )) + __pyx_t_68)) )));
 
-                  /* "gapfill_core_a2.pyx":171
+                  /* "gapfill_core_a2.pyx":170
  *                             # distance already associated with the filled value in the nbr cell
  *                             # from the A1 algorithm, if applicable.
  *                             nbrDistSum += nbrDist             # <<<<<<<<<<<<<<
@@ -3570,7 +3572,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
                   __pyx_v_nbrDistSum = (__pyx_v_nbrDistSum + __pyx_v_nbrDist);
 
-                  /* "gapfill_core_a2.pyx":164
+                  /* "gapfill_core_a2.pyx":163
  *                         nbrDiffSum += diffImage_Local[yNbr, xNbr]
  *                         nbrDiffCount += 1
  *                         if distImageIn[yNbr, xNbr] != _NDV:             # <<<<<<<<<<<<<<
@@ -3579,7 +3581,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
                 }
 
-                /* "gapfill_core_a2.pyx":172
+                /* "gapfill_core_a2.pyx":171
  *                             # from the A1 algorithm, if applicable.
  *                             nbrDistSum += nbrDist
  *                         nbrDistSum += nbrTable[2, nbrIndex]             # <<<<<<<<<<<<<<
@@ -3590,7 +3592,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                 __pyx_t_70 = __pyx_v_nbrIndex;
                 __pyx_v_nbrDistSum = (__pyx_v_nbrDistSum + (*((double *) ( /* dim=1 */ ((char *) (((double *) ( /* dim=0 */ (__pyx_v_nbrTable.data + __pyx_t_69 * __pyx_v_nbrTable.strides[0]) )) + __pyx_t_70)) ))));
 
-                /* "gapfill_core_a2.pyx":159
+                /* "gapfill_core_a2.pyx":158
  *                     xNbr = x + nbrIntCoords[0, nbrIndex]
  *                     yNbr = y + nbrIntCoords[1, nbrIndex]
  *                     if (0 <= xNbr < xShape and             # <<<<<<<<<<<<<<
@@ -3600,7 +3602,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
               }
             }
 
-            /* "gapfill_core_a2.pyx":176
+            /* "gapfill_core_a2.pyx":175
  *                 # if any of the surrounding 8 pixels had a value then derive the cell
  *                 # value from it
  *                 if nbrDiffCount > 0 and (FillByRatios == 0 or nbrDiffSum > 0):             # <<<<<<<<<<<<<<
@@ -3624,7 +3626,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
             __pyx_L43_bool_binop_done:;
             if (__pyx_t_21) {
 
-              /* "gapfill_core_a2.pyx":177
+              /* "gapfill_core_a2.pyx":176
  *                 # value from it
  *                 if nbrDiffCount > 0 and (FillByRatios == 0 or nbrDiffSum > 0):
  *                     gotPixelVals += 1             # <<<<<<<<<<<<<<
@@ -3633,7 +3635,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
               __pyx_v_gotPixelVals = (__pyx_v_gotPixelVals + 1);
 
-              /* "gapfill_core_a2.pyx":179
+              /* "gapfill_core_a2.pyx":178
  *                     gotPixelVals += 1
  *                     # ratio / diff to use is the mean of the (up to) 8 values surrounding the cell
  *                     diffValThisPass = nbrDiffSum / nbrDiffCount             # <<<<<<<<<<<<<<
@@ -3642,7 +3644,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
               __pyx_v_diffValThisPass = (__pyx_v_nbrDiffSum / __pyx_v_nbrDiffCount);
 
-              /* "gapfill_core_a2.pyx":180
+              /* "gapfill_core_a2.pyx":179
  *                     # ratio / diff to use is the mean of the (up to) 8 values surrounding the cell
  *                     diffValThisPass = nbrDiffSum / nbrDiffCount
  *                     distValThisPass = nbrDistSum / nbrDiffCount             # <<<<<<<<<<<<<<
@@ -3651,7 +3653,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
               __pyx_v_distValThisPass = (__pyx_v_nbrDistSum / __pyx_v_nbrDiffCount);
 
-              /* "gapfill_core_a2.pyx":188
+              /* "gapfill_core_a2.pyx":187
  *                     # parallel!) and thus this algorithm needs to be run on an entire
  *                     # global image.
  *                     diffImage_Local[y, x] = diffValThisPass             # <<<<<<<<<<<<<<
@@ -3662,7 +3664,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
               __pyx_t_72 = __pyx_v_x;
               *((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_diffImage_Local.data + __pyx_t_71 * __pyx_v_diffImage_Local.strides[0]) )) + __pyx_t_72)) )) = __pyx_v_diffValThisPass;
 
-              /* "gapfill_core_a2.pyx":189
+              /* "gapfill_core_a2.pyx":188
  *                     # global image.
  *                     diffImage_Local[y, x] = diffValThisPass
  *                     outputImageDist[y, x] += distValThisPass             # <<<<<<<<<<<<<<
@@ -3673,7 +3675,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
               __pyx_t_74 = __pyx_v_x;
               *((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_outputImageDist.data + __pyx_t_73 * __pyx_v_outputImageDist.strides[0]) )) + __pyx_t_74)) )) += __pyx_v_distValThisPass;
 
-              /* "gapfill_core_a2.pyx":190
+              /* "gapfill_core_a2.pyx":189
  *                     diffImage_Local[y, x] = diffValThisPass
  *                     outputImageDist[y, x] += distValThisPass
  *                     if FillByRatios == 0:             # <<<<<<<<<<<<<<
@@ -3683,7 +3685,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
               __pyx_t_21 = ((__pyx_v_FillByRatios == 0) != 0);
               if (__pyx_t_21) {
 
-                /* "gapfill_core_a2.pyx":191
+                /* "gapfill_core_a2.pyx":190
  *                     outputImageDist[y, x] += distValThisPass
  *                     if FillByRatios == 0:
  *                         outputImageData[y, x] = (diffValThisPass + meanImage[y, x])             # <<<<<<<<<<<<<<
@@ -3696,7 +3698,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                 __pyx_t_78 = __pyx_v_x;
                 *((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_outputImageData.data + __pyx_t_77 * __pyx_v_outputImageData.strides[0]) )) + __pyx_t_78)) )) = (__pyx_v_diffValThisPass + (*((float *) ( /* dim=1 */ ((char *) (((float *) ( /* dim=0 */ (__pyx_v_meanImage.data + __pyx_t_75 * __pyx_v_meanImage.strides[0]) )) + __pyx_t_76)) ))));
 
-                /* "gapfill_core_a2.pyx":190
+                /* "gapfill_core_a2.pyx":189
  *                     diffImage_Local[y, x] = diffValThisPass
  *                     outputImageDist[y, x] += distValThisPass
  *                     if FillByRatios == 0:             # <<<<<<<<<<<<<<
@@ -3706,7 +3708,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                 goto __pyx_L46;
               }
 
-              /* "gapfill_core_a2.pyx":195
+              /* "gapfill_core_a2.pyx":194
  *                         outputImageData[y, x] = (diffValThisPass *
  *                                                         (meanImage[y, x] - _AbsZeroPoint)
  *                                                     + _AbsZeroPoint)             # <<<<<<<<<<<<<<
@@ -3715,7 +3717,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
  */
               /*else*/ {
 
-                /* "gapfill_core_a2.pyx":194
+                /* "gapfill_core_a2.pyx":193
  *                     else:
  *                         outputImageData[y, x] = (diffValThisPass *
  *                                                         (meanImage[y, x] - _AbsZeroPoint)             # <<<<<<<<<<<<<<
@@ -3725,7 +3727,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
                 __pyx_t_79 = __pyx_v_y;
                 __pyx_t_80 = __pyx_v_x;
 
-                /* "gapfill_core_a2.pyx":193
+                /* "gapfill_core_a2.pyx":192
  *                         outputImageData[y, x] = (diffValThisPass + meanImage[y, x])
  *                     else:
  *                         outputImageData[y, x] = (diffValThisPass *             # <<<<<<<<<<<<<<
@@ -3738,7 +3740,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
               }
               __pyx_L46:;
 
-              /* "gapfill_core_a2.pyx":176
+              /* "gapfill_core_a2.pyx":175
  *                 # if any of the surrounding 8 pixels had a value then derive the cell
  *                 # value from it
  *                 if nbrDiffCount > 0 and (FillByRatios == 0 or nbrDiffSum > 0):             # <<<<<<<<<<<<<<
@@ -3748,7 +3750,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
               goto __pyx_L42;
             }
 
-            /* "gapfill_core_a2.pyx":197
+            /* "gapfill_core_a2.pyx":196
  *                                                     + _AbsZeroPoint)
  *                 else:
  *                     outputImageData[y, x] = _NDV             # <<<<<<<<<<<<<<
@@ -3766,7 +3768,7 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
         }
       }
 
-      /* "gapfill_core_a2.pyx":136
+      /* "gapfill_core_a2.pyx":135
  *     # However we are now creating the fresh copy in the caller function for clarity
  *     #origDistImage_LocalCopy = np.copy(origDistImage_Global_R)
  *     with nogil:             # <<<<<<<<<<<<<<
@@ -3785,19 +3787,19 @@ __pyx_t_11 = __pyx_memoryview_fromslice(__pyx_t_14, 2, (PyObject *(*)(char *)) _
       }
   }
 
-  /* "gapfill_core_a2.pyx":202
+  /* "gapfill_core_a2.pyx":201
  *     # nothing is returned, as the ratio and dist per-pass images are modified in-place
  *     #print "A2 filled {0!s} locations on this pass".format(gotPixelVals)
  *     return gotPixelVals             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_9 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_gotPixelVals); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 202, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_gotPixelVals); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 201, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __pyx_r = __pyx_t_9;
   __pyx_t_9 = 0;
   goto __pyx_L0;
 
-  /* "gapfill_core_a2.pyx":12
+  /* "gapfill_core_a2.pyx":11
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * cpdef a2_core (             # <<<<<<<<<<<<<<
@@ -3878,23 +3880,23 @@ static PyObject *__pyx_pw_15gapfill_core_a2_1a2_core(PyObject *__pyx_self, PyObj
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dataConfig)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("a2_core", 1, 4, 4, 1); __PYX_ERR(0, 12, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("a2_core", 1, 4, 4, 1); __PYX_ERR(0, 11, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_a2Config)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("a2_core", 1, 4, 4, 2); __PYX_ERR(0, 12, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("a2_core", 1, 4, 4, 2); __PYX_ERR(0, 11, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_flagValues)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("a2_core", 1, 4, 4, 3); __PYX_ERR(0, 12, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("a2_core", 1, 4, 4, 3); __PYX_ERR(0, 11, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "a2_core") < 0)) __PYX_ERR(0, 12, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "a2_core") < 0)) __PYX_ERR(0, 11, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -3911,7 +3913,7 @@ static PyObject *__pyx_pw_15gapfill_core_a2_1a2_core(PyObject *__pyx_self, PyObj
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("a2_core", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 12, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("a2_core", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 11, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("gapfill_core_a2.a2_core", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3930,7 +3932,7 @@ static PyObject *__pyx_pf_15gapfill_core_a2_a2_core(CYTHON_UNUSED PyObject *__py
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("a2_core", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_15gapfill_core_a2_a2_core(__pyx_v_dataStack, __pyx_v_dataConfig, __pyx_v_a2Config, __pyx_v_flagValues, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_15gapfill_core_a2_a2_core(__pyx_v_dataStack, __pyx_v_dataConfig, __pyx_v_a2Config, __pyx_v_flagValues, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -17542,15 +17544,12 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Cannot_assign_to_read_only_memor, __pyx_k_Cannot_assign_to_read_only_memor, sizeof(__pyx_k_Cannot_assign_to_read_only_memor), 0, 0, 1, 0},
   {&__pyx_kp_s_Cannot_create_writable_memory_vi, __pyx_k_Cannot_create_writable_memory_vi, sizeof(__pyx_k_Cannot_create_writable_memory_vi), 0, 0, 1, 0},
   {&__pyx_kp_s_Cannot_index_with_type_s, __pyx_k_Cannot_index_with_type_s, sizeof(__pyx_k_Cannot_index_with_type_s), 0, 0, 1, 0},
-  {&__pyx_n_s_DataArray2D, __pyx_k_DataArray2D, sizeof(__pyx_k_DataArray2D), 0, 0, 1, 1},
-  {&__pyx_n_s_DataArrayOutput2D, __pyx_k_DataArrayOutput2D, sizeof(__pyx_k_DataArrayOutput2D), 0, 0, 1, 1},
   {&__pyx_n_s_DataLimitsConfig, __pyx_k_DataLimitsConfig, sizeof(__pyx_k_DataLimitsConfig), 0, 0, 1, 1},
   {&__pyx_n_s_Ellipsis, __pyx_k_Ellipsis, sizeof(__pyx_k_Ellipsis), 0, 0, 1, 1},
   {&__pyx_kp_s_Empty_shape_tuple_for_cython_arr, __pyx_k_Empty_shape_tuple_for_cython_arr, sizeof(__pyx_k_Empty_shape_tuple_for_cython_arr), 0, 0, 1, 0},
   {&__pyx_n_s_FAILURE, __pyx_k_FAILURE, sizeof(__pyx_k_FAILURE), 0, 0, 1, 1},
   {&__pyx_n_s_FILL_GENERATION_METHOD, __pyx_k_FILL_GENERATION_METHOD, sizeof(__pyx_k_FILL_GENERATION_METHOD), 0, 0, 1, 1},
   {&__pyx_n_s_FlagItems, __pyx_k_FlagItems, sizeof(__pyx_k_FlagItems), 0, 0, 1, 1},
-  {&__pyx_n_s_FlagsArray2D, __pyx_k_FlagsArray2D, sizeof(__pyx_k_FlagsArray2D), 0, 0, 1, 1},
   {&__pyx_kp_s_Incompatible_checksums_s_vs_0xb0, __pyx_k_Incompatible_checksums_s_vs_0xb0, sizeof(__pyx_k_Incompatible_checksums_s_vs_0xb0), 0, 0, 1, 0},
   {&__pyx_n_s_IndexError, __pyx_k_IndexError, sizeof(__pyx_k_IndexError), 0, 0, 1, 1},
   {&__pyx_kp_s_Indirect_dimensions_not_supporte, __pyx_k_Indirect_dimensions_not_supporte, sizeof(__pyx_k_Indirect_dimensions_not_supporte), 0, 0, 1, 0},
@@ -17558,7 +17557,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_Invalid_shape_in_axis_d_d, __pyx_k_Invalid_shape_in_axis_d_d, sizeof(__pyx_k_Invalid_shape_in_axis_d_d), 0, 0, 1, 0},
   {&__pyx_n_s_MAX_ALLOWABLE_RATIO, __pyx_k_MAX_ALLOWABLE_RATIO, sizeof(__pyx_k_MAX_ALLOWABLE_RATIO), 0, 0, 1, 1},
   {&__pyx_n_s_MAX_NBRS_TO_SEARCH, __pyx_k_MAX_NBRS_TO_SEARCH, sizeof(__pyx_k_MAX_NBRS_TO_SEARCH), 0, 0, 1, 1},
-  {&__pyx_n_s_MeanArray2D, __pyx_k_MeanArray2D, sizeof(__pyx_k_MeanArray2D), 0, 0, 1, 1},
   {&__pyx_n_s_MemoryError, __pyx_k_MemoryError, sizeof(__pyx_k_MemoryError), 0, 0, 1, 1},
   {&__pyx_kp_s_MemoryView_of_r_at_0x_x, __pyx_k_MemoryView_of_r_at_0x_x, sizeof(__pyx_k_MemoryView_of_r_at_0x_x), 0, 0, 1, 0},
   {&__pyx_kp_s_MemoryView_of_r_object, __pyx_k_MemoryView_of_r_object, sizeof(__pyx_k_MemoryView_of_r_object), 0, 0, 1, 0},
@@ -17569,8 +17567,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_PickleError, __pyx_k_PickleError, sizeof(__pyx_k_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_RATIO, __pyx_k_RATIO, sizeof(__pyx_k_RATIO), 0, 0, 1, 1},
   {&__pyx_n_s_SPIRAL_CONFIG, __pyx_k_SPIRAL_CONFIG, sizeof(__pyx_k_SPIRAL_CONFIG), 0, 0, 1, 1},
-  {&__pyx_n_s_SumOfPassDistancesArray2D, __pyx_k_SumOfPassDistancesArray2D, sizeof(__pyx_k_SumOfPassDistancesArray2D), 0, 0, 1, 1},
   {&__pyx_n_s_T, __pyx_k_T, sizeof(__pyx_k_T), 0, 0, 1, 1},
+  {&__pyx_n_s_TransformedDataArray2D, __pyx_k_TransformedDataArray2D, sizeof(__pyx_k_TransformedDataArray2D), 0, 0, 1, 1},
+  {&__pyx_n_s_TransformedDataArrayOutput2D, __pyx_k_TransformedDataArrayOutput2D, sizeof(__pyx_k_TransformedDataArrayOutput2D), 0, 0, 1, 1},
+  {&__pyx_n_s_TransformedDistanceArray2D, __pyx_k_TransformedDistanceArray2D, sizeof(__pyx_k_TransformedDistanceArray2D), 0, 0, 1, 1},
+  {&__pyx_n_s_TransformedFlagsArray2D, __pyx_k_TransformedFlagsArray2D, sizeof(__pyx_k_TransformedFlagsArray2D), 0, 0, 1, 1},
+  {&__pyx_n_s_TransformedMeanArray2D, __pyx_k_TransformedMeanArray2D, sizeof(__pyx_k_TransformedMeanArray2D), 0, 0, 1, 1},
+  {&__pyx_n_s_TransformedSumOfPassDistancesArr, __pyx_k_TransformedSumOfPassDistancesArr, sizeof(__pyx_k_TransformedSumOfPassDistancesArr), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_kp_s_Unable_to_convert_item_to_object, __pyx_k_Unable_to_convert_item_to_object, sizeof(__pyx_k_Unable_to_convert_item_to_object), 0, 0, 1, 0},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
@@ -17667,7 +17670,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 113, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 133, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 148, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 151, __pyx_L1_error)
@@ -17684,34 +17687,34 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "gapfill_core_a2.pyx":89
+  /* "gapfill_core_a2.pyx":88
  *     distTmp = np.sqrt((inds ** 2).sum(0))
  *     npTmpTable = ((inds.T).reshape(diam**2, 2))
  *     npTmpTable = np.append(npTmpTable, distTmp.ravel()[:,None],axis=1)             # <<<<<<<<<<<<<<
  * 
  *     # sort the table by distance then x then y (the arguments are last-sort-first)
  */
-  __pyx_slice_ = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice_)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_slice_ = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice_)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice_);
   __Pyx_GIVEREF(__pyx_slice_);
-  __pyx_tuple__2 = PyTuple_Pack(2, __pyx_slice_, Py_None); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(2, __pyx_slice_, Py_None); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "gapfill_core_a2.pyx":92
+  /* "gapfill_core_a2.pyx":91
  * 
  *     # sort the table by distance then x then y (the arguments are last-sort-first)
  *     order = np.lexsort((npTmpTable[:,1],npTmpTable[:,0],npTmpTable[:,2]))             # <<<<<<<<<<<<<<
  *     npTmpTable = np.take(npTmpTable,order,axis=0)
  * 
  */
-  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_slice_, __pyx_int_1); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_slice_, __pyx_int_1); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_slice_, __pyx_int_0); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_slice_, __pyx_int_0); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
-  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_slice_, __pyx_int_2); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_slice_, __pyx_int_2); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
@@ -18323,7 +18326,7 @@ if (!__Pyx_RefNanny) {
  * from cython.parallel import prange, parallel
  * from .gapfill_config_types import A2SearchConfig, DataLimitsConfig, FlagItems             # <<<<<<<<<<<<<<
  * from .gapfill_utils import  A2PassData
- * 
+ * @cython.boundscheck(False)
  */
   __pyx_t_1 = PyList_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -18357,8 +18360,8 @@ if (!__Pyx_RefNanny) {
  * from cython.parallel import prange, parallel
  * from .gapfill_config_types import A2SearchConfig, DataLimitsConfig, FlagItems
  * from .gapfill_utils import  A2PassData             # <<<<<<<<<<<<<<
- * 
  * @cython.boundscheck(False)
+ * @cython.wraparound(False)
  */
   __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 7, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);

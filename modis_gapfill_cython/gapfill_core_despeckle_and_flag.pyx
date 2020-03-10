@@ -5,6 +5,7 @@ cimport openmp
 from cython.parallel import prange, parallel
 from .gapfill_config_types import DataLimitsConfig, DespeckleConfig, SpiralSearchConfig, FlagItems, DespeckleDiagnostics
 from .gapfill_utils import A1DataStack, PixelMargins
+import time
 
 @cython.cdivision(True)
 @cython.boundscheck(False)
@@ -122,6 +123,8 @@ cpdef setSpeckleFlags (dataStacks: A1DataStack, margins:PixelMargins, flagValues
     goodCount_Glob = 0
     oceanCount_Glob = 0
     clearedSpeckleCount_Glob = 0
+
+    time_start = time.time()
 
     # TODO replace print with logging
     print ("Despeckle: Rejecting data beyond {0!s}s.d. of mean. Nbr search on data beyond {1!s} s.d. of mean.".
@@ -320,18 +323,13 @@ cpdef setSpeckleFlags (dataStacks: A1DataStack, margins:PixelMargins, flagValues
                     speckleCount_Glob += 1
                     outputData[z, yD_prv, xD_prv] = _NDV
 
-
+    time_end = time.time()
     despeckleDiag = DespeckleDiagnostics(SpeckleCellCount=speckleCount_Glob,
                                          ExtremeCellCount=extremeCount_Glob,
                                          GoodCellCount=goodCount_Glob,
-                                         clearedSpeckleCount_Glob=clearedSpeckleCount_Glob,
-                                         OceanCellCount=oceanCount_Glob)
-    #print ("Speckle count:    " + str(speckleCount_Glob))
-    #print ("Extreme count:    " + str(extremeCount_Glob))
-    #print ("Good count:       " + str(goodCount_Glob))
-    #print ("Cleared Speckle:  " + str(clearedSpeckleCount_Glob))
-    #print ("Ocean count:      " + str(oceanCount_Glob))
-    #return (outputData, flags, despeckleDiag)
+                                         ClearedSpeckleCellCount=clearedSpeckleCount_Glob,
+                                         OceanCellCount=oceanCount_Glob,
+                                         TimeSeconds=time_end-time_start)
     dataStacks.DataArray3D = outputData
     dataStacks.FlagsArray3D = flags
     return despeckleDiag

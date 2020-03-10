@@ -5,7 +5,6 @@ from libc.math cimport sqrt
 from cython.parallel import prange, parallel
 from .gapfill_config_types import A2SearchConfig, DataLimitsConfig, FlagItems
 from .gapfill_utils import  A2PassData
-
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.cdivision(True)
@@ -58,13 +57,13 @@ cpdef a2_core (
         # unpack inputs to typed variables
         # nb we can use [:,::1] here (rather than [:,:] *iif* we have transformed the data with a np.copy rather than
         # just re-striding it in the caller function
-        float[:,::1] dataImage = dataStack.DataArray2D
-        unsigned char[:,::1] flagsImage = dataStack.FlagsArray2D
-        float[:,::1] distImageIn = dataStack.DataArray2D
-        float[:,::1] meanImage = dataStack.MeanArray2D
+        float[:,::1] dataImage = dataStack.TransformedDataArray2D
+        unsigned char[:,::1] flagsImage = dataStack.TransformedFlagsArray2D
+        float[:,::1] distImageIn = dataStack.TransformedDistanceArray2D
+        float[:,::1] meanImage = dataStack.TransformedMeanArray2D
         # these inputs get modified, i.e. they are "out" parameters
-        float[:,::1] outputImageDist = dataStack.SumOfPassDistancesArray2D
-        float[:,::1] outputImageData = dataStack.DataArrayOutput2D
+        float[:,::1] outputImageDist = dataStack.TransformedSumOfPassDistancesArray2D
+        float[:,::1] outputImageData = dataStack.TransformedDataArrayOutput2D
 
         char _FILL_FAILED_FLAG = flagValues.FAILURE
         char _OCEAN_FLAG = flagValues.OCEAN
