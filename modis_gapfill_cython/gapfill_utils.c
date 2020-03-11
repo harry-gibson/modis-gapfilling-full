@@ -984,7 +984,7 @@ struct __pyx_obj_13gapfill_utils_A2PassData {
 };
 
 
-/* "gapfill_utils.pyx":148
+/* "gapfill_utils.pyx":140
  * 
  * 
  * cdef class PixelMargins:             # <<<<<<<<<<<<<<
@@ -1417,16 +1417,6 @@ static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
 static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
                                                      int is_list, int wraparound, int boundscheck);
 
-/* SetItemInt.proto */
-#define __Pyx_SetItemInt(o, i, v, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_SetItemInt_Fast(o, (Py_ssize_t)i, v, is_list, wraparound, boundscheck) :\
-    (is_list ? (PyErr_SetString(PyExc_IndexError, "list assignment index out of range"), -1) :\
-               __Pyx_SetItemInt_Generic(o, to_py_func(i), v)))
-static int __Pyx_SetItemInt_Generic(PyObject *o, PyObject *j, PyObject *v);
-static CYTHON_INLINE int __Pyx_SetItemInt_Fast(PyObject *o, Py_ssize_t i, PyObject *v,
-                                               int is_list, int wraparound, int boundscheck);
-
 /* ObjectGetItem.proto */
 #if CYTHON_USE_TYPE_SLOTS
 static CYTHON_INLINE PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key);
@@ -1856,10 +1846,10 @@ int __pyx_module_is_main_gapfill_utils = 0;
 
 /* Implementation of 'gapfill_utils' */
 static PyObject *__pyx_builtin_ValueError;
-static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_TypeError;
 static PyObject *__pyx_builtin_MemoryError;
 static PyObject *__pyx_builtin_enumerate;
+static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_Ellipsis;
 static PyObject *__pyx_builtin_id;
 static PyObject *__pyx_builtin_IndexError;
@@ -5590,9 +5580,9 @@ static PyObject *__pyx_pw_13gapfill_utils_10A2PassData_7__TransformData(PyObject
 }
 
 static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__TransformData(struct __pyx_obj_13gapfill_utils_A2PassData *__pyx_v_self) {
-  PyObject *__pyx_v_dataBits = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_dataBits = NULL;
   char __pyx_v_passNumber;
-  Py_ssize_t __pyx_v_i;
+  PyObject *__pyx_v_item = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -5602,10 +5592,7 @@ static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__TransformData(struct _
   PyObject *__pyx_t_5 = NULL;
   PyObject *__pyx_t_6 = NULL;
   char __pyx_t_7;
-  int __pyx_t_8;
-  Py_ssize_t __pyx_t_9;
-  Py_ssize_t __pyx_t_10;
-  Py_ssize_t __pyx_t_11;
+  Py_ssize_t __pyx_t_8;
   __Pyx_RefNannySetupContext("__TransformData", 0);
 
   /* "gapfill_utils.pyx":115
@@ -5630,7 +5617,7 @@ static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__TransformData(struct _
  *         dataBits = [self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
  *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]             # <<<<<<<<<<<<<<
  *         passNumber = self.passNumber
- *         if passNumber == 0:
+ *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
  */
   if (unlikely(!__pyx_v_self->TransformedMeanArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 116, __pyx_L1_error)}
   __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedMeanArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 116, __pyx_L1_error)
@@ -5670,8 +5657,8 @@ static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__TransformData(struct _
  *         dataBits = [self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
  *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
  *         passNumber = self.passNumber             # <<<<<<<<<<<<<<
- *         if passNumber == 0:
- *             for i in range(len(dataBits)):
+ *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
+ *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
  */
   __pyx_t_7 = __pyx_v_self->passNumber;
   __pyx_v_passNumber = __pyx_t_7;
@@ -5679,42 +5666,95 @@ static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__TransformData(struct _
   /* "gapfill_utils.pyx":118
  *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
  *         passNumber = self.passNumber
- *         if passNumber == 0:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T)
+ *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,             # <<<<<<<<<<<<<<
+ *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
+ *             if passNumber == 0:
  */
-  __pyx_t_8 = ((__pyx_v_passNumber == 0) != 0);
-  if (__pyx_t_8) {
+  if (unlikely(!__pyx_v_self->TransformedDataArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 118, __pyx_L1_error)}
+  __pyx_t_6 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedDataArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (unlikely(!__pyx_v_self->TransformedFlagsArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 118, __pyx_L1_error)}
+  __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedFlagsArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_char, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_char, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  if (unlikely(!__pyx_v_self->TransformedDistanceArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 118, __pyx_L1_error)}
+  __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedDistanceArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
 
-    /* "gapfill_utils.pyx":119
+  /* "gapfill_utils.pyx":119
  *         passNumber = self.passNumber
- *         if passNumber == 0:
- *             for i in range(len(dataBits)):             # <<<<<<<<<<<<<<
- *                 dataBits[i] = np.copy(dataBits[i].T)
- *         elif passNumber == 1:
+ *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
+ *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):             # <<<<<<<<<<<<<<
+ *             if passNumber == 0:
+ *                 item = np.copy(item.T)
  */
-    __pyx_t_9 = PyList_GET_SIZE(__pyx_v_dataBits); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 119, __pyx_L1_error)
-    __pyx_t_10 = __pyx_t_9;
-    for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-      __pyx_v_i = __pyx_t_11;
+  if (unlikely(!__pyx_v_self->TransformedMeanArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 119, __pyx_L1_error)}
+  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedMeanArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  if (unlikely(!__pyx_v_self->TransformedSumOfPassDistancesArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 119, __pyx_L1_error)}
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedSumOfPassDistancesArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
 
-      /* "gapfill_utils.pyx":120
- *         if passNumber == 0:
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T)             # <<<<<<<<<<<<<<
- *         elif passNumber == 1:
- *             for i in range(len(dataBits)):
+  /* "gapfill_utils.pyx":118
+ *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
+ *         passNumber = self.passNumber
+ *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,             # <<<<<<<<<<<<<<
+ *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
+ *             if passNumber == 0:
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 120, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 120, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = __Pyx_GetItemInt_List(__pyx_v_dataBits, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 120, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_T); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_6);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_4);
+  PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_t_4);
+  __Pyx_GIVEREF(__pyx_t_3);
+  PyTuple_SET_ITEM(__pyx_t_1, 3, __pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_t_2);
+  __pyx_t_6 = 0;
+  __pyx_t_5 = 0;
+  __pyx_t_4 = 0;
+  __pyx_t_3 = 0;
+  __pyx_t_2 = 0;
+  __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_8 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  for (;;) {
+    if (__pyx_t_8 >= 5) break;
+    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 118, __pyx_L1_error)
+    #else
+    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    #endif
+    __Pyx_XDECREF_SET(__pyx_v_item, __pyx_t_1);
+    __pyx_t_1 = 0;
+
+    /* "gapfill_utils.pyx":120
+ *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
+ *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
+ *             if passNumber == 0:             # <<<<<<<<<<<<<<
+ *                 item = np.copy(item.T)
+ *             elif passNumber == 1:
+ */
+    switch (__pyx_v_passNumber) {
+      case 0:
+
+      /* "gapfill_utils.pyx":121
+ *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
+ *             if passNumber == 0:
+ *                 item = np.copy(item.T)             # <<<<<<<<<<<<<<
+ *             elif passNumber == 1:
+ *                 item = np.copy(item.T[:,::-1])
+ */
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 121, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_item, __pyx_n_s_T); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
       __pyx_t_5 = NULL;
       if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
         __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
@@ -5725,363 +5765,40 @@ static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__TransformData(struct _
           __Pyx_DECREF_SET(__pyx_t_4, function);
         }
       }
-      __pyx_t_6 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
+      __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 120, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 121, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(__Pyx_SetItemInt(__pyx_v_dataBits, __pyx_v_i, __pyx_t_6, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1) < 0)) __PYX_ERR(0, 120, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    }
+      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
+      __pyx_t_1 = 0;
 
-    /* "gapfill_utils.pyx":118
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
- *         passNumber = self.passNumber
- *         if passNumber == 0:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T)
+      /* "gapfill_utils.pyx":120
+ *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
+ *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
+ *             if passNumber == 0:             # <<<<<<<<<<<<<<
+ *                 item = np.copy(item.T)
+ *             elif passNumber == 1:
  */
-    goto __pyx_L3;
-  }
-
-  /* "gapfill_utils.pyx":121
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T)
- *         elif passNumber == 1:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])
- */
-  __pyx_t_8 = ((__pyx_v_passNumber == 1) != 0);
-  if (__pyx_t_8) {
-
-    /* "gapfill_utils.pyx":122
- *                 dataBits[i] = np.copy(dataBits[i].T)
- *         elif passNumber == 1:
- *             for i in range(len(dataBits)):             # <<<<<<<<<<<<<<
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])
- *         elif passNumber == 1:
- */
-    __pyx_t_9 = PyList_GET_SIZE(__pyx_v_dataBits); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 122, __pyx_L1_error)
-    __pyx_t_10 = __pyx_t_9;
-    for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-      __pyx_v_i = __pyx_t_11;
+      break;
+      case 1:
 
       /* "gapfill_utils.pyx":123
- *         elif passNumber == 1:
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])             # <<<<<<<<<<<<<<
- *         elif passNumber == 1:
- *             for i in range(len(dataBits)):
+ *                 item = np.copy(item.T)
+ *             elif passNumber == 1:
+ *                 item = np.copy(item.T[:,::-1])             # <<<<<<<<<<<<<<
+ *             elif passNumber == 2:
+ *                 item = np.copy(item.T[::-1,:])
  */
       __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 123, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_GetItemInt_List(__pyx_v_dataBits, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_item, __pyx_n_s_T); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_T); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 123, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_t_5, __pyx_tuple__3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-          __Pyx_INCREF(__pyx_t_5);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_3, function);
-        }
-      }
-      __pyx_t_6 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4);
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 123, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(__Pyx_SetItemInt(__pyx_v_dataBits, __pyx_v_i, __pyx_t_6, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1) < 0)) __PYX_ERR(0, 123, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    }
-
-    /* "gapfill_utils.pyx":121
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T)
- *         elif passNumber == 1:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])
- */
-    goto __pyx_L3;
-  }
-
-  /* "gapfill_utils.pyx":124
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])
- *         elif passNumber == 1:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])
- */
-  __pyx_t_8 = ((__pyx_v_passNumber == 1) != 0);
-  if (__pyx_t_8) {
-
-    /* "gapfill_utils.pyx":125
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])
- *         elif passNumber == 1:
- *             for i in range(len(dataBits)):             # <<<<<<<<<<<<<<
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])
- *         elif passNumber == 2:
- */
-    __pyx_t_9 = PyList_GET_SIZE(__pyx_v_dataBits); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 125, __pyx_L1_error)
-    __pyx_t_10 = __pyx_t_9;
-    for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-      __pyx_v_i = __pyx_t_11;
-
-      /* "gapfill_utils.pyx":126
- *         elif passNumber == 1:
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])             # <<<<<<<<<<<<<<
- *         elif passNumber == 2:
- *             for i in range(len(dataBits)):
- */
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 126, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_dataBits, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_T); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 126, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_t_5, __pyx_tuple__3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-          __Pyx_INCREF(__pyx_t_5);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_4, function);
-        }
-      }
-      __pyx_t_6 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 126, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(__Pyx_SetItemInt(__pyx_v_dataBits, __pyx_v_i, __pyx_t_6, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1) < 0)) __PYX_ERR(0, 126, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    }
-
-    /* "gapfill_utils.pyx":124
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])
- *         elif passNumber == 1:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])
- */
-    goto __pyx_L3;
-  }
-
-  /* "gapfill_utils.pyx":127
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])
- *         elif passNumber == 2:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,:])
- */
-  __pyx_t_8 = ((__pyx_v_passNumber == 2) != 0);
-  if (__pyx_t_8) {
-
-    /* "gapfill_utils.pyx":128
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])
- *         elif passNumber == 2:
- *             for i in range(len(dataBits)):             # <<<<<<<<<<<<<<
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,:])
- *         elif passNumber == 3:
- */
-    __pyx_t_9 = PyList_GET_SIZE(__pyx_v_dataBits); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 128, __pyx_L1_error)
-    __pyx_t_10 = __pyx_t_9;
-    for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-      __pyx_v_i = __pyx_t_11;
-
-      /* "gapfill_utils.pyx":129
- *         elif passNumber == 2:
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,:])             # <<<<<<<<<<<<<<
- *         elif passNumber == 3:
- *             for i in range(len(dataBits)):
- */
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 129, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 129, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_GetItemInt_List(__pyx_v_dataBits, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 129, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_T); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 129, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_t_5, __pyx_tuple__4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 129, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-          __Pyx_INCREF(__pyx_t_5);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_3, function);
-        }
-      }
-      __pyx_t_6 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4);
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 129, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(__Pyx_SetItemInt(__pyx_v_dataBits, __pyx_v_i, __pyx_t_6, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1) < 0)) __PYX_ERR(0, 129, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    }
-
-    /* "gapfill_utils.pyx":127
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])
- *         elif passNumber == 2:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,:])
- */
-    goto __pyx_L3;
-  }
-
-  /* "gapfill_utils.pyx":130
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,:])
- *         elif passNumber == 3:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,::-1])
- */
-  __pyx_t_8 = ((__pyx_v_passNumber == 3) != 0);
-  if (__pyx_t_8) {
-
-    /* "gapfill_utils.pyx":131
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,:])
- *         elif passNumber == 3:
- *             for i in range(len(dataBits)):             # <<<<<<<<<<<<<<
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,::-1])
- *         elif passNumber == 4:
- */
-    __pyx_t_9 = PyList_GET_SIZE(__pyx_v_dataBits); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 131, __pyx_L1_error)
-    __pyx_t_10 = __pyx_t_9;
-    for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-      __pyx_v_i = __pyx_t_11;
-
-      /* "gapfill_utils.pyx":132
- *         elif passNumber == 3:
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,::-1])             # <<<<<<<<<<<<<<
- *         elif passNumber == 4:
- *             pass
- */
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 132, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 132, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_dataBits, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 132, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_T); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 132, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_t_5, __pyx_tuple__5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 132, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-          __Pyx_INCREF(__pyx_t_5);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_4, function);
-        }
-      }
-      __pyx_t_6 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 132, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(__Pyx_SetItemInt(__pyx_v_dataBits, __pyx_v_i, __pyx_t_6, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1) < 0)) __PYX_ERR(0, 132, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    }
-
-    /* "gapfill_utils.pyx":130
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,:])
- *         elif passNumber == 3:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,::-1])
- */
-    goto __pyx_L3;
-  }
-
-  /* "gapfill_utils.pyx":133
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,::-1])
- *         elif passNumber == 4:             # <<<<<<<<<<<<<<
- *             pass
- *         elif passNumber == 5:
- */
-  __pyx_t_8 = ((__pyx_v_passNumber == 4) != 0);
-  if (__pyx_t_8) {
-    goto __pyx_L3;
-  }
-
-  /* "gapfill_utils.pyx":135
- *         elif passNumber == 4:
- *             pass
- *         elif passNumber == 5:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i][:,::-1])
- */
-  __pyx_t_8 = ((__pyx_v_passNumber == 5) != 0);
-  if (__pyx_t_8) {
-
-    /* "gapfill_utils.pyx":136
- *             pass
- *         elif passNumber == 5:
- *             for i in range(len(dataBits)):             # <<<<<<<<<<<<<<
- *                 dataBits[i] = np.copy(dataBits[i][:,::-1])
- *         elif passNumber == 6:
- */
-    __pyx_t_9 = PyList_GET_SIZE(__pyx_v_dataBits); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 136, __pyx_L1_error)
-    __pyx_t_10 = __pyx_t_9;
-    for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-      __pyx_v_i = __pyx_t_11;
-
-      /* "gapfill_utils.pyx":137
- *         elif passNumber == 5:
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i][:,::-1])             # <<<<<<<<<<<<<<
- *         elif passNumber == 6:
- *             for i in range(len(dataBits)):
- */
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 137, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 137, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_GetItemInt_List(__pyx_v_dataBits, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 137, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyObject_GetItem(__pyx_t_4, __pyx_tuple__3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 137, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetItem(__pyx_t_4, __pyx_tuple__3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 123, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_4 = NULL;
@@ -6094,63 +5811,40 @@ static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__TransformData(struct _
           __Pyx_DECREF_SET(__pyx_t_3, function);
         }
       }
-      __pyx_t_6 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5);
+      __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5);
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 137, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 123, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(__Pyx_SetItemInt(__pyx_v_dataBits, __pyx_v_i, __pyx_t_6, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1) < 0)) __PYX_ERR(0, 137, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    }
+      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
+      __pyx_t_1 = 0;
 
-    /* "gapfill_utils.pyx":135
- *         elif passNumber == 4:
- *             pass
- *         elif passNumber == 5:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i][:,::-1])
+      /* "gapfill_utils.pyx":122
+ *             if passNumber == 0:
+ *                 item = np.copy(item.T)
+ *             elif passNumber == 1:             # <<<<<<<<<<<<<<
+ *                 item = np.copy(item.T[:,::-1])
+ *             elif passNumber == 2:
  */
-    goto __pyx_L3;
-  }
+      break;
+      case 2:
 
-  /* "gapfill_utils.pyx":138
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i][:,::-1])
- *         elif passNumber == 6:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i][::-1,:])
+      /* "gapfill_utils.pyx":125
+ *                 item = np.copy(item.T[:,::-1])
+ *             elif passNumber == 2:
+ *                 item = np.copy(item.T[::-1,:])             # <<<<<<<<<<<<<<
+ *             elif passNumber == 3:
+ *                 item = np.copy(item.T[::-1,::-1])
  */
-  __pyx_t_8 = ((__pyx_v_passNumber == 6) != 0);
-  if (__pyx_t_8) {
-
-    /* "gapfill_utils.pyx":139
- *                 dataBits[i] = np.copy(dataBits[i][:,::-1])
- *         elif passNumber == 6:
- *             for i in range(len(dataBits)):             # <<<<<<<<<<<<<<
- *                 dataBits[i] = np.copy(dataBits[i][::-1,:])
- *         elif passNumber == 7:
- */
-    __pyx_t_9 = PyList_GET_SIZE(__pyx_v_dataBits); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 139, __pyx_L1_error)
-    __pyx_t_10 = __pyx_t_9;
-    for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-      __pyx_v_i = __pyx_t_11;
-
-      /* "gapfill_utils.pyx":140
- *         elif passNumber == 6:
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i][::-1,:])             # <<<<<<<<<<<<<<
- *         elif passNumber == 7:
- *             for i in range(len(dataBits)):
- */
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 140, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 125, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 140, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 125, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_GetItemInt_List(__pyx_v_dataBits, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 140, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_item, __pyx_n_s_T); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 125, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_t_3, __pyx_tuple__4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 140, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_t_3, __pyx_tuple__4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __pyx_t_3 = NULL;
@@ -6163,63 +5857,40 @@ static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__TransformData(struct _
           __Pyx_DECREF_SET(__pyx_t_5, function);
         }
       }
-      __pyx_t_6 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4);
+      __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4);
       __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 140, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(__Pyx_SetItemInt(__pyx_v_dataBits, __pyx_v_i, __pyx_t_6, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1) < 0)) __PYX_ERR(0, 140, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    }
+      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
+      __pyx_t_1 = 0;
 
-    /* "gapfill_utils.pyx":138
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i][:,::-1])
- *         elif passNumber == 6:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i][::-1,:])
+      /* "gapfill_utils.pyx":124
+ *             elif passNumber == 1:
+ *                 item = np.copy(item.T[:,::-1])
+ *             elif passNumber == 2:             # <<<<<<<<<<<<<<
+ *                 item = np.copy(item.T[::-1,:])
+ *             elif passNumber == 3:
  */
-    goto __pyx_L3;
-  }
+      break;
+      case 3:
 
-  /* "gapfill_utils.pyx":141
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i][::-1,:])
- *         elif passNumber == 7:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i][::-1,::-1])
+      /* "gapfill_utils.pyx":127
+ *                 item = np.copy(item.T[::-1,:])
+ *             elif passNumber == 3:
+ *                 item = np.copy(item.T[::-1,::-1])             # <<<<<<<<<<<<<<
+ *             elif passNumber == 4:
+ *                 pass
  */
-  __pyx_t_8 = ((__pyx_v_passNumber == 7) != 0);
-  if (likely(__pyx_t_8)) {
-
-    /* "gapfill_utils.pyx":142
- *                 dataBits[i] = np.copy(dataBits[i][::-1,:])
- *         elif passNumber == 7:
- *             for i in range(len(dataBits)):             # <<<<<<<<<<<<<<
- *                 dataBits[i] = np.copy(dataBits[i][::-1,::-1])
- *         else:
- */
-    __pyx_t_9 = PyList_GET_SIZE(__pyx_v_dataBits); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 142, __pyx_L1_error)
-    __pyx_t_10 = __pyx_t_9;
-    for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-      __pyx_v_i = __pyx_t_11;
-
-      /* "gapfill_utils.pyx":143
- *         elif passNumber == 7:
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i][::-1,::-1])             # <<<<<<<<<<<<<<
- *         else:
- *             raise ValueError()
- */
-      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 143, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 127, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 143, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 127, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = __Pyx_GetItemInt_List(__pyx_v_dataBits, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 143, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_item, __pyx_n_s_T); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 127, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_t_5, __pyx_tuple__5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 143, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_t_5, __pyx_tuple__5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 127, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
       __pyx_t_5 = NULL;
@@ -6232,41 +5903,188 @@ static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__TransformData(struct _
           __Pyx_DECREF_SET(__pyx_t_4, function);
         }
       }
-      __pyx_t_6 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
+      __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
       __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 143, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_6);
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(__Pyx_SetItemInt(__pyx_v_dataBits, __pyx_v_i, __pyx_t_6, Py_ssize_t, 1, PyInt_FromSsize_t, 1, 1, 1) < 0)) __PYX_ERR(0, 143, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
+      __pyx_t_1 = 0;
+
+      /* "gapfill_utils.pyx":126
+ *             elif passNumber == 2:
+ *                 item = np.copy(item.T[::-1,:])
+ *             elif passNumber == 3:             # <<<<<<<<<<<<<<
+ *                 item = np.copy(item.T[::-1,::-1])
+ *             elif passNumber == 4:
+ */
+      break;
+      case 4:
+
+      /* "gapfill_utils.pyx":128
+ *             elif passNumber == 3:
+ *                 item = np.copy(item.T[::-1,::-1])
+ *             elif passNumber == 4:             # <<<<<<<<<<<<<<
+ *                 pass
+ *             elif passNumber == 5:
+ */
+      break;
+      case 5:
+
+      /* "gapfill_utils.pyx":131
+ *                 pass
+ *             elif passNumber == 5:
+ *                 item = np.copy(item[:,::-1])             # <<<<<<<<<<<<<<
+ *             elif passNumber == 6:
+ *                 item = np.copy(item[::-1,:])
+ */
+      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 131, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_item, __pyx_tuple__3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_5 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_5)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_5);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4);
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
+      __pyx_t_1 = 0;
+
+      /* "gapfill_utils.pyx":130
+ *             elif passNumber == 4:
+ *                 pass
+ *             elif passNumber == 5:             # <<<<<<<<<<<<<<
+ *                 item = np.copy(item[:,::-1])
+ *             elif passNumber == 6:
+ */
+      break;
+      case 6:
+
+      /* "gapfill_utils.pyx":133
+ *                 item = np.copy(item[:,::-1])
+ *             elif passNumber == 6:
+ *                 item = np.copy(item[::-1,:])             # <<<<<<<<<<<<<<
+ *             elif passNumber == 7:
+ *                 item = np.copy(item[::-1,::-1])
+ */
+      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 133, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 133, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_v_item, __pyx_tuple__4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 133, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_5 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+        if (likely(__pyx_t_5)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+          __Pyx_INCREF(__pyx_t_5);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_4, function);
+        }
+      }
+      __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
+      __pyx_t_1 = 0;
+
+      /* "gapfill_utils.pyx":132
+ *             elif passNumber == 5:
+ *                 item = np.copy(item[:,::-1])
+ *             elif passNumber == 6:             # <<<<<<<<<<<<<<
+ *                 item = np.copy(item[::-1,:])
+ *             elif passNumber == 7:
+ */
+      break;
+      case 7:
+
+      /* "gapfill_utils.pyx":135
+ *                 item = np.copy(item[::-1,:])
+ *             elif passNumber == 7:
+ *                 item = np.copy(item[::-1,::-1])             # <<<<<<<<<<<<<<
+ *             else:
+ *                 raise ValueError()
+ */
+      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 135, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 135, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_item, __pyx_tuple__5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 135, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __pyx_t_5 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
+        if (likely(__pyx_t_5)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_5);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_3, function);
+        }
+      }
+      __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4);
+      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
+      __pyx_t_1 = 0;
+
+      /* "gapfill_utils.pyx":134
+ *             elif passNumber == 6:
+ *                 item = np.copy(item[::-1,:])
+ *             elif passNumber == 7:             # <<<<<<<<<<<<<<
+ *                 item = np.copy(item[::-1,::-1])
+ *             else:
+ */
+      break;
+      default:
+
+      /* "gapfill_utils.pyx":137
+ *                 item = np.copy(item[::-1,::-1])
+ *             else:
+ *                 raise ValueError()             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_ValueError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_Raise(__pyx_t_1, 0, 0, 0);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __PYX_ERR(0, 137, __pyx_L1_error)
+      break;
     }
 
-    /* "gapfill_utils.pyx":141
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i][::-1,:])
- *         elif passNumber == 7:             # <<<<<<<<<<<<<<
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i][::-1,::-1])
+    /* "gapfill_utils.pyx":118
+ *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
+ *         passNumber = self.passNumber
+ *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,             # <<<<<<<<<<<<<<
+ *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
+ *             if passNumber == 0:
  */
-    goto __pyx_L3;
   }
-
-  /* "gapfill_utils.pyx":145
- *                 dataBits[i] = np.copy(dataBits[i][::-1,::-1])
- *         else:
- *             raise ValueError()             # <<<<<<<<<<<<<<
- * 
- * 
- */
-  /*else*/ {
-    __pyx_t_6 = __Pyx_PyObject_CallNoArg(__pyx_builtin_ValueError); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 145, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_Raise(__pyx_t_6, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(0, 145, __pyx_L1_error)
-  }
-  __pyx_L3:;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "gapfill_utils.pyx":109
  *             raise ValueError()
@@ -6290,6 +6108,7 @@ static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__TransformData(struct _
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_dataBits);
+  __Pyx_XDECREF(__pyx_v_item);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -6708,7 +6527,7 @@ static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_10__setstate_cython__(CYT
   return __pyx_r;
 }
 
-/* "gapfill_utils.pyx":152
+/* "gapfill_utils.pyx":144
  *     cdef readonly Py_ssize_t Top, Bottom, Left, Right
  * 
  *     def __init__(self, top=0, bottom=0, left=0, right=0):             # <<<<<<<<<<<<<<
@@ -6775,7 +6594,7 @@ static int __pyx_pw_13gapfill_utils_12PixelMargins_1__init__(PyObject *__pyx_v_s
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 152, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 144, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -6798,7 +6617,7 @@ static int __pyx_pw_13gapfill_utils_12PixelMargins_1__init__(PyObject *__pyx_v_s
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 152, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 144, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("gapfill_utils.PixelMargins.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6817,44 +6636,44 @@ static int __pyx_pf_13gapfill_utils_12PixelMargins___init__(struct __pyx_obj_13g
   Py_ssize_t __pyx_t_1;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "gapfill_utils.pyx":153
+  /* "gapfill_utils.pyx":145
  * 
  *     def __init__(self, top=0, bottom=0, left=0, right=0):
  *         self.Top = top             # <<<<<<<<<<<<<<
  *         self.Bottom = bottom
  *         self.Left = left
  */
-  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_top); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_top); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 145, __pyx_L1_error)
   __pyx_v_self->Top = __pyx_t_1;
 
-  /* "gapfill_utils.pyx":154
+  /* "gapfill_utils.pyx":146
  *     def __init__(self, top=0, bottom=0, left=0, right=0):
  *         self.Top = top
  *         self.Bottom = bottom             # <<<<<<<<<<<<<<
  *         self.Left = left
  *         self.Right = right
  */
-  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_bottom); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_bottom); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 146, __pyx_L1_error)
   __pyx_v_self->Bottom = __pyx_t_1;
 
-  /* "gapfill_utils.pyx":155
+  /* "gapfill_utils.pyx":147
  *         self.Top = top
  *         self.Bottom = bottom
  *         self.Left = left             # <<<<<<<<<<<<<<
  *         self.Right = right
  */
-  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_left); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 155, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_left); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 147, __pyx_L1_error)
   __pyx_v_self->Left = __pyx_t_1;
 
-  /* "gapfill_utils.pyx":156
+  /* "gapfill_utils.pyx":148
  *         self.Bottom = bottom
  *         self.Left = left
  *         self.Right = right             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_right); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_right); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L1_error)
   __pyx_v_self->Right = __pyx_t_1;
 
-  /* "gapfill_utils.pyx":152
+  /* "gapfill_utils.pyx":144
  *     cdef readonly Py_ssize_t Top, Bottom, Left, Right
  * 
  *     def __init__(self, top=0, bottom=0, left=0, right=0):             # <<<<<<<<<<<<<<
@@ -6873,7 +6692,7 @@ static int __pyx_pf_13gapfill_utils_12PixelMargins___init__(struct __pyx_obj_13g
   return __pyx_r;
 }
 
-/* "gapfill_utils.pyx":150
+/* "gapfill_utils.pyx":142
  * cdef class PixelMargins:
  *     """ Simple object to hold 4 values representing margins for processing data """
  *     cdef readonly Py_ssize_t Top, Bottom, Left, Right             # <<<<<<<<<<<<<<
@@ -6900,7 +6719,7 @@ static PyObject *__pyx_pf_13gapfill_utils_12PixelMargins_3Top___get__(struct __p
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Top); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Top); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6936,7 +6755,7 @@ static PyObject *__pyx_pf_13gapfill_utils_12PixelMargins_6Bottom___get__(struct 
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Bottom); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Bottom); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6972,7 +6791,7 @@ static PyObject *__pyx_pf_13gapfill_utils_12PixelMargins_4Left___get__(struct __
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Left); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Left); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -7008,7 +6827,7 @@ static PyObject *__pyx_pf_13gapfill_utils_12PixelMargins_5Right___get__(struct _
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Right); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Right); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -23059,10 +22878,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 86, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 119, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 148, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 151, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(1, 180, __pyx_L1_error)
   __pyx_builtin_Ellipsis = __Pyx_GetBuiltinName(__pyx_n_s_Ellipsis); if (!__pyx_builtin_Ellipsis) __PYX_ERR(1, 404, __pyx_L1_error)
   __pyx_builtin_id = __Pyx_GetBuiltinName(__pyx_n_s_id); if (!__pyx_builtin_id) __PYX_ERR(1, 613, __pyx_L1_error)
   __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(1, 832, __pyx_L1_error)
@@ -23076,11 +22895,11 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
   /* "gapfill_utils.pyx":123
- *         elif passNumber == 1:
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[:,::-1])             # <<<<<<<<<<<<<<
- *         elif passNumber == 1:
- *             for i in range(len(dataBits)):
+ *                 item = np.copy(item.T)
+ *             elif passNumber == 1:
+ *                 item = np.copy(item.T[:,::-1])             # <<<<<<<<<<<<<<
+ *             elif passNumber == 2:
+ *                 item = np.copy(item.T[::-1,:])
  */
   __pyx_slice_ = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice_)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice_);
@@ -23092,25 +22911,25 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "gapfill_utils.pyx":129
- *         elif passNumber == 2:
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,:])             # <<<<<<<<<<<<<<
- *         elif passNumber == 3:
- *             for i in range(len(dataBits)):
+  /* "gapfill_utils.pyx":125
+ *                 item = np.copy(item.T[:,::-1])
+ *             elif passNumber == 2:
+ *                 item = np.copy(item.T[::-1,:])             # <<<<<<<<<<<<<<
+ *             elif passNumber == 3:
+ *                 item = np.copy(item.T[::-1,::-1])
  */
-  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_slice__2, __pyx_slice_); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_slice__2, __pyx_slice_); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "gapfill_utils.pyx":132
- *         elif passNumber == 3:
- *             for i in range(len(dataBits)):
- *                 dataBits[i] = np.copy(dataBits[i].T[::-1,::-1])             # <<<<<<<<<<<<<<
- *         elif passNumber == 4:
- *             pass
+  /* "gapfill_utils.pyx":127
+ *                 item = np.copy(item.T[::-1,:])
+ *             elif passNumber == 3:
+ *                 item = np.copy(item.T[::-1,::-1])             # <<<<<<<<<<<<<<
+ *             elif passNumber == 4:
+ *                 pass
  */
-  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_slice__2, __pyx_slice__2); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 132, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_slice__2, __pyx_slice__2); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 127, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
@@ -23488,15 +23307,15 @@ static int __Pyx_modinit_type_init_code(void) {
   if (PyObject_SetAttr(__pyx_m, __pyx_n_s_A2PassData, (PyObject *)&__pyx_type_13gapfill_utils_A2PassData) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
   if (__Pyx_setup_reduce((PyObject*)&__pyx_type_13gapfill_utils_A2PassData) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
   __pyx_ptype_13gapfill_utils_A2PassData = &__pyx_type_13gapfill_utils_A2PassData;
-  if (PyType_Ready(&__pyx_type_13gapfill_utils_PixelMargins) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_13gapfill_utils_PixelMargins) < 0) __PYX_ERR(0, 140, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_13gapfill_utils_PixelMargins.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_13gapfill_utils_PixelMargins.tp_dictoffset && __pyx_type_13gapfill_utils_PixelMargins.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_13gapfill_utils_PixelMargins.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PixelMargins, (PyObject *)&__pyx_type_13gapfill_utils_PixelMargins) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_13gapfill_utils_PixelMargins) < 0) __PYX_ERR(0, 148, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PixelMargins, (PyObject *)&__pyx_type_13gapfill_utils_PixelMargins) < 0) __PYX_ERR(0, 140, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_13gapfill_utils_PixelMargins) < 0) __PYX_ERR(0, 140, __pyx_L1_error)
   __pyx_ptype_13gapfill_utils_PixelMargins = &__pyx_type_13gapfill_utils_PixelMargins;
   __pyx_vtabptr_array = &__pyx_vtable_array;
   __pyx_vtable_array.get_memview = (PyObject *(*)(struct __pyx_array_obj *))__pyx_array_get_memview;
@@ -25025,55 +24844,6 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, 
     }
 #endif
     return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-}
-
-/* SetItemInt */
-static int __Pyx_SetItemInt_Generic(PyObject *o, PyObject *j, PyObject *v) {
-    int r;
-    if (!j) return -1;
-    r = PyObject_SetItem(o, j, v);
-    Py_DECREF(j);
-    return r;
-}
-static CYTHON_INLINE int __Pyx_SetItemInt_Fast(PyObject *o, Py_ssize_t i, PyObject *v, int is_list,
-                                               CYTHON_NCP_UNUSED int wraparound, CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
-    if (is_list || PyList_CheckExact(o)) {
-        Py_ssize_t n = (!wraparound) ? i : ((likely(i >= 0)) ? i : i + PyList_GET_SIZE(o));
-        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o)))) {
-            PyObject* old = PyList_GET_ITEM(o, n);
-            Py_INCREF(v);
-            PyList_SET_ITEM(o, n, v);
-            Py_DECREF(old);
-            return 1;
-        }
-    } else {
-        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
-        if (likely(m && m->sq_ass_item)) {
-            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
-                Py_ssize_t l = m->sq_length(o);
-                if (likely(l >= 0)) {
-                    i += l;
-                } else {
-                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
-                        return -1;
-                    PyErr_Clear();
-                }
-            }
-            return m->sq_ass_item(o, i, v);
-        }
-    }
-#else
-#if CYTHON_COMPILING_IN_PYPY
-    if (is_list || (PySequence_Check(o) && !PyDict_Check(o)))
-#else
-    if (is_list || PySequence_Check(o))
-#endif
-    {
-        return PySequence_SetItem(o, i, v);
-    }
-#endif
-    return __Pyx_SetItemInt_Generic(o, PyInt_FromSsize_t(i), v);
 }
 
 /* ObjectGetItem */

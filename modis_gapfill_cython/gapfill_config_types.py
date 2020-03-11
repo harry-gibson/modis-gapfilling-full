@@ -34,6 +34,7 @@ class GapfillJobConfig(NamedTuple):
     RunA2: bool = True
     NCores: int = None
     MemTargetBytes: int = None
+    OutputFilenameTag: str = ""
 
     @classmethod
     def from_yaml_config(cls, runConfig):
@@ -49,7 +50,8 @@ class GapfillJobConfig(NamedTuple):
             ClipMinMax=float(jC['ClipMinMax']),
             RunA2=float(jC['RunA2']),
             NCores=int(jC['NCores']),
-            MemTargetBytes=int(jC['MemTargetBytes'])
+            MemTargetBytes=int(jC['MemTargetBytes']),
+            OutputFilenameTag=str(jC['OutputFilenameTag'])
         )
         return jobConfigParsed
 
@@ -103,6 +105,20 @@ class DespeckleConfig(NamedTuple):
         )
         return configParsed
 
+    def GetSummaryMessage(self):
+        message = f"""
+    Despeckle - initiating with parameters: 
+        Rejection threshold (sd from mean):     {round(self.EXTREME_BEYOND_SD, 2)}
+        Speckle-check threshold (sd from mean): {round(self.SPECKLE_BEYOND_SD, 2)}
+        Neighbour-similarity threshold:         {round(self.SPECKLE_NBR_Z_THRESH, 2)}
+        Min neighbour values required for check:{self.SPIRAL_CONFIG.MIN_REQUIRED_NBRS}
+        Max neighbour values used in check:     {self.SPIRAL_CONFIG.MAX_USED_NBRS}
+        Max neighbour candidates to check:      {self.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH}
+    
+    """
+        return message
+
+
 
 class A1SearchConfig(NamedTuple):
     """ The A1 config configures how far the A1 algorithm will search and  how fill values are calculated.
@@ -130,6 +146,16 @@ class A1SearchConfig(NamedTuple):
         )
         return configParsed
 
+    def GetSummaryMessage(self):
+        message = f"""
+    A1 search - initiating with parameters: 
+        Fill generation method:                 {self.FILL_GENERATION_METHOD}
+        Min neighbour values required for fill: {self.SPIRAL_CONFIG.MIN_REQUIRED_NBRS}
+        Max neighbour values used in fill:      {self.SPIRAL_CONFIG.MAX_USED_NBRS}
+        Max neighbour candidates to search:     {self.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH}
+        
+    """
+        return message
 
 class A2SearchConfig(NamedTuple):
     """ The A2 config configures how far the A1 algorithm will search and  how fill values are calculated.
@@ -166,6 +192,14 @@ class A2SearchConfig(NamedTuple):
         )
         return configParsed
 
+    def GetSummaryMessage(self):
+        message = f"""
+    A2 search - initiating with parameters: 
+        Fill generation method:                 {self.FILL_GENERATION_METHOD}
+        Max neighbour candidates to search:     {self.SPIRAL_CONFIG.MAX_NBRS_TO_SEARCH}
+        Pass-averaging method:                  {self.PASS_AVERAGE_TYPE}
+    """
+        return message
 
 class DataLimitsConfig(NamedTuple):
     """ Configures numerical parameters specific to this dataset.
@@ -200,12 +234,7 @@ class DataLimitsConfig(NamedTuple):
         )
         return configParsed
 
-    def GetSummaryMessage(self):
-        print("Despeckle: Rejecting data beyond {0!s}s.d. of mean. Nbr search on data beyond {1!s} s.d. of mean.".
-              format(stDevValidityThreshold, speckleDevThreshold))
-        print("Nbr searching for {0!s} - {1!s} nbrs within {2!s} spiral steps for z-score tolerance of {3!s}".
-              format(_SPECKLE_NBR_MIN_THRESHOLD, _SPECKLE_NBR_MAX_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK,
-                     _SPECKLE_ZSCORE_THRESHOLD))
+
 
 class GapfillFilePaths(NamedTuple):
     DATA_FILES_GLOB_PATTERN: str

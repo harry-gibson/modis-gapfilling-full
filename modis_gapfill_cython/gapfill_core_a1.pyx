@@ -204,11 +204,7 @@ cpdef a1_core(dataStacks: A1DataStack,  # has items Data, Flags, DistTemplate (o
 
     # diagnostics; TODO use logging
     time_start = time.time()
-    print ("Running A1 (Full Spiral Search).")
-    print ("No data template: {0!s}. Using fill generation method: {1!s}. Searching for {2!s} - {3!s} nbrs within {4!s} spiral steps".
-           format(noTemplate, A1SearchConfig.FILL_GENERATION_METHOD, _FILL_MIN, _FILL_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK))
-    print ("Calculating nbr table out to radius of {0!s}.".format(_SEARCH_RADIUS))
-    print ("Filling from stack position {0!s}.".format(RunFillFromPos))
+    print ("Filling from stack position {0!s} (of {1!s}).".format(RunFillFromPos, zShape))
 
     assert inputFlags.shape[1] == yShapeTotal
     assert inputFlags.shape[2] == xShapeTotal

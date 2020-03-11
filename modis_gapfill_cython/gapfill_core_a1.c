@@ -1637,18 +1637,15 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 static CYTHON_INLINE PyObject *__pyx_memview_get_double(const char *itemp);
 static CYTHON_INLINE int __pyx_memview_set_double(const char *itemp, PyObject *obj);
 
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_char(unsigned char value);
+
 /* Print.proto */
 static int __Pyx_Print(PyObject*, PyObject *, int);
 #if CYTHON_COMPILING_IN_PYPY || PY_MAJOR_VERSION >= 3
 static PyObject* __pyx_print = 0;
 static PyObject* __pyx_print_kwargs = 0;
 #endif
-
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_char(char value);
-
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_char(unsigned char value);
 
 /* None.proto */
 static CYTHON_INLINE long __Pyx_pow_long(long, long);
@@ -1967,13 +1964,10 @@ static const char __pyx_k_Cannot_index_with_type_s[] = "Cannot index with type '
 static const char __pyx_k_Invalid_shape_in_axis_d_d[] = "Invalid shape in axis %d: %d.";
 static const char __pyx_k_TotalAlternateYearsScanned[] = "TotalAlternateYearsScanned";
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
-static const char __pyx_k_Running_A1_Full_Spiral_Search[] = "Running A1 (Full Spiral Search).";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
 static const char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
-static const char __pyx_k_Filling_from_stack_position_0_s[] = "Filling from stack position {0!s}.";
-static const char __pyx_k_No_data_template_0_s_Using_fill[] = "No data template: {0!s}. Using fill generation method: {1!s}. Searching for {2!s} - {3!s} nbrs within {4!s} spiral steps";
+static const char __pyx_k_Filling_from_stack_position_0_s[] = "Filling from stack position {0!s} (of {1!s}).";
 static const char __pyx_k_Buffer_view_does_not_expose_stri[] = "Buffer view does not expose strides";
-static const char __pyx_k_Calculating_nbr_table_out_to_rad[] = "Calculating nbr table out to radius of {0!s}.";
 static const char __pyx_k_Can_only_create_a_buffer_that_is[] = "Can only create a buffer that is contiguous in memory.";
 static const char __pyx_k_Cannot_assign_to_read_only_memor[] = "Cannot assign to read-only memoryview";
 static const char __pyx_k_Cannot_create_writable_memory_vi[] = "Cannot create writable memory view from read-only memoryview";
@@ -1995,7 +1989,6 @@ static PyObject *__pyx_n_s_ABSOLUTE_ZERO_OFFSET;
 static PyObject *__pyx_n_s_ASCII;
 static PyObject *__pyx_n_s_Bottom;
 static PyObject *__pyx_kp_s_Buffer_view_does_not_expose_stri;
-static PyObject *__pyx_kp_s_Calculating_nbr_table_out_to_rad;
 static PyObject *__pyx_kp_s_Can_only_create_a_buffer_that_is;
 static PyObject *__pyx_kp_s_Cannot_assign_to_read_only_memor;
 static PyObject *__pyx_kp_s_Cannot_create_writable_memory_vi;
@@ -2034,7 +2027,6 @@ static PyObject *__pyx_kp_s_MemoryView_of_r_at_0x_x;
 static PyObject *__pyx_kp_s_MemoryView_of_r_object;
 static PyObject *__pyx_n_s_NODATA_VALUE;
 static PyObject *__pyx_n_s_NeverDataLocations;
-static PyObject *__pyx_kp_s_No_data_template_0_s_Using_fill;
 static PyObject *__pyx_n_b_O;
 static PyObject *__pyx_n_s_OCEAN;
 static PyObject *__pyx_n_s_OceanCells;
@@ -2044,7 +2036,6 @@ static PyObject *__pyx_n_s_PickleError;
 static PyObject *__pyx_n_s_PixelMargins;
 static PyObject *__pyx_n_s_RATIO;
 static PyObject *__pyx_n_s_Right;
-static PyObject *__pyx_kp_s_Running_A1_Full_Spiral_Search;
 static PyObject *__pyx_n_s_SPIRAL_CONFIG;
 static PyObject *__pyx_n_s_T;
 static PyObject *__pyx_n_s_TRIM_FULL_OUTLIERS;
@@ -2362,9 +2353,9 @@ static PyObject *__pyx_f_15gapfill_core_a1_a1_core(PyObject *__pyx_v_dataStacks,
   PyObject *__pyx_t_16 = NULL;
   __Pyx_memviewslice __pyx_t_17 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_t_18 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_t_19 = NULL;
-  PyObject *__pyx_t_20 = NULL;
-  PyObject *__pyx_t_21 = NULL;
+  Py_ssize_t __pyx_t_19;
+  Py_ssize_t __pyx_t_20;
+  Py_ssize_t __pyx_t_21;
   Py_ssize_t __pyx_t_22;
   Py_ssize_t __pyx_t_23;
   Py_ssize_t __pyx_t_24;
@@ -2385,10 +2376,10 @@ static PyObject *__pyx_f_15gapfill_core_a1_a1_core(PyObject *__pyx_v_dataStacks,
   Py_ssize_t __pyx_t_39;
   Py_ssize_t __pyx_t_40;
   Py_ssize_t __pyx_t_41;
-  Py_ssize_t __pyx_t_42;
+  __Pyx_memviewslice __pyx_t_42 = { 0, 0, { 0 }, { 0 }, { 0 } };
   Py_ssize_t __pyx_t_43;
   Py_ssize_t __pyx_t_44;
-  __Pyx_memviewslice __pyx_t_45 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  Py_ssize_t __pyx_t_45;
   Py_ssize_t __pyx_t_46;
   Py_ssize_t __pyx_t_47;
   Py_ssize_t __pyx_t_48;
@@ -2438,10 +2429,10 @@ static PyObject *__pyx_f_15gapfill_core_a1_a1_core(PyObject *__pyx_v_dataStacks,
   Py_ssize_t __pyx_t_92;
   Py_ssize_t __pyx_t_93;
   Py_ssize_t __pyx_t_94;
-  Py_ssize_t __pyx_t_95;
+  int __pyx_t_95;
   Py_ssize_t __pyx_t_96;
   Py_ssize_t __pyx_t_97;
-  int __pyx_t_98;
+  Py_ssize_t __pyx_t_98;
   Py_ssize_t __pyx_t_99;
   Py_ssize_t __pyx_t_100;
   Py_ssize_t __pyx_t_101;
@@ -2449,17 +2440,17 @@ static PyObject *__pyx_f_15gapfill_core_a1_a1_core(PyObject *__pyx_v_dataStacks,
   Py_ssize_t __pyx_t_103;
   Py_ssize_t __pyx_t_104;
   Py_ssize_t __pyx_t_105;
-  Py_ssize_t __pyx_t_106;
-  Py_ssize_t __pyx_t_107;
-  Py_ssize_t __pyx_t_108;
-  long __pyx_t_109;
-  long __pyx_t_110;
-  int __pyx_t_111;
+  long __pyx_t_106;
+  long __pyx_t_107;
+  int __pyx_t_108;
+  Py_ssize_t __pyx_t_109;
+  Py_ssize_t __pyx_t_110;
+  Py_ssize_t __pyx_t_111;
   Py_ssize_t __pyx_t_112;
-  Py_ssize_t __pyx_t_113;
+  int __pyx_t_113;
   Py_ssize_t __pyx_t_114;
   Py_ssize_t __pyx_t_115;
-  int __pyx_t_116;
+  Py_ssize_t __pyx_t_116;
   Py_ssize_t __pyx_t_117;
   Py_ssize_t __pyx_t_118;
   Py_ssize_t __pyx_t_119;
@@ -2495,9 +2486,6 @@ static PyObject *__pyx_f_15gapfill_core_a1_a1_core(PyObject *__pyx_v_dataStacks,
   Py_ssize_t __pyx_t_149;
   Py_ssize_t __pyx_t_150;
   Py_ssize_t __pyx_t_151;
-  Py_ssize_t __pyx_t_152;
-  Py_ssize_t __pyx_t_153;
-  Py_ssize_t __pyx_t_154;
   __Pyx_RefNannySetupContext("a1_core", 0);
 
   /* "gapfill_core_a1.pyx":99
@@ -3665,8 +3653,8 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  * 
  *     # diagnostics; TODO use logging
  *     time_start = time.time()             # <<<<<<<<<<<<<<
- *     print ("Running A1 (Full Spiral Search).")
- *     print ("No data template: {0!s}. Using fill generation method: {1!s}. Searching for {2!s} - {3!s} nbrs within {4!s} spiral steps".
+ *     print ("Filling from stack position {0!s} (of {1!s}).".format(RunFillFromPos, zShape))
+ * 
  */
   __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_time); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 206, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -3694,49 +3682,23 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
   /* "gapfill_core_a1.pyx":207
  *     # diagnostics; TODO use logging
  *     time_start = time.time()
- *     print ("Running A1 (Full Spiral Search).")             # <<<<<<<<<<<<<<
- *     print ("No data template: {0!s}. Using fill generation method: {1!s}. Searching for {2!s} - {3!s} nbrs within {4!s} spiral steps".
- *            format(noTemplate, A1SearchConfig.FILL_GENERATION_METHOD, _FILL_MIN, _FILL_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK))
+ *     print ("Filling from stack position {0!s} (of {1!s}).".format(RunFillFromPos, zShape))             # <<<<<<<<<<<<<<
+ * 
+ *     assert inputFlags.shape[1] == yShapeTotal
  */
-  if (__Pyx_PrintOne(0, __pyx_kp_s_Running_A1_Full_Spiral_Search) < 0) __PYX_ERR(0, 207, __pyx_L1_error)
-
-  /* "gapfill_core_a1.pyx":208
- *     time_start = time.time()
- *     print ("Running A1 (Full Spiral Search).")
- *     print ("No data template: {0!s}. Using fill generation method: {1!s}. Searching for {2!s} - {3!s} nbrs within {4!s} spiral steps".             # <<<<<<<<<<<<<<
- *            format(noTemplate, A1SearchConfig.FILL_GENERATION_METHOD, _FILL_MIN, _FILL_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK))
- *     print ("Calculating nbr table out to radius of {0!s}.".format(_SEARCH_RADIUS))
- */
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_No_data_template_0_s_Using_fill, __pyx_n_s_format); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 208, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Filling_from_stack_position_0_s, __pyx_n_s_format); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 207, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-
-  /* "gapfill_core_a1.pyx":209
- *     print ("Running A1 (Full Spiral Search).")
- *     print ("No data template: {0!s}. Using fill generation method: {1!s}. Searching for {2!s} - {3!s} nbrs within {4!s} spiral steps".
- *            format(noTemplate, A1SearchConfig.FILL_GENERATION_METHOD, _FILL_MIN, _FILL_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK))             # <<<<<<<<<<<<<<
- *     print ("Calculating nbr table out to radius of {0!s}.".format(_SEARCH_RADIUS))
- *     print ("Filling from stack position {0!s}.".format(RunFillFromPos))
- */
-  __pyx_t_1 = __Pyx_PyInt_From_char(__pyx_v_noTemplate); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_unsigned_char(__pyx_v_RunFillFromPos); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 207, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GetModuleGlobalName(__pyx_t_13, __pyx_n_s_A1SearchConfig); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 209, __pyx_L1_error)
+  __pyx_t_13 = PyInt_FromSsize_t(__pyx_v_zShape); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 207, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_FILL_GENERATION_METHOD); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 209, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __pyx_t_13 = __Pyx_PyInt_From_int(__pyx_v__FILL_MIN); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 209, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_13);
-  __pyx_t_15 = __Pyx_PyInt_From_int(__pyx_v__FILL_THRESHOLD); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 209, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_15);
-  __pyx_t_19 = __Pyx_PyInt_From_int(__pyx_v__MAX_NEIGHBOURS_TO_CHECK); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 209, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_19);
-  __pyx_t_20 = NULL;
+  __pyx_t_6 = NULL;
   __pyx_t_3 = 0;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_14))) {
-    __pyx_t_20 = PyMethod_GET_SELF(__pyx_t_14);
-    if (likely(__pyx_t_20)) {
+    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_14);
+    if (likely(__pyx_t_6)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
-      __Pyx_INCREF(__pyx_t_20);
+      __Pyx_INCREF(__pyx_t_6);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_14, function);
       __pyx_t_3 = 1;
@@ -3744,121 +3706,46 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_14)) {
-    PyObject *__pyx_temp[6] = {__pyx_t_20, __pyx_t_1, __pyx_t_6, __pyx_t_13, __pyx_t_15, __pyx_t_19};
-    __pyx_t_16 = __Pyx_PyFunction_FastCall(__pyx_t_14, __pyx_temp+1-__pyx_t_3, 5+__pyx_t_3); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 209, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_20); __pyx_t_20 = 0;
+    PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_1, __pyx_t_13};
+    __pyx_t_16 = __Pyx_PyFunction_FastCall(__pyx_t_14, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 207, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_16);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-    __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
   } else
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_14)) {
-    PyObject *__pyx_temp[6] = {__pyx_t_20, __pyx_t_1, __pyx_t_6, __pyx_t_13, __pyx_t_15, __pyx_t_19};
-    __pyx_t_16 = __Pyx_PyCFunction_FastCall(__pyx_t_14, __pyx_temp+1-__pyx_t_3, 5+__pyx_t_3); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 209, __pyx_L1_error)
-    __Pyx_XDECREF(__pyx_t_20); __pyx_t_20 = 0;
+    PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_t_1, __pyx_t_13};
+    __pyx_t_16 = __Pyx_PyCFunction_FastCall(__pyx_t_14, __pyx_temp+1-__pyx_t_3, 2+__pyx_t_3); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 207, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_GOTREF(__pyx_t_16);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-    __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
   } else
   #endif
   {
-    __pyx_t_21 = PyTuple_New(5+__pyx_t_3); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 209, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_21);
-    if (__pyx_t_20) {
-      __Pyx_GIVEREF(__pyx_t_20); PyTuple_SET_ITEM(__pyx_t_21, 0, __pyx_t_20); __pyx_t_20 = NULL;
+    __pyx_t_15 = PyTuple_New(2+__pyx_t_3); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 207, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_15);
+    if (__pyx_t_6) {
+      __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_6); __pyx_t_6 = NULL;
     }
     __Pyx_GIVEREF(__pyx_t_1);
-    PyTuple_SET_ITEM(__pyx_t_21, 0+__pyx_t_3, __pyx_t_1);
-    __Pyx_GIVEREF(__pyx_t_6);
-    PyTuple_SET_ITEM(__pyx_t_21, 1+__pyx_t_3, __pyx_t_6);
+    PyTuple_SET_ITEM(__pyx_t_15, 0+__pyx_t_3, __pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_13);
-    PyTuple_SET_ITEM(__pyx_t_21, 2+__pyx_t_3, __pyx_t_13);
-    __Pyx_GIVEREF(__pyx_t_15);
-    PyTuple_SET_ITEM(__pyx_t_21, 3+__pyx_t_3, __pyx_t_15);
-    __Pyx_GIVEREF(__pyx_t_19);
-    PyTuple_SET_ITEM(__pyx_t_21, 4+__pyx_t_3, __pyx_t_19);
+    PyTuple_SET_ITEM(__pyx_t_15, 1+__pyx_t_3, __pyx_t_13);
     __pyx_t_1 = 0;
-    __pyx_t_6 = 0;
     __pyx_t_13 = 0;
-    __pyx_t_15 = 0;
-    __pyx_t_19 = 0;
-    __pyx_t_16 = __Pyx_PyObject_Call(__pyx_t_14, __pyx_t_21, NULL); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 209, __pyx_L1_error)
+    __pyx_t_16 = __Pyx_PyObject_Call(__pyx_t_14, __pyx_t_15, NULL); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 207, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
-    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
+    __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
   }
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_16) < 0) __PYX_ERR(0, 208, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_16) < 0) __PYX_ERR(0, 207, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":210
- *     print ("No data template: {0!s}. Using fill generation method: {1!s}. Searching for {2!s} - {3!s} nbrs within {4!s} spiral steps".
- *            format(noTemplate, A1SearchConfig.FILL_GENERATION_METHOD, _FILL_MIN, _FILL_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK))
- *     print ("Calculating nbr table out to radius of {0!s}.".format(_SEARCH_RADIUS))             # <<<<<<<<<<<<<<
- *     print ("Filling from stack position {0!s}.".format(RunFillFromPos))
- * 
- */
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Calculating_nbr_table_out_to_rad, __pyx_n_s_format); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 210, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_21 = __Pyx_PyInt_From_int(__pyx_v__SEARCH_RADIUS); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 210, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_21);
-  __pyx_t_19 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_14))) {
-    __pyx_t_19 = PyMethod_GET_SELF(__pyx_t_14);
-    if (likely(__pyx_t_19)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
-      __Pyx_INCREF(__pyx_t_19);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_14, function);
-    }
-  }
-  __pyx_t_16 = (__pyx_t_19) ? __Pyx_PyObject_Call2Args(__pyx_t_14, __pyx_t_19, __pyx_t_21) : __Pyx_PyObject_CallOneArg(__pyx_t_14, __pyx_t_21);
-  __Pyx_XDECREF(__pyx_t_19); __pyx_t_19 = 0;
-  __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
-  if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 210, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_16);
-  __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_16) < 0) __PYX_ERR(0, 210, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-
-  /* "gapfill_core_a1.pyx":211
- *            format(noTemplate, A1SearchConfig.FILL_GENERATION_METHOD, _FILL_MIN, _FILL_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK))
- *     print ("Calculating nbr table out to radius of {0!s}.".format(_SEARCH_RADIUS))
- *     print ("Filling from stack position {0!s}.".format(RunFillFromPos))             # <<<<<<<<<<<<<<
- * 
- *     assert inputFlags.shape[1] == yShapeTotal
- */
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_kp_s_Filling_from_stack_position_0_s, __pyx_n_s_format); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 211, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_21 = __Pyx_PyInt_From_unsigned_char(__pyx_v_RunFillFromPos); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 211, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_21);
-  __pyx_t_19 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_14))) {
-    __pyx_t_19 = PyMethod_GET_SELF(__pyx_t_14);
-    if (likely(__pyx_t_19)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
-      __Pyx_INCREF(__pyx_t_19);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_14, function);
-    }
-  }
-  __pyx_t_16 = (__pyx_t_19) ? __Pyx_PyObject_Call2Args(__pyx_t_14, __pyx_t_19, __pyx_t_21) : __Pyx_PyObject_CallOneArg(__pyx_t_14, __pyx_t_21);
-  __Pyx_XDECREF(__pyx_t_19); __pyx_t_19 = 0;
-  __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
-  if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 211, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_16);
-  __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_16) < 0) __PYX_ERR(0, 211, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-
-  /* "gapfill_core_a1.pyx":213
- *     print ("Filling from stack position {0!s}.".format(RunFillFromPos))
+  /* "gapfill_core_a1.pyx":209
+ *     print ("Filling from stack position {0!s} (of {1!s}).".format(RunFillFromPos, zShape))
  * 
  *     assert inputFlags.shape[1] == yShapeTotal             # <<<<<<<<<<<<<<
  *     assert inputFlags.shape[2] == xShapeTotal
@@ -3868,12 +3755,12 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!(((__pyx_v_inputFlags.shape[1]) == __pyx_v_yShapeTotal) != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 213, __pyx_L1_error)
+      __PYX_ERR(0, 209, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "gapfill_core_a1.pyx":214
+  /* "gapfill_core_a1.pyx":210
  * 
  *     assert inputFlags.shape[1] == yShapeTotal
  *     assert inputFlags.shape[2] == xShapeTotal             # <<<<<<<<<<<<<<
@@ -3884,12 +3771,12 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!(((__pyx_v_inputFlags.shape[2]) == __pyx_v_xShapeTotal) != 0))) {
       PyErr_SetNone(PyExc_AssertionError);
-      __PYX_ERR(0, 214, __pyx_L1_error)
+      __PYX_ERR(0, 210, __pyx_L1_error)
     }
   }
   #endif
 
-  /* "gapfill_core_a1.pyx":216
+  /* "gapfill_core_a1.pyx":212
  *     assert inputFlags.shape[2] == xShapeTotal
  * 
  *     if knownUnfillableLocs is None: # i.e. has not been precalced with np.all             # <<<<<<<<<<<<<<
@@ -3899,54 +3786,54 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
   __pyx_t_11 = ((((PyObject *) __pyx_v_knownUnfillableLocs.memview) == Py_None) != 0);
   if (__pyx_t_11) {
 
-    /* "gapfill_core_a1.pyx":218
+    /* "gapfill_core_a1.pyx":214
  *     if knownUnfillableLocs is None: # i.e. has not been precalced with np.all
  *         # knownUnfillableLocs will a 2D map of cells where there isk no data in any year (z axis)
  *         knownUnfillableLocs = np.ones(shape=(yShape, xShape), dtype=np.uint8, order='c')             # <<<<<<<<<<<<<<
  *         # locate cells that CAN be filled (negating it like this means we can keep
  *         # the loop order cache-friendly - as opposed to iterating through Z at each
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 218, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_np); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 214, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
-    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_ones); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 218, __pyx_L1_error)
+    __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_ones); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 214, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __pyx_t_16 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 218, __pyx_L1_error)
+    __pyx_t_16 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 214, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_16);
-    __pyx_t_21 = PyInt_FromSsize_t(__pyx_v_yShape); if (unlikely(!__pyx_t_21)) __PYX_ERR(0, 218, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_21);
-    __pyx_t_19 = PyInt_FromSsize_t(__pyx_v_xShape); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 218, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_19);
-    __pyx_t_15 = PyTuple_New(2); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 218, __pyx_L1_error)
+    __pyx_t_15 = PyInt_FromSsize_t(__pyx_v_yShape); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 214, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_15);
-    __Pyx_GIVEREF(__pyx_t_21);
-    PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_21);
-    __Pyx_GIVEREF(__pyx_t_19);
-    PyTuple_SET_ITEM(__pyx_t_15, 1, __pyx_t_19);
-    __pyx_t_21 = 0;
-    __pyx_t_19 = 0;
-    if (PyDict_SetItem(__pyx_t_16, __pyx_n_s_shape, __pyx_t_15) < 0) __PYX_ERR(0, 218, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_15, __pyx_n_s_np); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 218, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_15);
-    __pyx_t_19 = __Pyx_PyObject_GetAttrStr(__pyx_t_15, __pyx_n_s_uint8); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 218, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_19);
-    __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-    if (PyDict_SetItem(__pyx_t_16, __pyx_n_s_dtype, __pyx_t_19) < 0) __PYX_ERR(0, 218, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
-    if (PyDict_SetItem(__pyx_t_16, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 218, __pyx_L1_error)
-    __pyx_t_19 = __Pyx_PyObject_Call(__pyx_t_14, __pyx_empty_tuple, __pyx_t_16); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 218, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_19);
+    __pyx_t_13 = PyInt_FromSsize_t(__pyx_v_xShape); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 214, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
+    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 214, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_GIVEREF(__pyx_t_15);
+    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_15);
+    __Pyx_GIVEREF(__pyx_t_13);
+    PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_13);
+    __pyx_t_15 = 0;
+    __pyx_t_13 = 0;
+    if (PyDict_SetItem(__pyx_t_16, __pyx_n_s_shape, __pyx_t_1) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 214, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_uint8); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 214, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if (PyDict_SetItem(__pyx_t_16, __pyx_n_s_dtype, __pyx_t_13) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+    if (PyDict_SetItem(__pyx_t_16, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyObject_Call(__pyx_t_14, __pyx_empty_tuple, __pyx_t_16); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 214, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_13);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
     __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __pyx_t_9 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_unsigned_char(__pyx_t_19, PyBUF_WRITABLE); if (unlikely(!__pyx_t_9.memview)) __PYX_ERR(0, 218, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
+    __pyx_t_9 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_unsigned_char(__pyx_t_13, PyBUF_WRITABLE); if (unlikely(!__pyx_t_9.memview)) __PYX_ERR(0, 214, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
     __PYX_XDEC_MEMVIEW(&__pyx_v_knownUnfillableLocs, 1);
     __pyx_v_knownUnfillableLocs = __pyx_t_9;
     __pyx_t_9.memview = NULL;
     __pyx_t_9.data = NULL;
 
-    /* "gapfill_core_a1.pyx":224
+    /* "gapfill_core_a1.pyx":220
  *         # This process is still slower on 1 thread than numpy.all, but not significant overall,
  *         # and multithreading makes it way faster to do here
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -3961,26 +3848,26 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
         #endif
         /*try:*/ {
 
-          /* "gapfill_core_a1.pyx":225
+          /* "gapfill_core_a1.pyx":221
  *         # and multithreading makes it way faster to do here
  *         with nogil:
  *             for z in range(zShape):             # <<<<<<<<<<<<<<
  *                 # work is trivial and fairly well balanced so use static schedule
  *                 for y in prange(yShape, schedule='static', num_threads=nCores):
  */
-          __pyx_t_22 = __pyx_v_zShape;
-          __pyx_t_23 = __pyx_t_22;
-          for (__pyx_t_24 = 0; __pyx_t_24 < __pyx_t_23; __pyx_t_24+=1) {
-            __pyx_v_z = __pyx_t_24;
+          __pyx_t_19 = __pyx_v_zShape;
+          __pyx_t_20 = __pyx_t_19;
+          for (__pyx_t_21 = 0; __pyx_t_21 < __pyx_t_20; __pyx_t_21+=1) {
+            __pyx_v_z = __pyx_t_21;
 
-            /* "gapfill_core_a1.pyx":227
+            /* "gapfill_core_a1.pyx":223
  *             for z in range(zShape):
  *                 # work is trivial and fairly well balanced so use static schedule
  *                 for y in prange(yShape, schedule='static', num_threads=nCores):             # <<<<<<<<<<<<<<
  *                     x_prv = -1
  *                     yi_prv = y + marginT
  */
-            __pyx_t_25 = __pyx_v_yShape;
+            __pyx_t_22 = __pyx_v_yShape;
             if (1 == 0) abort();
             {
                 #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
@@ -3989,25 +3876,25 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                     #define likely(x)   (x)
                     #define unlikely(x) (x)
                 #endif
-                __pyx_t_27 = (__pyx_t_25 - 0 + 1 - 1/abs(1)) / 1;
-                if (__pyx_t_27 > 0)
+                __pyx_t_24 = (__pyx_t_22 - 0 + 1 - 1/abs(1)) / 1;
+                if (__pyx_t_24 > 0)
                 {
                     #ifdef _OPENMP
-                    #pragma omp parallel num_threads(__pyx_v_nCores) private(__pyx_t_11, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_31, __pyx_t_32, __pyx_t_33, __pyx_t_34, __pyx_t_35)
+                    #pragma omp parallel num_threads(__pyx_v_nCores) private(__pyx_t_11, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_31, __pyx_t_32)
                     #endif /* _OPENMP */
                     {
                         #ifdef _OPENMP
                         #pragma omp for lastprivate(__pyx_v_x_prv) lastprivate(__pyx_v_xi_prv) firstprivate(__pyx_v_y) lastprivate(__pyx_v_y) lastprivate(__pyx_v_yi_prv) schedule(static)
                         #endif /* _OPENMP */
-                        for (__pyx_t_26 = 0; __pyx_t_26 < __pyx_t_27; __pyx_t_26++){
+                        for (__pyx_t_23 = 0; __pyx_t_23 < __pyx_t_24; __pyx_t_23++){
                             {
-                                __pyx_v_y = (Py_ssize_t)(0 + 1 * __pyx_t_26);
+                                __pyx_v_y = (Py_ssize_t)(0 + 1 * __pyx_t_23);
                                 /* Initialize private variables to invalid values */
                                 __pyx_v_x_prv = ((Py_ssize_t)0xbad0bad0);
                                 __pyx_v_xi_prv = ((Py_ssize_t)0xbad0bad0);
                                 __pyx_v_yi_prv = ((Py_ssize_t)0xbad0bad0);
 
-                                /* "gapfill_core_a1.pyx":228
+                                /* "gapfill_core_a1.pyx":224
  *                 # work is trivial and fairly well balanced so use static schedule
  *                 for y in prange(yShape, schedule='static', num_threads=nCores):
  *                     x_prv = -1             # <<<<<<<<<<<<<<
@@ -4016,7 +3903,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                 __pyx_v_x_prv = -1L;
 
-                                /* "gapfill_core_a1.pyx":229
+                                /* "gapfill_core_a1.pyx":225
  *                 for y in prange(yShape, schedule='static', num_threads=nCores):
  *                     x_prv = -1
  *                     yi_prv = y + marginT             # <<<<<<<<<<<<<<
@@ -4025,19 +3912,19 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                 __pyx_v_yi_prv = (__pyx_v_y + __pyx_v_marginT);
 
-                                /* "gapfill_core_a1.pyx":230
+                                /* "gapfill_core_a1.pyx":226
  *                     x_prv = -1
  *                     yi_prv = y + marginT
  *                     for x_prv in range(xShape):             # <<<<<<<<<<<<<<
  *                         xi_prv = x_prv + marginL
  *                         if dayDataStack[z, yi_prv, xi_prv] != _NDV:
  */
-                                __pyx_t_28 = __pyx_v_xShape;
-                                __pyx_t_29 = __pyx_t_28;
-                                for (__pyx_t_30 = 0; __pyx_t_30 < __pyx_t_29; __pyx_t_30+=1) {
-                                  __pyx_v_x_prv = __pyx_t_30;
+                                __pyx_t_25 = __pyx_v_xShape;
+                                __pyx_t_26 = __pyx_t_25;
+                                for (__pyx_t_27 = 0; __pyx_t_27 < __pyx_t_26; __pyx_t_27+=1) {
+                                  __pyx_v_x_prv = __pyx_t_27;
 
-                                  /* "gapfill_core_a1.pyx":231
+                                  /* "gapfill_core_a1.pyx":227
  *                     yi_prv = y + marginT
  *                     for x_prv in range(xShape):
  *                         xi_prv = x_prv + marginL             # <<<<<<<<<<<<<<
@@ -4046,31 +3933,31 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                   __pyx_v_xi_prv = (__pyx_v_x_prv + __pyx_v_marginL);
 
-                                  /* "gapfill_core_a1.pyx":232
+                                  /* "gapfill_core_a1.pyx":228
  *                     for x_prv in range(xShape):
  *                         xi_prv = x_prv + marginL
  *                         if dayDataStack[z, yi_prv, xi_prv] != _NDV:             # <<<<<<<<<<<<<<
  *                             knownUnfillableLocs[y, x_prv] = 0
  *     else:
  */
-                                  __pyx_t_31 = __pyx_v_z;
-                                  __pyx_t_32 = __pyx_v_yi_prv;
-                                  __pyx_t_33 = __pyx_v_xi_prv;
-                                  __pyx_t_11 = (((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_31 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_32 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_33)) ))) != __pyx_v__NDV) != 0);
+                                  __pyx_t_28 = __pyx_v_z;
+                                  __pyx_t_29 = __pyx_v_yi_prv;
+                                  __pyx_t_30 = __pyx_v_xi_prv;
+                                  __pyx_t_11 = (((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_28 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_29 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_30)) ))) != __pyx_v__NDV) != 0);
                                   if (__pyx_t_11) {
 
-                                    /* "gapfill_core_a1.pyx":233
+                                    /* "gapfill_core_a1.pyx":229
  *                         xi_prv = x_prv + marginL
  *                         if dayDataStack[z, yi_prv, xi_prv] != _NDV:
  *                             knownUnfillableLocs[y, x_prv] = 0             # <<<<<<<<<<<<<<
  *     else:
  *         assert (knownUnfillableLocs.shape[0] == yShape and
  */
-                                    __pyx_t_34 = __pyx_v_y;
-                                    __pyx_t_35 = __pyx_v_x_prv;
-                                    *((unsigned char *) ( /* dim=1 */ ((char *) (((unsigned char *) ( /* dim=0 */ (__pyx_v_knownUnfillableLocs.data + __pyx_t_34 * __pyx_v_knownUnfillableLocs.strides[0]) )) + __pyx_t_35)) )) = 0;
+                                    __pyx_t_31 = __pyx_v_y;
+                                    __pyx_t_32 = __pyx_v_x_prv;
+                                    *((unsigned char *) ( /* dim=1 */ ((char *) (((unsigned char *) ( /* dim=0 */ (__pyx_v_knownUnfillableLocs.data + __pyx_t_31 * __pyx_v_knownUnfillableLocs.strides[0]) )) + __pyx_t_32)) )) = 0;
 
-                                    /* "gapfill_core_a1.pyx":232
+                                    /* "gapfill_core_a1.pyx":228
  *                     for x_prv in range(xShape):
  *                         xi_prv = x_prv + marginL
  *                         if dayDataStack[z, yi_prv, xi_prv] != _NDV:             # <<<<<<<<<<<<<<
@@ -4093,7 +3980,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
           }
         }
 
-        /* "gapfill_core_a1.pyx":224
+        /* "gapfill_core_a1.pyx":220
  *         # This process is still slower on 1 thread than numpy.all, but not significant overall,
  *         # and multithreading makes it way faster to do here
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -4112,7 +3999,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
         }
     }
 
-    /* "gapfill_core_a1.pyx":216
+    /* "gapfill_core_a1.pyx":212
  *     assert inputFlags.shape[2] == xShapeTotal
  * 
  *     if knownUnfillableLocs is None: # i.e. has not been precalced with np.all             # <<<<<<<<<<<<<<
@@ -4122,7 +4009,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
     goto __pyx_L9;
   }
 
-  /* "gapfill_core_a1.pyx":235
+  /* "gapfill_core_a1.pyx":231
  *                             knownUnfillableLocs[y, x_prv] = 0
  *     else:
  *         assert (knownUnfillableLocs.shape[0] == yShape and             # <<<<<<<<<<<<<<
@@ -4139,7 +4026,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
         goto __pyx_L24_bool_binop_done;
       }
 
-      /* "gapfill_core_a1.pyx":236
+      /* "gapfill_core_a1.pyx":232
  *     else:
  *         assert (knownUnfillableLocs.shape[0] == yShape and
  *                 knownUnfillableLocs.shape[1] == xShape             # <<<<<<<<<<<<<<
@@ -4151,14 +4038,14 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
       __pyx_L24_bool_binop_done:;
       if (unlikely(!__pyx_t_11)) {
         PyErr_SetNone(PyExc_AssertionError);
-        __PYX_ERR(0, 235, __pyx_L1_error)
+        __PYX_ERR(0, 231, __pyx_L1_error)
       }
     }
     #endif
   }
   __pyx_L9:;
 
-  /* "gapfill_core_a1.pyx":239
+  /* "gapfill_core_a1.pyx":235
  *                 )
  * 
  *     if FillByRatios:             # <<<<<<<<<<<<<<
@@ -4168,7 +4055,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
   __pyx_t_11 = (__pyx_v_FillByRatios != 0);
   if (__pyx_t_11) {
 
-    /* "gapfill_core_a1.pyx":248
+    /* "gapfill_core_a1.pyx":244
  *         # Basically, filling by ratio is mathematically inappropriate and probably shouldn't be done but as it was
  *         # done this way in the original gapfilling, the option has been made available.
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -4183,26 +4070,26 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
         #endif
         /*try:*/ {
 
-          /* "gapfill_core_a1.pyx":249
+          /* "gapfill_core_a1.pyx":245
  *         # done this way in the original gapfilling, the option has been made available.
  *         with nogil:
  *             for z in range(zShape):             # <<<<<<<<<<<<<<
  *                 for y in prange(yShapeTotal, schedule='static', num_threads=nCores):
  *                     x_prv = -1
  */
-          __pyx_t_22 = __pyx_v_zShape;
-          __pyx_t_23 = __pyx_t_22;
-          for (__pyx_t_24 = 0; __pyx_t_24 < __pyx_t_23; __pyx_t_24+=1) {
-            __pyx_v_z = __pyx_t_24;
+          __pyx_t_19 = __pyx_v_zShape;
+          __pyx_t_20 = __pyx_t_19;
+          for (__pyx_t_21 = 0; __pyx_t_21 < __pyx_t_20; __pyx_t_21+=1) {
+            __pyx_v_z = __pyx_t_21;
 
-            /* "gapfill_core_a1.pyx":250
+            /* "gapfill_core_a1.pyx":246
  *         with nogil:
  *             for z in range(zShape):
  *                 for y in prange(yShapeTotal, schedule='static', num_threads=nCores):             # <<<<<<<<<<<<<<
  *                     x_prv = -1
  *                     for x_prv in range(xShapeTotal):
  */
-            __pyx_t_27 = __pyx_v_yShapeTotal;
+            __pyx_t_24 = __pyx_v_yShapeTotal;
             if (1 == 0) abort();
             {
                 #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
@@ -4211,23 +4098,23 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                     #define likely(x)   (x)
                     #define unlikely(x) (x)
                 #endif
-                __pyx_t_25 = (__pyx_t_27 - 0 + 1 - 1/abs(1)) / 1;
-                if (__pyx_t_25 > 0)
+                __pyx_t_22 = (__pyx_t_24 - 0 + 1 - 1/abs(1)) / 1;
+                if (__pyx_t_22 > 0)
                 {
                     #ifdef _OPENMP
-                    #pragma omp parallel num_threads(__pyx_v_nCores) private(__pyx_t_11, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_36, __pyx_t_37, __pyx_t_38, __pyx_t_39, __pyx_t_40, __pyx_t_41, __pyx_t_42, __pyx_t_43, __pyx_t_44)
+                    #pragma omp parallel num_threads(__pyx_v_nCores) private(__pyx_t_11, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_33, __pyx_t_34, __pyx_t_35, __pyx_t_36, __pyx_t_37, __pyx_t_38, __pyx_t_39, __pyx_t_40, __pyx_t_41)
                     #endif /* _OPENMP */
                     {
                         #ifdef _OPENMP
                         #pragma omp for lastprivate(__pyx_v_x_prv) firstprivate(__pyx_v_y) lastprivate(__pyx_v_y) schedule(static)
                         #endif /* _OPENMP */
-                        for (__pyx_t_26 = 0; __pyx_t_26 < __pyx_t_25; __pyx_t_26++){
+                        for (__pyx_t_23 = 0; __pyx_t_23 < __pyx_t_22; __pyx_t_23++){
                             {
-                                __pyx_v_y = (Py_ssize_t)(0 + 1 * __pyx_t_26);
+                                __pyx_v_y = (Py_ssize_t)(0 + 1 * __pyx_t_23);
                                 /* Initialize private variables to invalid values */
                                 __pyx_v_x_prv = ((Py_ssize_t)0xbad0bad0);
 
-                                /* "gapfill_core_a1.pyx":251
+                                /* "gapfill_core_a1.pyx":247
  *             for z in range(zShape):
  *                 for y in prange(yShapeTotal, schedule='static', num_threads=nCores):
  *                     x_prv = -1             # <<<<<<<<<<<<<<
@@ -4236,47 +4123,47 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                 __pyx_v_x_prv = -1L;
 
-                                /* "gapfill_core_a1.pyx":252
+                                /* "gapfill_core_a1.pyx":248
  *                 for y in prange(yShapeTotal, schedule='static', num_threads=nCores):
  *                     x_prv = -1
  *                     for x_prv in range(xShapeTotal):             # <<<<<<<<<<<<<<
  *                         if dayDataStack[z, y, x_prv] != _NDV:
  *                             dayDataStack[z, y, x_prv] = dayDataStack[z, y, x_prv] -  _AbsZeroPoint
  */
-                                __pyx_t_28 = __pyx_v_xShapeTotal;
-                                __pyx_t_29 = __pyx_t_28;
-                                for (__pyx_t_30 = 0; __pyx_t_30 < __pyx_t_29; __pyx_t_30+=1) {
-                                  __pyx_v_x_prv = __pyx_t_30;
+                                __pyx_t_25 = __pyx_v_xShapeTotal;
+                                __pyx_t_26 = __pyx_t_25;
+                                for (__pyx_t_27 = 0; __pyx_t_27 < __pyx_t_26; __pyx_t_27+=1) {
+                                  __pyx_v_x_prv = __pyx_t_27;
 
-                                  /* "gapfill_core_a1.pyx":253
+                                  /* "gapfill_core_a1.pyx":249
  *                     x_prv = -1
  *                     for x_prv in range(xShapeTotal):
  *                         if dayDataStack[z, y, x_prv] != _NDV:             # <<<<<<<<<<<<<<
  *                             dayDataStack[z, y, x_prv] = dayDataStack[z, y, x_prv] -  _AbsZeroPoint
  *     else:
  */
-                                  __pyx_t_36 = __pyx_v_z;
-                                  __pyx_t_37 = __pyx_v_y;
-                                  __pyx_t_38 = __pyx_v_x_prv;
-                                  __pyx_t_11 = (((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_36 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_37 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_38)) ))) != __pyx_v__NDV) != 0);
+                                  __pyx_t_33 = __pyx_v_z;
+                                  __pyx_t_34 = __pyx_v_y;
+                                  __pyx_t_35 = __pyx_v_x_prv;
+                                  __pyx_t_11 = (((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_33 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_34 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_35)) ))) != __pyx_v__NDV) != 0);
                                   if (__pyx_t_11) {
 
-                                    /* "gapfill_core_a1.pyx":254
+                                    /* "gapfill_core_a1.pyx":250
  *                     for x_prv in range(xShapeTotal):
  *                         if dayDataStack[z, y, x_prv] != _NDV:
  *                             dayDataStack[z, y, x_prv] = dayDataStack[z, y, x_prv] -  _AbsZeroPoint             # <<<<<<<<<<<<<<
  *     else:
  *         _AbsZeroPoint = 0 # to avoid need for further check in loop below
  */
+                                    __pyx_t_36 = __pyx_v_z;
+                                    __pyx_t_37 = __pyx_v_y;
+                                    __pyx_t_38 = __pyx_v_x_prv;
                                     __pyx_t_39 = __pyx_v_z;
                                     __pyx_t_40 = __pyx_v_y;
                                     __pyx_t_41 = __pyx_v_x_prv;
-                                    __pyx_t_42 = __pyx_v_z;
-                                    __pyx_t_43 = __pyx_v_y;
-                                    __pyx_t_44 = __pyx_v_x_prv;
-                                    *((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_42 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_43 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_44)) )) = ((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_39 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_40 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_41)) ))) - __pyx_v__AbsZeroPoint);
+                                    *((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_39 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_40 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_41)) )) = ((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_36 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_37 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_38)) ))) - __pyx_v__AbsZeroPoint);
 
-                                    /* "gapfill_core_a1.pyx":253
+                                    /* "gapfill_core_a1.pyx":249
  *                     x_prv = -1
  *                     for x_prv in range(xShapeTotal):
  *                         if dayDataStack[z, y, x_prv] != _NDV:             # <<<<<<<<<<<<<<
@@ -4299,7 +4186,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
           }
         }
 
-        /* "gapfill_core_a1.pyx":248
+        /* "gapfill_core_a1.pyx":244
  *         # Basically, filling by ratio is mathematically inappropriate and probably shouldn't be done but as it was
  *         # done this way in the original gapfilling, the option has been made available.
  *         with nogil:             # <<<<<<<<<<<<<<
@@ -4318,7 +4205,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
         }
     }
 
-    /* "gapfill_core_a1.pyx":239
+    /* "gapfill_core_a1.pyx":235
  *                 )
  * 
  *     if FillByRatios:             # <<<<<<<<<<<<<<
@@ -4328,7 +4215,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
     goto __pyx_L26;
   }
 
-  /* "gapfill_core_a1.pyx":256
+  /* "gapfill_core_a1.pyx":252
  *                             dayDataStack[z, y, x_prv] = dayDataStack[z, y, x_prv] -  _AbsZeroPoint
  *     else:
  *         _AbsZeroPoint = 0 # to avoid need for further check in loop below             # <<<<<<<<<<<<<<
@@ -4340,7 +4227,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
   }
   __pyx_L26:;
 
-  /* "gapfill_core_a1.pyx":259
+  /* "gapfill_core_a1.pyx":255
  * 
  *     # initialise metrics
  *     totalProcessedGapCells = 0 # for testing             # <<<<<<<<<<<<<<
@@ -4349,7 +4236,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_totalProcessedGapCells = 0;
 
-  /* "gapfill_core_a1.pyx":260
+  /* "gapfill_core_a1.pyx":256
  *     # initialise metrics
  *     totalProcessedGapCells = 0 # for testing
  *     totalCells = 0 # for testing             # <<<<<<<<<<<<<<
@@ -4358,7 +4245,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_totalCells = 0;
 
-  /* "gapfill_core_a1.pyx":261
+  /* "gapfill_core_a1.pyx":257
  *     totalProcessedGapCells = 0 # for testing
  *     totalCells = 0 # for testing
  *     scannedLevels = 0 # for testing             # <<<<<<<<<<<<<<
@@ -4367,7 +4254,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_scannedLevels = 0;
 
-  /* "gapfill_core_a1.pyx":262
+  /* "gapfill_core_a1.pyx":258
  *     totalCells = 0 # for testing
  *     scannedLevels = 0 # for testing
  *     scannedNeighbours = 0 # for testing             # <<<<<<<<<<<<<<
@@ -4376,7 +4263,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_scannedNeighbours = 0;
 
-  /* "gapfill_core_a1.pyx":263
+  /* "gapfill_core_a1.pyx":259
  *     scannedLevels = 0 # for testing
  *     scannedNeighbours = 0 # for testing
  *     filledToThreshold = 0             # <<<<<<<<<<<<<<
@@ -4385,7 +4272,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_filledToThreshold = 0;
 
-  /* "gapfill_core_a1.pyx":264
+  /* "gapfill_core_a1.pyx":260
  *     scannedNeighbours = 0 # for testing
  *     filledToThreshold = 0
  *     filledBelowThreshold=0             # <<<<<<<<<<<<<<
@@ -4394,7 +4281,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_filledBelowThreshold = 0;
 
-  /* "gapfill_core_a1.pyx":265
+  /* "gapfill_core_a1.pyx":261
  *     filledToThreshold = 0
  *     filledBelowThreshold=0
  *     noPairsFound = 0             # <<<<<<<<<<<<<<
@@ -4403,7 +4290,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_noPairsFound = 0;
 
-  /* "gapfill_core_a1.pyx":266
+  /* "gapfill_core_a1.pyx":262
  *     filledBelowThreshold=0
  *     noPairsFound = 0
  *     insufficientPairsFound = 0             # <<<<<<<<<<<<<<
@@ -4412,7 +4299,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_insufficientPairsFound = 0;
 
-  /* "gapfill_core_a1.pyx":268
+  /* "gapfill_core_a1.pyx":264
  *     insufficientPairsFound = 0
  * 
  *     gapsAtUnfillableLocs = 0             # <<<<<<<<<<<<<<
@@ -4421,7 +4308,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_gapsAtUnfillableLocs = 0;
 
-  /* "gapfill_core_a1.pyx":269
+  /* "gapfill_core_a1.pyx":265
  * 
  *     gapsAtUnfillableLocs = 0
  *     gapsTooBig=0             # <<<<<<<<<<<<<<
@@ -4430,7 +4317,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_gapsTooBig = 0;
 
-  /* "gapfill_core_a1.pyx":270
+  /* "gapfill_core_a1.pyx":266
  *     gapsAtUnfillableLocs = 0
  *     gapsTooBig=0
  *     usedNeighbours = 0             # <<<<<<<<<<<<<<
@@ -4439,7 +4326,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_usedNeighbours = 0;
 
-  /* "gapfill_core_a1.pyx":271
+  /* "gapfill_core_a1.pyx":267
  *     gapsTooBig=0
  *     usedNeighbours = 0
  *     gapsInKnownUnfillable = 0             # <<<<<<<<<<<<<<
@@ -4448,7 +4335,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_gapsInKnownUnfillable = 0;
 
-  /* "gapfill_core_a1.pyx":272
+  /* "gapfill_core_a1.pyx":268
  *     usedNeighbours = 0
  *     gapsInKnownUnfillable = 0
  *     dataGood = 0             # <<<<<<<<<<<<<<
@@ -4457,7 +4344,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_dataGood = 0;
 
-  /* "gapfill_core_a1.pyx":273
+  /* "gapfill_core_a1.pyx":269
  *     gapsInKnownUnfillable = 0
  *     dataGood = 0
  *     oceanCells = 0             # <<<<<<<<<<<<<<
@@ -4466,7 +4353,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_oceanCells = 0;
 
-  /* "gapfill_core_a1.pyx":274
+  /* "gapfill_core_a1.pyx":270
  *     dataGood = 0
  *     oceanCells = 0
  *     neverDataCells = 0             # <<<<<<<<<<<<<<
@@ -4475,19 +4362,19 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
   __pyx_v_neverDataCells = 0;
 
-  /* "gapfill_core_a1.pyx":277
+  /* "gapfill_core_a1.pyx":273
  * 
  *     # a single call to produce the alternating forward/back year offsets
  *     deltas = alternates_cy(zShape)             # <<<<<<<<<<<<<<
  * 
  *     # now do A1 gap fill! Iterate through the entire data stack
  */
-  __pyx_t_45 = __pyx_f_15gapfill_core_a1_alternates_cy(__pyx_v_zShape); if (unlikely(!__pyx_t_45.memview)) __PYX_ERR(0, 277, __pyx_L1_error)
-  __pyx_v_deltas = __pyx_t_45;
-  __pyx_t_45.memview = NULL;
-  __pyx_t_45.data = NULL;
+  __pyx_t_42 = __pyx_f_15gapfill_core_a1_alternates_cy(__pyx_v_zShape); if (unlikely(!__pyx_t_42.memview)) __PYX_ERR(0, 273, __pyx_L1_error)
+  __pyx_v_deltas = __pyx_t_42;
+  __pyx_t_42.memview = NULL;
+  __pyx_t_42.data = NULL;
 
-  /* "gapfill_core_a1.pyx":293
+  /* "gapfill_core_a1.pyx":289
  *     # innermost loop as well as inside, as here, but better safe than sorry, the documentation was pretty unclear.
  *     # Check the generated C code to be sure it's worked as intended if you choose not to!
  *     with nogil, parallel(num_threads=nCores): # change num cores here             # <<<<<<<<<<<<<<
@@ -4509,25 +4396,25 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                 #define unlikely(x) (x)
             #endif
             #ifdef _OPENMP
-            #pragma omp parallel private(__pyx_v_z) reduction(+:__pyx_v_dataGood) reduction(+:__pyx_v_filledBelowThreshold) reduction(+:__pyx_v_filledToThreshold) reduction(+:__pyx_v_gapsAtUnfillableLocs) reduction(+:__pyx_v_gapsTooBig) reduction(+:__pyx_v_insufficientPairsFound) reduction(+:__pyx_v_neverDataCells) reduction(+:__pyx_v_noPairsFound) reduction(+:__pyx_v_oceanCells) reduction(+:__pyx_v_scannedLevels) reduction(+:__pyx_v_totalCells) reduction(+:__pyx_v_totalProcessedGapCells) reduction(+:__pyx_v_usedNeighbours) private(__pyx_t_100, __pyx_t_101, __pyx_t_102, __pyx_t_103, __pyx_t_104, __pyx_t_105, __pyx_t_106, __pyx_t_107, __pyx_t_108, __pyx_t_109, __pyx_t_11, __pyx_t_110, __pyx_t_111, __pyx_t_112, __pyx_t_113, __pyx_t_114, __pyx_t_115, __pyx_t_116, __pyx_t_117, __pyx_t_118, __pyx_t_119, __pyx_t_12, __pyx_t_120, __pyx_t_121, __pyx_t_122, __pyx_t_123, __pyx_t_124, __pyx_t_125, __pyx_t_126, __pyx_t_127, __pyx_t_128, __pyx_t_129, __pyx_t_130, __pyx_t_131, __pyx_t_132, __pyx_t_133, __pyx_t_134, __pyx_t_135, __pyx_t_136, __pyx_t_137, __pyx_t_138, __pyx_t_139, __pyx_t_140, __pyx_t_141, __pyx_t_142, __pyx_t_143, __pyx_t_144, __pyx_t_145, __pyx_t_146, __pyx_t_147, __pyx_t_148, __pyx_t_149, __pyx_t_150, __pyx_t_151, __pyx_t_152, __pyx_t_153, __pyx_t_154, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_3, __pyx_t_30, __pyx_t_46, __pyx_t_47, __pyx_t_48, __pyx_t_49, __pyx_t_50, __pyx_t_51, __pyx_t_52, __pyx_t_53, __pyx_t_54, __pyx_t_55, __pyx_t_56, __pyx_t_57, __pyx_t_58, __pyx_t_59, __pyx_t_60, __pyx_t_61, __pyx_t_62, __pyx_t_63, __pyx_t_64, __pyx_t_65, __pyx_t_66, __pyx_t_67, __pyx_t_68, __pyx_t_69, __pyx_t_70, __pyx_t_71, __pyx_t_72, __pyx_t_73, __pyx_t_74, __pyx_t_75, __pyx_t_76, __pyx_t_77, __pyx_t_78, __pyx_t_79, __pyx_t_80, __pyx_t_81, __pyx_t_82, __pyx_t_83, __pyx_t_84, __pyx_t_85, __pyx_t_86, __pyx_t_87, __pyx_t_88, __pyx_t_89, __pyx_t_90, __pyx_t_91, __pyx_t_92, __pyx_t_93, __pyx_t_94, __pyx_t_95, __pyx_t_96, __pyx_t_97, __pyx_t_98, __pyx_t_99) num_threads(__pyx_v_nCores)
+            #pragma omp parallel private(__pyx_v_z) reduction(+:__pyx_v_dataGood) reduction(+:__pyx_v_filledBelowThreshold) reduction(+:__pyx_v_filledToThreshold) reduction(+:__pyx_v_gapsAtUnfillableLocs) reduction(+:__pyx_v_gapsTooBig) reduction(+:__pyx_v_insufficientPairsFound) reduction(+:__pyx_v_neverDataCells) reduction(+:__pyx_v_noPairsFound) reduction(+:__pyx_v_oceanCells) reduction(+:__pyx_v_scannedLevels) reduction(+:__pyx_v_totalCells) reduction(+:__pyx_v_totalProcessedGapCells) reduction(+:__pyx_v_usedNeighbours) private(__pyx_t_100, __pyx_t_101, __pyx_t_102, __pyx_t_103, __pyx_t_104, __pyx_t_105, __pyx_t_106, __pyx_t_107, __pyx_t_108, __pyx_t_109, __pyx_t_11, __pyx_t_110, __pyx_t_111, __pyx_t_112, __pyx_t_113, __pyx_t_114, __pyx_t_115, __pyx_t_116, __pyx_t_117, __pyx_t_118, __pyx_t_119, __pyx_t_12, __pyx_t_120, __pyx_t_121, __pyx_t_122, __pyx_t_123, __pyx_t_124, __pyx_t_125, __pyx_t_126, __pyx_t_127, __pyx_t_128, __pyx_t_129, __pyx_t_130, __pyx_t_131, __pyx_t_132, __pyx_t_133, __pyx_t_134, __pyx_t_135, __pyx_t_136, __pyx_t_137, __pyx_t_138, __pyx_t_139, __pyx_t_140, __pyx_t_141, __pyx_t_142, __pyx_t_143, __pyx_t_144, __pyx_t_145, __pyx_t_146, __pyx_t_147, __pyx_t_148, __pyx_t_149, __pyx_t_150, __pyx_t_151, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_3, __pyx_t_43, __pyx_t_44, __pyx_t_45, __pyx_t_46, __pyx_t_47, __pyx_t_48, __pyx_t_49, __pyx_t_50, __pyx_t_51, __pyx_t_52, __pyx_t_53, __pyx_t_54, __pyx_t_55, __pyx_t_56, __pyx_t_57, __pyx_t_58, __pyx_t_59, __pyx_t_60, __pyx_t_61, __pyx_t_62, __pyx_t_63, __pyx_t_64, __pyx_t_65, __pyx_t_66, __pyx_t_67, __pyx_t_68, __pyx_t_69, __pyx_t_70, __pyx_t_71, __pyx_t_72, __pyx_t_73, __pyx_t_74, __pyx_t_75, __pyx_t_76, __pyx_t_77, __pyx_t_78, __pyx_t_79, __pyx_t_80, __pyx_t_81, __pyx_t_82, __pyx_t_83, __pyx_t_84, __pyx_t_85, __pyx_t_86, __pyx_t_87, __pyx_t_88, __pyx_t_89, __pyx_t_90, __pyx_t_91, __pyx_t_92, __pyx_t_93, __pyx_t_94, __pyx_t_95, __pyx_t_96, __pyx_t_97, __pyx_t_98, __pyx_t_99) num_threads(__pyx_v_nCores)
             #endif /* _OPENMP */
             {
                 /* Initialize private variables to invalid values */
                 __pyx_v_z = ((Py_ssize_t)0xbad0bad0);
 
-                /* "gapfill_core_a1.pyx":294
+                /* "gapfill_core_a1.pyx":290
  *     # Check the generated C code to be sure it's worked as intended if you choose not to!
  *     with nogil, parallel(num_threads=nCores): # change num cores here
  *         for z in range(zShape):             # <<<<<<<<<<<<<<
  *             if z >= RunFillFromPos:
  *                 # experiments with chunksizes 500, 50, 20, 2, and parallelising on z axis instead,
  */
-                __pyx_t_22 = __pyx_v_zShape;
-                __pyx_t_23 = __pyx_t_22;
-                for (__pyx_t_24 = 0; __pyx_t_24 < __pyx_t_23; __pyx_t_24+=1) {
-                  __pyx_v_z = __pyx_t_24;
+                __pyx_t_19 = __pyx_v_zShape;
+                __pyx_t_20 = __pyx_t_19;
+                for (__pyx_t_21 = 0; __pyx_t_21 < __pyx_t_20; __pyx_t_21+=1) {
+                  __pyx_v_z = __pyx_t_21;
 
-                  /* "gapfill_core_a1.pyx":295
+                  /* "gapfill_core_a1.pyx":291
  *     with nogil, parallel(num_threads=nCores): # change num cores here
  *         for z in range(zShape):
  *             if z >= RunFillFromPos:             # <<<<<<<<<<<<<<
@@ -4537,26 +4424,26 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                   __pyx_t_11 = ((__pyx_v_z >= __pyx_v_RunFillFromPos) != 0);
                   if (__pyx_t_11) {
 
-                    /* "gapfill_core_a1.pyx":302
+                    /* "gapfill_core_a1.pyx":298
  *                 # as it crosses rows so the access cannot be completely cache-economical.
  *                 # However 6 threads was still slower than 12 on a 6-physical 12-virtual machine
  *                 for y in prange(yShape, schedule='dynamic', chunksize=20):             # <<<<<<<<<<<<<<
  *                     # assign something to all variables that are used in filling one cell and need
  *                     # to be private (i.e. they get modified but we don't want the iteration that fills
  */
-                    __pyx_t_25 = __pyx_v_yShape;
+                    __pyx_t_22 = __pyx_v_yShape;
                     if (1 == 0) abort();
                     {
                         __pyx_t_3 = 20;
-                        __pyx_t_27 = (__pyx_t_25 - 0 + 1 - 1/abs(1)) / 1;
-                        if (__pyx_t_27 > 0)
+                        __pyx_t_24 = (__pyx_t_22 - 0 + 1 - 1/abs(1)) / 1;
+                        if (__pyx_t_24 > 0)
                         {
                             #ifdef _OPENMP
                             #pragma omp for lastprivate(__pyx_v_altValue_prv) lastprivate(__pyx_v_currentValue_prv) lastprivate(__pyx_v_delta_prv) lastprivate(__pyx_v_deltaidx_prv) lastprivate(__pyx_v_flag_prv) lastprivate(__pyx_v_maxD_Dist_prv) lastprivate(__pyx_v_maxD_weight_prv) lastprivate(__pyx_v_maxD_wpfv_prv) lastprivate(__pyx_v_max_Diff_prv) lastprivate(__pyx_v_max_idx_prv) lastprivate(__pyx_v_minD_Dist_prv) lastprivate(__pyx_v_minD_weight_prv) lastprivate(__pyx_v_minD_wpfv_prv) lastprivate(__pyx_v_min_Diff_prv) lastprivate(__pyx_v_min_idx_prv) lastprivate(__pyx_v_nbrIndex_prv) lastprivate(__pyx_v_newZ_prv) lastprivate(__pyx_v_nfound_prv) lastprivate(__pyx_v_pfv_prv) lastprivate(__pyx_v_spiralStart_prv) lastprivate(__pyx_v_sumDist_prv) lastprivate(__pyx_v_sw_prv) lastprivate(__pyx_v_valueDiff_prv) lastprivate(__pyx_v_weight_prv) lastprivate(__pyx_v_wfv_prv) lastprivate(__pyx_v_ws_prv) lastprivate(__pyx_v_xNbr_prv) lastprivate(__pyx_v_x_prv) lastprivate(__pyx_v_xi_prv) firstprivate(__pyx_v_y) lastprivate(__pyx_v_y) lastprivate(__pyx_v_yNbr_prv) lastprivate(__pyx_v_yi_prv) schedule(dynamic, __pyx_t_3)
                             #endif /* _OPENMP */
-                            for (__pyx_t_26 = 0; __pyx_t_26 < __pyx_t_27; __pyx_t_26++){
+                            for (__pyx_t_23 = 0; __pyx_t_23 < __pyx_t_24; __pyx_t_23++){
                                 {
-                                    __pyx_v_y = (Py_ssize_t)(0 + 1 * __pyx_t_26);
+                                    __pyx_v_y = (Py_ssize_t)(0 + 1 * __pyx_t_23);
                                     /* Initialize private variables to invalid values */
                                     __pyx_v_altValue_prv = ((double)__PYX_NAN());
                                     __pyx_v_currentValue_prv = ((double)__PYX_NAN());
@@ -4590,7 +4477,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                     __pyx_v_yNbr_prv = ((Py_ssize_t)0xbad0bad0);
                                     __pyx_v_yi_prv = ((Py_ssize_t)0xbad0bad0);
 
-                                    /* "gapfill_core_a1.pyx":307
+                                    /* "gapfill_core_a1.pyx":303
  *                     # another cell to know about that).
  *                     # It's verbose but this tricks cython into making them thread-private
  *                     nfound_prv = 0             # <<<<<<<<<<<<<<
@@ -4599,7 +4486,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_nfound_prv = 0;
 
-                                    /* "gapfill_core_a1.pyx":308
+                                    /* "gapfill_core_a1.pyx":304
  *                     # It's verbose but this tricks cython into making them thread-private
  *                     nfound_prv = 0
  *                     ws_prv = 0             # <<<<<<<<<<<<<<
@@ -4608,7 +4495,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_ws_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":309
+                                    /* "gapfill_core_a1.pyx":305
  *                     nfound_prv = 0
  *                     ws_prv = 0
  *                     sw_prv = 0             # <<<<<<<<<<<<<<
@@ -4617,7 +4504,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_sw_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":310
+                                    /* "gapfill_core_a1.pyx":306
  *                     ws_prv = 0
  *                     sw_prv = 0
  *                     weight_prv=0             # <<<<<<<<<<<<<<
@@ -4626,7 +4513,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_weight_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":311
+                                    /* "gapfill_core_a1.pyx":307
  *                     sw_prv = 0
  *                     weight_prv=0
  *                     pfv_prv=0             # <<<<<<<<<<<<<<
@@ -4635,7 +4522,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_pfv_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":313
+                                    /* "gapfill_core_a1.pyx":309
  *                     pfv_prv=0
  *                     #ratio_prv=0
  *                     valueDiff_prv = 0             # <<<<<<<<<<<<<<
@@ -4644,7 +4531,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_valueDiff_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":314
+                                    /* "gapfill_core_a1.pyx":310
  *                     #ratio_prv=0
  *                     valueDiff_prv = 0
  *                     delta_prv=0             # <<<<<<<<<<<<<<
@@ -4653,7 +4540,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_delta_prv = 0;
 
-                                    /* "gapfill_core_a1.pyx":315
+                                    /* "gapfill_core_a1.pyx":311
  *                     valueDiff_prv = 0
  *                     delta_prv=0
  *                     deltaidx_prv = -1             # <<<<<<<<<<<<<<
@@ -4662,7 +4549,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_deltaidx_prv = -1;
 
-                                    /* "gapfill_core_a1.pyx":316
+                                    /* "gapfill_core_a1.pyx":312
  *                     delta_prv=0
  *                     deltaidx_prv = -1
  *                     currentValue_prv=0             # <<<<<<<<<<<<<<
@@ -4671,7 +4558,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_currentValue_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":317
+                                    /* "gapfill_core_a1.pyx":313
  *                     deltaidx_prv = -1
  *                     currentValue_prv=0
  *                     altValue_prv=0             # <<<<<<<<<<<<<<
@@ -4680,7 +4567,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_altValue_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":318
+                                    /* "gapfill_core_a1.pyx":314
  *                     currentValue_prv=0
  *                     altValue_prv=0
  *                     xNbr_prv=-1             # <<<<<<<<<<<<<<
@@ -4689,7 +4576,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_xNbr_prv = -1L;
 
-                                    /* "gapfill_core_a1.pyx":319
+                                    /* "gapfill_core_a1.pyx":315
  *                     altValue_prv=0
  *                     xNbr_prv=-1
  *                     yNbr_prv=-1             # <<<<<<<<<<<<<<
@@ -4698,7 +4585,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_yNbr_prv = -1L;
 
-                                    /* "gapfill_core_a1.pyx":320
+                                    /* "gapfill_core_a1.pyx":316
  *                     xNbr_prv=-1
  *                     yNbr_prv=-1
  *                     xi_prv=-1             # <<<<<<<<<<<<<<
@@ -4707,7 +4594,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_xi_prv = -1L;
 
-                                    /* "gapfill_core_a1.pyx":321
+                                    /* "gapfill_core_a1.pyx":317
  *                     yNbr_prv=-1
  *                     xi_prv=-1
  *                     yi_prv=-1             # <<<<<<<<<<<<<<
@@ -4716,7 +4603,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_yi_prv = -1L;
 
-                                    /* "gapfill_core_a1.pyx":322
+                                    /* "gapfill_core_a1.pyx":318
  *                     xi_prv=-1
  *                     yi_prv=-1
  *                     x_prv=-1             # <<<<<<<<<<<<<<
@@ -4725,7 +4612,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_x_prv = -1L;
 
-                                    /* "gapfill_core_a1.pyx":323
+                                    /* "gapfill_core_a1.pyx":319
  *                     yi_prv=-1
  *                     x_prv=-1
  *                     newZ_prv=-1             # <<<<<<<<<<<<<<
@@ -4734,7 +4621,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_newZ_prv = -1L;
 
-                                    /* "gapfill_core_a1.pyx":324
+                                    /* "gapfill_core_a1.pyx":320
  *                     x_prv=-1
  *                     newZ_prv=-1
  *                     nbrIndex_prv=-1             # <<<<<<<<<<<<<<
@@ -4743,7 +4630,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_nbrIndex_prv = -1;
 
-                                    /* "gapfill_core_a1.pyx":325
+                                    /* "gapfill_core_a1.pyx":321
  *                     newZ_prv=-1
  *                     nbrIndex_prv=-1
  *                     sumDist_prv=0             # <<<<<<<<<<<<<<
@@ -4752,7 +4639,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_sumDist_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":327
+                                    /* "gapfill_core_a1.pyx":323
  *                     sumDist_prv=0
  * 
  *                     max_Diff_prv = negInf             # <<<<<<<<<<<<<<
@@ -4761,7 +4648,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_max_Diff_prv = __pyx_v_negInf;
 
-                                    /* "gapfill_core_a1.pyx":328
+                                    /* "gapfill_core_a1.pyx":324
  * 
  *                     max_Diff_prv = negInf
  *                     maxD_Dist_prv = 0             # <<<<<<<<<<<<<<
@@ -4770,7 +4657,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_maxD_Dist_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":329
+                                    /* "gapfill_core_a1.pyx":325
  *                     max_Diff_prv = negInf
  *                     maxD_Dist_prv = 0
  *                     maxD_weight_prv=0             # <<<<<<<<<<<<<<
@@ -4779,7 +4666,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_maxD_weight_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":330
+                                    /* "gapfill_core_a1.pyx":326
  *                     maxD_Dist_prv = 0
  *                     maxD_weight_prv=0
  *                     maxD_wpfv_prv=0             # <<<<<<<<<<<<<<
@@ -4788,7 +4675,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_maxD_wpfv_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":332
+                                    /* "gapfill_core_a1.pyx":328
  *                     maxD_wpfv_prv=0
  * 
  *                     min_Diff_prv = posInf             # <<<<<<<<<<<<<<
@@ -4797,7 +4684,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_min_Diff_prv = __pyx_v_posInf;
 
-                                    /* "gapfill_core_a1.pyx":333
+                                    /* "gapfill_core_a1.pyx":329
  * 
  *                     min_Diff_prv = posInf
  *                     minD_Dist_prv = 0             # <<<<<<<<<<<<<<
@@ -4806,7 +4693,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_minD_Dist_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":334
+                                    /* "gapfill_core_a1.pyx":330
  *                     min_Diff_prv = posInf
  *                     minD_Dist_prv = 0
  *                     minD_wpfv_prv = 0             # <<<<<<<<<<<<<<
@@ -4815,7 +4702,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_minD_wpfv_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":335
+                                    /* "gapfill_core_a1.pyx":331
  *                     minD_Dist_prv = 0
  *                     minD_wpfv_prv = 0
  *                     minD_weight_prv = 0             # <<<<<<<<<<<<<<
@@ -4824,7 +4711,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_minD_weight_prv = 0.0;
 
-                                    /* "gapfill_core_a1.pyx":337
+                                    /* "gapfill_core_a1.pyx":333
  *                     minD_weight_prv = 0
  * 
  *                     max_idx_prv = 0             # <<<<<<<<<<<<<<
@@ -4833,7 +4720,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_max_idx_prv = 0;
 
-                                    /* "gapfill_core_a1.pyx":338
+                                    /* "gapfill_core_a1.pyx":334
  * 
  *                     max_idx_prv = 0
  *                     min_idx_prv = 0             # <<<<<<<<<<<<<<
@@ -4842,7 +4729,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_min_idx_prv = 0;
 
-                                    /* "gapfill_core_a1.pyx":339
+                                    /* "gapfill_core_a1.pyx":335
  *                     max_idx_prv = 0
  *                     min_idx_prv = 0
  *                     flag_prv = -1             # <<<<<<<<<<<<<<
@@ -4851,7 +4738,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_flag_prv = -1;
 
-                                    /* "gapfill_core_a1.pyx":341
+                                    /* "gapfill_core_a1.pyx":337
  *                     flag_prv = -1
  * 
  *                     yi_prv = y + marginT             # <<<<<<<<<<<<<<
@@ -4860,19 +4747,19 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                     __pyx_v_yi_prv = (__pyx_v_y + __pyx_v_marginT);
 
-                                    /* "gapfill_core_a1.pyx":343
+                                    /* "gapfill_core_a1.pyx":339
  *                     yi_prv = y + marginT
  * 
  *                     for x_prv in range(xShape):             # <<<<<<<<<<<<<<
  *                         xi_prv = x_prv + marginL
  *                         #re initialise variables for this cell
  */
-                                    __pyx_t_28 = __pyx_v_xShape;
-                                    __pyx_t_29 = __pyx_t_28;
-                                    for (__pyx_t_30 = 0; __pyx_t_30 < __pyx_t_29; __pyx_t_30+=1) {
-                                      __pyx_v_x_prv = __pyx_t_30;
+                                    __pyx_t_25 = __pyx_v_xShape;
+                                    __pyx_t_26 = __pyx_t_25;
+                                    for (__pyx_t_27 = 0; __pyx_t_27 < __pyx_t_26; __pyx_t_27+=1) {
+                                      __pyx_v_x_prv = __pyx_t_27;
 
-                                      /* "gapfill_core_a1.pyx":344
+                                      /* "gapfill_core_a1.pyx":340
  * 
  *                     for x_prv in range(xShape):
  *                         xi_prv = x_prv + marginL             # <<<<<<<<<<<<<<
@@ -4881,7 +4768,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_xi_prv = (__pyx_v_x_prv + __pyx_v_marginL);
 
-                                      /* "gapfill_core_a1.pyx":346
+                                      /* "gapfill_core_a1.pyx":342
  *                         xi_prv = x_prv + marginL
  *                         #re initialise variables for this cell
  *                         nfound_prv= 0             # <<<<<<<<<<<<<<
@@ -4890,7 +4777,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_nfound_prv = 0;
 
-                                      /* "gapfill_core_a1.pyx":347
+                                      /* "gapfill_core_a1.pyx":343
  *                         #re initialise variables for this cell
  *                         nfound_prv= 0
  *                         ws_prv = 0.0             # <<<<<<<<<<<<<<
@@ -4899,7 +4786,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_ws_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":348
+                                      /* "gapfill_core_a1.pyx":344
  *                         nfound_prv= 0
  *                         ws_prv = 0.0
  *                         sw_prv = 0             # <<<<<<<<<<<<<<
@@ -4908,7 +4795,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_sw_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":349
+                                      /* "gapfill_core_a1.pyx":345
  *                         ws_prv = 0.0
  *                         sw_prv = 0
  *                         weight_prv = 0             # <<<<<<<<<<<<<<
@@ -4917,7 +4804,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_weight_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":350
+                                      /* "gapfill_core_a1.pyx":346
  *                         sw_prv = 0
  *                         weight_prv = 0
  *                         pfv_prv = 0             # <<<<<<<<<<<<<<
@@ -4926,7 +4813,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_pfv_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":352
+                                      /* "gapfill_core_a1.pyx":348
  *                         pfv_prv = 0
  *                         #ratio_prv = 0
  *                         valueDiff_prv = 0             # <<<<<<<<<<<<<<
@@ -4935,7 +4822,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_valueDiff_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":353
+                                      /* "gapfill_core_a1.pyx":349
  *                         #ratio_prv = 0
  *                         valueDiff_prv = 0
  *                         delta_prv = 0             # <<<<<<<<<<<<<<
@@ -4944,7 +4831,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_delta_prv = 0;
 
-                                      /* "gapfill_core_a1.pyx":354
+                                      /* "gapfill_core_a1.pyx":350
  *                         valueDiff_prv = 0
  *                         delta_prv = 0
  *                         deltaidx_prv = -1             # <<<<<<<<<<<<<<
@@ -4953,7 +4840,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_deltaidx_prv = -1;
 
-                                      /* "gapfill_core_a1.pyx":355
+                                      /* "gapfill_core_a1.pyx":351
  *                         delta_prv = 0
  *                         deltaidx_prv = -1
  *                         currentValue_prv = 0             # <<<<<<<<<<<<<<
@@ -4962,7 +4849,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_currentValue_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":356
+                                      /* "gapfill_core_a1.pyx":352
  *                         deltaidx_prv = -1
  *                         currentValue_prv = 0
  *                         altValue_prv = 0             # <<<<<<<<<<<<<<
@@ -4971,7 +4858,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_altValue_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":357
+                                      /* "gapfill_core_a1.pyx":353
  *                         currentValue_prv = 0
  *                         altValue_prv = 0
  *                         xNbr_prv = -1             # <<<<<<<<<<<<<<
@@ -4980,7 +4867,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_xNbr_prv = -1L;
 
-                                      /* "gapfill_core_a1.pyx":358
+                                      /* "gapfill_core_a1.pyx":354
  *                         altValue_prv = 0
  *                         xNbr_prv = -1
  *                         yNbr_prv = -1             # <<<<<<<<<<<<<<
@@ -4989,7 +4876,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_yNbr_prv = -1L;
 
-                                      /* "gapfill_core_a1.pyx":359
+                                      /* "gapfill_core_a1.pyx":355
  *                         xNbr_prv = -1
  *                         yNbr_prv = -1
  *                         newZ_prv = -1             # <<<<<<<<<<<<<<
@@ -4998,7 +4885,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_newZ_prv = -1L;
 
-                                      /* "gapfill_core_a1.pyx":360
+                                      /* "gapfill_core_a1.pyx":356
  *                         yNbr_prv = -1
  *                         newZ_prv = -1
  *                         nbrIndex_prv = -1             # <<<<<<<<<<<<<<
@@ -5007,7 +4894,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_nbrIndex_prv = -1;
 
-                                      /* "gapfill_core_a1.pyx":361
+                                      /* "gapfill_core_a1.pyx":357
  *                         newZ_prv = -1
  *                         nbrIndex_prv = -1
  *                         sumDist_prv = 0             # <<<<<<<<<<<<<<
@@ -5016,7 +4903,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_sumDist_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":363
+                                      /* "gapfill_core_a1.pyx":359
  *                         sumDist_prv = 0
  * 
  *                         max_Diff_prv = negInf             # <<<<<<<<<<<<<<
@@ -5025,7 +4912,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_max_Diff_prv = __pyx_v_negInf;
 
-                                      /* "gapfill_core_a1.pyx":364
+                                      /* "gapfill_core_a1.pyx":360
  * 
  *                         max_Diff_prv = negInf
  *                         maxD_Dist_prv = 0             # <<<<<<<<<<<<<<
@@ -5034,7 +4921,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_maxD_Dist_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":365
+                                      /* "gapfill_core_a1.pyx":361
  *                         max_Diff_prv = negInf
  *                         maxD_Dist_prv = 0
  *                         maxD_weight_prv = 0             # <<<<<<<<<<<<<<
@@ -5043,7 +4930,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_maxD_weight_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":366
+                                      /* "gapfill_core_a1.pyx":362
  *                         maxD_Dist_prv = 0
  *                         maxD_weight_prv = 0
  *                         maxD_wpfv_prv = 0             # <<<<<<<<<<<<<<
@@ -5052,7 +4939,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_maxD_wpfv_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":368
+                                      /* "gapfill_core_a1.pyx":364
  *                         maxD_wpfv_prv = 0
  * 
  *                         min_Diff_prv = posInf             # <<<<<<<<<<<<<<
@@ -5061,7 +4948,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_min_Diff_prv = __pyx_v_posInf;
 
-                                      /* "gapfill_core_a1.pyx":369
+                                      /* "gapfill_core_a1.pyx":365
  * 
  *                         min_Diff_prv = posInf
  *                         minD_Dist_prv = 0             # <<<<<<<<<<<<<<
@@ -5070,7 +4957,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_minD_Dist_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":370
+                                      /* "gapfill_core_a1.pyx":366
  *                         min_Diff_prv = posInf
  *                         minD_Dist_prv = 0
  *                         minD_wpfv_prv = 0             # <<<<<<<<<<<<<<
@@ -5079,7 +4966,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_minD_wpfv_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":371
+                                      /* "gapfill_core_a1.pyx":367
  *                         minD_Dist_prv = 0
  *                         minD_wpfv_prv = 0
  *                         minD_weight_prv = 0             # <<<<<<<<<<<<<<
@@ -5088,7 +4975,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_minD_weight_prv = 0.0;
 
-                                      /* "gapfill_core_a1.pyx":373
+                                      /* "gapfill_core_a1.pyx":369
  *                         minD_weight_prv = 0
  * 
  *                         max_idx_prv = 0             # <<<<<<<<<<<<<<
@@ -5097,7 +4984,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_max_idx_prv = 0;
 
-                                      /* "gapfill_core_a1.pyx":374
+                                      /* "gapfill_core_a1.pyx":370
  * 
  *                         max_idx_prv = 0
  *                         min_idx_prv = 0             # <<<<<<<<<<<<<<
@@ -5106,7 +4993,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_min_idx_prv = 0;
 
-                                      /* "gapfill_core_a1.pyx":375
+                                      /* "gapfill_core_a1.pyx":371
  *                         max_idx_prv = 0
  *                         min_idx_prv = 0
  *                         flag_prv = -1             # <<<<<<<<<<<<<<
@@ -5115,7 +5002,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_flag_prv = -1;
 
-                                      /* "gapfill_core_a1.pyx":377
+                                      /* "gapfill_core_a1.pyx":373
  *                         flag_prv = -1
  * 
  *                         totalCells += 1 # testing log             # <<<<<<<<<<<<<<
@@ -5124,20 +5011,20 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_totalCells = (__pyx_v_totalCells + 1);
 
-                                      /* "gapfill_core_a1.pyx":379
+                                      /* "gapfill_core_a1.pyx":375
  *                         totalCells += 1 # testing log
  * 
  *                         if (inputFlags[z, yi_prv, xi_prv] & _OCEAN_FLAG) == _OCEAN_FLAG:             # <<<<<<<<<<<<<<
  *                             oceanCells += 1
  *                             outputFlags[z, y, x_prv] = inputFlags[z, yi_prv, xi_prv]
  */
-                                      __pyx_t_46 = __pyx_v_z;
-                                      __pyx_t_47 = __pyx_v_yi_prv;
-                                      __pyx_t_48 = __pyx_v_xi_prv;
-                                      __pyx_t_11 = ((((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_inputFlags.data + __pyx_t_46 * __pyx_v_inputFlags.strides[0]) ) + __pyx_t_47 * __pyx_v_inputFlags.strides[1]) )) + __pyx_t_48)) ))) & __pyx_v__OCEAN_FLAG) == __pyx_v__OCEAN_FLAG) != 0);
+                                      __pyx_t_43 = __pyx_v_z;
+                                      __pyx_t_44 = __pyx_v_yi_prv;
+                                      __pyx_t_45 = __pyx_v_xi_prv;
+                                      __pyx_t_11 = ((((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_inputFlags.data + __pyx_t_43 * __pyx_v_inputFlags.strides[0]) ) + __pyx_t_44 * __pyx_v_inputFlags.strides[1]) )) + __pyx_t_45)) ))) & __pyx_v__OCEAN_FLAG) == __pyx_v__OCEAN_FLAG) != 0);
                                       if (__pyx_t_11) {
 
-                                        /* "gapfill_core_a1.pyx":380
+                                        /* "gapfill_core_a1.pyx":376
  * 
  *                         if (inputFlags[z, yi_prv, xi_prv] & _OCEAN_FLAG) == _OCEAN_FLAG:
  *                             oceanCells += 1             # <<<<<<<<<<<<<<
@@ -5146,22 +5033,22 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         __pyx_v_oceanCells = (__pyx_v_oceanCells + 1);
 
-                                        /* "gapfill_core_a1.pyx":381
+                                        /* "gapfill_core_a1.pyx":377
  *                         if (inputFlags[z, yi_prv, xi_prv] & _OCEAN_FLAG) == _OCEAN_FLAG:
  *                             oceanCells += 1
  *                             outputFlags[z, y, x_prv] = inputFlags[z, yi_prv, xi_prv]             # <<<<<<<<<<<<<<
  *                             #in the ocean do not copy across (even if there is data; MODIS may not match shore cleanly)
  *                             #output is already nodata and flag is alraady set so just
  */
+                                        __pyx_t_46 = __pyx_v_z;
+                                        __pyx_t_47 = __pyx_v_yi_prv;
+                                        __pyx_t_48 = __pyx_v_xi_prv;
                                         __pyx_t_49 = __pyx_v_z;
-                                        __pyx_t_50 = __pyx_v_yi_prv;
-                                        __pyx_t_51 = __pyx_v_xi_prv;
-                                        __pyx_t_52 = __pyx_v_z;
-                                        __pyx_t_53 = __pyx_v_y;
-                                        __pyx_t_54 = __pyx_v_x_prv;
-                                        *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_52 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_53 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_54)) )) = (*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_inputFlags.data + __pyx_t_49 * __pyx_v_inputFlags.strides[0]) ) + __pyx_t_50 * __pyx_v_inputFlags.strides[1]) )) + __pyx_t_51)) )));
+                                        __pyx_t_50 = __pyx_v_y;
+                                        __pyx_t_51 = __pyx_v_x_prv;
+                                        *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_49 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_50 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_51)) )) = (*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_inputFlags.data + __pyx_t_46 * __pyx_v_inputFlags.strides[0]) ) + __pyx_t_47 * __pyx_v_inputFlags.strides[1]) )) + __pyx_t_48)) )));
 
-                                        /* "gapfill_core_a1.pyx":384
+                                        /* "gapfill_core_a1.pyx":380
  *                             #in the ocean do not copy across (even if there is data; MODIS may not match shore cleanly)
  *                             #output is already nodata and flag is alraady set so just
  *                             continue             # <<<<<<<<<<<<<<
@@ -5170,7 +5057,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         goto __pyx_L55_continue;
 
-                                        /* "gapfill_core_a1.pyx":379
+                                        /* "gapfill_core_a1.pyx":375
  *                         totalCells += 1 # testing log
  * 
  *                         if (inputFlags[z, yi_prv, xi_prv] & _OCEAN_FLAG) == _OCEAN_FLAG:             # <<<<<<<<<<<<<<
@@ -5179,35 +5066,35 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       }
 
-                                      /* "gapfill_core_a1.pyx":386
+                                      /* "gapfill_core_a1.pyx":382
  *                             continue
  * 
  *                         if (inputFlags[z, yi_prv, xi_prv] & _FAILURE_FLAG) == _FAILURE_FLAG:             # <<<<<<<<<<<<<<
  *                             # also do this if failure flag (2) is set (by despeckle algorithm indicating that mean
  *                             # was ND thus never any data on any calendar day)
  */
-                                      __pyx_t_55 = __pyx_v_z;
-                                      __pyx_t_56 = __pyx_v_yi_prv;
-                                      __pyx_t_57 = __pyx_v_xi_prv;
-                                      __pyx_t_11 = ((((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_inputFlags.data + __pyx_t_55 * __pyx_v_inputFlags.strides[0]) ) + __pyx_t_56 * __pyx_v_inputFlags.strides[1]) )) + __pyx_t_57)) ))) & __pyx_v__FAILURE_FLAG) == __pyx_v__FAILURE_FLAG) != 0);
+                                      __pyx_t_52 = __pyx_v_z;
+                                      __pyx_t_53 = __pyx_v_yi_prv;
+                                      __pyx_t_54 = __pyx_v_xi_prv;
+                                      __pyx_t_11 = ((((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_inputFlags.data + __pyx_t_52 * __pyx_v_inputFlags.strides[0]) ) + __pyx_t_53 * __pyx_v_inputFlags.strides[1]) )) + __pyx_t_54)) ))) & __pyx_v__FAILURE_FLAG) == __pyx_v__FAILURE_FLAG) != 0);
                                       if (__pyx_t_11) {
 
-                                        /* "gapfill_core_a1.pyx":389
+                                        /* "gapfill_core_a1.pyx":385
  *                             # also do this if failure flag (2) is set (by despeckle algorithm indicating that mean
  *                             # was ND thus never any data on any calendar day)
  *                             outputFlags[z, y, x_prv] = inputFlags[z, yi_prv, xi_prv]             # <<<<<<<<<<<<<<
  *                             neverDataCells +=1
  *                             continue
  */
+                                        __pyx_t_55 = __pyx_v_z;
+                                        __pyx_t_56 = __pyx_v_yi_prv;
+                                        __pyx_t_57 = __pyx_v_xi_prv;
                                         __pyx_t_58 = __pyx_v_z;
-                                        __pyx_t_59 = __pyx_v_yi_prv;
-                                        __pyx_t_60 = __pyx_v_xi_prv;
-                                        __pyx_t_61 = __pyx_v_z;
-                                        __pyx_t_62 = __pyx_v_y;
-                                        __pyx_t_63 = __pyx_v_x_prv;
-                                        *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_61 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_62 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_63)) )) = (*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_inputFlags.data + __pyx_t_58 * __pyx_v_inputFlags.strides[0]) ) + __pyx_t_59 * __pyx_v_inputFlags.strides[1]) )) + __pyx_t_60)) )));
+                                        __pyx_t_59 = __pyx_v_y;
+                                        __pyx_t_60 = __pyx_v_x_prv;
+                                        *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_58 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_59 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_60)) )) = (*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_inputFlags.data + __pyx_t_55 * __pyx_v_inputFlags.strides[0]) ) + __pyx_t_56 * __pyx_v_inputFlags.strides[1]) )) + __pyx_t_57)) )));
 
-                                        /* "gapfill_core_a1.pyx":390
+                                        /* "gapfill_core_a1.pyx":386
  *                             # was ND thus never any data on any calendar day)
  *                             outputFlags[z, y, x_prv] = inputFlags[z, yi_prv, xi_prv]
  *                             neverDataCells +=1             # <<<<<<<<<<<<<<
@@ -5216,7 +5103,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         __pyx_v_neverDataCells = (__pyx_v_neverDataCells + 1);
 
-                                        /* "gapfill_core_a1.pyx":391
+                                        /* "gapfill_core_a1.pyx":387
  *                             outputFlags[z, y, x_prv] = inputFlags[z, yi_prv, xi_prv]
  *                             neverDataCells +=1
  *                             continue             # <<<<<<<<<<<<<<
@@ -5225,7 +5112,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         goto __pyx_L55_continue;
 
-                                        /* "gapfill_core_a1.pyx":386
+                                        /* "gapfill_core_a1.pyx":382
  *                             continue
  * 
  *                         if (inputFlags[z, yi_prv, xi_prv] & _FAILURE_FLAG) == _FAILURE_FLAG:             # <<<<<<<<<<<<<<
@@ -5234,19 +5121,19 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       }
 
-                                      /* "gapfill_core_a1.pyx":393
+                                      /* "gapfill_core_a1.pyx":389
  *                             continue
  * 
  *                         currentValue_prv = dayDataStack[z, yi_prv, xi_prv]             # <<<<<<<<<<<<<<
  * 
  *                         #if value is valid just copy it across
  */
-                                      __pyx_t_64 = __pyx_v_z;
-                                      __pyx_t_65 = __pyx_v_yi_prv;
-                                      __pyx_t_66 = __pyx_v_xi_prv;
-                                      __pyx_v_currentValue_prv = (*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_64 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_65 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_66)) )));
+                                      __pyx_t_61 = __pyx_v_z;
+                                      __pyx_t_62 = __pyx_v_yi_prv;
+                                      __pyx_t_63 = __pyx_v_xi_prv;
+                                      __pyx_v_currentValue_prv = (*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_61 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_62 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_63)) )));
 
-                                      /* "gapfill_core_a1.pyx":396
+                                      /* "gapfill_core_a1.pyx":392
  * 
  *                         #if value is valid just copy it across
  *                         if not currentValue_prv == _NDV: # 0.0 is valid!!             # <<<<<<<<<<<<<<
@@ -5256,34 +5143,34 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                       __pyx_t_11 = ((!((__pyx_v_currentValue_prv == __pyx_v__NDV) != 0)) != 0);
                                       if (__pyx_t_11) {
 
-                                        /* "gapfill_core_a1.pyx":398
+                                        /* "gapfill_core_a1.pyx":394
  *                         if not currentValue_prv == _NDV: # 0.0 is valid!!
  *                             # we have data, copy it across - output does not have margins
  *                             outputData[z, y, x_prv] = currentValue_prv + _AbsZeroPoint             # <<<<<<<<<<<<<<
  *                             outputFlags[z, y, x_prv] = inputFlags[z, yi_prv, xi_prv]
  *                             dataGood += 1
  */
-                                        __pyx_t_67 = __pyx_v_z;
-                                        __pyx_t_68 = __pyx_v_y;
-                                        __pyx_t_69 = __pyx_v_x_prv;
-                                        *((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputData.data + __pyx_t_67 * __pyx_v_outputData.strides[0]) ) + __pyx_t_68 * __pyx_v_outputData.strides[1]) )) + __pyx_t_69)) )) = (__pyx_v_currentValue_prv + __pyx_v__AbsZeroPoint);
+                                        __pyx_t_64 = __pyx_v_z;
+                                        __pyx_t_65 = __pyx_v_y;
+                                        __pyx_t_66 = __pyx_v_x_prv;
+                                        *((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputData.data + __pyx_t_64 * __pyx_v_outputData.strides[0]) ) + __pyx_t_65 * __pyx_v_outputData.strides[1]) )) + __pyx_t_66)) )) = (__pyx_v_currentValue_prv + __pyx_v__AbsZeroPoint);
 
-                                        /* "gapfill_core_a1.pyx":399
+                                        /* "gapfill_core_a1.pyx":395
  *                             # we have data, copy it across - output does not have margins
  *                             outputData[z, y, x_prv] = currentValue_prv + _AbsZeroPoint
  *                             outputFlags[z, y, x_prv] = inputFlags[z, yi_prv, xi_prv]             # <<<<<<<<<<<<<<
  *                             dataGood += 1
  *                             # flag is already non-ocean so just
  */
+                                        __pyx_t_67 = __pyx_v_z;
+                                        __pyx_t_68 = __pyx_v_yi_prv;
+                                        __pyx_t_69 = __pyx_v_xi_prv;
                                         __pyx_t_70 = __pyx_v_z;
-                                        __pyx_t_71 = __pyx_v_yi_prv;
-                                        __pyx_t_72 = __pyx_v_xi_prv;
-                                        __pyx_t_73 = __pyx_v_z;
-                                        __pyx_t_74 = __pyx_v_y;
-                                        __pyx_t_75 = __pyx_v_x_prv;
-                                        *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_73 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_74 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_75)) )) = (*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_inputFlags.data + __pyx_t_70 * __pyx_v_inputFlags.strides[0]) ) + __pyx_t_71 * __pyx_v_inputFlags.strides[1]) )) + __pyx_t_72)) )));
+                                        __pyx_t_71 = __pyx_v_y;
+                                        __pyx_t_72 = __pyx_v_x_prv;
+                                        *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_70 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_71 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_72)) )) = (*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_inputFlags.data + __pyx_t_67 * __pyx_v_inputFlags.strides[0]) ) + __pyx_t_68 * __pyx_v_inputFlags.strides[1]) )) + __pyx_t_69)) )));
 
-                                        /* "gapfill_core_a1.pyx":400
+                                        /* "gapfill_core_a1.pyx":396
  *                             outputData[z, y, x_prv] = currentValue_prv + _AbsZeroPoint
  *                             outputFlags[z, y, x_prv] = inputFlags[z, yi_prv, xi_prv]
  *                             dataGood += 1             # <<<<<<<<<<<<<<
@@ -5292,7 +5179,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         __pyx_v_dataGood = (__pyx_v_dataGood + 1);
 
-                                        /* "gapfill_core_a1.pyx":402
+                                        /* "gapfill_core_a1.pyx":398
  *                             dataGood += 1
  *                             # flag is already non-ocean so just
  *                             continue             # <<<<<<<<<<<<<<
@@ -5301,7 +5188,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         goto __pyx_L55_continue;
 
-                                        /* "gapfill_core_a1.pyx":396
+                                        /* "gapfill_core_a1.pyx":392
  * 
  *                         #if value is valid just copy it across
  *                         if not currentValue_prv == _NDV: # 0.0 is valid!!             # <<<<<<<<<<<<<<
@@ -5310,19 +5197,19 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       }
 
-                                      /* "gapfill_core_a1.pyx":406
+                                      /* "gapfill_core_a1.pyx":402
  *                         # if it's a location that has no data in any alternate year of this calendar day
  *                         # then we also cannot fill
  *                         if knownUnfillableLocs[y, x_prv] == 1:             # <<<<<<<<<<<<<<
  *                             totalProcessedGapCells += 1
  *                             gapsAtUnfillableLocs += 1
  */
-                                      __pyx_t_76 = __pyx_v_y;
-                                      __pyx_t_77 = __pyx_v_x_prv;
-                                      __pyx_t_11 = (((*((unsigned char *) ( /* dim=1 */ ((char *) (((unsigned char *) ( /* dim=0 */ (__pyx_v_knownUnfillableLocs.data + __pyx_t_76 * __pyx_v_knownUnfillableLocs.strides[0]) )) + __pyx_t_77)) ))) == 1) != 0);
+                                      __pyx_t_73 = __pyx_v_y;
+                                      __pyx_t_74 = __pyx_v_x_prv;
+                                      __pyx_t_11 = (((*((unsigned char *) ( /* dim=1 */ ((char *) (((unsigned char *) ( /* dim=0 */ (__pyx_v_knownUnfillableLocs.data + __pyx_t_73 * __pyx_v_knownUnfillableLocs.strides[0]) )) + __pyx_t_74)) ))) == 1) != 0);
                                       if (__pyx_t_11) {
 
-                                        /* "gapfill_core_a1.pyx":407
+                                        /* "gapfill_core_a1.pyx":403
  *                         # then we also cannot fill
  *                         if knownUnfillableLocs[y, x_prv] == 1:
  *                             totalProcessedGapCells += 1             # <<<<<<<<<<<<<<
@@ -5331,7 +5218,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         __pyx_v_totalProcessedGapCells = (__pyx_v_totalProcessedGapCells + 1);
 
-                                        /* "gapfill_core_a1.pyx":408
+                                        /* "gapfill_core_a1.pyx":404
  *                         if knownUnfillableLocs[y, x_prv] == 1:
  *                             totalProcessedGapCells += 1
  *                             gapsAtUnfillableLocs += 1             # <<<<<<<<<<<<<<
@@ -5340,22 +5227,22 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         __pyx_v_gapsAtUnfillableLocs = (__pyx_v_gapsAtUnfillableLocs + 1);
 
-                                        /* "gapfill_core_a1.pyx":410
+                                        /* "gapfill_core_a1.pyx":406
  *                             gapsAtUnfillableLocs += 1
  *                             # for testing to check failure reason set this to 3?
  *                             outputFlags[z, y, x_prv] = outputFlags[z, y, x_prv] | _FAILURE_FLAG             # <<<<<<<<<<<<<<
  *                             # leave output at _NDV and just
  *                             continue
  */
+                                        __pyx_t_75 = __pyx_v_z;
+                                        __pyx_t_76 = __pyx_v_y;
+                                        __pyx_t_77 = __pyx_v_x_prv;
                                         __pyx_t_78 = __pyx_v_z;
                                         __pyx_t_79 = __pyx_v_y;
                                         __pyx_t_80 = __pyx_v_x_prv;
-                                        __pyx_t_81 = __pyx_v_z;
-                                        __pyx_t_82 = __pyx_v_y;
-                                        __pyx_t_83 = __pyx_v_x_prv;
-                                        *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_81 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_82 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_83)) )) = ((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_78 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_79 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_80)) ))) | __pyx_v__FAILURE_FLAG);
+                                        *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_78 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_79 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_80)) )) = ((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_75 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_76 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_77)) ))) | __pyx_v__FAILURE_FLAG);
 
-                                        /* "gapfill_core_a1.pyx":412
+                                        /* "gapfill_core_a1.pyx":408
  *                             outputFlags[z, y, x_prv] = outputFlags[z, y, x_prv] | _FAILURE_FLAG
  *                             # leave output at _NDV and just
  *                             continue             # <<<<<<<<<<<<<<
@@ -5364,7 +5251,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         goto __pyx_L55_continue;
 
-                                        /* "gapfill_core_a1.pyx":406
+                                        /* "gapfill_core_a1.pyx":402
  *                         # if it's a location that has no data in any alternate year of this calendar day
  *                         # then we also cannot fill
  *                         if knownUnfillableLocs[y, x_prv] == 1:             # <<<<<<<<<<<<<<
@@ -5373,7 +5260,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       }
 
-                                      /* "gapfill_core_a1.pyx":421
+                                      /* "gapfill_core_a1.pyx":417
  *                         # than leaving the code to iterate through everything here IF we only use 1 core
  *                         # NB sc evaluation makes this safe whether or not dataDistTemplate exists
  *                         if noTemplate == 0 and dataDistTemplate[z, yi_prv, xi_prv] > _SEARCH_RADIUS + 1:             # <<<<<<<<<<<<<<
@@ -5386,30 +5273,30 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                         __pyx_t_11 = __pyx_t_12;
                                         goto __pyx_L62_bool_binop_done;
                                       }
-                                      __pyx_t_84 = __pyx_v_z;
-                                      __pyx_t_85 = __pyx_v_yi_prv;
-                                      __pyx_t_86 = __pyx_v_xi_prv;
-                                      __pyx_t_12 = (((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dataDistTemplate.data + __pyx_t_84 * __pyx_v_dataDistTemplate.strides[0]) ) + __pyx_t_85 * __pyx_v_dataDistTemplate.strides[1]) )) + __pyx_t_86)) ))) > (__pyx_v__SEARCH_RADIUS + 1)) != 0);
+                                      __pyx_t_81 = __pyx_v_z;
+                                      __pyx_t_82 = __pyx_v_yi_prv;
+                                      __pyx_t_83 = __pyx_v_xi_prv;
+                                      __pyx_t_12 = (((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dataDistTemplate.data + __pyx_t_81 * __pyx_v_dataDistTemplate.strides[0]) ) + __pyx_t_82 * __pyx_v_dataDistTemplate.strides[1]) )) + __pyx_t_83)) ))) > (__pyx_v__SEARCH_RADIUS + 1)) != 0);
                                       __pyx_t_11 = __pyx_t_12;
                                       __pyx_L62_bool_binop_done:;
                                       if (__pyx_t_11) {
 
-                                        /* "gapfill_core_a1.pyx":423
+                                        /* "gapfill_core_a1.pyx":419
  *                         if noTemplate == 0 and dataDistTemplate[z, yi_prv, xi_prv] > _SEARCH_RADIUS + 1:
  *                             # TODO set a flag for this
  *                             outputFlags[z, y, x_prv] = outputFlags[z, y, x_prv] | _FAILURE_FLAG             # <<<<<<<<<<<<<<
  *                             totalProcessedGapCells += 1
  *                             gapsTooBig += 1
  */
+                                        __pyx_t_84 = __pyx_v_z;
+                                        __pyx_t_85 = __pyx_v_y;
+                                        __pyx_t_86 = __pyx_v_x_prv;
                                         __pyx_t_87 = __pyx_v_z;
                                         __pyx_t_88 = __pyx_v_y;
                                         __pyx_t_89 = __pyx_v_x_prv;
-                                        __pyx_t_90 = __pyx_v_z;
-                                        __pyx_t_91 = __pyx_v_y;
-                                        __pyx_t_92 = __pyx_v_x_prv;
-                                        *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_90 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_91 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_92)) )) = ((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_87 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_88 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_89)) ))) | __pyx_v__FAILURE_FLAG);
+                                        *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_87 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_88 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_89)) )) = ((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_84 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_85 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_86)) ))) | __pyx_v__FAILURE_FLAG);
 
-                                        /* "gapfill_core_a1.pyx":424
+                                        /* "gapfill_core_a1.pyx":420
  *                             # TODO set a flag for this
  *                             outputFlags[z, y, x_prv] = outputFlags[z, y, x_prv] | _FAILURE_FLAG
  *                             totalProcessedGapCells += 1             # <<<<<<<<<<<<<<
@@ -5418,7 +5305,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         __pyx_v_totalProcessedGapCells = (__pyx_v_totalProcessedGapCells + 1);
 
-                                        /* "gapfill_core_a1.pyx":425
+                                        /* "gapfill_core_a1.pyx":421
  *                             outputFlags[z, y, x_prv] = outputFlags[z, y, x_prv] | _FAILURE_FLAG
  *                             totalProcessedGapCells += 1
  *                             gapsTooBig += 1             # <<<<<<<<<<<<<<
@@ -5427,7 +5314,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         __pyx_v_gapsTooBig = (__pyx_v_gapsTooBig + 1);
 
-                                        /* "gapfill_core_a1.pyx":426
+                                        /* "gapfill_core_a1.pyx":422
  *                             totalProcessedGapCells += 1
  *                             gapsTooBig += 1
  *                             continue             # <<<<<<<<<<<<<<
@@ -5436,7 +5323,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         goto __pyx_L55_continue;
 
-                                        /* "gapfill_core_a1.pyx":421
+                                        /* "gapfill_core_a1.pyx":417
  *                         # than leaving the code to iterate through everything here IF we only use 1 core
  *                         # NB sc evaluation makes this safe whether or not dataDistTemplate exists
  *                         if noTemplate == 0 and dataDistTemplate[z, yi_prv, xi_prv] > _SEARCH_RADIUS + 1:             # <<<<<<<<<<<<<<
@@ -5445,7 +5332,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       }
 
-                                      /* "gapfill_core_a1.pyx":431
+                                      /* "gapfill_core_a1.pyx":427
  *                         if 1: # can't be bothered to rejig indents
  *                             # METRICS
  *                             totalProcessedGapCells += 1             # <<<<<<<<<<<<<<
@@ -5454,41 +5341,41 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                       __pyx_v_totalProcessedGapCells = (__pyx_v_totalProcessedGapCells + 1);
 
-                                      /* "gapfill_core_a1.pyx":432
+                                      /* "gapfill_core_a1.pyx":428
  *                             # METRICS
  *                             totalProcessedGapCells += 1
  *                             flag_prv = inputFlags[z, yi_prv, xi_prv]             # <<<<<<<<<<<<<<
  *                             # deltas will be (1, -1, 2, -2, ...)
  *                             for deltaidx_prv in range(0, deltas.shape[0]):
  */
-                                      __pyx_t_93 = __pyx_v_z;
-                                      __pyx_t_94 = __pyx_v_yi_prv;
-                                      __pyx_t_95 = __pyx_v_xi_prv;
-                                      __pyx_v_flag_prv = (*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_inputFlags.data + __pyx_t_93 * __pyx_v_inputFlags.strides[0]) ) + __pyx_t_94 * __pyx_v_inputFlags.strides[1]) )) + __pyx_t_95)) )));
+                                      __pyx_t_90 = __pyx_v_z;
+                                      __pyx_t_91 = __pyx_v_yi_prv;
+                                      __pyx_t_92 = __pyx_v_xi_prv;
+                                      __pyx_v_flag_prv = (*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_inputFlags.data + __pyx_t_90 * __pyx_v_inputFlags.strides[0]) ) + __pyx_t_91 * __pyx_v_inputFlags.strides[1]) )) + __pyx_t_92)) )));
 
-                                      /* "gapfill_core_a1.pyx":434
+                                      /* "gapfill_core_a1.pyx":430
  *                             flag_prv = inputFlags[z, yi_prv, xi_prv]
  *                             # deltas will be (1, -1, 2, -2, ...)
  *                             for deltaidx_prv in range(0, deltas.shape[0]):             # <<<<<<<<<<<<<<
  *                                 delta_prv = deltas[deltaidx_prv]
  *                                 newZ_prv = z + delta_prv
  */
-                                      __pyx_t_96 = (__pyx_v_deltas.shape[0]);
-                                      __pyx_t_97 = __pyx_t_96;
-                                      for (__pyx_t_98 = 0; __pyx_t_98 < __pyx_t_97; __pyx_t_98+=1) {
-                                        __pyx_v_deltaidx_prv = __pyx_t_98;
+                                      __pyx_t_93 = (__pyx_v_deltas.shape[0]);
+                                      __pyx_t_94 = __pyx_t_93;
+                                      for (__pyx_t_95 = 0; __pyx_t_95 < __pyx_t_94; __pyx_t_95+=1) {
+                                        __pyx_v_deltaidx_prv = __pyx_t_95;
 
-                                        /* "gapfill_core_a1.pyx":435
+                                        /* "gapfill_core_a1.pyx":431
  *                             # deltas will be (1, -1, 2, -2, ...)
  *                             for deltaidx_prv in range(0, deltas.shape[0]):
  *                                 delta_prv = deltas[deltaidx_prv]             # <<<<<<<<<<<<<<
  *                                 newZ_prv = z + delta_prv
  *                                 # does this zDelta fall off the start or end of the stack?
  */
-                                        __pyx_t_99 = __pyx_v_deltaidx_prv;
-                                        __pyx_v_delta_prv = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_deltas.data) + __pyx_t_99)) )));
+                                        __pyx_t_96 = __pyx_v_deltaidx_prv;
+                                        __pyx_v_delta_prv = (*((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_deltas.data) + __pyx_t_96)) )));
 
-                                        /* "gapfill_core_a1.pyx":436
+                                        /* "gapfill_core_a1.pyx":432
  *                             for deltaidx_prv in range(0, deltas.shape[0]):
  *                                 delta_prv = deltas[deltaidx_prv]
  *                                 newZ_prv = z + delta_prv             # <<<<<<<<<<<<<<
@@ -5497,7 +5384,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         __pyx_v_newZ_prv = (__pyx_v_z + __pyx_v_delta_prv);
 
-                                        /* "gapfill_core_a1.pyx":440
+                                        /* "gapfill_core_a1.pyx":436
  *                                 # or is the alternate year also blank here?
  *                                 # (or, obviously, are we checking the current year!)
  *                                 if (newZ_prv >= zShape or newZ_prv < 0             # <<<<<<<<<<<<<<
@@ -5511,7 +5398,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                           goto __pyx_L67_bool_binop_done;
                                         }
 
-                                        /* "gapfill_core_a1.pyx":441
+                                        /* "gapfill_core_a1.pyx":437
  *                                 # (or, obviously, are we checking the current year!)
  *                                 if (newZ_prv >= zShape or newZ_prv < 0
  *                                     or newZ_prv == z             # <<<<<<<<<<<<<<
@@ -5525,7 +5412,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                           goto __pyx_L67_bool_binop_done;
                                         }
 
-                                        /* "gapfill_core_a1.pyx":442
+                                        /* "gapfill_core_a1.pyx":438
  *                                 if (newZ_prv >= zShape or newZ_prv < 0
  *                                     or newZ_prv == z
  *                                     or dayDataStack[newZ_prv, yi_prv, xi_prv] == _NDV):             # <<<<<<<<<<<<<<
@@ -5538,14 +5425,14 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                           __pyx_t_11 = __pyx_t_12;
                                           goto __pyx_L67_bool_binop_done;
                                         }
-                                        __pyx_t_100 = __pyx_v_newZ_prv;
-                                        __pyx_t_101 = __pyx_v_yi_prv;
-                                        __pyx_t_102 = __pyx_v_xi_prv;
-                                        __pyx_t_12 = (((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_100 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_101 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_102)) ))) == __pyx_v__NDV) != 0);
+                                        __pyx_t_97 = __pyx_v_newZ_prv;
+                                        __pyx_t_98 = __pyx_v_yi_prv;
+                                        __pyx_t_99 = __pyx_v_xi_prv;
+                                        __pyx_t_12 = (((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_97 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_98 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_99)) ))) == __pyx_v__NDV) != 0);
                                         __pyx_t_11 = __pyx_t_12;
                                         __pyx_L67_bool_binop_done:;
 
-                                        /* "gapfill_core_a1.pyx":440
+                                        /* "gapfill_core_a1.pyx":436
  *                                 # or is the alternate year also blank here?
  *                                 # (or, obviously, are we checking the current year!)
  *                                 if (newZ_prv >= zShape or newZ_prv < 0             # <<<<<<<<<<<<<<
@@ -5554,7 +5441,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         if (__pyx_t_11) {
 
-                                          /* "gapfill_core_a1.pyx":443
+                                          /* "gapfill_core_a1.pyx":439
  *                                     or newZ_prv == z
  *                                     or dayDataStack[newZ_prv, yi_prv, xi_prv] == _NDV):
  *                                     continue             # <<<<<<<<<<<<<<
@@ -5563,7 +5450,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                           goto __pyx_L64_continue;
 
-                                          /* "gapfill_core_a1.pyx":440
+                                          /* "gapfill_core_a1.pyx":436
  *                                 # or is the alternate year also blank here?
  *                                 # (or, obviously, are we checking the current year!)
  *                                 if (newZ_prv >= zShape or newZ_prv < 0             # <<<<<<<<<<<<<<
@@ -5572,7 +5459,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         }
 
-                                        /* "gapfill_core_a1.pyx":445
+                                        /* "gapfill_core_a1.pyx":441
  *                                     continue
  *                                 # otherwise...
  *                                 scannedLevels += 1 # tracking year-switches             # <<<<<<<<<<<<<<
@@ -5581,19 +5468,19 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         __pyx_v_scannedLevels = (__pyx_v_scannedLevels + 1);
 
-                                        /* "gapfill_core_a1.pyx":449
+                                        /* "gapfill_core_a1.pyx":445
  *                                 # note that the alternate value can be zero. on a ratio based fill
  *                                 # this would result in a fill value of zero, too, no matter what the nbr values are
  *                                 altValue_prv = dayDataStack[newZ_prv, yi_prv, xi_prv]             # <<<<<<<<<<<<<<
  * 
  *                                 #step thru spiral-outward coords table
  */
-                                        __pyx_t_103 = __pyx_v_newZ_prv;
-                                        __pyx_t_104 = __pyx_v_yi_prv;
-                                        __pyx_t_105 = __pyx_v_xi_prv;
-                                        __pyx_v_altValue_prv = (*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_103 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_104 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_105)) )));
+                                        __pyx_t_100 = __pyx_v_newZ_prv;
+                                        __pyx_t_101 = __pyx_v_yi_prv;
+                                        __pyx_t_102 = __pyx_v_xi_prv;
+                                        __pyx_v_altValue_prv = (*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_100 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_101 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_102)) )));
 
-                                        /* "gapfill_core_a1.pyx":452
+                                        /* "gapfill_core_a1.pyx":448
  * 
  *                                 #step thru spiral-outward coords table
  *                                 spiralStart_prv = 1 # zero is this cell             # <<<<<<<<<<<<<<
@@ -5602,7 +5489,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         __pyx_v_spiralStart_prv = 1;
 
-                                        /* "gapfill_core_a1.pyx":454
+                                        /* "gapfill_core_a1.pyx":450
  *                                 spiralStart_prv = 1 # zero is this cell
  *                                 # if possible, check where to start the search based on known closest data
  *                                 if noTemplate == 0:             # <<<<<<<<<<<<<<
@@ -5612,19 +5499,19 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                         __pyx_t_11 = ((__pyx_v_noTemplate == 0) != 0);
                                         if (__pyx_t_11) {
 
-                                          /* "gapfill_core_a1.pyx":455
+                                          /* "gapfill_core_a1.pyx":451
  *                                 # if possible, check where to start the search based on known closest data
  *                                 if noTemplate == 0:
  *                                     spiralStart_prv = <int>(((dataDistTemplate[z, yi_prv, xi_prv]-1)**2) * 3.141)             # <<<<<<<<<<<<<<
  *                                     if spiralStart_prv < 1:
  *                                         spiralStart_prv = 1
  */
-                                          __pyx_t_106 = __pyx_v_z;
-                                          __pyx_t_107 = __pyx_v_yi_prv;
-                                          __pyx_t_108 = __pyx_v_xi_prv;
-                                          __pyx_v_spiralStart_prv = ((int)(__Pyx_pow_long(((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dataDistTemplate.data + __pyx_t_106 * __pyx_v_dataDistTemplate.strides[0]) ) + __pyx_t_107 * __pyx_v_dataDistTemplate.strides[1]) )) + __pyx_t_108)) ))) - 1), 2) * 3.141));
+                                          __pyx_t_103 = __pyx_v_z;
+                                          __pyx_t_104 = __pyx_v_yi_prv;
+                                          __pyx_t_105 = __pyx_v_xi_prv;
+                                          __pyx_v_spiralStart_prv = ((int)(__Pyx_pow_long(((*((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dataDistTemplate.data + __pyx_t_103 * __pyx_v_dataDistTemplate.strides[0]) ) + __pyx_t_104 * __pyx_v_dataDistTemplate.strides[1]) )) + __pyx_t_105)) ))) - 1), 2) * 3.141));
 
-                                          /* "gapfill_core_a1.pyx":456
+                                          /* "gapfill_core_a1.pyx":452
  *                                 if noTemplate == 0:
  *                                     spiralStart_prv = <int>(((dataDistTemplate[z, yi_prv, xi_prv]-1)**2) * 3.141)
  *                                     if spiralStart_prv < 1:             # <<<<<<<<<<<<<<
@@ -5634,7 +5521,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                           __pyx_t_11 = ((__pyx_v_spiralStart_prv < 1) != 0);
                                           if (__pyx_t_11) {
 
-                                            /* "gapfill_core_a1.pyx":457
+                                            /* "gapfill_core_a1.pyx":453
  *                                     spiralStart_prv = <int>(((dataDistTemplate[z, yi_prv, xi_prv]-1)**2) * 3.141)
  *                                     if spiralStart_prv < 1:
  *                                         spiralStart_prv = 1             # <<<<<<<<<<<<<<
@@ -5643,7 +5530,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                             __pyx_v_spiralStart_prv = 1;
 
-                                            /* "gapfill_core_a1.pyx":456
+                                            /* "gapfill_core_a1.pyx":452
  *                                 if noTemplate == 0:
  *                                     spiralStart_prv = <int>(((dataDistTemplate[z, yi_prv, xi_prv]-1)**2) * 3.141)
  *                                     if spiralStart_prv < 1:             # <<<<<<<<<<<<<<
@@ -5653,7 +5540,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                             goto __pyx_L72;
                                           }
 
-                                          /* "gapfill_core_a1.pyx":458
+                                          /* "gapfill_core_a1.pyx":454
  *                                     if spiralStart_prv < 1:
  *                                         spiralStart_prv = 1
  *                                     elif spiralStart_prv > _MAX_NEIGHBOURS_TO_CHECK:             # <<<<<<<<<<<<<<
@@ -5663,7 +5550,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                           __pyx_t_11 = ((__pyx_v_spiralStart_prv > __pyx_v__MAX_NEIGHBOURS_TO_CHECK) != 0);
                                           if (__pyx_t_11) {
 
-                                            /* "gapfill_core_a1.pyx":459
+                                            /* "gapfill_core_a1.pyx":455
  *                                         spiralStart_prv = 1
  *                                     elif spiralStart_prv > _MAX_NEIGHBOURS_TO_CHECK:
  *                                         spiralStart_prv = _MAX_NEIGHBOURS_TO_CHECK             # <<<<<<<<<<<<<<
@@ -5672,7 +5559,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                             __pyx_v_spiralStart_prv = __pyx_v__MAX_NEIGHBOURS_TO_CHECK;
 
-                                            /* "gapfill_core_a1.pyx":458
+                                            /* "gapfill_core_a1.pyx":454
  *                                     if spiralStart_prv < 1:
  *                                         spiralStart_prv = 1
  *                                     elif spiralStart_prv > _MAX_NEIGHBOURS_TO_CHECK:             # <<<<<<<<<<<<<<
@@ -5682,7 +5569,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                           }
                                           __pyx_L72:;
 
-                                          /* "gapfill_core_a1.pyx":454
+                                          /* "gapfill_core_a1.pyx":450
  *                                 spiralStart_prv = 1 # zero is this cell
  *                                 # if possible, check where to start the search based on known closest data
  *                                 if noTemplate == 0:             # <<<<<<<<<<<<<<
@@ -5691,41 +5578,41 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         }
 
-                                        /* "gapfill_core_a1.pyx":462
+                                        /* "gapfill_core_a1.pyx":458
  * 
  *                                 # spiral search for this alternate year
  *                                 for nbrIndex_prv in range(spiralStart_prv, _MAX_NEIGHBOURS_TO_CHECK + 1):             # <<<<<<<<<<<<<<
  *                                     #scannedNeighbours += 1 # don't track as it's unnecessary op in inner loop
  * 
  */
-                                        __pyx_t_109 = (__pyx_v__MAX_NEIGHBOURS_TO_CHECK + 1);
-                                        __pyx_t_110 = __pyx_t_109;
-                                        for (__pyx_t_111 = __pyx_v_spiralStart_prv; __pyx_t_111 < __pyx_t_110; __pyx_t_111+=1) {
-                                          __pyx_v_nbrIndex_prv = __pyx_t_111;
+                                        __pyx_t_106 = (__pyx_v__MAX_NEIGHBOURS_TO_CHECK + 1);
+                                        __pyx_t_107 = __pyx_t_106;
+                                        for (__pyx_t_108 = __pyx_v_spiralStart_prv; __pyx_t_108 < __pyx_t_107; __pyx_t_108+=1) {
+                                          __pyx_v_nbrIndex_prv = __pyx_t_108;
 
-                                          /* "gapfill_core_a1.pyx":477
+                                          /* "gapfill_core_a1.pyx":473
  *                                     # moving int cast outside the loop saves
  *                                     # ~ 2.7nS per loop i.e. >50% on an invalid iteration
  *                                     xNbr_prv = xi_prv + nbrIntCoords[0, nbrIndex_prv]             # <<<<<<<<<<<<<<
  *                                     yNbr_prv = yi_prv + nbrIntCoords[1, nbrIndex_prv]
  * 
  */
-                                          __pyx_t_112 = 0;
-                                          __pyx_t_113 = __pyx_v_nbrIndex_prv;
-                                          __pyx_v_xNbr_prv = (__pyx_v_xi_prv + (*((int *) ( /* dim=1 */ ((char *) (((int *) ( /* dim=0 */ (__pyx_v_nbrIntCoords.data + __pyx_t_112 * __pyx_v_nbrIntCoords.strides[0]) )) + __pyx_t_113)) ))));
+                                          __pyx_t_109 = 0;
+                                          __pyx_t_110 = __pyx_v_nbrIndex_prv;
+                                          __pyx_v_xNbr_prv = (__pyx_v_xi_prv + (*((int *) ( /* dim=1 */ ((char *) (((int *) ( /* dim=0 */ (__pyx_v_nbrIntCoords.data + __pyx_t_109 * __pyx_v_nbrIntCoords.strides[0]) )) + __pyx_t_110)) ))));
 
-                                          /* "gapfill_core_a1.pyx":478
+                                          /* "gapfill_core_a1.pyx":474
  *                                     # ~ 2.7nS per loop i.e. >50% on an invalid iteration
  *                                     xNbr_prv = xi_prv + nbrIntCoords[0, nbrIndex_prv]
  *                                     yNbr_prv = yi_prv + nbrIntCoords[1, nbrIndex_prv]             # <<<<<<<<<<<<<<
  * 
  *                                     # is the requested neighbour cell within data bounds?
  */
-                                          __pyx_t_114 = 1;
-                                          __pyx_t_115 = __pyx_v_nbrIndex_prv;
-                                          __pyx_v_yNbr_prv = (__pyx_v_yi_prv + (*((int *) ( /* dim=1 */ ((char *) (((int *) ( /* dim=0 */ (__pyx_v_nbrIntCoords.data + __pyx_t_114 * __pyx_v_nbrIntCoords.strides[0]) )) + __pyx_t_115)) ))));
+                                          __pyx_t_111 = 1;
+                                          __pyx_t_112 = __pyx_v_nbrIndex_prv;
+                                          __pyx_v_yNbr_prv = (__pyx_v_yi_prv + (*((int *) ( /* dim=1 */ ((char *) (((int *) ( /* dim=0 */ (__pyx_v_nbrIntCoords.data + __pyx_t_111 * __pyx_v_nbrIntCoords.strides[0]) )) + __pyx_t_112)) ))));
 
-                                          /* "gapfill_core_a1.pyx":487
+                                          /* "gapfill_core_a1.pyx":483
  *                                     # likely to not have data (given we are already at a gap) so it's more
  *                                     # efficient to bail out there first
  *                                     if (0 <= xNbr_prv < xShapeTotal and             # <<<<<<<<<<<<<<
@@ -5736,63 +5623,63 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                           if (__pyx_t_12) {
                                             __pyx_t_12 = (__pyx_v_xNbr_prv < __pyx_v_xShapeTotal);
                                           }
-                                          __pyx_t_116 = (__pyx_t_12 != 0);
-                                          if (__pyx_t_116) {
+                                          __pyx_t_113 = (__pyx_t_12 != 0);
+                                          if (__pyx_t_113) {
                                           } else {
-                                            __pyx_t_11 = __pyx_t_116;
+                                            __pyx_t_11 = __pyx_t_113;
                                             goto __pyx_L76_bool_binop_done;
                                           }
 
-                                          /* "gapfill_core_a1.pyx":488
+                                          /* "gapfill_core_a1.pyx":484
  *                                     # efficient to bail out there first
  *                                     if (0 <= xNbr_prv < xShapeTotal and
  *                                             0 <= yNbr_prv < yShapeTotal and             # <<<<<<<<<<<<<<
  *                                             dayDataStack[z, yNbr_prv, xNbr_prv] != _NDV and
  *                                             dayDataStack[newZ_prv, yNbr_prv, xNbr_prv] != _NDV):
  */
-                                          __pyx_t_116 = (0 <= __pyx_v_yNbr_prv);
-                                          if (__pyx_t_116) {
-                                            __pyx_t_116 = (__pyx_v_yNbr_prv < __pyx_v_yShapeTotal);
+                                          __pyx_t_113 = (0 <= __pyx_v_yNbr_prv);
+                                          if (__pyx_t_113) {
+                                            __pyx_t_113 = (__pyx_v_yNbr_prv < __pyx_v_yShapeTotal);
                                           }
-                                          __pyx_t_12 = (__pyx_t_116 != 0);
+                                          __pyx_t_12 = (__pyx_t_113 != 0);
                                           if (__pyx_t_12) {
                                           } else {
                                             __pyx_t_11 = __pyx_t_12;
                                             goto __pyx_L76_bool_binop_done;
                                           }
 
-                                          /* "gapfill_core_a1.pyx":489
+                                          /* "gapfill_core_a1.pyx":485
  *                                     if (0 <= xNbr_prv < xShapeTotal and
  *                                             0 <= yNbr_prv < yShapeTotal and
  *                                             dayDataStack[z, yNbr_prv, xNbr_prv] != _NDV and             # <<<<<<<<<<<<<<
  *                                             dayDataStack[newZ_prv, yNbr_prv, xNbr_prv] != _NDV):
  *                                         # we're good to go! do the maths for this contributing cell
  */
-                                          __pyx_t_117 = __pyx_v_z;
-                                          __pyx_t_118 = __pyx_v_yNbr_prv;
-                                          __pyx_t_119 = __pyx_v_xNbr_prv;
-                                          __pyx_t_12 = (((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_117 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_118 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_119)) ))) != __pyx_v__NDV) != 0);
+                                          __pyx_t_114 = __pyx_v_z;
+                                          __pyx_t_115 = __pyx_v_yNbr_prv;
+                                          __pyx_t_116 = __pyx_v_xNbr_prv;
+                                          __pyx_t_12 = (((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_114 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_115 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_116)) ))) != __pyx_v__NDV) != 0);
                                           if (__pyx_t_12) {
                                           } else {
                                             __pyx_t_11 = __pyx_t_12;
                                             goto __pyx_L76_bool_binop_done;
                                           }
 
-                                          /* "gapfill_core_a1.pyx":490
+                                          /* "gapfill_core_a1.pyx":486
  *                                             0 <= yNbr_prv < yShapeTotal and
  *                                             dayDataStack[z, yNbr_prv, xNbr_prv] != _NDV and
  *                                             dayDataStack[newZ_prv, yNbr_prv, xNbr_prv] != _NDV):             # <<<<<<<<<<<<<<
  *                                         # we're good to go! do the maths for this contributing cell
  *                                         usedNeighbours +=  1 # tracking
  */
-                                          __pyx_t_120 = __pyx_v_newZ_prv;
-                                          __pyx_t_121 = __pyx_v_yNbr_prv;
-                                          __pyx_t_122 = __pyx_v_xNbr_prv;
-                                          __pyx_t_12 = (((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_120 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_121 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_122)) ))) != __pyx_v__NDV) != 0);
+                                          __pyx_t_117 = __pyx_v_newZ_prv;
+                                          __pyx_t_118 = __pyx_v_yNbr_prv;
+                                          __pyx_t_119 = __pyx_v_xNbr_prv;
+                                          __pyx_t_12 = (((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_117 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_118 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_119)) ))) != __pyx_v__NDV) != 0);
                                           __pyx_t_11 = __pyx_t_12;
                                           __pyx_L76_bool_binop_done:;
 
-                                          /* "gapfill_core_a1.pyx":487
+                                          /* "gapfill_core_a1.pyx":483
  *                                     # likely to not have data (given we are already at a gap) so it's more
  *                                     # efficient to bail out there first
  *                                     if (0 <= xNbr_prv < xShapeTotal and             # <<<<<<<<<<<<<<
@@ -5801,7 +5688,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                           if (__pyx_t_11) {
 
-                                            /* "gapfill_core_a1.pyx":492
+                                            /* "gapfill_core_a1.pyx":488
  *                                             dayDataStack[newZ_prv, yNbr_prv, xNbr_prv] != _NDV):
  *                                         # we're good to go! do the maths for this contributing cell
  *                                         usedNeighbours +=  1 # tracking             # <<<<<<<<<<<<<<
@@ -5810,7 +5697,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                             __pyx_v_usedNeighbours = (__pyx_v_usedNeighbours + 1);
 
-                                            /* "gapfill_core_a1.pyx":494
+                                            /* "gapfill_core_a1.pyx":490
  *                                         usedNeighbours +=  1 # tracking
  * 
  *                                         if FillByRatios == 0:             # <<<<<<<<<<<<<<
@@ -5820,30 +5707,30 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                             __pyx_t_11 = ((__pyx_v_FillByRatios == 0) != 0);
                                             if (__pyx_t_11) {
 
-                                              /* "gapfill_core_a1.pyx":496
+                                              /* "gapfill_core_a1.pyx":492
  *                                         if FillByRatios == 0:
  *                                         #calculate difference not ratio
  *                                             valueDiff_prv = (dayDataStack[z, yNbr_prv, xNbr_prv]             # <<<<<<<<<<<<<<
  *                                                              - dayDataStack[newZ_prv, yNbr_prv, xNbr_prv])
  *                                             pfv_prv = altValue_prv + valueDiff_prv
  */
-                                              __pyx_t_123 = __pyx_v_z;
-                                              __pyx_t_124 = __pyx_v_yNbr_prv;
-                                              __pyx_t_125 = __pyx_v_xNbr_prv;
+                                              __pyx_t_120 = __pyx_v_z;
+                                              __pyx_t_121 = __pyx_v_yNbr_prv;
+                                              __pyx_t_122 = __pyx_v_xNbr_prv;
 
-                                              /* "gapfill_core_a1.pyx":497
+                                              /* "gapfill_core_a1.pyx":493
  *                                         #calculate difference not ratio
  *                                             valueDiff_prv = (dayDataStack[z, yNbr_prv, xNbr_prv]
  *                                                              - dayDataStack[newZ_prv, yNbr_prv, xNbr_prv])             # <<<<<<<<<<<<<<
  *                                             pfv_prv = altValue_prv + valueDiff_prv
  *                                         else:
  */
-                                              __pyx_t_126 = __pyx_v_newZ_prv;
-                                              __pyx_t_127 = __pyx_v_yNbr_prv;
-                                              __pyx_t_128 = __pyx_v_xNbr_prv;
-                                              __pyx_v_valueDiff_prv = ((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_123 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_124 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_125)) ))) - (*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_126 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_127 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_128)) ))));
+                                              __pyx_t_123 = __pyx_v_newZ_prv;
+                                              __pyx_t_124 = __pyx_v_yNbr_prv;
+                                              __pyx_t_125 = __pyx_v_xNbr_prv;
+                                              __pyx_v_valueDiff_prv = ((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_120 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_121 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_122)) ))) - (*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_123 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_124 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_125)) ))));
 
-                                              /* "gapfill_core_a1.pyx":498
+                                              /* "gapfill_core_a1.pyx":494
  *                                             valueDiff_prv = (dayDataStack[z, yNbr_prv, xNbr_prv]
  *                                                              - dayDataStack[newZ_prv, yNbr_prv, xNbr_prv])
  *                                             pfv_prv = altValue_prv + valueDiff_prv             # <<<<<<<<<<<<<<
@@ -5852,7 +5739,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                               __pyx_v_pfv_prv = (__pyx_v_altValue_prv + __pyx_v_valueDiff_prv);
 
-                                              /* "gapfill_core_a1.pyx":494
+                                              /* "gapfill_core_a1.pyx":490
  *                                         usedNeighbours +=  1 # tracking
  * 
  *                                         if FillByRatios == 0:             # <<<<<<<<<<<<<<
@@ -5862,7 +5749,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                               goto __pyx_L80;
                                             }
 
-                                            /* "gapfill_core_a1.pyx":502
+                                            /* "gapfill_core_a1.pyx":498
  *                                             # calculate ratio, taking some precautions to avoid stupid values
  *                                             # when one is close to zero
  *                                             valueDiff_prv = (dayDataStack[z, yNbr_prv, xNbr_prv]             # <<<<<<<<<<<<<<
@@ -5871,39 +5758,39 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                             /*else*/ {
 
-                                              /* "gapfill_core_a1.pyx":503
+                                              /* "gapfill_core_a1.pyx":499
  *                                             # when one is close to zero
  *                                             valueDiff_prv = (dayDataStack[z, yNbr_prv, xNbr_prv]
  *                                                              / dayDataStack[newZ_prv, yNbr_prv, xNbr_prv])             # <<<<<<<<<<<<<<
  *                                             if (dayDataStack[newZ_prv, yNbr_prv, xNbr_prv] == 0
  *                                                 or valueDiff_prv > _MaxAllowableRatio):
  */
-                                              __pyx_t_129 = __pyx_v_z;
+                                              __pyx_t_126 = __pyx_v_z;
+                                              __pyx_t_127 = __pyx_v_yNbr_prv;
+                                              __pyx_t_128 = __pyx_v_xNbr_prv;
+                                              __pyx_t_129 = __pyx_v_newZ_prv;
                                               __pyx_t_130 = __pyx_v_yNbr_prv;
                                               __pyx_t_131 = __pyx_v_xNbr_prv;
-                                              __pyx_t_132 = __pyx_v_newZ_prv;
-                                              __pyx_t_133 = __pyx_v_yNbr_prv;
-                                              __pyx_t_134 = __pyx_v_xNbr_prv;
-                                              __pyx_v_valueDiff_prv = ((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_129 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_130 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_131)) ))) / (*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_132 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_133 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_134)) ))));
+                                              __pyx_v_valueDiff_prv = ((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_126 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_127 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_128)) ))) / (*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_129 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_130 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_131)) ))));
 
-                                              /* "gapfill_core_a1.pyx":504
+                                              /* "gapfill_core_a1.pyx":500
  *                                             valueDiff_prv = (dayDataStack[z, yNbr_prv, xNbr_prv]
  *                                                              / dayDataStack[newZ_prv, yNbr_prv, xNbr_prv])
  *                                             if (dayDataStack[newZ_prv, yNbr_prv, xNbr_prv] == 0             # <<<<<<<<<<<<<<
  *                                                 or valueDiff_prv > _MaxAllowableRatio):
  *                                                 valueDiff_prv = _MaxAllowableRatio
  */
-                                              __pyx_t_135 = __pyx_v_newZ_prv;
-                                              __pyx_t_136 = __pyx_v_yNbr_prv;
-                                              __pyx_t_137 = __pyx_v_xNbr_prv;
-                                              __pyx_t_12 = (((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_135 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_136 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_137)) ))) == 0.0) != 0);
+                                              __pyx_t_132 = __pyx_v_newZ_prv;
+                                              __pyx_t_133 = __pyx_v_yNbr_prv;
+                                              __pyx_t_134 = __pyx_v_xNbr_prv;
+                                              __pyx_t_12 = (((*((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_dayDataStack.data + __pyx_t_132 * __pyx_v_dayDataStack.strides[0]) ) + __pyx_t_133 * __pyx_v_dayDataStack.strides[1]) )) + __pyx_t_134)) ))) == 0.0) != 0);
                                               if (!__pyx_t_12) {
                                               } else {
                                                 __pyx_t_11 = __pyx_t_12;
                                                 goto __pyx_L82_bool_binop_done;
                                               }
 
-                                              /* "gapfill_core_a1.pyx":505
+                                              /* "gapfill_core_a1.pyx":501
  *                                                              / dayDataStack[newZ_prv, yNbr_prv, xNbr_prv])
  *                                             if (dayDataStack[newZ_prv, yNbr_prv, xNbr_prv] == 0
  *                                                 or valueDiff_prv > _MaxAllowableRatio):             # <<<<<<<<<<<<<<
@@ -5914,7 +5801,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                               __pyx_t_11 = __pyx_t_12;
                                               __pyx_L82_bool_binop_done:;
 
-                                              /* "gapfill_core_a1.pyx":504
+                                              /* "gapfill_core_a1.pyx":500
  *                                             valueDiff_prv = (dayDataStack[z, yNbr_prv, xNbr_prv]
  *                                                              / dayDataStack[newZ_prv, yNbr_prv, xNbr_prv])
  *                                             if (dayDataStack[newZ_prv, yNbr_prv, xNbr_prv] == 0             # <<<<<<<<<<<<<<
@@ -5923,7 +5810,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                               if (__pyx_t_11) {
 
-                                                /* "gapfill_core_a1.pyx":506
+                                                /* "gapfill_core_a1.pyx":502
  *                                             if (dayDataStack[newZ_prv, yNbr_prv, xNbr_prv] == 0
  *                                                 or valueDiff_prv > _MaxAllowableRatio):
  *                                                 valueDiff_prv = _MaxAllowableRatio             # <<<<<<<<<<<<<<
@@ -5932,7 +5819,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                                 __pyx_v_valueDiff_prv = __pyx_v__MaxAllowableRatio;
 
-                                                /* "gapfill_core_a1.pyx":504
+                                                /* "gapfill_core_a1.pyx":500
  *                                             valueDiff_prv = (dayDataStack[z, yNbr_prv, xNbr_prv]
  *                                                              / dayDataStack[newZ_prv, yNbr_prv, xNbr_prv])
  *                                             if (dayDataStack[newZ_prv, yNbr_prv, xNbr_prv] == 0             # <<<<<<<<<<<<<<
@@ -5942,7 +5829,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                                 goto __pyx_L81;
                                               }
 
-                                              /* "gapfill_core_a1.pyx":507
+                                              /* "gapfill_core_a1.pyx":503
  *                                                 or valueDiff_prv > _MaxAllowableRatio):
  *                                                 valueDiff_prv = _MaxAllowableRatio
  *                                             elif valueDiff_prv < _MinAllowableRatio:             # <<<<<<<<<<<<<<
@@ -5952,7 +5839,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                               __pyx_t_11 = ((__pyx_v_valueDiff_prv < __pyx_v__MinAllowableRatio) != 0);
                                               if (__pyx_t_11) {
 
-                                                /* "gapfill_core_a1.pyx":508
+                                                /* "gapfill_core_a1.pyx":504
  *                                                 valueDiff_prv = _MaxAllowableRatio
  *                                             elif valueDiff_prv < _MinAllowableRatio:
  *                                                 valueDiff_prv = _MinAllowableRatio             # <<<<<<<<<<<<<<
@@ -5961,7 +5848,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                                 __pyx_v_valueDiff_prv = __pyx_v__MinAllowableRatio;
 
-                                                /* "gapfill_core_a1.pyx":507
+                                                /* "gapfill_core_a1.pyx":503
  *                                                 or valueDiff_prv > _MaxAllowableRatio):
  *                                                 valueDiff_prv = _MaxAllowableRatio
  *                                             elif valueDiff_prv < _MinAllowableRatio:             # <<<<<<<<<<<<<<
@@ -5971,7 +5858,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                               }
                                               __pyx_L81:;
 
-                                              /* "gapfill_core_a1.pyx":509
+                                              /* "gapfill_core_a1.pyx":505
  *                                             elif valueDiff_prv < _MinAllowableRatio:
  *                                                 valueDiff_prv = _MinAllowableRatio
  *                                             pfv_prv = altValue_prv * valueDiff_prv + _AbsZeroPoint             # <<<<<<<<<<<<<<
@@ -5982,18 +5869,18 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                             }
                                             __pyx_L80:;
 
-                                            /* "gapfill_core_a1.pyx":511
+                                            /* "gapfill_core_a1.pyx":507
  *                                             pfv_prv = altValue_prv * valueDiff_prv + _AbsZeroPoint
  *                                         # implicit assumption that one year and one cell distance have the same weighting
  *                                         weight_prv = (1.0 / abs(delta_prv)) * (1.0 / nbrTable[2,nbrIndex_prv])             # <<<<<<<<<<<<<<
  *                                         ws_prv += pfv_prv * weight_prv
  *                                         sw_prv += weight_prv
  */
-                                            __pyx_t_138 = 2;
-                                            __pyx_t_139 = __pyx_v_nbrIndex_prv;
-                                            __pyx_v_weight_prv = ((1.0 / abs(__pyx_v_delta_prv)) * (1.0 / (*((double *) ( /* dim=1 */ ((char *) (((double *) ( /* dim=0 */ (__pyx_v_nbrTable.data + __pyx_t_138 * __pyx_v_nbrTable.strides[0]) )) + __pyx_t_139)) )))));
+                                            __pyx_t_135 = 2;
+                                            __pyx_t_136 = __pyx_v_nbrIndex_prv;
+                                            __pyx_v_weight_prv = ((1.0 / abs(__pyx_v_delta_prv)) * (1.0 / (*((double *) ( /* dim=1 */ ((char *) (((double *) ( /* dim=0 */ (__pyx_v_nbrTable.data + __pyx_t_135 * __pyx_v_nbrTable.strides[0]) )) + __pyx_t_136)) )))));
 
-                                            /* "gapfill_core_a1.pyx":512
+                                            /* "gapfill_core_a1.pyx":508
  *                                         # implicit assumption that one year and one cell distance have the same weighting
  *                                         weight_prv = (1.0 / abs(delta_prv)) * (1.0 / nbrTable[2,nbrIndex_prv])
  *                                         ws_prv += pfv_prv * weight_prv             # <<<<<<<<<<<<<<
@@ -6002,7 +5889,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                             __pyx_v_ws_prv = (__pyx_v_ws_prv + (__pyx_v_pfv_prv * __pyx_v_weight_prv));
 
-                                            /* "gapfill_core_a1.pyx":513
+                                            /* "gapfill_core_a1.pyx":509
  *                                         weight_prv = (1.0 / abs(delta_prv)) * (1.0 / nbrTable[2,nbrIndex_prv])
  *                                         ws_prv += pfv_prv * weight_prv
  *                                         sw_prv += weight_prv             # <<<<<<<<<<<<<<
@@ -6011,18 +5898,18 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                             __pyx_v_sw_prv = (__pyx_v_sw_prv + __pyx_v_weight_prv);
 
-                                            /* "gapfill_core_a1.pyx":517
+                                            /* "gapfill_core_a1.pyx":513
  *                                         # calculating the mean contributing distance. we don't need to
  *                                         # do all those assignments for that
  *                                         sumDist_prv = sumDist_prv + nbrTable[2,nbrIndex_prv]             # <<<<<<<<<<<<<<
  *                                         # track the things we need to trim min/max
  *                                         if valueDiff_prv < min_Diff_prv:
  */
-                                            __pyx_t_140 = 2;
-                                            __pyx_t_141 = __pyx_v_nbrIndex_prv;
-                                            __pyx_v_sumDist_prv = (__pyx_v_sumDist_prv + (*((double *) ( /* dim=1 */ ((char *) (((double *) ( /* dim=0 */ (__pyx_v_nbrTable.data + __pyx_t_140 * __pyx_v_nbrTable.strides[0]) )) + __pyx_t_141)) ))));
+                                            __pyx_t_137 = 2;
+                                            __pyx_t_138 = __pyx_v_nbrIndex_prv;
+                                            __pyx_v_sumDist_prv = (__pyx_v_sumDist_prv + (*((double *) ( /* dim=1 */ ((char *) (((double *) ( /* dim=0 */ (__pyx_v_nbrTable.data + __pyx_t_137 * __pyx_v_nbrTable.strides[0]) )) + __pyx_t_138)) ))));
 
-                                            /* "gapfill_core_a1.pyx":519
+                                            /* "gapfill_core_a1.pyx":515
  *                                         sumDist_prv = sumDist_prv + nbrTable[2,nbrIndex_prv]
  *                                         # track the things we need to trim min/max
  *                                         if valueDiff_prv < min_Diff_prv:             # <<<<<<<<<<<<<<
@@ -6032,7 +5919,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                             __pyx_t_11 = ((__pyx_v_valueDiff_prv < __pyx_v_min_Diff_prv) != 0);
                                             if (__pyx_t_11) {
 
-                                              /* "gapfill_core_a1.pyx":520
+                                              /* "gapfill_core_a1.pyx":516
  *                                         # track the things we need to trim min/max
  *                                         if valueDiff_prv < min_Diff_prv:
  *                                             min_Diff_prv = valueDiff_prv             # <<<<<<<<<<<<<<
@@ -6041,18 +5928,18 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                               __pyx_v_min_Diff_prv = __pyx_v_valueDiff_prv;
 
-                                              /* "gapfill_core_a1.pyx":521
+                                              /* "gapfill_core_a1.pyx":517
  *                                         if valueDiff_prv < min_Diff_prv:
  *                                             min_Diff_prv = valueDiff_prv
  *                                             minD_Dist_prv = nbrTable[2,nbrIndex_prv]             # <<<<<<<<<<<<<<
  *                                             minD_wpfv_prv = pfv_prv*weight_prv
  *                                             minD_weight_prv = weight_prv
  */
-                                              __pyx_t_142 = 2;
-                                              __pyx_t_143 = __pyx_v_nbrIndex_prv;
-                                              __pyx_v_minD_Dist_prv = (*((double *) ( /* dim=1 */ ((char *) (((double *) ( /* dim=0 */ (__pyx_v_nbrTable.data + __pyx_t_142 * __pyx_v_nbrTable.strides[0]) )) + __pyx_t_143)) )));
+                                              __pyx_t_139 = 2;
+                                              __pyx_t_140 = __pyx_v_nbrIndex_prv;
+                                              __pyx_v_minD_Dist_prv = (*((double *) ( /* dim=1 */ ((char *) (((double *) ( /* dim=0 */ (__pyx_v_nbrTable.data + __pyx_t_139 * __pyx_v_nbrTable.strides[0]) )) + __pyx_t_140)) )));
 
-                                              /* "gapfill_core_a1.pyx":522
+                                              /* "gapfill_core_a1.pyx":518
  *                                             min_Diff_prv = valueDiff_prv
  *                                             minD_Dist_prv = nbrTable[2,nbrIndex_prv]
  *                                             minD_wpfv_prv = pfv_prv*weight_prv             # <<<<<<<<<<<<<<
@@ -6061,7 +5948,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                               __pyx_v_minD_wpfv_prv = (__pyx_v_pfv_prv * __pyx_v_weight_prv);
 
-                                              /* "gapfill_core_a1.pyx":523
+                                              /* "gapfill_core_a1.pyx":519
  *                                             minD_Dist_prv = nbrTable[2,nbrIndex_prv]
  *                                             minD_wpfv_prv = pfv_prv*weight_prv
  *                                             minD_weight_prv = weight_prv             # <<<<<<<<<<<<<<
@@ -6070,7 +5957,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                               __pyx_v_minD_weight_prv = __pyx_v_weight_prv;
 
-                                              /* "gapfill_core_a1.pyx":519
+                                              /* "gapfill_core_a1.pyx":515
  *                                         sumDist_prv = sumDist_prv + nbrTable[2,nbrIndex_prv]
  *                                         # track the things we need to trim min/max
  *                                         if valueDiff_prv < min_Diff_prv:             # <<<<<<<<<<<<<<
@@ -6079,7 +5966,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                             }
 
-                                            /* "gapfill_core_a1.pyx":524
+                                            /* "gapfill_core_a1.pyx":520
  *                                             minD_wpfv_prv = pfv_prv*weight_prv
  *                                             minD_weight_prv = weight_prv
  *                                         if valueDiff_prv > max_Diff_prv:             # <<<<<<<<<<<<<<
@@ -6089,7 +5976,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                             __pyx_t_11 = ((__pyx_v_valueDiff_prv > __pyx_v_max_Diff_prv) != 0);
                                             if (__pyx_t_11) {
 
-                                              /* "gapfill_core_a1.pyx":525
+                                              /* "gapfill_core_a1.pyx":521
  *                                             minD_weight_prv = weight_prv
  *                                         if valueDiff_prv > max_Diff_prv:
  *                                             max_Diff_prv = valueDiff_prv             # <<<<<<<<<<<<<<
@@ -6098,18 +5985,18 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                               __pyx_v_max_Diff_prv = __pyx_v_valueDiff_prv;
 
-                                              /* "gapfill_core_a1.pyx":526
+                                              /* "gapfill_core_a1.pyx":522
  *                                         if valueDiff_prv > max_Diff_prv:
  *                                             max_Diff_prv = valueDiff_prv
  *                                             maxD_Dist_prv = nbrTable[2,nbrIndex_prv]             # <<<<<<<<<<<<<<
  *                                             maxD_wpfv_prv = pfv_prv*weight_prv
  *                                             maxD_weight_prv = weight_prv
  */
-                                              __pyx_t_144 = 2;
-                                              __pyx_t_145 = __pyx_v_nbrIndex_prv;
-                                              __pyx_v_maxD_Dist_prv = (*((double *) ( /* dim=1 */ ((char *) (((double *) ( /* dim=0 */ (__pyx_v_nbrTable.data + __pyx_t_144 * __pyx_v_nbrTable.strides[0]) )) + __pyx_t_145)) )));
+                                              __pyx_t_141 = 2;
+                                              __pyx_t_142 = __pyx_v_nbrIndex_prv;
+                                              __pyx_v_maxD_Dist_prv = (*((double *) ( /* dim=1 */ ((char *) (((double *) ( /* dim=0 */ (__pyx_v_nbrTable.data + __pyx_t_141 * __pyx_v_nbrTable.strides[0]) )) + __pyx_t_142)) )));
 
-                                              /* "gapfill_core_a1.pyx":527
+                                              /* "gapfill_core_a1.pyx":523
  *                                             max_Diff_prv = valueDiff_prv
  *                                             maxD_Dist_prv = nbrTable[2,nbrIndex_prv]
  *                                             maxD_wpfv_prv = pfv_prv*weight_prv             # <<<<<<<<<<<<<<
@@ -6118,7 +6005,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                               __pyx_v_maxD_wpfv_prv = (__pyx_v_pfv_prv * __pyx_v_weight_prv);
 
-                                              /* "gapfill_core_a1.pyx":528
+                                              /* "gapfill_core_a1.pyx":524
  *                                             maxD_Dist_prv = nbrTable[2,nbrIndex_prv]
  *                                             maxD_wpfv_prv = pfv_prv*weight_prv
  *                                             maxD_weight_prv = weight_prv             # <<<<<<<<<<<<<<
@@ -6127,7 +6014,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                               __pyx_v_maxD_weight_prv = __pyx_v_weight_prv;
 
-                                              /* "gapfill_core_a1.pyx":524
+                                              /* "gapfill_core_a1.pyx":520
  *                                             minD_wpfv_prv = pfv_prv*weight_prv
  *                                             minD_weight_prv = weight_prv
  *                                         if valueDiff_prv > max_Diff_prv:             # <<<<<<<<<<<<<<
@@ -6136,7 +6023,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                             }
 
-                                            /* "gapfill_core_a1.pyx":529
+                                            /* "gapfill_core_a1.pyx":525
  *                                             maxD_wpfv_prv = pfv_prv*weight_prv
  *                                             maxD_weight_prv = weight_prv
  *                                         nfound_prv = nfound_prv + 1             # <<<<<<<<<<<<<<
@@ -6145,7 +6032,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                             __pyx_v_nfound_prv = (__pyx_v_nfound_prv + 1);
 
-                                            /* "gapfill_core_a1.pyx":531
+                                            /* "gapfill_core_a1.pyx":527
  *                                         nfound_prv = nfound_prv + 1
  *                                         #nfound = nfound + 1
  *                                         if nfound_prv == _FILL_THRESHOLD:             # <<<<<<<<<<<<<<
@@ -6155,7 +6042,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                             __pyx_t_11 = ((__pyx_v_nfound_prv == __pyx_v__FILL_THRESHOLD) != 0);
                                             if (__pyx_t_11) {
 
-                                              /* "gapfill_core_a1.pyx":532
+                                              /* "gapfill_core_a1.pyx":528
  *                                         #nfound = nfound + 1
  *                                         if nfound_prv == _FILL_THRESHOLD:
  *                                             break             # <<<<<<<<<<<<<<
@@ -6164,7 +6051,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                               goto __pyx_L74_break;
 
-                                              /* "gapfill_core_a1.pyx":531
+                                              /* "gapfill_core_a1.pyx":527
  *                                         nfound_prv = nfound_prv + 1
  *                                         #nfound = nfound + 1
  *                                         if nfound_prv == _FILL_THRESHOLD:             # <<<<<<<<<<<<<<
@@ -6173,7 +6060,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                             }
 
-                                            /* "gapfill_core_a1.pyx":487
+                                            /* "gapfill_core_a1.pyx":483
  *                                     # likely to not have data (given we are already at a gap) so it's more
  *                                     # efficient to bail out there first
  *                                     if (0 <= xNbr_prv < xShapeTotal and             # <<<<<<<<<<<<<<
@@ -6184,7 +6071,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                         }
                                         __pyx_L74_break:;
 
-                                        /* "gapfill_core_a1.pyx":533
+                                        /* "gapfill_core_a1.pyx":529
  *                                         if nfound_prv == _FILL_THRESHOLD:
  *                                             break
  *                                 if nfound_prv == _FILL_THRESHOLD:             # <<<<<<<<<<<<<<
@@ -6194,7 +6081,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                         __pyx_t_11 = ((__pyx_v_nfound_prv == __pyx_v__FILL_THRESHOLD) != 0);
                                         if (__pyx_t_11) {
 
-                                          /* "gapfill_core_a1.pyx":534
+                                          /* "gapfill_core_a1.pyx":530
  *                                             break
  *                                 if nfound_prv == _FILL_THRESHOLD:
  *                                     break             # <<<<<<<<<<<<<<
@@ -6203,7 +6090,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                           goto __pyx_L65_break;
 
-                                          /* "gapfill_core_a1.pyx":533
+                                          /* "gapfill_core_a1.pyx":529
  *                                         if nfound_prv == _FILL_THRESHOLD:
  *                                             break
  *                                 if nfound_prv == _FILL_THRESHOLD:             # <<<<<<<<<<<<<<
@@ -6215,7 +6102,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                       }
                                       __pyx_L65_break:;
 
-                                      /* "gapfill_core_a1.pyx":536
+                                      /* "gapfill_core_a1.pyx":532
  *                                     break
  * 
  *                             if nfound_prv >= _FILL_MIN:             # <<<<<<<<<<<<<<
@@ -6225,7 +6112,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                       __pyx_t_11 = ((__pyx_v_nfound_prv >= __pyx_v__FILL_MIN) != 0);
                                       if (__pyx_t_11) {
 
-                                        /* "gapfill_core_a1.pyx":538
+                                        /* "gapfill_core_a1.pyx":534
  *                             if nfound_prv >= _FILL_MIN:
  *                                 # we have found between min and threshold pairs
  *                                 flag_prv = flag_prv | _SUCCESS_FLAG             # <<<<<<<<<<<<<<
@@ -6234,7 +6121,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         __pyx_v_flag_prv = (__pyx_v_flag_prv | __pyx_v__SUCCESS_FLAG);
 
-                                        /* "gapfill_core_a1.pyx":539
+                                        /* "gapfill_core_a1.pyx":535
  *                                 # we have found between min and threshold pairs
  *                                 flag_prv = flag_prv | _SUCCESS_FLAG
  *                                 if nfound_prv == _FILL_THRESHOLD:             # <<<<<<<<<<<<<<
@@ -6244,7 +6131,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                         __pyx_t_11 = ((__pyx_v_nfound_prv == __pyx_v__FILL_THRESHOLD) != 0);
                                         if (__pyx_t_11) {
 
-                                          /* "gapfill_core_a1.pyx":542
+                                          /* "gapfill_core_a1.pyx":538
  *                                     # we have found the upper limit of pairs (full fill)
  *                                     # (set both success flags)
  *                                     filledToThreshold += 1             # <<<<<<<<<<<<<<
@@ -6253,7 +6140,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                           __pyx_v_filledToThreshold = (__pyx_v_filledToThreshold + 1);
 
-                                          /* "gapfill_core_a1.pyx":543
+                                          /* "gapfill_core_a1.pyx":539
  *                                     # (set both success flags)
  *                                     filledToThreshold += 1
  *                                     flag_prv = flag_prv | _SUCCESS_WAS_FULL_FLAG             # <<<<<<<<<<<<<<
@@ -6262,7 +6149,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                           __pyx_v_flag_prv = (__pyx_v_flag_prv | __pyx_v__SUCCESS_WAS_FULL_FLAG);
 
-                                          /* "gapfill_core_a1.pyx":539
+                                          /* "gapfill_core_a1.pyx":535
  *                                 # we have found between min and threshold pairs
  *                                 flag_prv = flag_prv | _SUCCESS_FLAG
  *                                 if nfound_prv == _FILL_THRESHOLD:             # <<<<<<<<<<<<<<
@@ -6272,7 +6159,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                           goto __pyx_L89;
                                         }
 
-                                        /* "gapfill_core_a1.pyx":545
+                                        /* "gapfill_core_a1.pyx":541
  *                                     flag_prv = flag_prv | _SUCCESS_WAS_FULL_FLAG
  *                                 else:
  *                                     filledBelowThreshold += 1             # <<<<<<<<<<<<<<
@@ -6284,7 +6171,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                         }
                                         __pyx_L89:;
 
-                                        /* "gapfill_core_a1.pyx":546
+                                        /* "gapfill_core_a1.pyx":542
  *                                 else:
  *                                     filledBelowThreshold += 1
  *                                 if _TRIM_MIN_MAX:             # <<<<<<<<<<<<<<
@@ -6294,7 +6181,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                         __pyx_t_11 = (__pyx_v__TRIM_MIN_MAX != 0);
                                         if (__pyx_t_11) {
 
-                                          /* "gapfill_core_a1.pyx":547
+                                          /* "gapfill_core_a1.pyx":543
  *                                     filledBelowThreshold += 1
  *                                 if _TRIM_MIN_MAX:
  *                                     ws_prv = ws_prv - (minD_wpfv_prv + maxD_wpfv_prv)             # <<<<<<<<<<<<<<
@@ -6303,7 +6190,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                           __pyx_v_ws_prv = (__pyx_v_ws_prv - (__pyx_v_minD_wpfv_prv + __pyx_v_maxD_wpfv_prv));
 
-                                          /* "gapfill_core_a1.pyx":548
+                                          /* "gapfill_core_a1.pyx":544
  *                                 if _TRIM_MIN_MAX:
  *                                     ws_prv = ws_prv - (minD_wpfv_prv + maxD_wpfv_prv)
  *                                     sw_prv = sw_prv - (minD_weight_prv + maxD_weight_prv)             # <<<<<<<<<<<<<<
@@ -6312,7 +6199,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                           __pyx_v_sw_prv = (__pyx_v_sw_prv - (__pyx_v_minD_weight_prv + __pyx_v_maxD_weight_prv));
 
-                                          /* "gapfill_core_a1.pyx":549
+                                          /* "gapfill_core_a1.pyx":545
  *                                     ws_prv = ws_prv - (minD_wpfv_prv + maxD_wpfv_prv)
  *                                     sw_prv = sw_prv - (minD_weight_prv + maxD_weight_prv)
  *                                     sumDist_prv = sumDist_prv - (minD_Dist_prv + maxD_Dist_prv)             # <<<<<<<<<<<<<<
@@ -6321,7 +6208,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                           __pyx_v_sumDist_prv = (__pyx_v_sumDist_prv - (__pyx_v_minD_Dist_prv + __pyx_v_maxD_Dist_prv));
 
-                                          /* "gapfill_core_a1.pyx":550
+                                          /* "gapfill_core_a1.pyx":546
  *                                     sw_prv = sw_prv - (minD_weight_prv + maxD_weight_prv)
  *                                     sumDist_prv = sumDist_prv - (minD_Dist_prv + maxD_Dist_prv)
  *                                     nfound_prv = nfound_prv - 2             # <<<<<<<<<<<<<<
@@ -6330,7 +6217,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                           __pyx_v_nfound_prv = (__pyx_v_nfound_prv - 2);
 
-                                          /* "gapfill_core_a1.pyx":546
+                                          /* "gapfill_core_a1.pyx":542
  *                                 else:
  *                                     filledBelowThreshold += 1
  *                                 if _TRIM_MIN_MAX:             # <<<<<<<<<<<<<<
@@ -6339,7 +6226,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         }
 
-                                        /* "gapfill_core_a1.pyx":552
+                                        /* "gapfill_core_a1.pyx":548
  *                                     nfound_prv = nfound_prv - 2
  *                                     #flag = 12 (old code recorded this per-pixel, don't see why)
  *                                 wfv_prv = ws_prv / sw_prv             # <<<<<<<<<<<<<<
@@ -6348,31 +6235,31 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                         __pyx_v_wfv_prv = (__pyx_v_ws_prv / __pyx_v_sw_prv);
 
-                                        /* "gapfill_core_a1.pyx":554
+                                        /* "gapfill_core_a1.pyx":550
  *                                 wfv_prv = ws_prv / sw_prv
  *                                 # record the result!!
  *                                 outputData[z, y, x_prv] = wfv_prv             # <<<<<<<<<<<<<<
  *                                 outputDists[z, y, x_prv] = sumDist_prv / nfound_prv
  *                             else:
  */
-                                        __pyx_t_146 = __pyx_v_z;
-                                        __pyx_t_147 = __pyx_v_y;
-                                        __pyx_t_148 = __pyx_v_x_prv;
-                                        *((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputData.data + __pyx_t_146 * __pyx_v_outputData.strides[0]) ) + __pyx_t_147 * __pyx_v_outputData.strides[1]) )) + __pyx_t_148)) )) = __pyx_v_wfv_prv;
+                                        __pyx_t_143 = __pyx_v_z;
+                                        __pyx_t_144 = __pyx_v_y;
+                                        __pyx_t_145 = __pyx_v_x_prv;
+                                        *((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputData.data + __pyx_t_143 * __pyx_v_outputData.strides[0]) ) + __pyx_t_144 * __pyx_v_outputData.strides[1]) )) + __pyx_t_145)) )) = __pyx_v_wfv_prv;
 
-                                        /* "gapfill_core_a1.pyx":555
+                                        /* "gapfill_core_a1.pyx":551
  *                                 # record the result!!
  *                                 outputData[z, y, x_prv] = wfv_prv
  *                                 outputDists[z, y, x_prv] = sumDist_prv / nfound_prv             # <<<<<<<<<<<<<<
  *                             else:
  *                                 flag_prv = flag_prv | _FAILURE_FLAG
  */
-                                        __pyx_t_149 = __pyx_v_z;
-                                        __pyx_t_150 = __pyx_v_y;
-                                        __pyx_t_151 = __pyx_v_x_prv;
-                                        *((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputDists.data + __pyx_t_149 * __pyx_v_outputDists.strides[0]) ) + __pyx_t_150 * __pyx_v_outputDists.strides[1]) )) + __pyx_t_151)) )) = (__pyx_v_sumDist_prv / __pyx_v_nfound_prv);
+                                        __pyx_t_146 = __pyx_v_z;
+                                        __pyx_t_147 = __pyx_v_y;
+                                        __pyx_t_148 = __pyx_v_x_prv;
+                                        *((float *) ( /* dim=2 */ ((char *) (((float *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputDists.data + __pyx_t_146 * __pyx_v_outputDists.strides[0]) ) + __pyx_t_147 * __pyx_v_outputDists.strides[1]) )) + __pyx_t_148)) )) = (__pyx_v_sumDist_prv / __pyx_v_nfound_prv);
 
-                                        /* "gapfill_core_a1.pyx":536
+                                        /* "gapfill_core_a1.pyx":532
  *                                     break
  * 
  *                             if nfound_prv >= _FILL_MIN:             # <<<<<<<<<<<<<<
@@ -6382,7 +6269,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                         goto __pyx_L88;
                                       }
 
-                                      /* "gapfill_core_a1.pyx":557
+                                      /* "gapfill_core_a1.pyx":553
  *                                 outputDists[z, y, x_prv] = sumDist_prv / nfound_prv
  *                             else:
  *                                 flag_prv = flag_prv | _FAILURE_FLAG             # <<<<<<<<<<<<<<
@@ -6392,7 +6279,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                       /*else*/ {
                                         __pyx_v_flag_prv = (__pyx_v_flag_prv | __pyx_v__FAILURE_FLAG);
 
-                                        /* "gapfill_core_a1.pyx":559
+                                        /* "gapfill_core_a1.pyx":555
  *                                 flag_prv = flag_prv | _FAILURE_FLAG
  *                                 # do not do anything to output: leave it at no-data
  *                                 if nfound_prv > 0:             # <<<<<<<<<<<<<<
@@ -6402,7 +6289,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                         __pyx_t_11 = ((__pyx_v_nfound_prv > 0) != 0);
                                         if (__pyx_t_11) {
 
-                                          /* "gapfill_core_a1.pyx":560
+                                          /* "gapfill_core_a1.pyx":556
  *                                 # do not do anything to output: leave it at no-data
  *                                 if nfound_prv > 0:
  *                                     insufficientPairsFound += 1             # <<<<<<<<<<<<<<
@@ -6411,7 +6298,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
  */
                                           __pyx_v_insufficientPairsFound = (__pyx_v_insufficientPairsFound + 1);
 
-                                          /* "gapfill_core_a1.pyx":559
+                                          /* "gapfill_core_a1.pyx":555
  *                                 flag_prv = flag_prv | _FAILURE_FLAG
  *                                 # do not do anything to output: leave it at no-data
  *                                 if nfound_prv > 0:             # <<<<<<<<<<<<<<
@@ -6421,7 +6308,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                           goto __pyx_L91;
                                         }
 
-                                        /* "gapfill_core_a1.pyx":562
+                                        /* "gapfill_core_a1.pyx":558
  *                                     insufficientPairsFound += 1
  *                                 else:
  *                                     noPairsFound += 1             # <<<<<<<<<<<<<<
@@ -6435,17 +6322,17 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                                       }
                                       __pyx_L88:;
 
-                                      /* "gapfill_core_a1.pyx":563
+                                      /* "gapfill_core_a1.pyx":559
  *                                 else:
  *                                     noPairsFound += 1
  *                             outputFlags [z, y, x_prv] = flag_prv             # <<<<<<<<<<<<<<
  *     time_end = time.time()
  *     resultDiagnostics = A1Diagnostics(
  */
-                                      __pyx_t_152 = __pyx_v_z;
-                                      __pyx_t_153 = __pyx_v_y;
-                                      __pyx_t_154 = __pyx_v_x_prv;
-                                      *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_152 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_153 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_154)) )) = __pyx_v_flag_prv;
+                                      __pyx_t_149 = __pyx_v_z;
+                                      __pyx_t_150 = __pyx_v_y;
+                                      __pyx_t_151 = __pyx_v_x_prv;
+                                      *((unsigned char *) ( /* dim=2 */ ((char *) (((unsigned char *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_outputFlags.data + __pyx_t_149 * __pyx_v_outputFlags.strides[0]) ) + __pyx_t_150 * __pyx_v_outputFlags.strides[1]) )) + __pyx_t_151)) )) = __pyx_v_flag_prv;
                                       __pyx_L55_continue:;
                                     }
                                 }
@@ -6453,7 +6340,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
                         }
                     }
 
-                    /* "gapfill_core_a1.pyx":295
+                    /* "gapfill_core_a1.pyx":291
  *     with nogil, parallel(num_threads=nCores): # change num cores here
  *         for z in range(zShape):
  *             if z >= RunFillFromPos:             # <<<<<<<<<<<<<<
@@ -6472,7 +6359,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
         #endif
       }
 
-      /* "gapfill_core_a1.pyx":293
+      /* "gapfill_core_a1.pyx":289
  *     # innermost loop as well as inside, as here, but better safe than sorry, the documentation was pretty unclear.
  *     # Check the generated C code to be sure it's worked as intended if you choose not to!
  *     with nogil, parallel(num_threads=nCores): # change num cores here             # <<<<<<<<<<<<<<
@@ -6491,16 +6378,16 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
       }
   }
 
-  /* "gapfill_core_a1.pyx":564
+  /* "gapfill_core_a1.pyx":560
  *                                     noPairsFound += 1
  *                             outputFlags [z, y, x_prv] = flag_prv
  *     time_end = time.time()             # <<<<<<<<<<<<<<
  *     resultDiagnostics = A1Diagnostics(
  *         TotalCellsSearched=totalCells,
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_time); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 564, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_16, __pyx_n_s_time); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 560, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_time); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 564, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_time); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 560, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
   __pyx_t_16 = NULL;
@@ -6513,257 +6400,257 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
       __Pyx_DECREF_SET(__pyx_t_14, function);
     }
   }
-  __pyx_t_19 = (__pyx_t_16) ? __Pyx_PyObject_CallOneArg(__pyx_t_14, __pyx_t_16) : __Pyx_PyObject_CallNoArg(__pyx_t_14);
+  __pyx_t_13 = (__pyx_t_16) ? __Pyx_PyObject_CallOneArg(__pyx_t_14, __pyx_t_16) : __Pyx_PyObject_CallNoArg(__pyx_t_14);
   __Pyx_XDECREF(__pyx_t_16); __pyx_t_16 = 0;
-  if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 564, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_19);
+  if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 560, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_13);
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-  __pyx_v_time_end = __pyx_t_19;
-  __pyx_t_19 = 0;
+  __pyx_v_time_end = __pyx_t_13;
+  __pyx_t_13 = 0;
 
-  /* "gapfill_core_a1.pyx":565
+  /* "gapfill_core_a1.pyx":561
  *                             outputFlags [z, y, x_prv] = flag_prv
  *     time_end = time.time()
  *     resultDiagnostics = A1Diagnostics(             # <<<<<<<<<<<<<<
  *         TotalCellsSearched=totalCells,
  *         CellsWithGoodData=dataGood,
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_19, __pyx_n_s_A1Diagnostics); if (unlikely(!__pyx_t_19)) __PYX_ERR(0, 565, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_19);
+  __Pyx_GetModuleGlobalName(__pyx_t_13, __pyx_n_s_A1Diagnostics); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 561, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_13);
 
-  /* "gapfill_core_a1.pyx":566
+  /* "gapfill_core_a1.pyx":562
  *     time_end = time.time()
  *     resultDiagnostics = A1Diagnostics(
  *         TotalCellsSearched=totalCells,             # <<<<<<<<<<<<<<
  *         CellsWithGoodData=dataGood,
  *         OceanCells=oceanCells,
  */
-  __pyx_t_14 = __Pyx_PyDict_NewPresized(15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 566, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyDict_NewPresized(15); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_14);
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_totalCells); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 566, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_totalCells); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_TotalCellsSearched, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_TotalCellsSearched, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":567
+  /* "gapfill_core_a1.pyx":563
  *     resultDiagnostics = A1Diagnostics(
  *         TotalCellsSearched=totalCells,
  *         CellsWithGoodData=dataGood,             # <<<<<<<<<<<<<<
  *         OceanCells=oceanCells,
  *         NeverDataLocations=neverDataCells,
  */
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_dataGood); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 567, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_dataGood); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 563, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_CellsWithGoodData, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_CellsWithGoodData, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":568
+  /* "gapfill_core_a1.pyx":564
  *         TotalCellsSearched=totalCells,
  *         CellsWithGoodData=dataGood,
  *         OceanCells=oceanCells,             # <<<<<<<<<<<<<<
  *         NeverDataLocations=neverDataCells,
  *         GapCellsTotal=totalProcessedGapCells,
  */
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_oceanCells); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 568, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_oceanCells); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 564, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_OceanCells, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_OceanCells, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":569
+  /* "gapfill_core_a1.pyx":565
  *         CellsWithGoodData=dataGood,
  *         OceanCells=oceanCells,
  *         NeverDataLocations=neverDataCells,             # <<<<<<<<<<<<<<
  *         GapCellsTotal=totalProcessedGapCells,
  *         GapCellsTooBig=gapsTooBig,
  */
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_neverDataCells); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 569, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_neverDataCells); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 565, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_NeverDataLocations, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_NeverDataLocations, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":570
+  /* "gapfill_core_a1.pyx":566
  *         OceanCells=oceanCells,
  *         NeverDataLocations=neverDataCells,
  *         GapCellsTotal=totalProcessedGapCells,             # <<<<<<<<<<<<<<
  *         GapCellsTooBig=gapsTooBig,
  *         PermanentGapCells=gapsAtUnfillableLocs,
  */
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_totalProcessedGapCells); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 570, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_totalProcessedGapCells); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 566, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_GapCellsTotal, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_GapCellsTotal, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":571
+  /* "gapfill_core_a1.pyx":567
  *         NeverDataLocations=neverDataCells,
  *         GapCellsTotal=totalProcessedGapCells,
  *         GapCellsTooBig=gapsTooBig,             # <<<<<<<<<<<<<<
  *         PermanentGapCells=gapsAtUnfillableLocs,
  *         GapCellsFullyFilled=filledToThreshold,
  */
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_gapsTooBig); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 571, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_gapsTooBig); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 567, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_GapCellsTooBig, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_GapCellsTooBig, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":572
+  /* "gapfill_core_a1.pyx":568
  *         GapCellsTotal=totalProcessedGapCells,
  *         GapCellsTooBig=gapsTooBig,
  *         PermanentGapCells=gapsAtUnfillableLocs,             # <<<<<<<<<<<<<<
  *         GapCellsFullyFilled=filledToThreshold,
  *         GapCellsPartFilled=filledBelowThreshold,
  */
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_gapsAtUnfillableLocs); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 572, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_gapsAtUnfillableLocs); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 568, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_PermanentGapCells, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_PermanentGapCells, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":573
+  /* "gapfill_core_a1.pyx":569
  *         GapCellsTooBig=gapsTooBig,
  *         PermanentGapCells=gapsAtUnfillableLocs,
  *         GapCellsFullyFilled=filledToThreshold,             # <<<<<<<<<<<<<<
  *         GapCellsPartFilled=filledBelowThreshold,
  *         FailedInsufficientPairs=insufficientPairsFound,
  */
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_filledToThreshold); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 573, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_filledToThreshold); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 569, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_GapCellsFullyFilled, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_GapCellsFullyFilled, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":574
+  /* "gapfill_core_a1.pyx":570
  *         PermanentGapCells=gapsAtUnfillableLocs,
  *         GapCellsFullyFilled=filledToThreshold,
  *         GapCellsPartFilled=filledBelowThreshold,             # <<<<<<<<<<<<<<
  *         FailedInsufficientPairs=insufficientPairsFound,
  *         FailedNoPairs=noPairsFound,
  */
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_filledBelowThreshold); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 574, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_filledBelowThreshold); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 570, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_GapCellsPartFilled, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_GapCellsPartFilled, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":575
+  /* "gapfill_core_a1.pyx":571
  *         GapCellsFullyFilled=filledToThreshold,
  *         GapCellsPartFilled=filledBelowThreshold,
  *         FailedInsufficientPairs=insufficientPairsFound,             # <<<<<<<<<<<<<<
  *         FailedNoPairs=noPairsFound,
  *         TotalAlternateYearsScanned=scannedLevels,
  */
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_insufficientPairsFound); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 575, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_insufficientPairsFound); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 571, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_FailedInsufficientPairs, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_FailedInsufficientPairs, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":576
+  /* "gapfill_core_a1.pyx":572
  *         GapCellsPartFilled=filledBelowThreshold,
  *         FailedInsufficientPairs=insufficientPairsFound,
  *         FailedNoPairs=noPairsFound,             # <<<<<<<<<<<<<<
  *         TotalAlternateYearsScanned=scannedLevels,
  *         TotalNbrsChecked=scannedNeighbours,
  */
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_noPairsFound); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 576, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_noPairsFound); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 572, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_FailedNoPairs, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_FailedNoPairs, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":577
+  /* "gapfill_core_a1.pyx":573
  *         FailedInsufficientPairs=insufficientPairsFound,
  *         FailedNoPairs=noPairsFound,
  *         TotalAlternateYearsScanned=scannedLevels,             # <<<<<<<<<<<<<<
  *         TotalNbrsChecked=scannedNeighbours,
  *         TotalNbrsUsed=usedNeighbours,
  */
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_scannedLevels); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 577, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_scannedLevels); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 573, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_TotalAlternateYearsScanned, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_TotalAlternateYearsScanned, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":578
+  /* "gapfill_core_a1.pyx":574
  *         FailedNoPairs=noPairsFound,
  *         TotalAlternateYearsScanned=scannedLevels,
  *         TotalNbrsChecked=scannedNeighbours,             # <<<<<<<<<<<<<<
  *         TotalNbrsUsed=usedNeighbours,
  *         TimeSeconds=time_end-time_start
  */
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_scannedNeighbours); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 578, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_scannedNeighbours); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 574, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_TotalNbrsChecked, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_TotalNbrsChecked, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":579
+  /* "gapfill_core_a1.pyx":575
  *         TotalAlternateYearsScanned=scannedLevels,
  *         TotalNbrsChecked=scannedNeighbours,
  *         TotalNbrsUsed=usedNeighbours,             # <<<<<<<<<<<<<<
  *         TimeSeconds=time_end-time_start
  *     )
  */
-  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_usedNeighbours); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 579, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyInt_From_PY_LONG_LONG(__pyx_v_usedNeighbours); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 575, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_TotalNbrsUsed, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_TotalNbrsUsed, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":580
+  /* "gapfill_core_a1.pyx":576
  *         TotalNbrsChecked=scannedNeighbours,
  *         TotalNbrsUsed=usedNeighbours,
  *         TimeSeconds=time_end-time_start             # <<<<<<<<<<<<<<
  *     )
  *     dataStacks.DataArray3D = outputData
  */
-  __pyx_t_16 = PyNumber_Subtract(__pyx_v_time_end, __pyx_v_time_start); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 580, __pyx_L1_error)
+  __pyx_t_16 = PyNumber_Subtract(__pyx_v_time_end, __pyx_v_time_start); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 576, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_TimeSeconds, __pyx_t_16) < 0) __PYX_ERR(0, 566, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_14, __pyx_n_s_TimeSeconds, __pyx_t_16) < 0) __PYX_ERR(0, 562, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":565
+  /* "gapfill_core_a1.pyx":561
  *                             outputFlags [z, y, x_prv] = flag_prv
  *     time_end = time.time()
  *     resultDiagnostics = A1Diagnostics(             # <<<<<<<<<<<<<<
  *         TotalCellsSearched=totalCells,
  *         CellsWithGoodData=dataGood,
  */
-  __pyx_t_16 = __Pyx_PyObject_Call(__pyx_t_19, __pyx_empty_tuple, __pyx_t_14); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 565, __pyx_L1_error)
+  __pyx_t_16 = __Pyx_PyObject_Call(__pyx_t_13, __pyx_empty_tuple, __pyx_t_14); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 561, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  __Pyx_DECREF(__pyx_t_19); __pyx_t_19 = 0;
+  __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
   __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
   __pyx_v_resultDiagnostics = __pyx_t_16;
   __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":582
+  /* "gapfill_core_a1.pyx":578
  *         TimeSeconds=time_end-time_start
  *     )
  *     dataStacks.DataArray3D = outputData             # <<<<<<<<<<<<<<
  *     # todo check this is valid
  *     dataStacks.DistanceTemplate3D = outputDists
  */
-  __pyx_t_16 = __pyx_memoryview_fromslice(__pyx_v_outputData, 3, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 582, __pyx_L1_error)
+  __pyx_t_16 = __pyx_memoryview_fromslice(__pyx_v_outputData, 3, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 578, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_dataStacks, __pyx_n_s_DataArray3D, __pyx_t_16) < 0) __PYX_ERR(0, 582, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_dataStacks, __pyx_n_s_DataArray3D, __pyx_t_16) < 0) __PYX_ERR(0, 578, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":584
+  /* "gapfill_core_a1.pyx":580
  *     dataStacks.DataArray3D = outputData
  *     # todo check this is valid
  *     dataStacks.DistanceTemplate3D = outputDists             # <<<<<<<<<<<<<<
  *     dataStacks.FlagsArray3D = outputFlags
  *     #return (outputData,outputDists,outputFlags,resultDiagnostics)
  */
-  __pyx_t_16 = __pyx_memoryview_fromslice(__pyx_v_outputDists, 3, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 584, __pyx_L1_error)
+  __pyx_t_16 = __pyx_memoryview_fromslice(__pyx_v_outputDists, 3, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 580, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_dataStacks, __pyx_n_s_DistanceTemplate3D, __pyx_t_16) < 0) __PYX_ERR(0, 584, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_dataStacks, __pyx_n_s_DistanceTemplate3D, __pyx_t_16) < 0) __PYX_ERR(0, 580, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":585
+  /* "gapfill_core_a1.pyx":581
  *     # todo check this is valid
  *     dataStacks.DistanceTemplate3D = outputDists
  *     dataStacks.FlagsArray3D = outputFlags             # <<<<<<<<<<<<<<
  *     #return (outputData,outputDists,outputFlags,resultDiagnostics)
  *     return resultDiagnostics
  */
-  __pyx_t_16 = __pyx_memoryview_fromslice(__pyx_v_outputFlags, 3, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_char, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_char, 0);; if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 585, __pyx_L1_error)
+  __pyx_t_16 = __pyx_memoryview_fromslice(__pyx_v_outputFlags, 3, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_char, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_char, 0);; if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 581, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_16);
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_dataStacks, __pyx_n_s_FlagsArray3D, __pyx_t_16) < 0) __PYX_ERR(0, 585, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_dataStacks, __pyx_n_s_FlagsArray3D, __pyx_t_16) < 0) __PYX_ERR(0, 581, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
 
-  /* "gapfill_core_a1.pyx":587
+  /* "gapfill_core_a1.pyx":583
  *     dataStacks.FlagsArray3D = outputFlags
  *     #return (outputData,outputDists,outputFlags,resultDiagnostics)
  *     return resultDiagnostics             # <<<<<<<<<<<<<<
@@ -6796,10 +6683,7 @@ __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_t_17, 2, (PyObject *(*)(char *)) __
   __Pyx_XDECREF(__pyx_t_16);
   __PYX_XDEC_MEMVIEW(&__pyx_t_17, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_t_18, 1);
-  __Pyx_XDECREF(__pyx_t_19);
-  __Pyx_XDECREF(__pyx_t_20);
-  __Pyx_XDECREF(__pyx_t_21);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_45, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_42, 1);
   __Pyx_AddTraceback("gapfill_core_a1.a1_core", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -6955,7 +6839,7 @@ static PyObject *__pyx_pf_15gapfill_core_a1_a1_core(CYTHON_UNUSED PyObject *__py
   return __pyx_r;
 }
 
-/* "gapfill_core_a1.pyx":591
+/* "gapfill_core_a1.pyx":587
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cdef int[::1] alternates_cy(int lim):             # <<<<<<<<<<<<<<
@@ -6980,7 +6864,7 @@ static __Pyx_memviewslice __pyx_f_15gapfill_core_a1_alternates_cy(int __pyx_v_li
   Py_ssize_t __pyx_t_10;
   __Pyx_RefNannySetupContext("alternates_cy", 0);
 
-  /* "gapfill_core_a1.pyx":594
+  /* "gapfill_core_a1.pyx":590
  *     """ yields 1, -1, 2, -2, etc up to lim """
  *     cdef int x
  *     x = 1             # <<<<<<<<<<<<<<
@@ -6989,43 +6873,43 @@ static __Pyx_memviewslice __pyx_f_15gapfill_core_a1_alternates_cy(int __pyx_v_li
  */
   __pyx_v_x = 1;
 
-  /* "gapfill_core_a1.pyx":595
+  /* "gapfill_core_a1.pyx":591
  *     cdef int x
  *     x = 1
  *     cdef int[::1] arr = np.empty(shape=(lim*2),dtype=np.int32,order='c')             # <<<<<<<<<<<<<<
  *     for x in range(0,lim):
  *         arr[2*x] = x+1
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 595, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 591, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 595, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 591, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 595, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 591, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyInt_From_long((__pyx_v_lim * 2)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 595, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_long((__pyx_v_lim * 2)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 591, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_shape, __pyx_t_3) < 0) __PYX_ERR(0, 595, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_shape, __pyx_t_3) < 0) __PYX_ERR(0, 591, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 595, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 591, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_int32); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 595, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_int32); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 591, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 595, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_4) < 0) __PYX_ERR(0, 591, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 595, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 595, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_c) < 0) __PYX_ERR(0, 591, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 591, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_dc_int(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 595, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_dc_int(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 591, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_arr = __pyx_t_5;
   __pyx_t_5.memview = NULL;
   __pyx_t_5.data = NULL;
 
-  /* "gapfill_core_a1.pyx":596
+  /* "gapfill_core_a1.pyx":592
  *     x = 1
  *     cdef int[::1] arr = np.empty(shape=(lim*2),dtype=np.int32,order='c')
  *     for x in range(0,lim):             # <<<<<<<<<<<<<<
@@ -7037,7 +6921,7 @@ static __Pyx_memviewslice __pyx_f_15gapfill_core_a1_alternates_cy(int __pyx_v_li
   for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
     __pyx_v_x = __pyx_t_8;
 
-    /* "gapfill_core_a1.pyx":597
+    /* "gapfill_core_a1.pyx":593
  *     cdef int[::1] arr = np.empty(shape=(lim*2),dtype=np.int32,order='c')
  *     for x in range(0,lim):
  *         arr[2*x] = x+1             # <<<<<<<<<<<<<<
@@ -7047,7 +6931,7 @@ static __Pyx_memviewslice __pyx_f_15gapfill_core_a1_alternates_cy(int __pyx_v_li
     __pyx_t_9 = (2 * __pyx_v_x);
     *((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_arr.data) + __pyx_t_9)) )) = (__pyx_v_x + 1);
 
-    /* "gapfill_core_a1.pyx":598
+    /* "gapfill_core_a1.pyx":594
  *     for x in range(0,lim):
  *         arr[2*x] = x+1
  *         arr[2*x+1] = -(x+1)             # <<<<<<<<<<<<<<
@@ -7057,7 +6941,7 @@ static __Pyx_memviewslice __pyx_f_15gapfill_core_a1_alternates_cy(int __pyx_v_li
     __pyx_t_10 = ((2 * __pyx_v_x) + 1);
     *((int *) ( /* dim=0 */ ((char *) (((int *) __pyx_v_arr.data) + __pyx_t_10)) )) = (-(__pyx_v_x + 1));
 
-    /* "gapfill_core_a1.pyx":599
+    /* "gapfill_core_a1.pyx":595
  *         arr[2*x] = x+1
  *         arr[2*x+1] = -(x+1)
  *         x += 1             # <<<<<<<<<<<<<<
@@ -7067,7 +6951,7 @@ static __Pyx_memviewslice __pyx_f_15gapfill_core_a1_alternates_cy(int __pyx_v_li
     __pyx_v_x = (__pyx_v_x + 1);
   }
 
-  /* "gapfill_core_a1.pyx":600
+  /* "gapfill_core_a1.pyx":596
  *         arr[2*x+1] = -(x+1)
  *         x += 1
  *     return arr             # <<<<<<<<<<<<<<
@@ -7078,7 +6962,7 @@ static __Pyx_memviewslice __pyx_f_15gapfill_core_a1_alternates_cy(int __pyx_v_li
   __pyx_r = __pyx_v_arr;
   goto __pyx_L0;
 
-  /* "gapfill_core_a1.pyx":591
+  /* "gapfill_core_a1.pyx":587
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * cdef int[::1] alternates_cy(int lim):             # <<<<<<<<<<<<<<
@@ -20701,7 +20585,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ASCII, __pyx_k_ASCII, sizeof(__pyx_k_ASCII), 0, 0, 1, 1},
   {&__pyx_n_s_Bottom, __pyx_k_Bottom, sizeof(__pyx_k_Bottom), 0, 0, 1, 1},
   {&__pyx_kp_s_Buffer_view_does_not_expose_stri, __pyx_k_Buffer_view_does_not_expose_stri, sizeof(__pyx_k_Buffer_view_does_not_expose_stri), 0, 0, 1, 0},
-  {&__pyx_kp_s_Calculating_nbr_table_out_to_rad, __pyx_k_Calculating_nbr_table_out_to_rad, sizeof(__pyx_k_Calculating_nbr_table_out_to_rad), 0, 0, 1, 0},
   {&__pyx_kp_s_Can_only_create_a_buffer_that_is, __pyx_k_Can_only_create_a_buffer_that_is, sizeof(__pyx_k_Can_only_create_a_buffer_that_is), 0, 0, 1, 0},
   {&__pyx_kp_s_Cannot_assign_to_read_only_memor, __pyx_k_Cannot_assign_to_read_only_memor, sizeof(__pyx_k_Cannot_assign_to_read_only_memor), 0, 0, 1, 0},
   {&__pyx_kp_s_Cannot_create_writable_memory_vi, __pyx_k_Cannot_create_writable_memory_vi, sizeof(__pyx_k_Cannot_create_writable_memory_vi), 0, 0, 1, 0},
@@ -20740,7 +20623,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_MemoryView_of_r_object, __pyx_k_MemoryView_of_r_object, sizeof(__pyx_k_MemoryView_of_r_object), 0, 0, 1, 0},
   {&__pyx_n_s_NODATA_VALUE, __pyx_k_NODATA_VALUE, sizeof(__pyx_k_NODATA_VALUE), 0, 0, 1, 1},
   {&__pyx_n_s_NeverDataLocations, __pyx_k_NeverDataLocations, sizeof(__pyx_k_NeverDataLocations), 0, 0, 1, 1},
-  {&__pyx_kp_s_No_data_template_0_s_Using_fill, __pyx_k_No_data_template_0_s_Using_fill, sizeof(__pyx_k_No_data_template_0_s_Using_fill), 0, 0, 1, 0},
   {&__pyx_n_b_O, __pyx_k_O, sizeof(__pyx_k_O), 0, 0, 0, 1},
   {&__pyx_n_s_OCEAN, __pyx_k_OCEAN, sizeof(__pyx_k_OCEAN), 0, 0, 1, 1},
   {&__pyx_n_s_OceanCells, __pyx_k_OceanCells, sizeof(__pyx_k_OceanCells), 0, 0, 1, 1},
@@ -20750,7 +20632,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_PixelMargins, __pyx_k_PixelMargins, sizeof(__pyx_k_PixelMargins), 0, 0, 1, 1},
   {&__pyx_n_s_RATIO, __pyx_k_RATIO, sizeof(__pyx_k_RATIO), 0, 0, 1, 1},
   {&__pyx_n_s_Right, __pyx_k_Right, sizeof(__pyx_k_Right), 0, 0, 1, 1},
-  {&__pyx_kp_s_Running_A1_Full_Spiral_Search, __pyx_k_Running_A1_Full_Spiral_Search, sizeof(__pyx_k_Running_A1_Full_Spiral_Search), 0, 0, 1, 0},
   {&__pyx_n_s_SPIRAL_CONFIG, __pyx_k_SPIRAL_CONFIG, sizeof(__pyx_k_SPIRAL_CONFIG), 0, 0, 1, 1},
   {&__pyx_n_s_T, __pyx_k_T, sizeof(__pyx_k_T), 0, 0, 1, 1},
   {&__pyx_n_s_TRIM_FULL_OUTLIERS, __pyx_k_TRIM_FULL_OUTLIERS, sizeof(__pyx_k_TRIM_FULL_OUTLIERS), 0, 0, 1, 1},
@@ -20865,7 +20746,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 225, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 221, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(1, 133, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 148, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 151, __pyx_L1_error)
@@ -24130,6 +24011,37 @@ static CYTHON_INLINE int __pyx_memview_set_double(const char *itemp, PyObject *o
     return 1;
 }
 
+/* CIntToPy */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_char(unsigned char value) {
+    const unsigned char neg_one = (unsigned char) ((unsigned char) 0 - (unsigned char) 1), const_zero = (unsigned char) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(unsigned char) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(unsigned char) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(unsigned char) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+#endif
+        }
+    } else {
+        if (sizeof(unsigned char) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+#ifdef HAVE_LONG_LONG
+        } else if (sizeof(unsigned char) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+#endif
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(unsigned char),
+                                     little, !is_unsigned);
+    }
+}
+
 /* Print */
 #if !CYTHON_COMPILING_IN_PYPY && PY_MAJOR_VERSION < 3
 static PyObject *__Pyx_GetStdout(void) {
@@ -24235,68 +24147,6 @@ bad:
     return -1;
 }
 #endif
-
-/* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_char(char value) {
-    const char neg_one = (char) ((char) 0 - (char) 1), const_zero = (char) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(char) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(char) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(char) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(char) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(char) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(char),
-                                     little, !is_unsigned);
-    }
-}
-
-/* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_unsigned_char(unsigned char value) {
-    const unsigned char neg_one = (unsigned char) ((unsigned char) 0 - (unsigned char) 1), const_zero = (unsigned char) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(unsigned char) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(unsigned char) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(unsigned char) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(unsigned char) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(unsigned char) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(unsigned char),
-                                     little, !is_unsigned);
-    }
-}
 
 /* None */
 static CYTHON_INLINE long __Pyx_pow_long(long b, long e) {

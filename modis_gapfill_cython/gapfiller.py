@@ -56,7 +56,7 @@ class GapFiller:
         self._inputFileDict = defaultdict(lambda: defaultdict(str))
         self.__InitialiseFiles(gapfillFilePaths.DATA_FILES_GLOB_PATTERN)
         self._filePaths = gapfillFilePaths
-        self._outTemplate = "FILLED-OUTPUT{}.{}.{}.TemporalSummary.Res.SpatialSummary.tif"
+        self._outTemplate = self._jobDetails.OutputFilenameTag+"{}.{}.{}.TemporalSummary.Res.SpatialSummary.tif"
         self._intermediateFiles = defaultdict(dict)
 
         # initialise limits of fill area in pixel coords of the input files
@@ -425,6 +425,7 @@ class GapFiller:
         # the returned object is an instance of DespeckleDiagnostics
         # Note that despeckle runs on the whole stack, not taking account of firstYearToFill, this is
         # because we don't want extreme values to remain to be usable in deriving fill values
+        print(self._despeckleConfig.GetSummaryMessage())
         despeckleResult = setSpeckleFlags(dataStacks=dataStack, margins=despeckleMargins,
                                           flagValues=self._flagValues, dataConfig=self._dataSpecificConfig,
                                           speckleConfig=self._despeckleConfig, nCores=self._jobDetails.NCores)
@@ -434,6 +435,7 @@ class GapFiller:
         # dataStack.DataArray3D, dataStack.FlagsArray3D, and dataStack.DistanceTemplate3D are modified in place.
         # They will have a different (smaller) shape as the A1 search margins will be removed.
         # The returned object is an instance of A1Diagnostics
+        print(self._a1Config.GetSummaryMessage())
         a1Result = a1_core(dataStacks=dataStack, margins=a1Margins,
                            flagValues=self._flagValues, dataConfig=self._dataSpecificConfig,
                            a1Config=self._a1Config,
@@ -534,6 +536,8 @@ class GapFiller:
             props_Flags = flagsReader.GetProperties()
 
             if self._jobDetails.RunA2:
+                print(f"Running A2 for image {dataFile}")
+                print(self._a2Config.GetSummaryMessage())
                 A2Diagnostics = A2ImageCaller(dataImageIn=arr_Data, flagsImageIn=arr_Flags, distImageIn=arr_Dists,
                                               meanImageIn=arr_Mean,
                                               a2Config=self._a2Config, flagValues=self._flagValues,
@@ -565,7 +569,7 @@ class GapFiller:
             flagWriter.SetProperties(props_Flags)
             flagWriter.Save(arr_Flags)
 
-            os.remove(dataFile)
-            os.remove(distsFile)
-            os.remove(flagsFile)
-            self._intermediateFiles.clear()
+            #os.remove(dataFile)
+            #os.remove(distsFile)
+            #os.remove(flagsFile)
+        self._intermediateFiles.clear()

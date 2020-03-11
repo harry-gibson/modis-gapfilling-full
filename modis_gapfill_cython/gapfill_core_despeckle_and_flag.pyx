@@ -126,17 +126,9 @@ cpdef setSpeckleFlags (dataStacks: A1DataStack, margins:PixelMargins, flagValues
 
     time_start = time.time()
 
-    # TODO replace print with logging
-    print ("Despeckle: Rejecting data beyond {0!s}s.d. of mean. Nbr search on data beyond {1!s} s.d. of mean.".
-           format(stDevValidityThreshold, speckleDevThreshold))
-    print ("Nbr searching for {0!s} - {1!s} nbrs within {2!s} spiral steps for z-score tolerance of {3!s}".
-           format( _SPECKLE_NBR_MIN_THRESHOLD, _SPECKLE_NBR_MAX_THRESHOLD, _MAX_NEIGHBOURS_TO_CHECK,
-                  _SPECKLE_ZSCORE_THRESHOLD))
-
     # Generate the neighbour spiral search table out to "a bit" further than needed
     _SEARCH_RADIUS =  <int> ((sqrt(_MAX_NEIGHBOURS_TO_CHECK / 3.14)) + 5)
     diam = _SEARCH_RADIUS * 2 + 1
-    print ("Despeckle diam = " + str(diam))
     inds = np.indices([diam, diam]) - _SEARCH_RADIUS
     distTmp = np.sqrt((inds ** 2).sum(0))
     npTmpTable = ((inds.T).reshape(diam ** 2, 2))

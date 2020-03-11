@@ -30,5 +30,6 @@ FillJob:
   RunA2: True
   NCores: int
   MemTargetBytes: 40e9
+  OutputFilenameTag: str
 
 
