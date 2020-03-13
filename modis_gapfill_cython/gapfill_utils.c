@@ -984,7 +984,7 @@ struct __pyx_obj_13gapfill_utils_A2PassData {
 };
 
 
-/* "gapfill_utils.pyx":140
+/* "gapfill_utils.pyx":99
  * 
  * 
  * cdef class PixelMargins:             # <<<<<<<<<<<<<<
@@ -1337,6 +1337,13 @@ static int __Pyx_ParseOptionalKeywords(PyObject *kwds, PyObject **argnames[],\
     PyObject *kwds2, PyObject *values[], Py_ssize_t num_pos_args,\
     const char* function_name);
 
+/* PyCFunctionFastCall.proto */
+#if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
+#else
+#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
+#endif
+
 /* PyFunctionFastCall.proto */
 #if CYTHON_FAST_PYCALL
 #define __Pyx_PyFunction_FastCall(func, args, nargs)\
@@ -1367,33 +1374,16 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 #define __Pyx_PyObject_Call(func, arg, kw) PyObject_Call(func, arg, kw)
 #endif
 
+/* PyObjectCall2Args.proto */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
+
 /* PyObjectCallMethO.proto */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg);
 #endif
 
-/* PyObjectCallNoArg.proto */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
-#else
-#define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
-#endif
-
-/* PyCFunctionFastCall.proto */
-#if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject *__Pyx_PyCFunction_FastCall(PyObject *func, PyObject **args, Py_ssize_t nargs);
-#else
-#define __Pyx_PyCFunction_FastCall(func, args, nargs)  (assert(0), NULL)
-#endif
-
 /* PyObjectCallOneArg.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObject *arg);
-
-/* PyObjectCall2Args.proto */
-static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2);
-
-/* RaiseException.proto */
-static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
 /* GetItemInt.proto */
 #define __Pyx_GetItemInt(o, i, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
@@ -1423,6 +1413,16 @@ static CYTHON_INLINE PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* k
 #else
 #define __Pyx_PyObject_GetItem(obj, key)  PyObject_GetItem(obj, key)
 #endif
+
+/* PyObjectCallNoArg.proto */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func);
+#else
+#define __Pyx_PyObject_CallNoArg(func) __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL)
+#endif
+
+/* RaiseException.proto */
+static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
 /* Import.proto */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
@@ -1853,6 +1853,7 @@ static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_Ellipsis;
 static PyObject *__pyx_builtin_id;
 static PyObject *__pyx_builtin_IndexError;
+static const char __pyx_k_C[] = "C";
 static const char __pyx_k_O[] = "O";
 static const char __pyx_k_T[] = "T";
 static const char __pyx_k_c[] = "c";
@@ -1879,6 +1880,7 @@ static const char __pyx_k_class[] = "__class__";
 static const char __pyx_k_error[] = "error";
 static const char __pyx_k_flags[] = "flags";
 static const char __pyx_k_numpy[] = "numpy";
+static const char __pyx_k_order[] = "order";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_right[] = "right";
 static const char __pyx_k_shape[] = "shape";
@@ -1922,11 +1924,11 @@ static const char __pyx_k_PixelMargins[] = "PixelMargins";
 static const char __pyx_k_pyx_checksum[] = "__pyx_checksum";
 static const char __pyx_k_stringsource[] = "stringsource";
 static const char __pyx_k_sumDistArray[] = "sumDistArray";
-static const char __pyx_k_TransformData[] = "__TransformData";
 static const char __pyx_k_distanceArray[] = "distanceArray";
 static const char __pyx_k_gapfill_utils[] = "gapfill_utils";
 static const char __pyx_k_pyx_getbuffer[] = "__pyx_getbuffer";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
+static const char __pyx_k_transformArray[] = "__transformArray__";
 static const char __pyx_k_View_MemoryView[] = "View.MemoryView";
 static const char __pyx_k_allocate_buffer[] = "allocate_buffer";
 static const char __pyx_k_dtype_is_object[] = "dtype_is_object";
@@ -1969,6 +1971,7 @@ static PyObject *__pyx_n_s_A2DataStack;
 static PyObject *__pyx_n_s_A2PassData;
 static PyObject *__pyx_n_s_ASCII;
 static PyObject *__pyx_kp_s_Buffer_view_does_not_expose_stri;
+static PyObject *__pyx_n_s_C;
 static PyObject *__pyx_kp_s_Can_only_create_a_buffer_that_is;
 static PyObject *__pyx_kp_s_Cannot_assign_to_read_only_memor;
 static PyObject *__pyx_kp_s_Cannot_create_writable_memory_vi;
@@ -1991,7 +1994,6 @@ static PyObject *__pyx_kp_s_Out_of_bounds_on_buffer_access_a;
 static PyObject *__pyx_n_s_PickleError;
 static PyObject *__pyx_n_s_PixelMargins;
 static PyObject *__pyx_n_s_T;
-static PyObject *__pyx_n_s_TransformData;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_kp_s_Unable_to_convert_item_to_object;
 static PyObject *__pyx_n_s_ValueError;
@@ -2039,6 +2041,7 @@ static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
 static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_n_s_obj;
+static PyObject *__pyx_n_s_order;
 static PyObject *__pyx_n_s_pack;
 static PyObject *__pyx_n_s_passNumber;
 static PyObject *__pyx_n_s_pickle;
@@ -2073,6 +2076,7 @@ static PyObject *__pyx_n_s_struct;
 static PyObject *__pyx_n_s_sumDistArray;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_top;
+static PyObject *__pyx_n_s_transformArray;
 static PyObject *__pyx_kp_s_unable_to_allocate_array_data;
 static PyObject *__pyx_kp_s_unable_to_allocate_shape_and_str;
 static PyObject *__pyx_n_s_unpack;
@@ -2110,7 +2114,7 @@ static PyObject *__pyx_pf_13gapfill_utils_11A2DataStack_4__setstate_cython__(str
 static int __pyx_pf_13gapfill_utils_10A2PassData___cinit__(struct __pyx_obj_13gapfill_utils_A2PassData *__pyx_v_self, PyObject *__pyx_v_passNumber, PyObject *__pyx_v_dataArray, PyObject *__pyx_v_flagsArray, PyObject *__pyx_v_distanceArray, PyObject *__pyx_v_meanArray, PyObject *__pyx_v_sumDistArray); /* proto */
 static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_2getOutputData(struct __pyx_obj_13gapfill_utils_A2PassData *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_4getOutputDists(struct __pyx_obj_13gapfill_utils_A2PassData *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__TransformData(struct __pyx_obj_13gapfill_utils_A2PassData *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__transformArray__(struct __pyx_obj_13gapfill_utils_A2PassData *__pyx_v_self, PyObject *__pyx_v_data); /* proto */
 static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_22TransformedDataArray2D___get__(struct __pyx_obj_13gapfill_utils_A2PassData *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_23TransformedFlagsArray2D___get__(struct __pyx_obj_13gapfill_utils_A2PassData *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_26TransformedDistanceArray2D___get__(struct __pyx_obj_13gapfill_utils_A2PassData *__pyx_v_self); /* proto */
@@ -3921,7 +3925,7 @@ static PyObject *__pyx_pf_13gapfill_utils_11A2DataStack_4__setstate_cython__(str
  * 
  *     def __cinit__(self, passNumber, dataArray, flagsArray, distanceArray, meanArray, sumDistArray):             # <<<<<<<<<<<<<<
  * 
- *         self.TransformedDataArray2D = dataArray
+ *         self.passNumber = passNumber
  */
 
 /* Python wrapper */
@@ -4032,166 +4036,236 @@ static int __pyx_pw_13gapfill_utils_10A2PassData_1__cinit__(PyObject *__pyx_v_se
 static int __pyx_pf_13gapfill_utils_10A2PassData___cinit__(struct __pyx_obj_13gapfill_utils_A2PassData *__pyx_v_self, PyObject *__pyx_v_passNumber, PyObject *__pyx_v_dataArray, PyObject *__pyx_v_flagsArray, PyObject *__pyx_v_distanceArray, PyObject *__pyx_v_meanArray, PyObject *__pyx_v_sumDistArray) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
-  __Pyx_memviewslice __pyx_t_1 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_t_2 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  char __pyx_t_3;
+  char __pyx_t_1;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
+  __Pyx_memviewslice __pyx_t_5 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_t_7 = NULL;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
   /* "gapfill_utils.pyx":54
  *     def __cinit__(self, passNumber, dataArray, flagsArray, distanceArray, meanArray, sumDistArray):
  * 
- *         self.TransformedDataArray2D = dataArray             # <<<<<<<<<<<<<<
- *         self.TransformedFlagsArray2D = flagsArray
- *         self.TransformedDistanceArray2D = distanceArray
- */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_v_dataArray, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 54, __pyx_L1_error)
-  __PYX_XDEC_MEMVIEW(&__pyx_v_self->TransformedDataArray2D, 0);
-  __pyx_v_self->TransformedDataArray2D = __pyx_t_1;
-  __pyx_t_1.memview = NULL;
-  __pyx_t_1.data = NULL;
-
-  /* "gapfill_utils.pyx":55
+ *         self.passNumber = passNumber             # <<<<<<<<<<<<<<
  * 
- *         self.TransformedDataArray2D = dataArray
- *         self.TransformedFlagsArray2D = flagsArray             # <<<<<<<<<<<<<<
- *         self.TransformedDistanceArray2D = distanceArray
- *         self.TransformedMeanArray2D = meanArray
+ *         self.TransformedDataArray2D = self.__transformArray__(dataArray)
  */
-  __pyx_t_2 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_unsigned_char(__pyx_v_flagsArray, PyBUF_WRITABLE); if (unlikely(!__pyx_t_2.memview)) __PYX_ERR(0, 55, __pyx_L1_error)
-  __PYX_XDEC_MEMVIEW(&__pyx_v_self->TransformedFlagsArray2D, 0);
-  __pyx_v_self->TransformedFlagsArray2D = __pyx_t_2;
-  __pyx_t_2.memview = NULL;
-  __pyx_t_2.data = NULL;
+  __pyx_t_1 = __Pyx_PyInt_As_char(__pyx_v_passNumber); if (unlikely((__pyx_t_1 == (char)-1) && PyErr_Occurred())) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_v_self->passNumber = __pyx_t_1;
 
   /* "gapfill_utils.pyx":56
- *         self.TransformedDataArray2D = dataArray
- *         self.TransformedFlagsArray2D = flagsArray
- *         self.TransformedDistanceArray2D = distanceArray             # <<<<<<<<<<<<<<
- *         self.TransformedMeanArray2D = meanArray
- *         self.TransformedSumOfPassDistancesArray2D = sumDistArray
- */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_v_distanceArray, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 56, __pyx_L1_error)
-  __PYX_XDEC_MEMVIEW(&__pyx_v_self->TransformedDistanceArray2D, 0);
-  __pyx_v_self->TransformedDistanceArray2D = __pyx_t_1;
-  __pyx_t_1.memview = NULL;
-  __pyx_t_1.data = NULL;
-
-  /* "gapfill_utils.pyx":57
- *         self.TransformedFlagsArray2D = flagsArray
- *         self.TransformedDistanceArray2D = distanceArray
- *         self.TransformedMeanArray2D = meanArray             # <<<<<<<<<<<<<<
- *         self.TransformedSumOfPassDistancesArray2D = sumDistArray
- * 
- */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_v_meanArray, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 57, __pyx_L1_error)
-  __PYX_XDEC_MEMVIEW(&__pyx_v_self->TransformedMeanArray2D, 0);
-  __pyx_v_self->TransformedMeanArray2D = __pyx_t_1;
-  __pyx_t_1.memview = NULL;
-  __pyx_t_1.data = NULL;
-
-  /* "gapfill_utils.pyx":58
- *         self.TransformedDistanceArray2D = distanceArray
- *         self.TransformedMeanArray2D = meanArray
- *         self.TransformedSumOfPassDistancesArray2D = sumDistArray             # <<<<<<<<<<<<<<
- * 
  *         self.passNumber = passNumber
+ * 
+ *         self.TransformedDataArray2D = self.__transformArray__(dataArray)             # <<<<<<<<<<<<<<
+ *         self.TransformedFlagsArray2D = self.__transformArray__(flagsArray)
+ *         self.TransformedDistanceArray2D = self.__transformArray__(distanceArray)
  */
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_v_sumDistArray, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 58, __pyx_L1_error)
-  __PYX_XDEC_MEMVIEW(&__pyx_v_self->TransformedSumOfPassDistancesArray2D, 0);
-  __pyx_v_self->TransformedSumOfPassDistancesArray2D = __pyx_t_1;
-  __pyx_t_1.memview = NULL;
-  __pyx_t_1.data = NULL;
-
-  /* "gapfill_utils.pyx":60
- *         self.TransformedSumOfPassDistancesArray2D = sumDistArray
- * 
- *         self.passNumber = passNumber             # <<<<<<<<<<<<<<
- *         #self.dataBits=[self.DataArray2D, self.FlagsArray2D, self.DistanceArray2D, self.MeanArray2D, self.SumOfPassDistancesArray2D]
- * 
- */
-  __pyx_t_3 = __Pyx_PyInt_As_char(__pyx_v_passNumber); if (unlikely((__pyx_t_3 == (char)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L1_error)
-  __pyx_v_self->passNumber = __pyx_t_3;
-
-  /* "gapfill_utils.pyx":63
- *         #self.dataBits=[self.DataArray2D, self.FlagsArray2D, self.DistanceArray2D, self.MeanArray2D, self.SumOfPassDistancesArray2D]
- * 
- *         self.__TransformData()             # <<<<<<<<<<<<<<
- * 
- *         self.TransformedDataArrayOutput2D = np.empty_like(dataArray)
- */
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_TransformData); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
-    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
-    if (likely(__pyx_t_6)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-      __Pyx_INCREF(__pyx_t_6);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_transformArray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_5, function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
     }
   }
-  __pyx_t_4 = (__pyx_t_6) ? __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6) : __Pyx_PyObject_CallNoArg(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 63, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_dataArray) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_dataArray);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 56, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_self->TransformedDataArray2D, 0);
+  __pyx_v_self->TransformedDataArray2D = __pyx_t_5;
+  __pyx_t_5.memview = NULL;
+  __pyx_t_5.data = NULL;
 
-  /* "gapfill_utils.pyx":65
- *         self.__TransformData()
+  /* "gapfill_utils.pyx":57
  * 
- *         self.TransformedDataArrayOutput2D = np.empty_like(dataArray)             # <<<<<<<<<<<<<<
+ *         self.TransformedDataArray2D = self.__transformArray__(dataArray)
+ *         self.TransformedFlagsArray2D = self.__transformArray__(flagsArray)             # <<<<<<<<<<<<<<
+ *         self.TransformedDistanceArray2D = self.__transformArray__(distanceArray)
+ *         self.TransformedMeanArray2D = self.__transformArray__(meanArray)
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_transformArray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_flagsArray) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_flagsArray);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_6 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_unsigned_char(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_6.memview)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_self->TransformedFlagsArray2D, 0);
+  __pyx_v_self->TransformedFlagsArray2D = __pyx_t_6;
+  __pyx_t_6.memview = NULL;
+  __pyx_t_6.data = NULL;
+
+  /* "gapfill_utils.pyx":58
+ *         self.TransformedDataArray2D = self.__transformArray__(dataArray)
+ *         self.TransformedFlagsArray2D = self.__transformArray__(flagsArray)
+ *         self.TransformedDistanceArray2D = self.__transformArray__(distanceArray)             # <<<<<<<<<<<<<<
+ *         self.TransformedMeanArray2D = self.__transformArray__(meanArray)
+ *         self.TransformedSumOfPassDistancesArray2D = self.__transformArray__(sumDistArray)
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_transformArray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_distanceArray) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_distanceArray);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_self->TransformedDistanceArray2D, 0);
+  __pyx_v_self->TransformedDistanceArray2D = __pyx_t_5;
+  __pyx_t_5.memview = NULL;
+  __pyx_t_5.data = NULL;
+
+  /* "gapfill_utils.pyx":59
+ *         self.TransformedFlagsArray2D = self.__transformArray__(flagsArray)
+ *         self.TransformedDistanceArray2D = self.__transformArray__(distanceArray)
+ *         self.TransformedMeanArray2D = self.__transformArray__(meanArray)             # <<<<<<<<<<<<<<
+ *         self.TransformedSumOfPassDistancesArray2D = self.__transformArray__(sumDistArray)
+ * 
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_transformArray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_meanArray) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_meanArray);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_self->TransformedMeanArray2D, 0);
+  __pyx_v_self->TransformedMeanArray2D = __pyx_t_5;
+  __pyx_t_5.memview = NULL;
+  __pyx_t_5.data = NULL;
+
+  /* "gapfill_utils.pyx":60
+ *         self.TransformedDistanceArray2D = self.__transformArray__(distanceArray)
+ *         self.TransformedMeanArray2D = self.__transformArray__(meanArray)
+ *         self.TransformedSumOfPassDistancesArray2D = self.__transformArray__(sumDistArray)             # <<<<<<<<<<<<<<
+ * 
+ *         self.TransformedDataArrayOutput2D = np.empty_like(self.TransformedDataArray2D)
+ */
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_transformArray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_v_sumDistArray) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_sumDistArray);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 60, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __PYX_XDEC_MEMVIEW(&__pyx_v_self->TransformedSumOfPassDistancesArray2D, 0);
+  __pyx_v_self->TransformedSumOfPassDistancesArray2D = __pyx_t_5;
+  __pyx_t_5.memview = NULL;
+  __pyx_t_5.data = NULL;
+
+  /* "gapfill_utils.pyx":62
+ *         self.TransformedSumOfPassDistancesArray2D = self.__transformArray__(sumDistArray)
+ * 
+ *         self.TransformedDataArrayOutput2D = np.empty_like(self.TransformedDataArray2D)             # <<<<<<<<<<<<<<
  * 
  *     def getOutputData(self):
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 65, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_empty_like); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 65, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_6);
-    if (likely(__pyx_t_5)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-      __Pyx_INCREF(__pyx_t_5);
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_empty_like); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (unlikely(!__pyx_v_self->TransformedDataArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 62, __pyx_L1_error)}
+  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedDataArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_7 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_4);
+    if (likely(__pyx_t_7)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+      __Pyx_INCREF(__pyx_t_7);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
+      __Pyx_DECREF_SET(__pyx_t_4, function);
     }
   }
-  __pyx_t_4 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_5, __pyx_v_dataArray) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_v_dataArray);
-  __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 65, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_1 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_4, PyBUF_WRITABLE); if (unlikely(!__pyx_t_1.memview)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_2 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_7, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_5 = __Pyx_PyObject_to_MemoryviewSlice_d_dc_float(__pyx_t_2, PyBUF_WRITABLE); if (unlikely(!__pyx_t_5.memview)) __PYX_ERR(0, 62, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __PYX_XDEC_MEMVIEW(&__pyx_v_self->TransformedDataArrayOutput2D, 0);
-  __pyx_v_self->TransformedDataArrayOutput2D = __pyx_t_1;
-  __pyx_t_1.memview = NULL;
-  __pyx_t_1.data = NULL;
+  __pyx_v_self->TransformedDataArrayOutput2D = __pyx_t_5;
+  __pyx_t_5.memview = NULL;
+  __pyx_t_5.data = NULL;
 
   /* "gapfill_utils.pyx":52
  *     cdef float[:,::1] outputData
  * 
  *     def __cinit__(self, passNumber, dataArray, flagsArray, distanceArray, meanArray, sumDistArray):             # <<<<<<<<<<<<<<
  * 
- *         self.TransformedDataArray2D = dataArray
+ *         self.passNumber = passNumber
  */
 
   /* function exit code */
   __pyx_r = 0;
   goto __pyx_L0;
   __pyx_L1_error:;
-  __PYX_XDEC_MEMVIEW(&__pyx_t_1, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_2, 1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_5, 1);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
+  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("gapfill_utils.A2PassData.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
@@ -4199,12 +4273,12 @@ static int __pyx_pf_13gapfill_utils_10A2PassData___cinit__(struct __pyx_obj_13ga
   return __pyx_r;
 }
 
-/* "gapfill_utils.pyx":67
- *         self.TransformedDataArrayOutput2D = np.empty_like(dataArray)
+/* "gapfill_utils.pyx":64
+ *         self.TransformedDataArrayOutput2D = np.empty_like(self.TransformedDataArray2D)
  * 
  *     def getOutputData(self):             # <<<<<<<<<<<<<<
  *         """Returns the filled data array held in this object, transformed back to c-normal order"""
- *         if self.passNumber == 0:
+ *         return self.__transformArray__(self.TransformedDataArray2D)
  */
 
 /* Python wrapper */
@@ -4227,634 +4301,48 @@ static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_2getOutputData(struct __p
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
-  __Pyx_memviewslice __pyx_t_4 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_t_5 = NULL;
-  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  int __pyx_t_7;
-  __Pyx_memviewslice __pyx_t_8 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_t_9 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_t_10 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_t_11 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_t_12 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("getOutputData", 0);
 
-  /* "gapfill_utils.pyx":69
+  /* "gapfill_utils.pyx":66
  *     def getOutputData(self):
  *         """Returns the filled data array held in this object, transformed back to c-normal order"""
- *         if self.passNumber == 0:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedDataArrayOutput2D.T)
- *         elif self.passNumber == 1:
- */
-  switch (__pyx_v_self->passNumber) {
-    case 0:
-
-    /* "gapfill_utils.pyx":70
- *         """Returns the filled data array held in this object, transformed back to c-normal order"""
- *         if self.passNumber == 0:
- *             return np.copy(self.TransformedDataArrayOutput2D.T)             # <<<<<<<<<<<<<<
- *         elif self.passNumber == 1:
- *             return np.copy(self.TransformedDataArrayOutput2D[:,::-1].T)
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 70, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_v_self->TransformedDataArrayOutput2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 70, __pyx_L1_error)}
-    __pyx_t_4 = __pyx_v_self->TransformedDataArrayOutput2D;
-    __PYX_INC_MEMVIEW(&__pyx_t_4, 1);
-    if (unlikely(__pyx_memslice_transpose(&__pyx_t_4) == 0)) __PYX_ERR(0, 70, __pyx_L1_error)
-    __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_4, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_4, 1);
-    __pyx_t_4.memview = NULL;
-    __pyx_t_4.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_3, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":69
- *     def getOutputData(self):
- *         """Returns the filled data array held in this object, transformed back to c-normal order"""
- *         if self.passNumber == 0:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedDataArrayOutput2D.T)
- *         elif self.passNumber == 1:
- */
-    break;
-    case 1:
-
-    /* "gapfill_utils.pyx":72
- *             return np.copy(self.TransformedDataArrayOutput2D.T)
- *         elif self.passNumber == 1:
- *             return np.copy(self.TransformedDataArrayOutput2D[:,::-1].T)             # <<<<<<<<<<<<<<
- *         elif self.passNumber == 2:
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,:].T)
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_v_self->TransformedDataArrayOutput2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 72, __pyx_L1_error)}
-    __pyx_t_6.data = __pyx_v_self->TransformedDataArrayOutput2D.data;
-    __pyx_t_6.memview = __pyx_v_self->TransformedDataArrayOutput2D.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_6, 0);
-    __pyx_t_6.shape[0] = __pyx_v_self->TransformedDataArrayOutput2D.shape[0];
-__pyx_t_6.strides[0] = __pyx_v_self->TransformedDataArrayOutput2D.strides[0];
-    __pyx_t_6.suboffsets[0] = -1;
-
-__pyx_t_7 = -1;
-    if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_6,
-    __pyx_v_self->TransformedDataArrayOutput2D.shape[1], __pyx_v_self->TransformedDataArrayOutput2D.strides[1], __pyx_v_self->TransformedDataArrayOutput2D.suboffsets[1],
-    1,
-    1,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 72, __pyx_L1_error)
-}
-
-__pyx_t_8 = __pyx_t_6;
-    __PYX_INC_MEMVIEW(&__pyx_t_8, 1);
-    if (unlikely(__pyx_memslice_transpose(&__pyx_t_8) == 0)) __PYX_ERR(0, 72, __pyx_L1_error)
-    __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
-    __pyx_t_6.memview = NULL;
-    __pyx_t_6.data = NULL;
-    __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_8, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 72, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
-    __pyx_t_8.memview = NULL;
-    __pyx_t_8.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":71
- *         if self.passNumber == 0:
- *             return np.copy(self.TransformedDataArrayOutput2D.T)
- *         elif self.passNumber == 1:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedDataArrayOutput2D[:,::-1].T)
- *         elif self.passNumber == 2:
- */
-    break;
-    case 2:
-
-    /* "gapfill_utils.pyx":74
- *             return np.copy(self.TransformedDataArrayOutput2D[:,::-1].T)
- *         elif self.passNumber == 2:
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,:].T)             # <<<<<<<<<<<<<<
- *         elif self.passNumber == 3:
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,::-1].T)
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 74, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_v_self->TransformedDataArrayOutput2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 74, __pyx_L1_error)}
-    __pyx_t_9.data = __pyx_v_self->TransformedDataArrayOutput2D.data;
-    __pyx_t_9.memview = __pyx_v_self->TransformedDataArrayOutput2D.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_9, 0);
-    __pyx_t_7 = -1;
-    if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_9,
-    __pyx_v_self->TransformedDataArrayOutput2D.shape[0], __pyx_v_self->TransformedDataArrayOutput2D.strides[0], __pyx_v_self->TransformedDataArrayOutput2D.suboffsets[0],
-    0,
-    0,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 74, __pyx_L1_error)
-}
-
-__pyx_t_9.shape[1] = __pyx_v_self->TransformedDataArrayOutput2D.shape[1];
-__pyx_t_9.strides[1] = __pyx_v_self->TransformedDataArrayOutput2D.strides[1];
-    __pyx_t_9.suboffsets[1] = -1;
-
-__pyx_t_10 = __pyx_t_9;
-    __PYX_INC_MEMVIEW(&__pyx_t_10, 1);
-    if (unlikely(__pyx_memslice_transpose(&__pyx_t_10) == 0)) __PYX_ERR(0, 74, __pyx_L1_error)
-    __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
-    __pyx_t_9.memview = NULL;
-    __pyx_t_9.data = NULL;
-    __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_10, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_10, 1);
-    __pyx_t_10.memview = NULL;
-    __pyx_t_10.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_3, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":73
- *         elif self.passNumber == 1:
- *             return np.copy(self.TransformedDataArrayOutput2D[:,::-1].T)
- *         elif self.passNumber == 2:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,:].T)
- *         elif self.passNumber == 3:
- */
-    break;
-    case 3:
-
-    /* "gapfill_utils.pyx":76
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,:].T)
- *         elif self.passNumber == 3:
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,::-1].T)             # <<<<<<<<<<<<<<
- *         elif self.passNumber == 4:
- *             return np.copy(self.TransformedDataArrayOutput2D)
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_v_self->TransformedDataArrayOutput2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 76, __pyx_L1_error)}
-    __pyx_t_11.data = __pyx_v_self->TransformedDataArrayOutput2D.data;
-    __pyx_t_11.memview = __pyx_v_self->TransformedDataArrayOutput2D.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_11, 0);
-    __pyx_t_7 = -1;
-    if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_11,
-    __pyx_v_self->TransformedDataArrayOutput2D.shape[0], __pyx_v_self->TransformedDataArrayOutput2D.strides[0], __pyx_v_self->TransformedDataArrayOutput2D.suboffsets[0],
-    0,
-    0,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 76, __pyx_L1_error)
-}
-
-if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_11,
-    __pyx_v_self->TransformedDataArrayOutput2D.shape[1], __pyx_v_self->TransformedDataArrayOutput2D.strides[1], __pyx_v_self->TransformedDataArrayOutput2D.suboffsets[1],
-    1,
-    1,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 76, __pyx_L1_error)
-}
-
-__pyx_t_12 = __pyx_t_11;
-    __PYX_INC_MEMVIEW(&__pyx_t_12, 1);
-    if (unlikely(__pyx_memslice_transpose(&__pyx_t_12) == 0)) __PYX_ERR(0, 76, __pyx_L1_error)
-    __PYX_XDEC_MEMVIEW(&__pyx_t_11, 1);
-    __pyx_t_11.memview = NULL;
-    __pyx_t_11.data = NULL;
-    __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_12, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
-    __pyx_t_12.memview = NULL;
-    __pyx_t_12.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":75
- *         elif self.passNumber == 2:
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,:].T)
- *         elif self.passNumber == 3:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,::-1].T)
- *         elif self.passNumber == 4:
- */
-    break;
-    case 4:
-
-    /* "gapfill_utils.pyx":78
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,::-1].T)
- *         elif self.passNumber == 4:
- *             return np.copy(self.TransformedDataArrayOutput2D)             # <<<<<<<<<<<<<<
- *         elif self.passNumber == 5:
- *             return np.copy(self.TransformedDataArrayOutput2D[:,::-1])
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 78, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 78, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_v_self->TransformedDataArrayOutput2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 78, __pyx_L1_error)}
-    __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedDataArrayOutput2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 78, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_3, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":77
- *         elif self.passNumber == 3:
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,::-1].T)
- *         elif self.passNumber == 4:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedDataArrayOutput2D)
- *         elif self.passNumber == 5:
- */
-    break;
-    case 5:
-
-    /* "gapfill_utils.pyx":80
- *             return np.copy(self.TransformedDataArrayOutput2D)
- *         elif self.passNumber == 5:
- *             return np.copy(self.TransformedDataArrayOutput2D[:,::-1])             # <<<<<<<<<<<<<<
- *         elif self.passNumber == 6:
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,:])
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_v_self->TransformedDataArrayOutput2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 80, __pyx_L1_error)}
-    __pyx_t_6.data = __pyx_v_self->TransformedDataArrayOutput2D.data;
-    __pyx_t_6.memview = __pyx_v_self->TransformedDataArrayOutput2D.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_6, 0);
-    __pyx_t_6.shape[0] = __pyx_v_self->TransformedDataArrayOutput2D.shape[0];
-__pyx_t_6.strides[0] = __pyx_v_self->TransformedDataArrayOutput2D.strides[0];
-    __pyx_t_6.suboffsets[0] = -1;
-
-__pyx_t_7 = -1;
-    if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_6,
-    __pyx_v_self->TransformedDataArrayOutput2D.shape[1], __pyx_v_self->TransformedDataArrayOutput2D.strides[1], __pyx_v_self->TransformedDataArrayOutput2D.suboffsets[1],
-    1,
-    1,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 80, __pyx_L1_error)
-}
-
-__pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_6, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
-    __pyx_t_6.memview = NULL;
-    __pyx_t_6.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":79
- *         elif self.passNumber == 4:
- *             return np.copy(self.TransformedDataArrayOutput2D)
- *         elif self.passNumber == 5:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedDataArrayOutput2D[:,::-1])
- *         elif self.passNumber == 6:
- */
-    break;
-    case 6:
-
-    /* "gapfill_utils.pyx":82
- *             return np.copy(self.TransformedDataArrayOutput2D[:,::-1])
- *         elif self.passNumber == 6:
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,:])             # <<<<<<<<<<<<<<
- *         elif self.passNumber ==7:
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,::-1])
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 82, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_v_self->TransformedDataArrayOutput2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 82, __pyx_L1_error)}
-    __pyx_t_9.data = __pyx_v_self->TransformedDataArrayOutput2D.data;
-    __pyx_t_9.memview = __pyx_v_self->TransformedDataArrayOutput2D.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_9, 0);
-    __pyx_t_7 = -1;
-    if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_9,
-    __pyx_v_self->TransformedDataArrayOutput2D.shape[0], __pyx_v_self->TransformedDataArrayOutput2D.strides[0], __pyx_v_self->TransformedDataArrayOutput2D.suboffsets[0],
-    0,
-    0,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 82, __pyx_L1_error)
-}
-
-__pyx_t_9.shape[1] = __pyx_v_self->TransformedDataArrayOutput2D.shape[1];
-__pyx_t_9.strides[1] = __pyx_v_self->TransformedDataArrayOutput2D.strides[1];
-    __pyx_t_9.suboffsets[1] = -1;
-
-__pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_9, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 82, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
-    __pyx_t_9.memview = NULL;
-    __pyx_t_9.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_3, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":81
- *         elif self.passNumber == 5:
- *             return np.copy(self.TransformedDataArrayOutput2D[:,::-1])
- *         elif self.passNumber == 6:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,:])
- *         elif self.passNumber ==7:
- */
-    break;
-    case 7:
-
-    /* "gapfill_utils.pyx":84
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,:])
- *         elif self.passNumber ==7:
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,::-1])             # <<<<<<<<<<<<<<
- *         else:
- *             raise ValueError()
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_v_self->TransformedDataArrayOutput2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 84, __pyx_L1_error)}
-    __pyx_t_12.data = __pyx_v_self->TransformedDataArrayOutput2D.data;
-    __pyx_t_12.memview = __pyx_v_self->TransformedDataArrayOutput2D.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_12, 0);
-    __pyx_t_7 = -1;
-    if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_12,
-    __pyx_v_self->TransformedDataArrayOutput2D.shape[0], __pyx_v_self->TransformedDataArrayOutput2D.strides[0], __pyx_v_self->TransformedDataArrayOutput2D.suboffsets[0],
-    0,
-    0,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 84, __pyx_L1_error)
-}
-
-if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_12,
-    __pyx_v_self->TransformedDataArrayOutput2D.shape[1], __pyx_v_self->TransformedDataArrayOutput2D.strides[1], __pyx_v_self->TransformedDataArrayOutput2D.suboffsets[1],
-    1,
-    1,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 84, __pyx_L1_error)
-}
-
-__pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_12, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
-    __pyx_t_12.memview = NULL;
-    __pyx_t_12.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":83
- *         elif self.passNumber == 6:
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,:])
- *         elif self.passNumber ==7:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,::-1])
- *         else:
- */
-    break;
-    default:
-
-    /* "gapfill_utils.pyx":86
- *             return np.copy(self.TransformedDataArrayOutput2D[::-1,::-1])
- *         else:
- *             raise ValueError()             # <<<<<<<<<<<<<<
+ *         return self.__transformArray__(self.TransformedDataArray2D)             # <<<<<<<<<<<<<<
  * 
  *     def getOutputDists(self):
  */
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_ValueError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 86, __pyx_L1_error)
-    break;
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_transformArray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (unlikely(!__pyx_v_self->TransformedDataArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 66, __pyx_L1_error)}
+  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedDataArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
   }
+  __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_4, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
 
-  /* "gapfill_utils.pyx":67
- *         self.TransformedDataArrayOutput2D = np.empty_like(dataArray)
+  /* "gapfill_utils.pyx":64
+ *         self.TransformedDataArrayOutput2D = np.empty_like(self.TransformedDataArray2D)
  * 
  *     def getOutputData(self):             # <<<<<<<<<<<<<<
  *         """Returns the filled data array held in this object, transformed back to c-normal order"""
- *         if self.passNumber == 0:
+ *         return self.__transformArray__(self.TransformedDataArray2D)
  */
 
   /* function exit code */
@@ -4862,14 +4350,7 @@ __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_12, 2, (PyObject *(*)(char *)) __
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_4, 1);
-  __Pyx_XDECREF(__pyx_t_5);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_10, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_11, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_AddTraceback("gapfill_utils.A2PassData.getOutputData", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -4878,12 +4359,12 @@ __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_12, 2, (PyObject *(*)(char *)) __
   return __pyx_r;
 }
 
-/* "gapfill_utils.pyx":88
- *             raise ValueError()
+/* "gapfill_utils.pyx":68
+ *         return self.__transformArray__(self.TransformedDataArray2D)
  * 
  *     def getOutputDists(self):             # <<<<<<<<<<<<<<
  *         """Returns the sum-of-fill-distances array held in this object transformed back to c-normal order"""
- *         if self.passNumber == 0:
+ *         return self.__transformArray__(self.TransformedDistanceArray2D)
  */
 
 /* Python wrapper */
@@ -4906,634 +4387,48 @@ static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_4getOutputDists(struct __
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
-  __Pyx_memviewslice __pyx_t_4 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  PyObject *__pyx_t_5 = NULL;
-  __Pyx_memviewslice __pyx_t_6 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  int __pyx_t_7;
-  __Pyx_memviewslice __pyx_t_8 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_t_9 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_t_10 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_t_11 = { 0, 0, { 0 }, { 0 }, { 0 } };
-  __Pyx_memviewslice __pyx_t_12 = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("getOutputDists", 0);
 
-  /* "gapfill_utils.pyx":90
+  /* "gapfill_utils.pyx":70
  *     def getOutputDists(self):
  *         """Returns the sum-of-fill-distances array held in this object transformed back to c-normal order"""
- *         if self.passNumber == 0:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D.T)
- *         elif self.passNumber == 1:
- */
-  switch (__pyx_v_self->passNumber) {
-    case 0:
-
-    /* "gapfill_utils.pyx":91
- *         """Returns the sum-of-fill-distances array held in this object transformed back to c-normal order"""
- *         if self.passNumber == 0:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D.T)             # <<<<<<<<<<<<<<
- *         elif self.passNumber == 1:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1].T)
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_v_self->TransformedSumOfPassDistancesArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 91, __pyx_L1_error)}
-    __pyx_t_4 = __pyx_v_self->TransformedSumOfPassDistancesArray2D;
-    __PYX_INC_MEMVIEW(&__pyx_t_4, 1);
-    if (unlikely(__pyx_memslice_transpose(&__pyx_t_4) == 0)) __PYX_ERR(0, 91, __pyx_L1_error)
-    __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_4, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_4, 1);
-    __pyx_t_4.memview = NULL;
-    __pyx_t_4.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_3, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":90
- *     def getOutputDists(self):
- *         """Returns the sum-of-fill-distances array held in this object transformed back to c-normal order"""
- *         if self.passNumber == 0:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D.T)
- *         elif self.passNumber == 1:
- */
-    break;
-    case 1:
-
-    /* "gapfill_utils.pyx":93
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D.T)
- *         elif self.passNumber == 1:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1].T)             # <<<<<<<<<<<<<<
- *         elif self.passNumber == 2:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:].T)
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 93, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_v_self->TransformedSumOfPassDistancesArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 93, __pyx_L1_error)}
-    __pyx_t_6.data = __pyx_v_self->TransformedSumOfPassDistancesArray2D.data;
-    __pyx_t_6.memview = __pyx_v_self->TransformedSumOfPassDistancesArray2D.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_6, 0);
-    __pyx_t_6.shape[0] = __pyx_v_self->TransformedSumOfPassDistancesArray2D.shape[0];
-__pyx_t_6.strides[0] = __pyx_v_self->TransformedSumOfPassDistancesArray2D.strides[0];
-    __pyx_t_6.suboffsets[0] = -1;
-
-__pyx_t_7 = -1;
-    if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_6,
-    __pyx_v_self->TransformedSumOfPassDistancesArray2D.shape[1], __pyx_v_self->TransformedSumOfPassDistancesArray2D.strides[1], __pyx_v_self->TransformedSumOfPassDistancesArray2D.suboffsets[1],
-    1,
-    1,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 93, __pyx_L1_error)
-}
-
-__pyx_t_8 = __pyx_t_6;
-    __PYX_INC_MEMVIEW(&__pyx_t_8, 1);
-    if (unlikely(__pyx_memslice_transpose(&__pyx_t_8) == 0)) __PYX_ERR(0, 93, __pyx_L1_error)
-    __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
-    __pyx_t_6.memview = NULL;
-    __pyx_t_6.data = NULL;
-    __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_8, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 93, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
-    __pyx_t_8.memview = NULL;
-    __pyx_t_8.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":92
- *         if self.passNumber == 0:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D.T)
- *         elif self.passNumber == 1:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1].T)
- *         elif self.passNumber == 2:
- */
-    break;
-    case 2:
-
-    /* "gapfill_utils.pyx":95
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1].T)
- *         elif self.passNumber == 2:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:].T)             # <<<<<<<<<<<<<<
- *         elif self.passNumber == 3:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,::-1].T)
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 95, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 95, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_v_self->TransformedSumOfPassDistancesArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 95, __pyx_L1_error)}
-    __pyx_t_9.data = __pyx_v_self->TransformedSumOfPassDistancesArray2D.data;
-    __pyx_t_9.memview = __pyx_v_self->TransformedSumOfPassDistancesArray2D.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_9, 0);
-    __pyx_t_7 = -1;
-    if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_9,
-    __pyx_v_self->TransformedSumOfPassDistancesArray2D.shape[0], __pyx_v_self->TransformedSumOfPassDistancesArray2D.strides[0], __pyx_v_self->TransformedSumOfPassDistancesArray2D.suboffsets[0],
-    0,
-    0,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 95, __pyx_L1_error)
-}
-
-__pyx_t_9.shape[1] = __pyx_v_self->TransformedSumOfPassDistancesArray2D.shape[1];
-__pyx_t_9.strides[1] = __pyx_v_self->TransformedSumOfPassDistancesArray2D.strides[1];
-    __pyx_t_9.suboffsets[1] = -1;
-
-__pyx_t_10 = __pyx_t_9;
-    __PYX_INC_MEMVIEW(&__pyx_t_10, 1);
-    if (unlikely(__pyx_memslice_transpose(&__pyx_t_10) == 0)) __PYX_ERR(0, 95, __pyx_L1_error)
-    __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
-    __pyx_t_9.memview = NULL;
-    __pyx_t_9.data = NULL;
-    __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_10, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 95, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_10, 1);
-    __pyx_t_10.memview = NULL;
-    __pyx_t_10.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_3, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":94
- *         elif self.passNumber == 1:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1].T)
- *         elif self.passNumber == 2:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:].T)
- *         elif self.passNumber == 3:
- */
-    break;
-    case 3:
-
-    /* "gapfill_utils.pyx":97
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:].T)
- *         elif self.passNumber == 3:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,::-1].T)             # <<<<<<<<<<<<<<
- *         elif self.passNumber == 4:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D)
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 97, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_v_self->TransformedSumOfPassDistancesArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 97, __pyx_L1_error)}
-    __pyx_t_11.data = __pyx_v_self->TransformedSumOfPassDistancesArray2D.data;
-    __pyx_t_11.memview = __pyx_v_self->TransformedSumOfPassDistancesArray2D.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_11, 0);
-    __pyx_t_7 = -1;
-    if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_11,
-    __pyx_v_self->TransformedSumOfPassDistancesArray2D.shape[0], __pyx_v_self->TransformedSumOfPassDistancesArray2D.strides[0], __pyx_v_self->TransformedSumOfPassDistancesArray2D.suboffsets[0],
-    0,
-    0,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 97, __pyx_L1_error)
-}
-
-if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_11,
-    __pyx_v_self->TransformedSumOfPassDistancesArray2D.shape[1], __pyx_v_self->TransformedSumOfPassDistancesArray2D.strides[1], __pyx_v_self->TransformedSumOfPassDistancesArray2D.suboffsets[1],
-    1,
-    1,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 97, __pyx_L1_error)
-}
-
-__pyx_t_12 = __pyx_t_11;
-    __PYX_INC_MEMVIEW(&__pyx_t_12, 1);
-    if (unlikely(__pyx_memslice_transpose(&__pyx_t_12) == 0)) __PYX_ERR(0, 97, __pyx_L1_error)
-    __PYX_XDEC_MEMVIEW(&__pyx_t_11, 1);
-    __pyx_t_11.memview = NULL;
-    __pyx_t_11.data = NULL;
-    __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_12, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 97, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
-    __pyx_t_12.memview = NULL;
-    __pyx_t_12.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":96
- *         elif self.passNumber == 2:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:].T)
- *         elif self.passNumber == 3:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,::-1].T)
- *         elif self.passNumber == 4:
- */
-    break;
-    case 4:
-
-    /* "gapfill_utils.pyx":99
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,::-1].T)
- *         elif self.passNumber == 4:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D)             # <<<<<<<<<<<<<<
- *         elif self.passNumber == 5:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1])
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 99, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 99, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_v_self->TransformedSumOfPassDistancesArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 99, __pyx_L1_error)}
-    __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedSumOfPassDistancesArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 99, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_3, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":98
- *         elif self.passNumber == 3:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,::-1].T)
- *         elif self.passNumber == 4:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D)
- *         elif self.passNumber == 5:
- */
-    break;
-    case 5:
-
-    /* "gapfill_utils.pyx":101
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D)
- *         elif self.passNumber == 5:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1])             # <<<<<<<<<<<<<<
- *         elif self.passNumber == 6:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:])
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 101, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_v_self->TransformedSumOfPassDistancesArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 101, __pyx_L1_error)}
-    __pyx_t_6.data = __pyx_v_self->TransformedSumOfPassDistancesArray2D.data;
-    __pyx_t_6.memview = __pyx_v_self->TransformedSumOfPassDistancesArray2D.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_6, 0);
-    __pyx_t_6.shape[0] = __pyx_v_self->TransformedSumOfPassDistancesArray2D.shape[0];
-__pyx_t_6.strides[0] = __pyx_v_self->TransformedSumOfPassDistancesArray2D.strides[0];
-    __pyx_t_6.suboffsets[0] = -1;
-
-__pyx_t_7 = -1;
-    if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_6,
-    __pyx_v_self->TransformedSumOfPassDistancesArray2D.shape[1], __pyx_v_self->TransformedSumOfPassDistancesArray2D.strides[1], __pyx_v_self->TransformedSumOfPassDistancesArray2D.suboffsets[1],
-    1,
-    1,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 101, __pyx_L1_error)
-}
-
-__pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_6, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
-    __pyx_t_6.memview = NULL;
-    __pyx_t_6.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":100
- *         elif self.passNumber == 4:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D)
- *         elif self.passNumber == 5:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1])
- *         elif self.passNumber == 6:
- */
-    break;
-    case 6:
-
-    /* "gapfill_utils.pyx":103
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1])
- *         elif self.passNumber == 6:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:])             # <<<<<<<<<<<<<<
- *         elif self.passNumber ==7:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,::-1])
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_v_self->TransformedSumOfPassDistancesArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 103, __pyx_L1_error)}
-    __pyx_t_9.data = __pyx_v_self->TransformedSumOfPassDistancesArray2D.data;
-    __pyx_t_9.memview = __pyx_v_self->TransformedSumOfPassDistancesArray2D.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_9, 0);
-    __pyx_t_7 = -1;
-    if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_9,
-    __pyx_v_self->TransformedSumOfPassDistancesArray2D.shape[0], __pyx_v_self->TransformedSumOfPassDistancesArray2D.strides[0], __pyx_v_self->TransformedSumOfPassDistancesArray2D.suboffsets[0],
-    0,
-    0,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 103, __pyx_L1_error)
-}
-
-__pyx_t_9.shape[1] = __pyx_v_self->TransformedSumOfPassDistancesArray2D.shape[1];
-__pyx_t_9.strides[1] = __pyx_v_self->TransformedSumOfPassDistancesArray2D.strides[1];
-    __pyx_t_9.suboffsets[1] = -1;
-
-__pyx_t_2 = __pyx_memoryview_fromslice(__pyx_t_9, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
-    __pyx_t_9.memview = NULL;
-    __pyx_t_9.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_3, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":102
- *         elif self.passNumber == 5:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1])
- *         elif self.passNumber == 6:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:])
- *         elif self.passNumber ==7:
- */
-    break;
-    case 7:
-
-    /* "gapfill_utils.pyx":105
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:])
- *         elif self.passNumber ==7:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,::-1])             # <<<<<<<<<<<<<<
- *         else:
- *             raise ValueError()
- */
-    __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_v_self->TransformedSumOfPassDistancesArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 105, __pyx_L1_error)}
-    __pyx_t_12.data = __pyx_v_self->TransformedSumOfPassDistancesArray2D.data;
-    __pyx_t_12.memview = __pyx_v_self->TransformedSumOfPassDistancesArray2D.memview;
-    __PYX_INC_MEMVIEW(&__pyx_t_12, 0);
-    __pyx_t_7 = -1;
-    if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_12,
-    __pyx_v_self->TransformedSumOfPassDistancesArray2D.shape[0], __pyx_v_self->TransformedSumOfPassDistancesArray2D.strides[0], __pyx_v_self->TransformedSumOfPassDistancesArray2D.suboffsets[0],
-    0,
-    0,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 105, __pyx_L1_error)
-}
-
-if (unlikely(__pyx_memoryview_slice_memviewslice(
-    &__pyx_t_12,
-    __pyx_v_self->TransformedSumOfPassDistancesArray2D.shape[1], __pyx_v_self->TransformedSumOfPassDistancesArray2D.strides[1], __pyx_v_self->TransformedSumOfPassDistancesArray2D.suboffsets[1],
-    1,
-    1,
-    &__pyx_t_7,
-    0,
-    0,
-    -1L,
-    0,
-    0,
-    1,
-    1) < 0))
-{
-    __PYX_ERR(0, 105, __pyx_L1_error)
-}
-
-__pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_12, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
-    __pyx_t_12.memview = NULL;
-    __pyx_t_12.data = NULL;
-    __pyx_t_5 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-      __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_2);
-      if (likely(__pyx_t_5)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-        __Pyx_INCREF(__pyx_t_5);
-        __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_2, function);
-      }
-    }
-    __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
-    __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_r = __pyx_t_1;
-    __pyx_t_1 = 0;
-    goto __pyx_L0;
-
-    /* "gapfill_utils.pyx":104
- *         elif self.passNumber == 6:
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:])
- *         elif self.passNumber ==7:             # <<<<<<<<<<<<<<
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,::-1])
- *         else:
- */
-    break;
-    default:
-
-    /* "gapfill_utils.pyx":107
- *             return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,::-1])
- *         else:
- *             raise ValueError()             # <<<<<<<<<<<<<<
+ *         return self.__transformArray__(self.TransformedDistanceArray2D)             # <<<<<<<<<<<<<<
  * 
- *     def __TransformData(self):
+ *     def __transformArray__(self, data):
  */
-    __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_ValueError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 107, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __PYX_ERR(0, 107, __pyx_L1_error)
-    break;
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_transformArray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (unlikely(!__pyx_v_self->TransformedDistanceArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 70, __pyx_L1_error)}
+  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedDistanceArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
   }
+  __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_4, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
 
-  /* "gapfill_utils.pyx":88
- *             raise ValueError()
+  /* "gapfill_utils.pyx":68
+ *         return self.__transformArray__(self.TransformedDataArray2D)
  * 
  *     def getOutputDists(self):             # <<<<<<<<<<<<<<
  *         """Returns the sum-of-fill-distances array held in this object transformed back to c-normal order"""
- *         if self.passNumber == 0:
+ *         return self.__transformArray__(self.TransformedDistanceArray2D)
  */
 
   /* function exit code */
@@ -5541,14 +4436,7 @@ __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_12, 2, (PyObject *(*)(char *)) __
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_4, 1);
-  __Pyx_XDECREF(__pyx_t_5);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_6, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_9, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_10, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_11, 1);
-  __PYX_XDEC_MEMVIEW(&__pyx_t_12, 1);
+  __Pyx_XDECREF(__pyx_t_4);
   __Pyx_AddTraceback("gapfill_utils.A2PassData.getOutputDists", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -5557,558 +4445,422 @@ __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_t_12, 2, (PyObject *(*)(char *)) __
   return __pyx_r;
 }
 
-/* "gapfill_utils.pyx":109
- *             raise ValueError()
+/* "gapfill_utils.pyx":72
+ *         return self.__transformArray__(self.TransformedDistanceArray2D)
  * 
- *     def __TransformData(self):             # <<<<<<<<<<<<<<
+ *     def __transformArray__(self, data):             # <<<<<<<<<<<<<<
  *         """Transforms the input data arrays such that iterating over them in C-normal order will effectively
- *         pass over the data in one of the 8 cardinal directions. This implementation actually copies the data into
+ *         pass over the data in one of the 8 cardinal directions, according to which pass number this is.
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_13gapfill_utils_10A2PassData_7__TransformData(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_13gapfill_utils_10A2PassData_6__TransformData[] = "Transforms the input data arrays such that iterating over them in C-normal order will effectively\n        pass over the data in one of the 8 cardinal directions. This implementation actually copies the data into\n        a new C-normal array, so that all A2 pass runs should take the same amount of time. Not copying the data\n        i.e. not using np.copy results in the transposed passed 1-4 being ~ 9* slower due to the inefficient\n        memory access";
-static PyObject *__pyx_pw_13gapfill_utils_10A2PassData_7__TransformData(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_13gapfill_utils_10A2PassData_7__transformArray__(PyObject *__pyx_v_self, PyObject *__pyx_v_data); /*proto*/
+static char __pyx_doc_13gapfill_utils_10A2PassData_6__transformArray__[] = "Transforms the input data arrays such that iterating over them in C-normal order will effectively\n        pass over the data in one of the 8 cardinal directions, according to which pass number this is.\n        This implementation actually copies the data into a new C-normal array, so that all A2 pass runs\n        should take the same amount of time. Not copying the data i.e. not using np.copy results in the\n        transposed passed 1-4 being ~ 9* slower due to the inefficient memory access.\n        All transforms are reversible so can use the same call for input and output";
+static PyObject *__pyx_pw_13gapfill_utils_10A2PassData_7__transformArray__(PyObject *__pyx_v_self, PyObject *__pyx_v_data) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__TransformData (wrapper)", 0);
-  __pyx_r = __pyx_pf_13gapfill_utils_10A2PassData_6__TransformData(((struct __pyx_obj_13gapfill_utils_A2PassData *)__pyx_v_self));
+  __Pyx_RefNannySetupContext("__transformArray__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_13gapfill_utils_10A2PassData_6__transformArray__(((struct __pyx_obj_13gapfill_utils_A2PassData *)__pyx_v_self), ((PyObject *)__pyx_v_data));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__TransformData(struct __pyx_obj_13gapfill_utils_A2PassData *__pyx_v_self) {
-  CYTHON_UNUSED PyObject *__pyx_v_dataBits = NULL;
-  char __pyx_v_passNumber;
-  PyObject *__pyx_v_item = NULL;
+static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_6__transformArray__(struct __pyx_obj_13gapfill_utils_A2PassData *__pyx_v_self, PyObject *__pyx_v_data) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
-  PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  char __pyx_t_7;
-  Py_ssize_t __pyx_t_8;
-  __Pyx_RefNannySetupContext("__TransformData", 0);
+  __Pyx_RefNannySetupContext("__transformArray__", 0);
 
-  /* "gapfill_utils.pyx":115
- *         i.e. not using np.copy results in the transposed passed 1-4 being ~ 9* slower due to the inefficient
- *         memory access"""
- *         dataBits = [self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,             # <<<<<<<<<<<<<<
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
- *         passNumber = self.passNumber
+  /* "gapfill_utils.pyx":79
+ *         transposed passed 1-4 being ~ 9* slower due to the inefficient memory access.
+ *         All transforms are reversible so can use the same call for input and output"""
+ *         if self.passNumber == 0:             # <<<<<<<<<<<<<<
+ *             return np.copy(data.T, order='C')
+ *         elif self.passNumber == 1:
  */
-  if (unlikely(!__pyx_v_self->TransformedDataArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 115, __pyx_L1_error)}
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedDataArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (unlikely(!__pyx_v_self->TransformedFlagsArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 115, __pyx_L1_error)}
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedFlagsArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_char, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_char, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (unlikely(!__pyx_v_self->TransformedDistanceArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 115, __pyx_L1_error)}
-  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedDistanceArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 115, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
+  switch (__pyx_v_self->passNumber) {
+    case 0:
 
-  /* "gapfill_utils.pyx":116
- *         memory access"""
- *         dataBits = [self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]             # <<<<<<<<<<<<<<
- *         passNumber = self.passNumber
- *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
+    /* "gapfill_utils.pyx":80
+ *         All transforms are reversible so can use the same call for input and output"""
+ *         if self.passNumber == 0:
+ *             return np.copy(data.T, order='C')             # <<<<<<<<<<<<<<
+ *         elif self.passNumber == 1:
+ *             return np.copy(data[:,::-1].T, order='C')
  */
-  if (unlikely(!__pyx_v_self->TransformedMeanArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 116, __pyx_L1_error)}
-  __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedMeanArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 116, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  if (unlikely(!__pyx_v_self->TransformedSumOfPassDistancesArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 116, __pyx_L1_error)}
-  __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedSumOfPassDistancesArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 116, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-
-  /* "gapfill_utils.pyx":115
- *         i.e. not using np.copy results in the transposed passed 1-4 being ~ 9* slower due to the inefficient
- *         memory access"""
- *         dataBits = [self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,             # <<<<<<<<<<<<<<
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
- *         passNumber = self.passNumber
- */
-  __pyx_t_6 = PyList_New(5); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 115, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_GIVEREF(__pyx_t_1);
-  PyList_SET_ITEM(__pyx_t_6, 0, __pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyList_SET_ITEM(__pyx_t_6, 1, __pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_3);
-  PyList_SET_ITEM(__pyx_t_6, 2, __pyx_t_3);
-  __Pyx_GIVEREF(__pyx_t_4);
-  PyList_SET_ITEM(__pyx_t_6, 3, __pyx_t_4);
-  __Pyx_GIVEREF(__pyx_t_5);
-  PyList_SET_ITEM(__pyx_t_6, 4, __pyx_t_5);
-  __pyx_t_1 = 0;
-  __pyx_t_2 = 0;
-  __pyx_t_3 = 0;
-  __pyx_t_4 = 0;
-  __pyx_t_5 = 0;
-  __pyx_v_dataBits = ((PyObject*)__pyx_t_6);
-  __pyx_t_6 = 0;
-
-  /* "gapfill_utils.pyx":117
- *         dataBits = [self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
- *         passNumber = self.passNumber             # <<<<<<<<<<<<<<
- *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
- */
-  __pyx_t_7 = __pyx_v_self->passNumber;
-  __pyx_v_passNumber = __pyx_t_7;
-
-  /* "gapfill_utils.pyx":118
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
- *         passNumber = self.passNumber
- *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,             # <<<<<<<<<<<<<<
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
- *             if passNumber == 0:
- */
-  if (unlikely(!__pyx_v_self->TransformedDataArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 118, __pyx_L1_error)}
-  __pyx_t_6 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedDataArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 118, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  if (unlikely(!__pyx_v_self->TransformedFlagsArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 118, __pyx_L1_error)}
-  __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedFlagsArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_unsigned_char, (int (*)(char *, PyObject *)) __pyx_memview_set_unsigned_char, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 118, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  if (unlikely(!__pyx_v_self->TransformedDistanceArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 118, __pyx_L1_error)}
-  __pyx_t_4 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedDistanceArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-
-  /* "gapfill_utils.pyx":119
- *         passNumber = self.passNumber
- *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):             # <<<<<<<<<<<<<<
- *             if passNumber == 0:
- *                 item = np.copy(item.T)
- */
-  if (unlikely(!__pyx_v_self->TransformedMeanArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 119, __pyx_L1_error)}
-  __pyx_t_3 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedMeanArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  if (unlikely(!__pyx_v_self->TransformedSumOfPassDistancesArray2D.memview)) {PyErr_SetString(PyExc_AttributeError,"Memoryview is not initialized");__PYX_ERR(0, 119, __pyx_L1_error)}
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_self->TransformedSumOfPassDistancesArray2D, 2, (PyObject *(*)(char *)) __pyx_memview_get_float, (int (*)(char *, PyObject *)) __pyx_memview_set_float, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-
-  /* "gapfill_utils.pyx":118
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
- *         passNumber = self.passNumber
- *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,             # <<<<<<<<<<<<<<
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
- *             if passNumber == 0:
- */
-  __pyx_t_1 = PyTuple_New(5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_6);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_6);
-  __Pyx_GIVEREF(__pyx_t_5);
-  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_5);
-  __Pyx_GIVEREF(__pyx_t_4);
-  PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_t_4);
-  __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_1, 3, __pyx_t_3);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_1, 4, __pyx_t_2);
-  __pyx_t_6 = 0;
-  __pyx_t_5 = 0;
-  __pyx_t_4 = 0;
-  __pyx_t_3 = 0;
-  __pyx_t_2 = 0;
-  __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_8 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  for (;;) {
-    if (__pyx_t_8 >= 5) break;
-    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_8); __Pyx_INCREF(__pyx_t_1); __pyx_t_8++; if (unlikely(0 < 0)) __PYX_ERR(0, 118, __pyx_L1_error)
-    #else
-    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_8); __pyx_t_8++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    #endif
-    __Pyx_XDECREF_SET(__pyx_v_item, __pyx_t_1);
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_data, __pyx_n_s_T); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
     __pyx_t_1 = 0;
+    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 80, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 80, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_r = __pyx_t_4;
+    __pyx_t_4 = 0;
+    goto __pyx_L0;
 
-    /* "gapfill_utils.pyx":120
- *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
- *             if passNumber == 0:             # <<<<<<<<<<<<<<
- *                 item = np.copy(item.T)
- *             elif passNumber == 1:
+    /* "gapfill_utils.pyx":79
+ *         transposed passed 1-4 being ~ 9* slower due to the inefficient memory access.
+ *         All transforms are reversible so can use the same call for input and output"""
+ *         if self.passNumber == 0:             # <<<<<<<<<<<<<<
+ *             return np.copy(data.T, order='C')
+ *         elif self.passNumber == 1:
  */
-    switch (__pyx_v_passNumber) {
-      case 0:
+    break;
+    case 1:
 
-      /* "gapfill_utils.pyx":121
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
- *             if passNumber == 0:
- *                 item = np.copy(item.T)             # <<<<<<<<<<<<<<
- *             elif passNumber == 1:
- *                 item = np.copy(item.T[:,::-1])
+    /* "gapfill_utils.pyx":82
+ *             return np.copy(data.T, order='C')
+ *         elif self.passNumber == 1:
+ *             return np.copy(data[:,::-1].T, order='C')             # <<<<<<<<<<<<<<
+ *         elif self.passNumber == 2:
+ *             return np.copy(data[::-1,:].T, order='C')
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 121, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_item, __pyx_n_s_T); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 121, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-          __Pyx_INCREF(__pyx_t_5);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_4, function);
-        }
-      }
-      __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 121, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
-      __pyx_t_1 = 0;
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_copy); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_data, __pyx_tuple__3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_T); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_GIVEREF(__pyx_t_3);
+    PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
+    __pyx_t_3 = 0;
+    __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 82, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_r = __pyx_t_2;
+    __pyx_t_2 = 0;
+    goto __pyx_L0;
 
-      /* "gapfill_utils.pyx":120
- *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
- *             if passNumber == 0:             # <<<<<<<<<<<<<<
- *                 item = np.copy(item.T)
- *             elif passNumber == 1:
+    /* "gapfill_utils.pyx":81
+ *         if self.passNumber == 0:
+ *             return np.copy(data.T, order='C')
+ *         elif self.passNumber == 1:             # <<<<<<<<<<<<<<
+ *             return np.copy(data[:,::-1].T, order='C')
+ *         elif self.passNumber == 2:
  */
-      break;
-      case 1:
+    break;
+    case 2:
 
-      /* "gapfill_utils.pyx":123
- *                 item = np.copy(item.T)
- *             elif passNumber == 1:
- *                 item = np.copy(item.T[:,::-1])             # <<<<<<<<<<<<<<
- *             elif passNumber == 2:
- *                 item = np.copy(item.T[::-1,:])
+    /* "gapfill_utils.pyx":84
+ *             return np.copy(data[:,::-1].T, order='C')
+ *         elif self.passNumber == 2:
+ *             return np.copy(data[::-1,:].T, order='C')             # <<<<<<<<<<<<<<
+ *         elif self.passNumber == 3:
+ *             return np.copy(data[::-1,::-1].T, order='C')
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 123, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_item, __pyx_n_s_T); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = __Pyx_PyObject_GetItem(__pyx_t_4, __pyx_tuple__3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 123, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-        __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
-        if (likely(__pyx_t_4)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-          __Pyx_INCREF(__pyx_t_4);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_3, function);
-        }
-      }
-      __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_5);
-      __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 123, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
-      __pyx_t_1 = 0;
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_v_data, __pyx_tuple__4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_T); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_GIVEREF(__pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_4);
+    __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_r = __pyx_t_1;
+    __pyx_t_1 = 0;
+    goto __pyx_L0;
 
-      /* "gapfill_utils.pyx":122
- *             if passNumber == 0:
- *                 item = np.copy(item.T)
- *             elif passNumber == 1:             # <<<<<<<<<<<<<<
- *                 item = np.copy(item.T[:,::-1])
- *             elif passNumber == 2:
+    /* "gapfill_utils.pyx":83
+ *         elif self.passNumber == 1:
+ *             return np.copy(data[:,::-1].T, order='C')
+ *         elif self.passNumber == 2:             # <<<<<<<<<<<<<<
+ *             return np.copy(data[::-1,:].T, order='C')
+ *         elif self.passNumber == 3:
  */
-      break;
-      case 2:
+    break;
+    case 3:
 
-      /* "gapfill_utils.pyx":125
- *                 item = np.copy(item.T[:,::-1])
- *             elif passNumber == 2:
- *                 item = np.copy(item.T[::-1,:])             # <<<<<<<<<<<<<<
- *             elif passNumber == 3:
- *                 item = np.copy(item.T[::-1,::-1])
+    /* "gapfill_utils.pyx":86
+ *             return np.copy(data[::-1,:].T, order='C')
+ *         elif self.passNumber == 3:
+ *             return np.copy(data[::-1,::-1].T, order='C')             # <<<<<<<<<<<<<<
+ *         elif self.passNumber == 4:
+ *             return np.copy(data, order='C')
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 125, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 125, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_item, __pyx_n_s_T); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 125, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_t_3, __pyx_tuple__4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
-        __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_5);
-        if (likely(__pyx_t_3)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
-          __Pyx_INCREF(__pyx_t_3);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_5, function);
-        }
-      }
-      __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_4);
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
-      __pyx_t_1 = 0;
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_data, __pyx_tuple__5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_T); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
+    __pyx_t_2 = 0;
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 86, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_r = __pyx_t_3;
+    __pyx_t_3 = 0;
+    goto __pyx_L0;
 
-      /* "gapfill_utils.pyx":124
- *             elif passNumber == 1:
- *                 item = np.copy(item.T[:,::-1])
- *             elif passNumber == 2:             # <<<<<<<<<<<<<<
- *                 item = np.copy(item.T[::-1,:])
- *             elif passNumber == 3:
+    /* "gapfill_utils.pyx":85
+ *         elif self.passNumber == 2:
+ *             return np.copy(data[::-1,:].T, order='C')
+ *         elif self.passNumber == 3:             # <<<<<<<<<<<<<<
+ *             return np.copy(data[::-1,::-1].T, order='C')
+ *         elif self.passNumber == 4:
  */
-      break;
-      case 3:
+    break;
+    case 4:
 
-      /* "gapfill_utils.pyx":127
- *                 item = np.copy(item.T[::-1,:])
- *             elif passNumber == 3:
- *                 item = np.copy(item.T[::-1,::-1])             # <<<<<<<<<<<<<<
- *             elif passNumber == 4:
- *                 pass
+    /* "gapfill_utils.pyx":88
+ *             return np.copy(data[::-1,::-1].T, order='C')
+ *         elif self.passNumber == 4:
+ *             return np.copy(data, order='C')             # <<<<<<<<<<<<<<
+ *         elif self.passNumber == 5:
+ *             return np.copy(data[:,::-1], order='C')
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 127, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 127, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_item, __pyx_n_s_T); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 127, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_t_5, __pyx_tuple__5); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 127, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-          __Pyx_INCREF(__pyx_t_5);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_4, function);
-        }
-      }
-      __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
-      __pyx_t_1 = 0;
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_INCREF(__pyx_v_data);
+    __Pyx_GIVEREF(__pyx_v_data);
+    PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_data);
+    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_r = __pyx_t_4;
+    __pyx_t_4 = 0;
+    goto __pyx_L0;
 
-      /* "gapfill_utils.pyx":126
- *             elif passNumber == 2:
- *                 item = np.copy(item.T[::-1,:])
- *             elif passNumber == 3:             # <<<<<<<<<<<<<<
- *                 item = np.copy(item.T[::-1,::-1])
- *             elif passNumber == 4:
+    /* "gapfill_utils.pyx":87
+ *         elif self.passNumber == 3:
+ *             return np.copy(data[::-1,::-1].T, order='C')
+ *         elif self.passNumber == 4:             # <<<<<<<<<<<<<<
+ *             return np.copy(data, order='C')
+ *         elif self.passNumber == 5:
  */
-      break;
-      case 4:
+    break;
+    case 5:
 
-      /* "gapfill_utils.pyx":128
- *             elif passNumber == 3:
- *                 item = np.copy(item.T[::-1,::-1])
- *             elif passNumber == 4:             # <<<<<<<<<<<<<<
- *                 pass
- *             elif passNumber == 5:
+    /* "gapfill_utils.pyx":90
+ *             return np.copy(data, order='C')
+ *         elif self.passNumber == 5:
+ *             return np.copy(data[:,::-1], order='C')             # <<<<<<<<<<<<<<
+ *         elif self.passNumber == 6:
+ *             return np.copy(data[::-1,:], order='C')
  */
-      break;
-      case 5:
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 90, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_copy); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_data, __pyx_tuple__3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 90, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_GIVEREF(__pyx_t_4);
+    PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4);
+    __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 90, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 90, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 90, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_r = __pyx_t_2;
+    __pyx_t_2 = 0;
+    goto __pyx_L0;
 
-      /* "gapfill_utils.pyx":131
- *                 pass
- *             elif passNumber == 5:
- *                 item = np.copy(item[:,::-1])             # <<<<<<<<<<<<<<
- *             elif passNumber == 6:
- *                 item = np.copy(item[::-1,:])
+    /* "gapfill_utils.pyx":89
+ *         elif self.passNumber == 4:
+ *             return np.copy(data, order='C')
+ *         elif self.passNumber == 5:             # <<<<<<<<<<<<<<
+ *             return np.copy(data[:,::-1], order='C')
+ *         elif self.passNumber == 6:
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 131, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_item, __pyx_tuple__3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-          __Pyx_INCREF(__pyx_t_5);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_3, function);
-        }
-      }
-      __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4);
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
-      __pyx_t_1 = 0;
+    break;
+    case 6:
 
-      /* "gapfill_utils.pyx":130
- *             elif passNumber == 4:
- *                 pass
- *             elif passNumber == 5:             # <<<<<<<<<<<<<<
- *                 item = np.copy(item[:,::-1])
- *             elif passNumber == 6:
+    /* "gapfill_utils.pyx":92
+ *             return np.copy(data[:,::-1], order='C')
+ *         elif self.passNumber == 6:
+ *             return np.copy(data[::-1,:], order='C')             # <<<<<<<<<<<<<<
+ *         elif self.passNumber ==7:
+ *             return np.copy(data[::-1,::-1], order='C')
  */
-      break;
-      case 6:
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = __Pyx_PyObject_GetItem(__pyx_v_data, __pyx_tuple__4); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_GIVEREF(__pyx_t_2);
+    PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
+    __pyx_t_2 = 0;
+    __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    if (PyDict_SetItem(__pyx_t_2, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 92, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_r = __pyx_t_1;
+    __pyx_t_1 = 0;
+    goto __pyx_L0;
 
-      /* "gapfill_utils.pyx":133
- *                 item = np.copy(item[:,::-1])
- *             elif passNumber == 6:
- *                 item = np.copy(item[::-1,:])             # <<<<<<<<<<<<<<
- *             elif passNumber == 7:
- *                 item = np.copy(item[::-1,::-1])
+    /* "gapfill_utils.pyx":91
+ *         elif self.passNumber == 5:
+ *             return np.copy(data[:,::-1], order='C')
+ *         elif self.passNumber == 6:             # <<<<<<<<<<<<<<
+ *             return np.copy(data[::-1,:], order='C')
+ *         elif self.passNumber ==7:
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 133, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_copy); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 133, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_PyObject_GetItem(__pyx_v_item, __pyx_tuple__4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 133, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
-          __Pyx_INCREF(__pyx_t_5);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_4, function);
-        }
-      }
-      __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
-      __pyx_t_1 = 0;
+    break;
+    case 7:
 
-      /* "gapfill_utils.pyx":132
- *             elif passNumber == 5:
- *                 item = np.copy(item[:,::-1])
- *             elif passNumber == 6:             # <<<<<<<<<<<<<<
- *                 item = np.copy(item[::-1,:])
- *             elif passNumber == 7:
- */
-      break;
-      case 7:
-
-      /* "gapfill_utils.pyx":135
- *                 item = np.copy(item[::-1,:])
- *             elif passNumber == 7:
- *                 item = np.copy(item[::-1,::-1])             # <<<<<<<<<<<<<<
- *             else:
- *                 raise ValueError()
- */
-      __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 135, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_copy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 135, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_3);
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_item, __pyx_tuple__5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 135, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_5 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_3);
-        if (likely(__pyx_t_5)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-          __Pyx_INCREF(__pyx_t_5);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_3, function);
-        }
-      }
-      __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4);
-      __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __Pyx_DECREF_SET(__pyx_v_item, __pyx_t_1);
-      __pyx_t_1 = 0;
-
-      /* "gapfill_utils.pyx":134
- *             elif passNumber == 6:
- *                 item = np.copy(item[::-1,:])
- *             elif passNumber == 7:             # <<<<<<<<<<<<<<
- *                 item = np.copy(item[::-1,::-1])
- *             else:
- */
-      break;
-      default:
-
-      /* "gapfill_utils.pyx":137
- *                 item = np.copy(item[::-1,::-1])
- *             else:
- *                 raise ValueError()             # <<<<<<<<<<<<<<
- * 
- * 
- */
-      __pyx_t_1 = __Pyx_PyObject_CallNoArg(__pyx_builtin_ValueError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_Raise(__pyx_t_1, 0, 0, 0);
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __PYX_ERR(0, 137, __pyx_L1_error)
-      break;
-    }
-
-    /* "gapfill_utils.pyx":118
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
- *         passNumber = self.passNumber
- *         for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,             # <<<<<<<<<<<<<<
- *                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
- *             if passNumber == 0:
- */
-  }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "gapfill_utils.pyx":109
+    /* "gapfill_utils.pyx":94
+ *             return np.copy(data[::-1,:], order='C')
+ *         elif self.passNumber ==7:
+ *             return np.copy(data[::-1,::-1], order='C')             # <<<<<<<<<<<<<<
+ *         else:
  *             raise ValueError()
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_copy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_data, __pyx_tuple__5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = PyTuple_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __Pyx_GIVEREF(__pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
+    __pyx_t_1 = 0;
+    __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_r = __pyx_t_4;
+    __pyx_t_4 = 0;
+    goto __pyx_L0;
+
+    /* "gapfill_utils.pyx":93
+ *         elif self.passNumber == 6:
+ *             return np.copy(data[::-1,:], order='C')
+ *         elif self.passNumber ==7:             # <<<<<<<<<<<<<<
+ *             return np.copy(data[::-1,::-1], order='C')
+ *         else:
+ */
+    break;
+    default:
+
+    /* "gapfill_utils.pyx":96
+ *             return np.copy(data[::-1,::-1], order='C')
+ *         else:
+ *             raise ValueError()             # <<<<<<<<<<<<<<
  * 
- *     def __TransformData(self):             # <<<<<<<<<<<<<<
+ * 
+ */
+    __pyx_t_4 = __Pyx_PyObject_CallNoArg(__pyx_builtin_ValueError); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 96, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_Raise(__pyx_t_4, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __PYX_ERR(0, 96, __pyx_L1_error)
+    break;
+  }
+
+  /* "gapfill_utils.pyx":72
+ *         return self.__transformArray__(self.TransformedDistanceArray2D)
+ * 
+ *     def __transformArray__(self, data):             # <<<<<<<<<<<<<<
  *         """Transforms the input data arrays such that iterating over them in C-normal order will effectively
- *         pass over the data in one of the 8 cardinal directions. This implementation actually copies the data into
+ *         pass over the data in one of the 8 cardinal directions, according to which pass number this is.
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
-  goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("gapfill_utils.A2PassData.__TransformData", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("gapfill_utils.A2PassData.__transformArray__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
-  __Pyx_XDECREF(__pyx_v_dataBits);
-  __Pyx_XDECREF(__pyx_v_item);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -6527,7 +5279,7 @@ static PyObject *__pyx_pf_13gapfill_utils_10A2PassData_10__setstate_cython__(CYT
   return __pyx_r;
 }
 
-/* "gapfill_utils.pyx":144
+/* "gapfill_utils.pyx":103
  *     cdef readonly Py_ssize_t Top, Bottom, Left, Right
  * 
  *     def __init__(self, top=0, bottom=0, left=0, right=0):             # <<<<<<<<<<<<<<
@@ -6594,7 +5346,7 @@ static int __pyx_pw_13gapfill_utils_12PixelMargins_1__init__(PyObject *__pyx_v_s
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 144, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 103, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -6617,7 +5369,7 @@ static int __pyx_pw_13gapfill_utils_12PixelMargins_1__init__(PyObject *__pyx_v_s
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 144, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 0, 0, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 103, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("gapfill_utils.PixelMargins.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6636,44 +5388,44 @@ static int __pyx_pf_13gapfill_utils_12PixelMargins___init__(struct __pyx_obj_13g
   Py_ssize_t __pyx_t_1;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "gapfill_utils.pyx":145
+  /* "gapfill_utils.pyx":104
  * 
  *     def __init__(self, top=0, bottom=0, left=0, right=0):
  *         self.Top = top             # <<<<<<<<<<<<<<
  *         self.Bottom = bottom
  *         self.Left = left
  */
-  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_top); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_top); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 104, __pyx_L1_error)
   __pyx_v_self->Top = __pyx_t_1;
 
-  /* "gapfill_utils.pyx":146
+  /* "gapfill_utils.pyx":105
  *     def __init__(self, top=0, bottom=0, left=0, right=0):
  *         self.Top = top
  *         self.Bottom = bottom             # <<<<<<<<<<<<<<
  *         self.Left = left
  *         self.Right = right
  */
-  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_bottom); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 146, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_bottom); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 105, __pyx_L1_error)
   __pyx_v_self->Bottom = __pyx_t_1;
 
-  /* "gapfill_utils.pyx":147
+  /* "gapfill_utils.pyx":106
  *         self.Top = top
  *         self.Bottom = bottom
  *         self.Left = left             # <<<<<<<<<<<<<<
  *         self.Right = right
  */
-  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_left); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 147, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_left); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L1_error)
   __pyx_v_self->Left = __pyx_t_1;
 
-  /* "gapfill_utils.pyx":148
+  /* "gapfill_utils.pyx":107
  *         self.Bottom = bottom
  *         self.Left = left
  *         self.Right = right             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_right); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyIndex_AsSsize_t(__pyx_v_right); if (unlikely((__pyx_t_1 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 107, __pyx_L1_error)
   __pyx_v_self->Right = __pyx_t_1;
 
-  /* "gapfill_utils.pyx":144
+  /* "gapfill_utils.pyx":103
  *     cdef readonly Py_ssize_t Top, Bottom, Left, Right
  * 
  *     def __init__(self, top=0, bottom=0, left=0, right=0):             # <<<<<<<<<<<<<<
@@ -6692,7 +5444,7 @@ static int __pyx_pf_13gapfill_utils_12PixelMargins___init__(struct __pyx_obj_13g
   return __pyx_r;
 }
 
-/* "gapfill_utils.pyx":142
+/* "gapfill_utils.pyx":101
  * cdef class PixelMargins:
  *     """ Simple object to hold 4 values representing margins for processing data """
  *     cdef readonly Py_ssize_t Top, Bottom, Left, Right             # <<<<<<<<<<<<<<
@@ -6719,7 +5471,7 @@ static PyObject *__pyx_pf_13gapfill_utils_12PixelMargins_3Top___get__(struct __p
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Top); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Top); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6755,7 +5507,7 @@ static PyObject *__pyx_pf_13gapfill_utils_12PixelMargins_6Bottom___get__(struct 
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Bottom); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Bottom); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6791,7 +5543,7 @@ static PyObject *__pyx_pf_13gapfill_utils_12PixelMargins_4Left___get__(struct __
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Left); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Left); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -6827,7 +5579,7 @@ static PyObject *__pyx_pf_13gapfill_utils_12PixelMargins_5Right___get__(struct _
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Right); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_v_self->Right); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -21796,7 +20548,7 @@ static PyObject *__pyx_getprop_13gapfill_utils_10A2PassData_TransformedSumOfPass
 static PyMethodDef __pyx_methods_13gapfill_utils_A2PassData[] = {
   {"getOutputData", (PyCFunction)__pyx_pw_13gapfill_utils_10A2PassData_3getOutputData, METH_NOARGS, __pyx_doc_13gapfill_utils_10A2PassData_2getOutputData},
   {"getOutputDists", (PyCFunction)__pyx_pw_13gapfill_utils_10A2PassData_5getOutputDists, METH_NOARGS, __pyx_doc_13gapfill_utils_10A2PassData_4getOutputDists},
-  {"__TransformData", (PyCFunction)__pyx_pw_13gapfill_utils_10A2PassData_7__TransformData, METH_NOARGS, __pyx_doc_13gapfill_utils_10A2PassData_6__TransformData},
+  {"__transformArray__", (PyCFunction)__pyx_pw_13gapfill_utils_10A2PassData_7__transformArray__, METH_O, __pyx_doc_13gapfill_utils_10A2PassData_6__transformArray__},
   {"__reduce_cython__", (PyCFunction)__pyx_pw_13gapfill_utils_10A2PassData_9__reduce_cython__, METH_NOARGS, 0},
   {"__setstate_cython__", (PyCFunction)__pyx_pw_13gapfill_utils_10A2PassData_11__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
@@ -22766,6 +21518,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_A2PassData, __pyx_k_A2PassData, sizeof(__pyx_k_A2PassData), 0, 0, 1, 1},
   {&__pyx_n_s_ASCII, __pyx_k_ASCII, sizeof(__pyx_k_ASCII), 0, 0, 1, 1},
   {&__pyx_kp_s_Buffer_view_does_not_expose_stri, __pyx_k_Buffer_view_does_not_expose_stri, sizeof(__pyx_k_Buffer_view_does_not_expose_stri), 0, 0, 1, 0},
+  {&__pyx_n_s_C, __pyx_k_C, sizeof(__pyx_k_C), 0, 0, 1, 1},
   {&__pyx_kp_s_Can_only_create_a_buffer_that_is, __pyx_k_Can_only_create_a_buffer_that_is, sizeof(__pyx_k_Can_only_create_a_buffer_that_is), 0, 0, 1, 0},
   {&__pyx_kp_s_Cannot_assign_to_read_only_memor, __pyx_k_Cannot_assign_to_read_only_memor, sizeof(__pyx_k_Cannot_assign_to_read_only_memor), 0, 0, 1, 0},
   {&__pyx_kp_s_Cannot_create_writable_memory_vi, __pyx_k_Cannot_create_writable_memory_vi, sizeof(__pyx_k_Cannot_create_writable_memory_vi), 0, 0, 1, 0},
@@ -22788,7 +21541,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_PickleError, __pyx_k_PickleError, sizeof(__pyx_k_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_PixelMargins, __pyx_k_PixelMargins, sizeof(__pyx_k_PixelMargins), 0, 0, 1, 1},
   {&__pyx_n_s_T, __pyx_k_T, sizeof(__pyx_k_T), 0, 0, 1, 1},
-  {&__pyx_n_s_TransformData, __pyx_k_TransformData, sizeof(__pyx_k_TransformData), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_kp_s_Unable_to_convert_item_to_object, __pyx_k_Unable_to_convert_item_to_object, sizeof(__pyx_k_Unable_to_convert_item_to_object), 0, 0, 1, 0},
   {&__pyx_n_s_ValueError, __pyx_k_ValueError, sizeof(__pyx_k_ValueError), 0, 0, 1, 1},
@@ -22836,6 +21588,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
   {&__pyx_n_s_obj, __pyx_k_obj, sizeof(__pyx_k_obj), 0, 0, 1, 1},
+  {&__pyx_n_s_order, __pyx_k_order, sizeof(__pyx_k_order), 0, 0, 1, 1},
   {&__pyx_n_s_pack, __pyx_k_pack, sizeof(__pyx_k_pack), 0, 0, 1, 1},
   {&__pyx_n_s_passNumber, __pyx_k_passNumber, sizeof(__pyx_k_passNumber), 0, 0, 1, 1},
   {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
@@ -22870,6 +21623,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_sumDistArray, __pyx_k_sumDistArray, sizeof(__pyx_k_sumDistArray), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_top, __pyx_k_top, sizeof(__pyx_k_top), 0, 0, 1, 1},
+  {&__pyx_n_s_transformArray, __pyx_k_transformArray, sizeof(__pyx_k_transformArray), 0, 0, 1, 1},
   {&__pyx_kp_s_unable_to_allocate_array_data, __pyx_k_unable_to_allocate_array_data, sizeof(__pyx_k_unable_to_allocate_array_data), 0, 0, 1, 0},
   {&__pyx_kp_s_unable_to_allocate_shape_and_str, __pyx_k_unable_to_allocate_shape_and_str, sizeof(__pyx_k_unable_to_allocate_shape_and_str), 0, 0, 1, 0},
   {&__pyx_n_s_unpack, __pyx_k_unpack, sizeof(__pyx_k_unpack), 0, 0, 1, 1},
@@ -22877,7 +21631,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 96, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 148, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 151, __pyx_L1_error)
@@ -22894,42 +21648,42 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "gapfill_utils.pyx":123
- *                 item = np.copy(item.T)
- *             elif passNumber == 1:
- *                 item = np.copy(item.T[:,::-1])             # <<<<<<<<<<<<<<
- *             elif passNumber == 2:
- *                 item = np.copy(item.T[::-1,:])
+  /* "gapfill_utils.pyx":82
+ *             return np.copy(data.T, order='C')
+ *         elif self.passNumber == 1:
+ *             return np.copy(data[:,::-1].T, order='C')             # <<<<<<<<<<<<<<
+ *         elif self.passNumber == 2:
+ *             return np.copy(data[::-1,:].T, order='C')
  */
-  __pyx_slice_ = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice_)) __PYX_ERR(0, 123, __pyx_L1_error)
+  __pyx_slice_ = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice_)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice_);
   __Pyx_GIVEREF(__pyx_slice_);
-  __pyx_slice__2 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__2)) __PYX_ERR(0, 123, __pyx_L1_error)
+  __pyx_slice__2 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__2)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__2);
   __Pyx_GIVEREF(__pyx_slice__2);
-  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_slice_, __pyx_slice__2); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 123, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_slice_, __pyx_slice__2); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "gapfill_utils.pyx":125
- *                 item = np.copy(item.T[:,::-1])
- *             elif passNumber == 2:
- *                 item = np.copy(item.T[::-1,:])             # <<<<<<<<<<<<<<
- *             elif passNumber == 3:
- *                 item = np.copy(item.T[::-1,::-1])
+  /* "gapfill_utils.pyx":84
+ *             return np.copy(data[:,::-1].T, order='C')
+ *         elif self.passNumber == 2:
+ *             return np.copy(data[::-1,:].T, order='C')             # <<<<<<<<<<<<<<
+ *         elif self.passNumber == 3:
+ *             return np.copy(data[::-1,::-1].T, order='C')
  */
-  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_slice__2, __pyx_slice_); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 125, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_slice__2, __pyx_slice_); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "gapfill_utils.pyx":127
- *                 item = np.copy(item.T[::-1,:])
- *             elif passNumber == 3:
- *                 item = np.copy(item.T[::-1,::-1])             # <<<<<<<<<<<<<<
- *             elif passNumber == 4:
- *                 pass
+  /* "gapfill_utils.pyx":86
+ *             return np.copy(data[::-1,:].T, order='C')
+ *         elif self.passNumber == 3:
+ *             return np.copy(data[::-1,::-1].T, order='C')             # <<<<<<<<<<<<<<
+ *         elif self.passNumber == 4:
+ *             return np.copy(data, order='C')
  */
-  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_slice__2, __pyx_slice__2); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_slice__2, __pyx_slice__2); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
@@ -23307,15 +22061,15 @@ static int __Pyx_modinit_type_init_code(void) {
   if (PyObject_SetAttr(__pyx_m, __pyx_n_s_A2PassData, (PyObject *)&__pyx_type_13gapfill_utils_A2PassData) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
   if (__Pyx_setup_reduce((PyObject*)&__pyx_type_13gapfill_utils_A2PassData) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
   __pyx_ptype_13gapfill_utils_A2PassData = &__pyx_type_13gapfill_utils_A2PassData;
-  if (PyType_Ready(&__pyx_type_13gapfill_utils_PixelMargins) < 0) __PYX_ERR(0, 140, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_13gapfill_utils_PixelMargins) < 0) __PYX_ERR(0, 99, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_13gapfill_utils_PixelMargins.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_13gapfill_utils_PixelMargins.tp_dictoffset && __pyx_type_13gapfill_utils_PixelMargins.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_13gapfill_utils_PixelMargins.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PixelMargins, (PyObject *)&__pyx_type_13gapfill_utils_PixelMargins) < 0) __PYX_ERR(0, 140, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_13gapfill_utils_PixelMargins) < 0) __PYX_ERR(0, 140, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_PixelMargins, (PyObject *)&__pyx_type_13gapfill_utils_PixelMargins) < 0) __PYX_ERR(0, 99, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_13gapfill_utils_PixelMargins) < 0) __PYX_ERR(0, 99, __pyx_L1_error)
   __pyx_ptype_13gapfill_utils_PixelMargins = &__pyx_type_13gapfill_utils_PixelMargins;
   __pyx_vtabptr_array = &__pyx_vtable_array;
   __pyx_vtable_array.get_memview = (PyObject *(*)(struct __pyx_array_obj *))__pyx_array_get_memview;
@@ -24327,6 +23081,29 @@ bad:
     return -1;
 }
 
+/* PyCFunctionFastCall */
+#if CYTHON_FAST_PYCCALL
+static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
+    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
+    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
+    PyObject *self = PyCFunction_GET_SELF(func);
+    int flags = PyCFunction_GET_FLAGS(func);
+    assert(PyCFunction_Check(func));
+    assert(METH_FASTCALL == (flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_KEYWORDS | METH_STACKLESS)));
+    assert(nargs >= 0);
+    assert(nargs == 0 || args != NULL);
+    /* _PyCFunction_FastCallDict() must not be called with an exception set,
+       because it may clear it (directly or indirectly) and so the
+       caller loses its exception */
+    assert(!PyErr_Occurred());
+    if ((PY_VERSION_HEX < 0x030700A0) || unlikely(flags & METH_KEYWORDS)) {
+        return (*((__Pyx_PyCFunctionFastWithKeywords)(void*)meth)) (self, args, nargs, NULL);
+    } else {
+        return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
+    }
+}
+#endif
+
 /* PyFunctionFastCall */
 #if CYTHON_FAST_PYCALL
 static PyObject* __Pyx_PyFunction_FastCallNoKw(PyCodeObject *co, PyObject **args, Py_ssize_t na,
@@ -24466,6 +23243,35 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg
 }
 #endif
 
+/* PyObjectCall2Args */
+static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
+    PyObject *args, *result = NULL;
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyFunction_FastCall(function, args, 2);
+    }
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(function)) {
+        PyObject *args[2] = {arg1, arg2};
+        return __Pyx_PyCFunction_FastCall(function, args, 2);
+    }
+    #endif
+    args = PyTuple_New(2);
+    if (unlikely(!args)) goto done;
+    Py_INCREF(arg1);
+    PyTuple_SET_ITEM(args, 0, arg1);
+    Py_INCREF(arg2);
+    PyTuple_SET_ITEM(args, 1, arg2);
+    Py_INCREF(function);
+    result = __Pyx_PyObject_Call(function, args, NULL);
+    Py_DECREF(args);
+    Py_DECREF(function);
+done:
+    return result;
+}
+
 /* PyObjectCallMethO */
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject *arg) {
@@ -24483,51 +23289,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallMethO(PyObject *func, PyObject
             "NULL result without error in PyObject_Call");
     }
     return result;
-}
-#endif
-
-/* PyObjectCallNoArg */
-#if CYTHON_COMPILING_IN_CPYTHON
-static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
-#if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(func)) {
-        return __Pyx_PyFunction_FastCall(func, NULL, 0);
-    }
-#endif
-#ifdef __Pyx_CyFunction_USED
-    if (likely(PyCFunction_Check(func) || __Pyx_CyFunction_Check(func)))
-#else
-    if (likely(PyCFunction_Check(func)))
-#endif
-    {
-        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
-            return __Pyx_PyObject_CallMethO(func, NULL);
-        }
-    }
-    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
-}
-#endif
-
-/* PyCFunctionFastCall */
-#if CYTHON_FAST_PYCCALL
-static CYTHON_INLINE PyObject * __Pyx_PyCFunction_FastCall(PyObject *func_obj, PyObject **args, Py_ssize_t nargs) {
-    PyCFunctionObject *func = (PyCFunctionObject*)func_obj;
-    PyCFunction meth = PyCFunction_GET_FUNCTION(func);
-    PyObject *self = PyCFunction_GET_SELF(func);
-    int flags = PyCFunction_GET_FLAGS(func);
-    assert(PyCFunction_Check(func));
-    assert(METH_FASTCALL == (flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_KEYWORDS | METH_STACKLESS)));
-    assert(nargs >= 0);
-    assert(nargs == 0 || args != NULL);
-    /* _PyCFunction_FastCallDict() must not be called with an exception set,
-       because it may clear it (directly or indirectly) and so the
-       caller loses its exception */
-    assert(!PyErr_Occurred());
-    if ((PY_VERSION_HEX < 0x030700A0) || unlikely(flags & METH_KEYWORDS)) {
-        return (*((__Pyx_PyCFunctionFastWithKeywords)(void*)meth)) (self, args, nargs, NULL);
-    } else {
-        return (*((__Pyx_PyCFunctionFast)(void*)meth)) (self, args, nargs);
-    }
 }
 #endif
 
@@ -24571,34 +23332,143 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_CallOneArg(PyObject *func, PyObjec
 }
 #endif
 
-/* PyObjectCall2Args */
-static CYTHON_UNUSED PyObject* __Pyx_PyObject_Call2Args(PyObject* function, PyObject* arg1, PyObject* arg2) {
-    PyObject *args, *result = NULL;
-    #if CYTHON_FAST_PYCALL
-    if (PyFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyFunction_FastCall(function, args, 2);
-    }
-    #endif
-    #if CYTHON_FAST_PYCCALL
-    if (__Pyx_PyFastCFunction_Check(function)) {
-        PyObject *args[2] = {arg1, arg2};
-        return __Pyx_PyCFunction_FastCall(function, args, 2);
-    }
-    #endif
-    args = PyTuple_New(2);
-    if (unlikely(!args)) goto done;
-    Py_INCREF(arg1);
-    PyTuple_SET_ITEM(args, 0, arg1);
-    Py_INCREF(arg2);
-    PyTuple_SET_ITEM(args, 1, arg2);
-    Py_INCREF(function);
-    result = __Pyx_PyObject_Call(function, args, NULL);
-    Py_DECREF(args);
-    Py_DECREF(function);
-done:
-    return result;
+/* GetItemInt */
+static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
+    PyObject *r;
+    if (!j) return NULL;
+    r = PyObject_GetItem(o, j);
+    Py_DECREF(j);
+    return r;
 }
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
+                                                              CYTHON_NCP_UNUSED int wraparound,
+                                                              CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    Py_ssize_t wrapped_i = i;
+    if (wraparound & unlikely(i < 0)) {
+        wrapped_i += PyList_GET_SIZE(o);
+    }
+    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyList_GET_SIZE(o)))) {
+        PyObject *r = PyList_GET_ITEM(o, wrapped_i);
+        Py_INCREF(r);
+        return r;
+    }
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+#else
+    return PySequence_GetItem(o, i);
+#endif
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
+                                                              CYTHON_NCP_UNUSED int wraparound,
+                                                              CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    Py_ssize_t wrapped_i = i;
+    if (wraparound & unlikely(i < 0)) {
+        wrapped_i += PyTuple_GET_SIZE(o);
+    }
+    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyTuple_GET_SIZE(o)))) {
+        PyObject *r = PyTuple_GET_ITEM(o, wrapped_i);
+        Py_INCREF(r);
+        return r;
+    }
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+#else
+    return PySequence_GetItem(o, i);
+#endif
+}
+static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, int is_list,
+                                                     CYTHON_NCP_UNUSED int wraparound,
+                                                     CYTHON_NCP_UNUSED int boundscheck) {
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
+    if (is_list || PyList_CheckExact(o)) {
+        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyList_GET_SIZE(o);
+        if ((!boundscheck) || (likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o))))) {
+            PyObject *r = PyList_GET_ITEM(o, n);
+            Py_INCREF(r);
+            return r;
+        }
+    }
+    else if (PyTuple_CheckExact(o)) {
+        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyTuple_GET_SIZE(o);
+        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyTuple_GET_SIZE(o)))) {
+            PyObject *r = PyTuple_GET_ITEM(o, n);
+            Py_INCREF(r);
+            return r;
+        }
+    } else {
+        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
+        if (likely(m && m->sq_item)) {
+            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
+                Py_ssize_t l = m->sq_length(o);
+                if (likely(l >= 0)) {
+                    i += l;
+                } else {
+                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
+                        return NULL;
+                    PyErr_Clear();
+                }
+            }
+            return m->sq_item(o, i);
+        }
+    }
+#else
+    if (is_list || PySequence_Check(o)) {
+        return PySequence_GetItem(o, i);
+    }
+#endif
+    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
+}
+
+/* ObjectGetItem */
+#if CYTHON_USE_TYPE_SLOTS
+static PyObject *__Pyx_PyObject_GetIndex(PyObject *obj, PyObject* index) {
+    PyObject *runerr;
+    Py_ssize_t key_value;
+    PySequenceMethods *m = Py_TYPE(obj)->tp_as_sequence;
+    if (unlikely(!(m && m->sq_item))) {
+        PyErr_Format(PyExc_TypeError, "'%.200s' object is not subscriptable", Py_TYPE(obj)->tp_name);
+        return NULL;
+    }
+    key_value = __Pyx_PyIndex_AsSsize_t(index);
+    if (likely(key_value != -1 || !(runerr = PyErr_Occurred()))) {
+        return __Pyx_GetItemInt_Fast(obj, key_value, 0, 1, 1);
+    }
+    if (PyErr_GivenExceptionMatches(runerr, PyExc_OverflowError)) {
+        PyErr_Clear();
+        PyErr_Format(PyExc_IndexError, "cannot fit '%.200s' into an index-sized integer", Py_TYPE(index)->tp_name);
+    }
+    return NULL;
+}
+static PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key) {
+    PyMappingMethods *m = Py_TYPE(obj)->tp_as_mapping;
+    if (likely(m && m->mp_subscript)) {
+        return m->mp_subscript(obj, key);
+    }
+    return __Pyx_PyObject_GetIndex(obj, key);
+}
+#endif
+
+/* PyObjectCallNoArg */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_PyObject_CallNoArg(PyObject *func) {
+#if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(func)) {
+        return __Pyx_PyFunction_FastCall(func, NULL, 0);
+    }
+#endif
+#ifdef __Pyx_CyFunction_USED
+    if (likely(PyCFunction_Check(func) || __Pyx_CyFunction_Check(func)))
+#else
+    if (likely(PyCFunction_Check(func)))
+#endif
+    {
+        if (likely(PyCFunction_GET_FLAGS(func) & METH_NOARGS)) {
+            return __Pyx_PyObject_CallMethO(func, NULL);
+        }
+    }
+    return __Pyx_PyObject_Call(func, __pyx_empty_tuple, NULL);
+}
+#endif
 
 /* RaiseException */
 #if PY_MAJOR_VERSION < 3
@@ -24756,122 +23626,6 @@ static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject 
 bad:
     Py_XDECREF(owned_instance);
     return;
-}
-#endif
-
-/* GetItemInt */
-static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
-    PyObject *r;
-    if (!j) return NULL;
-    r = PyObject_GetItem(o, j);
-    Py_DECREF(j);
-    return r;
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_List_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    Py_ssize_t wrapped_i = i;
-    if (wraparound & unlikely(i < 0)) {
-        wrapped_i += PyList_GET_SIZE(o);
-    }
-    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyList_GET_SIZE(o)))) {
-        PyObject *r = PyList_GET_ITEM(o, wrapped_i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
-#endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Tuple_Fast(PyObject *o, Py_ssize_t i,
-                                                              CYTHON_NCP_UNUSED int wraparound,
-                                                              CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    Py_ssize_t wrapped_i = i;
-    if (wraparound & unlikely(i < 0)) {
-        wrapped_i += PyTuple_GET_SIZE(o);
-    }
-    if ((!boundscheck) || likely(__Pyx_is_valid_index(wrapped_i, PyTuple_GET_SIZE(o)))) {
-        PyObject *r = PyTuple_GET_ITEM(o, wrapped_i);
-        Py_INCREF(r);
-        return r;
-    }
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-#else
-    return PySequence_GetItem(o, i);
-#endif
-}
-static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, int is_list,
-                                                     CYTHON_NCP_UNUSED int wraparound,
-                                                     CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
-    if (is_list || PyList_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyList_GET_SIZE(o);
-        if ((!boundscheck) || (likely(__Pyx_is_valid_index(n, PyList_GET_SIZE(o))))) {
-            PyObject *r = PyList_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    }
-    else if (PyTuple_CheckExact(o)) {
-        Py_ssize_t n = ((!wraparound) | likely(i >= 0)) ? i : i + PyTuple_GET_SIZE(o);
-        if ((!boundscheck) || likely(__Pyx_is_valid_index(n, PyTuple_GET_SIZE(o)))) {
-            PyObject *r = PyTuple_GET_ITEM(o, n);
-            Py_INCREF(r);
-            return r;
-        }
-    } else {
-        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
-        if (likely(m && m->sq_item)) {
-            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
-                Py_ssize_t l = m->sq_length(o);
-                if (likely(l >= 0)) {
-                    i += l;
-                } else {
-                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
-                        return NULL;
-                    PyErr_Clear();
-                }
-            }
-            return m->sq_item(o, i);
-        }
-    }
-#else
-    if (is_list || PySequence_Check(o)) {
-        return PySequence_GetItem(o, i);
-    }
-#endif
-    return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
-}
-
-/* ObjectGetItem */
-#if CYTHON_USE_TYPE_SLOTS
-static PyObject *__Pyx_PyObject_GetIndex(PyObject *obj, PyObject* index) {
-    PyObject *runerr;
-    Py_ssize_t key_value;
-    PySequenceMethods *m = Py_TYPE(obj)->tp_as_sequence;
-    if (unlikely(!(m && m->sq_item))) {
-        PyErr_Format(PyExc_TypeError, "'%.200s' object is not subscriptable", Py_TYPE(obj)->tp_name);
-        return NULL;
-    }
-    key_value = __Pyx_PyIndex_AsSsize_t(index);
-    if (likely(key_value != -1 || !(runerr = PyErr_Occurred()))) {
-        return __Pyx_GetItemInt_Fast(obj, key_value, 0, 1, 1);
-    }
-    if (PyErr_GivenExceptionMatches(runerr, PyExc_OverflowError)) {
-        PyErr_Clear();
-        PyErr_Format(PyExc_IndexError, "cannot fit '%.200s' into an index-sized integer", Py_TYPE(index)->tp_name);
-    }
-    return NULL;
-}
-static PyObject *__Pyx_PyObject_GetItem(PyObject *obj, PyObject* key) {
-    PyMappingMethods *m = Py_TYPE(obj)->tp_as_mapping;
-    if (likely(m && m->mp_subscript)) {
-        return m->mp_subscript(obj, key);
-    }
-    return __Pyx_PyObject_GetIndex(obj, key);
 }
 #endif
 
