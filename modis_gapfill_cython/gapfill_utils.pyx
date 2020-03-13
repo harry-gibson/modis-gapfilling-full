@@ -115,34 +115,26 @@ cdef class A2PassData:
         dataBits = [self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
                     self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
         passNumber = self.passNumber
-        if passNumber == 0:
-            for i in range(len(dataBits)):
-                dataBits[i] = np.copy(dataBits[i].T)
-        elif passNumber == 1:
-            for i in range(len(dataBits)):
-                dataBits[i] = np.copy(dataBits[i].T[:,::-1])
-        elif passNumber == 1:
-            for i in range(len(dataBits)):
-                dataBits[i] = np.copy(dataBits[i].T[:,::-1])
-        elif passNumber == 2:
-            for i in range(len(dataBits)):
-                dataBits[i] = np.copy(dataBits[i].T[::-1,:])
-        elif passNumber == 3:
-            for i in range(len(dataBits)):
-                dataBits[i] = np.copy(dataBits[i].T[::-1,::-1])
-        elif passNumber == 4:
-            pass
-        elif passNumber == 5:
-            for i in range(len(dataBits)):
-                dataBits[i] = np.copy(dataBits[i][:,::-1])
-        elif passNumber == 6:
-            for i in range(len(dataBits)):
-                dataBits[i] = np.copy(dataBits[i][::-1,:])
-        elif passNumber == 7:
-            for i in range(len(dataBits)):
-                dataBits[i] = np.copy(dataBits[i][::-1,::-1])
-        else:
-            raise ValueError()
+        for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
+                    self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
+            if passNumber == 0:
+                item = np.copy(item.T)
+            elif passNumber == 1:
+                item = np.copy(item.T[:,::-1])
+            elif passNumber == 2:
+                item = np.copy(item.T[::-1,:])
+            elif passNumber == 3:
+                item = np.copy(item.T[::-1,::-1])
+            elif passNumber == 4:
+                pass
+            elif passNumber == 5:
+                item = np.copy(item[:,::-1])
+            elif passNumber == 6:
+                item = np.copy(item[::-1,:])
+            elif passNumber == 7:
+                item = np.copy(item[::-1,::-1])
+            else:
+                raise ValueError()
 
 
 cdef class PixelMargins:

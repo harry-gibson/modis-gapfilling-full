@@ -381,7 +381,9 @@ cpdef a1_core(dataStacks: A1DataStack,  # has items Data, Flags, DistTemplate (o
 
                         if (inputFlags[z, yi_prv, xi_prv] & _FAILURE_FLAG) == _FAILURE_FLAG:
                             # also do this if failure flag (2) is set (by despeckle algorithm indicating that mean
-                            # was ND thus never any data on any calendar day)
+                            # was ND thus never any data on any calendar day). This happens in very occasional permanent
+                            # cloud pixels, but more often if the coastline template says land but MODIS thinks not
+                            # (this happens with LST more, they clip to their own coastline more strictly)
                             outputFlags[z, y, x_prv] = inputFlags[z, yi_prv, xi_prv]
                             neverDataCells +=1
                             continue

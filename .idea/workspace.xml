@@ -3,12 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="25a570f8-1e0e-467f-92ac-53e8035bc2b4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/MAP_limits_defaults.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config_defaults/MAP_limits_defaults.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_config_types.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_config_types.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_params_defaults.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config_defaults/gapfill_params_defaults.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_run_config_sample_master.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config_defaults/gapfill_run_config_sample_master.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/run_gapfill.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_gapfill.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config_defaults/gapfill_run_config_sample_master.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config_defaults/gapfill_run_config_sample_master.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_a1.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_core_a1.pyx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_utils.pyx" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfill_utils.pyx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +29,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../MAP-raster-utilities" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -48,6 +46,35 @@
       <recent name="E:\Data\Harry\Documents\Git\modis-gapfilling" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="run_gapfill" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="modis-gapfilling" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run_gapfill.py" />
+      <option name="PARAMETERS" value="-c gapfill_run_config_sample.yml" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.run_gapfill" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -59,7 +86,7 @@
       <option name="presentableId" value="Default" />
       <updated>1583170496774</updated>
       <workItem from="1583170501455" duration="659000" />
-      <workItem from="1583404652303" duration="46085000" />
+      <workItem from="1583404652303" duration="93740000" />
     </task>
     <servers />
   </component>
@@ -67,60 +94,137 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="552" y="238" width="816" height="729" key="#Intentions" timestamp="1583838438146">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="552" y="238" width="816" height="729" key="#Intentions/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583838438146" />
+    <state x="739" y="284" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1583772348217">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="739" y="284" key="#com.intellij.ide.macro.MacrosDialog/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583772348217" />
+    <state x="679" y="206" key="#run_gapfill" timestamp="1583772368973">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="679" y="206" key="#run_gapfill/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583772368973" />
+    <state x="1967" y="387" key="#xdebugger.evaluate" timestamp="1583849286811">
+      <screen x="1920" y="0" width="1920" height="1160" />
+    </state>
+    <state x="1967" y="387" key="#xdebugger.evaluate/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583849286811" />
+    <state width="1013" height="466" key="DebuggerActiveHint" timestamp="1583849585265">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1013" height="466" key="DebuggerActiveHint/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583849585265" />
     <state x="1269" y="413" key="FileChooserDialogImpl" timestamp="1583769278822">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="1269" y="413" key="FileChooserDialogImpl/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583769278822" />
+    <state width="1877" height="396" key="GridCell.Tab.0.bottom" timestamp="1584024546890">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="396" key="GridCell.Tab.0.bottom/0.0.1920.1160@0.0.1920.1160" timestamp="1584024546890" />
+    <state width="1877" height="396" key="GridCell.Tab.0.bottom/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583945480974" />
+    <state width="1877" height="396" key="GridCell.Tab.0.center" timestamp="1584024546889">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="396" key="GridCell.Tab.0.center/0.0.1920.1160@0.0.1920.1160" timestamp="1584024546889" />
+    <state width="1877" height="396" key="GridCell.Tab.0.center/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583945480973" />
+    <state width="1877" height="396" key="GridCell.Tab.0.left" timestamp="1584024546888">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="396" key="GridCell.Tab.0.left/0.0.1920.1160@0.0.1920.1160" timestamp="1584024546888" />
+    <state width="1877" height="396" key="GridCell.Tab.0.left/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583945480973" />
+    <state width="1877" height="396" key="GridCell.Tab.0.right" timestamp="1584024546890">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="396" key="GridCell.Tab.0.right/0.0.1920.1160@0.0.1920.1160" timestamp="1584024546890" />
+    <state width="1877" height="396" key="GridCell.Tab.0.right/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583945480974" />
+    <state width="1877" height="396" key="GridCell.Tab.1.bottom" timestamp="1583945480974">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="396" key="GridCell.Tab.1.bottom/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583945480974" />
+    <state width="1877" height="396" key="GridCell.Tab.1.center" timestamp="1583945480974">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="396" key="GridCell.Tab.1.center/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583945480974" />
+    <state width="1877" height="396" key="GridCell.Tab.1.left" timestamp="1583945480974">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="396" key="GridCell.Tab.1.left/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583945480974" />
+    <state width="1877" height="396" key="GridCell.Tab.1.right" timestamp="1583945480974">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="396" key="GridCell.Tab.1.right/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583945480974" />
     <state x="461" y="222" key="SettingsEditor" timestamp="1583404995578">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="461" y="222" key="SettingsEditor/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583404995578" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1583860456963">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="498" height="446" key="SwitcherDM/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583860456963" />
     <state x="552" y="313" key="Vcs.Push.Dialog.v2" timestamp="1583430945310">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="552" y="313" key="Vcs.Push.Dialog.v2/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583430945310" />
+    <state width="968" height="588" key="XDebugger.FullValuePopup" timestamp="1583774078715">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="968" height="588" key="XDebugger.FullValuePopup/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583774078715" />
+    <state x="478" y="285" key="com.intellij.execution.console.ConsoleHistoryController$MyBrowseAction$1" timestamp="1583944797435">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="478" y="285" key="com.intellij.execution.console.ConsoleHistoryController$MyBrowseAction$1/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583944797435" />
     <state x="656" y="404" key="com.intellij.ide.util.TipDialog" timestamp="1583404745118">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="656" y="404" key="com.intellij.ide.util.TipDialog/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583404745118" />
+    <state x="769" y="497" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1583853717669">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="769" y="497" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583853717669" />
     <state x="14" y="-17" width="1553" height="1147" maximized="true" key="dock-window-1" timestamp="1583769218952">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="14" y="-17" width="1553" height="1147" maximized="true" key="dock-window-1/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583769218952" />
-    <state x="2359" y="255" width="672" height="678" key="search.everywhere.popup" timestamp="1583406414964">
+    <state x="96" y="-12" width="1231" height="723" maximized="true" key="dock-window-2" timestamp="1583837214633">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="96" y="-12" width="1231" height="723" maximized="true" key="dock-window-2/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583837214633" />
+    <state x="2046" y="287" width="1206" height="723" maximized="true" key="dock-window-3" timestamp="1583924269114">
       <screen x="1920" y="0" width="1920" height="1160" />
     </state>
-    <state x="2359" y="255" width="672" height="678" key="search.everywhere.popup/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583406414964" />
+    <state x="2046" y="287" width="1206" height="723" maximized="true" key="dock-window-3/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583924269114" />
+    <state x="601" y="306" width="700" height="530" key="recent.locations.popup" timestamp="1583920674615">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="601" y="306" width="700" height="530" key="recent.locations.popup/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583920674615" />
+    <state x="2359" y="255" width="672" height="678" key="search.everywhere.popup" timestamp="1583841786241">
+      <screen x="1920" y="0" width="1920" height="1160" />
+    </state>
+    <state x="2359" y="255" width="672" height="678" key="search.everywhere.popup/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583841786241" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/modis_gapfill_cython/gapfill_config_types.py</url>
-          <line>250</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/modis_gapfill_cython/gapfill_config_types.py</url>
-          <line>75</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/modis_gapfill_cython/gapfill_config_types.py</url>
-          <line>102</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/run_gapfill.py</url>
           <line>173</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/modis_gapfill_cython/gapfill_config_types.py</url>
-          <line>46</line>
-          <option name="timeStamp" value="7" />
+          <url>file://$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py</url>
+          <line>545</line>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="arr_Mean" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/modis_gapfilling$run_gapfill.coverage" NAME="run_gapfill Coverage Results" MODIFIED="1583945166899" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
