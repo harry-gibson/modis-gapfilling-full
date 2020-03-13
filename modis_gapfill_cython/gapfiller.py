@@ -2,6 +2,7 @@
 import sys
 
 sys.path.insert(0, r'E:\Data\Harry\Documents\Git\MAP-raster-utilities')
+sys.path.insert(0, r'C:\Users\zool1301\Documents\GitHub\MAP-raster-utilities')
 # standard python libraries
 import os
 import math
@@ -60,8 +61,8 @@ class GapFiller:
         self._intermediateFiles = defaultdict(dict)
 
         # initialise limits of fill area in pixel coords of the input files
-        _latLims = (jobDetails.XMax_Deg, jobDetails.XMin_Deg)
-        _lonLims = (jobDetails.YMin_Deg, jobDetails.YMax_Deg)
+        _lonLims = (jobDetails.XMin_Deg, jobDetails.XMax_Deg)
+        _latLims = (jobDetails.YMax_Deg, jobDetails.YMin_Deg)
 
         if None in _latLims and None in _lonLims:
             self.OutputProps = self.InputRasterProps
@@ -69,8 +70,10 @@ class GapFiller:
             self.yLims = (0, self.InputRasterProps.height)
 
         else:
-            self.xLims, self.yLims = CalculatePixelLims(self.InputRasterProps.gt, _lonLims, _latLims)
-            outGT = CalculateClippedGeoTransform(self.InputRasterProps.gt, self.xLims, self.yLims)
+            self.xLims, self.yLims = CalculatePixelLims(self.InputRasterProps.gt, longitudeLims=_lonLims,
+                                                        latitudeLims=_latLims)
+            outGT = CalculateClippedGeoTransform(self.InputRasterProps.gt, xPixelLims=self.xLims,
+                                                 yPixelLims=self.yLims)
             outW = self.xLims[1] - self.xLims[0]
             outH = self.yLims[1] - self.yLims[0]
             outProj = self.InputRasterProps.proj
