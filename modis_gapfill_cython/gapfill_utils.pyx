@@ -51,90 +51,49 @@ cdef class A2PassData:
 
     def __cinit__(self, passNumber, dataArray, flagsArray, distanceArray, meanArray, sumDistArray):
 
-        self.TransformedDataArray2D = dataArray
-        self.TransformedFlagsArray2D = flagsArray
-        self.TransformedDistanceArray2D = distanceArray
-        self.TransformedMeanArray2D = meanArray
-        self.TransformedSumOfPassDistancesArray2D = sumDistArray
-
         self.passNumber = passNumber
-        #self.dataBits=[self.DataArray2D, self.FlagsArray2D, self.DistanceArray2D, self.MeanArray2D, self.SumOfPassDistancesArray2D]
 
-        self.__TransformData()
+        self.TransformedDataArray2D = self.__transformArray__(dataArray)
+        self.TransformedFlagsArray2D = self.__transformArray__(flagsArray)
+        self.TransformedDistanceArray2D = self.__transformArray__(distanceArray)
+        self.TransformedMeanArray2D = self.__transformArray__(meanArray)
+        self.TransformedSumOfPassDistancesArray2D = self.__transformArray__(sumDistArray)
 
-        self.TransformedDataArrayOutput2D = np.empty_like(dataArray)
+        self.TransformedDataArrayOutput2D = np.empty_like(self.TransformedDataArray2D)
 
     def getOutputData(self):
         """Returns the filled data array held in this object, transformed back to c-normal order"""
-        if self.passNumber == 0:
-            return np.copy(self.TransformedDataArrayOutput2D.T)
-        elif self.passNumber == 1:
-            return np.copy(self.TransformedDataArrayOutput2D[:,::-1].T)
-        elif self.passNumber == 2:
-            return np.copy(self.TransformedDataArrayOutput2D[::-1,:].T)
-        elif self.passNumber == 3:
-            return np.copy(self.TransformedDataArrayOutput2D[::-1,::-1].T)
-        elif self.passNumber == 4:
-            return np.copy(self.TransformedDataArrayOutput2D)
-        elif self.passNumber == 5:
-            return np.copy(self.TransformedDataArrayOutput2D[:,::-1])
-        elif self.passNumber == 6:
-            return np.copy(self.TransformedDataArrayOutput2D[::-1,:])
-        elif self.passNumber ==7:
-            return np.copy(self.TransformedDataArrayOutput2D[::-1,::-1])
-        else:
-            raise ValueError()
+        return self.__transformArray__(self.TransformedDataArray2D)
 
     def getOutputDists(self):
         """Returns the sum-of-fill-distances array held in this object transformed back to c-normal order"""
+        return self.__transformArray__(self.TransformedDistanceArray2D)
+
+    def __transformArray__(self, data):
+        """Transforms the input data arrays such that iterating over them in C-normal order will effectively
+        pass over the data in one of the 8 cardinal directions, according to which pass number this is.
+        This implementation actually copies the data into a new C-normal array, so that all A2 pass runs
+        should take the same amount of time. Not copying the data i.e. not using np.copy results in the
+        transposed passed 1-4 being ~ 9* slower due to the inefficient memory access.
+        All transforms are reversible so can use the same call for input and output"""
         if self.passNumber == 0:
-            return np.copy(self.TransformedSumOfPassDistancesArray2D.T)
+            return np.copy(data.T, order='C')
         elif self.passNumber == 1:
-            return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1].T)
+            return np.copy(data[:,::-1].T, order='C')
         elif self.passNumber == 2:
-            return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:].T)
+            return np.copy(data[::-1,:].T, order='C')
         elif self.passNumber == 3:
-            return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,::-1].T)
+            return np.copy(data[::-1,::-1].T, order='C')
         elif self.passNumber == 4:
-            return np.copy(self.TransformedSumOfPassDistancesArray2D)
+            return np.copy(data, order='C')
         elif self.passNumber == 5:
-            return np.copy(self.TransformedSumOfPassDistancesArray2D[:,::-1])
+            return np.copy(data[:,::-1], order='C')
         elif self.passNumber == 6:
-            return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,:])
+            return np.copy(data[::-1,:], order='C')
         elif self.passNumber ==7:
-            return np.copy(self.TransformedSumOfPassDistancesArray2D[::-1,::-1])
+            return np.copy(data[::-1,::-1], order='C')
         else:
             raise ValueError()
-
-    def __TransformData(self):
-        """Transforms the input data arrays such that iterating over them in C-normal order will effectively
-        pass over the data in one of the 8 cardinal directions. This implementation actually copies the data into
-        a new C-normal array, so that all A2 pass runs should take the same amount of time. Not copying the data
-        i.e. not using np.copy results in the transposed passed 1-4 being ~ 9* slower due to the inefficient
-        memory access"""
-        dataBits = [self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
-                    self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D]
-        passNumber = self.passNumber
-        for item in(self.TransformedDataArray2D, self.TransformedFlagsArray2D, self.TransformedDistanceArray2D,
-                    self.TransformedMeanArray2D, self.TransformedSumOfPassDistancesArray2D):
-            if passNumber == 0:
-                item = np.copy(item.T)
-            elif passNumber == 1:
-                item = np.copy(item.T[:,::-1])
-            elif passNumber == 2:
-                item = np.copy(item.T[::-1,:])
-            elif passNumber == 3:
-                item = np.copy(item.T[::-1,::-1])
-            elif passNumber == 4:
-                pass
-            elif passNumber == 5:
-                item = np.copy(item[:,::-1])
-            elif passNumber == 6:
-                item = np.copy(item[::-1,:])
-            elif passNumber == 7:
-                item = np.copy(item[::-1,::-1])
-            else:
-                raise ValueError()
 
 
 cdef class PixelMargins:
