@@ -26,7 +26,7 @@ FillJob:
     - 0
   # use 0 to fill all years or specify the first year to fill
   StartYear: 2000
-  ClipMinMax: True
+  ClipMinMax: true
   RunA2: True
   NCores: int
   MemTargetBytes: 40e9
