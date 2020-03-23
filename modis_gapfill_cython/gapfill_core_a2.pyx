@@ -5,6 +5,7 @@ from libc.math cimport sqrt
 from cython.parallel import prange, parallel
 from .gapfill_config_types import A2SearchConfig, DataLimitsConfig, FlagItems
 from .gapfill_utils import  A2PassData
+
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.cdivision(True)
@@ -14,7 +15,7 @@ cpdef a2_core (
             a2Config: A2SearchConfig,
             flagValues: FlagItems
             ):
-    '''
+    """
     Cython (C) implementation of the A2 gapfilling algorithm main "pass" code. This function always iterates through 
     the data in C-normal order i.e. by column then row starting from top left. The function should be called 8
     times with the data transposed differently each time in such a way that the 8 different directional pass fills 
@@ -38,7 +39,7 @@ cpdef a2_core (
     to the 8 different directional passes. To reduce memory use, the caller function (elsewhere) does not not make a
     C-ordered copy of the data but re-strides it. This greatly slows the A2 function (by a factor of around 6) and so
     on a machine with sufficent memory the data should be copied into the right order before passing to this function.
-    '''
+    """
     cdef:
         # intermediate arrays
         double [:,::1] nbrTable
@@ -105,6 +106,7 @@ cpdef a2_core (
     # this is just (data / mean) or (data - mean) (whether the data are original or from A1)
     diffImage_Local = np.empty_like(dataImage)
     diffImage_Local[:] = _NDV
+    outputImageData[:] = _NDV
     with nogil, parallel(num_threads=20):
         #outerIdx = -1
         for y in prange(0, yShape):
@@ -141,6 +143,7 @@ cpdef a2_core (
                 if meanImage[y, x] == _NDV:
                     #we can't fill, but, if we are here then the flag is already set
                     #to failure (from A1)... could optionally set a separate A2 failure flag (128)
+                    outputImageData[y, x] = _NDV
                     continue
                 # else...
                 nbrDiffSum = 0

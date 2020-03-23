@@ -35,9 +35,9 @@ def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
 
     # we need to duplicate the data image 8 times, once for each pass, because if we want to track the median of
     # the 8 passes then we can't do that with a running calculation
-    dataPassStack = np.repeat(dataImageIn[np.newaxis, :, :], 8, axis=0) # gets modified in place
+    dataPassStack = np.repeat(dataImageIn[np.newaxis, :, :], 8, axis=0)  # gets modified in place
 
-    sumDistImage = np.zeros_like(dataImageIn) # gets incremented in place
+    sumDistImage = np.zeros_like(dataImageIn)  # gets incremented in place
     global _NDV
 
     # we're not tinkering with this one, A2 will always run with 8 neighbours
@@ -96,7 +96,7 @@ def A2ImageCaller(dataImageIn, flagsImageIn, distImageIn, meanImageIn,
                 passAverageSlice[:] = bn.nanmean(dataPassSlice, axis=0)
             else:
                 passAverageSlice[:] = bn.nanmedian(dataPassSlice, axis=0)
-
+    #print("a2 calcs done")
     dataPassStack = None
     del dataPassStack # and breathe
     gc.collect()

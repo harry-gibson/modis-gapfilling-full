@@ -63,11 +63,35 @@ cdef class A2PassData:
 
     def getOutputData(self):
         """Returns the filled data array held in this object, transformed back to c-normal order"""
-        return self.__transformArray__(self.TransformedDataArray2D)
+        return self.__untransformArray__(self.TransformedDataArrayOutput2D)
 
     def getOutputDists(self):
         """Returns the sum-of-fill-distances array held in this object transformed back to c-normal order"""
-        return self.__transformArray__(self.TransformedDistanceArray2D)
+        return self.__untransformArray__(self.TransformedDistanceArray2D)
+
+    def __untransformArray__(self, data):
+        """Reverses the transform that was applied to the input data arrays such that iterating over them
+        in C-normal order will pass over the data in its original direction/layout. Transforms 1 and 2 are not
+        reversible, hence different method for untransform."""
+        if self.passNumber == 0:
+            return np.copy(data.T, order='C')
+        elif self.passNumber == 1:
+            return np.copy(data.T[:,::-1], order='C')
+        elif self.passNumber == 2:
+            return np.copy(data.T[::-1, :], order='C')
+        elif self.passNumber == 3:
+            # this one is actually reversible i.e. could be data[::-1,::-1].T
+            return np.copy(data.T[::-1,::-1], order='C')
+        elif self.passNumber == 4:
+            return np.copy(data, order='C')
+        elif self.passNumber == 5:
+            return np.copy(data[:,::-1], order='C')
+        elif self.passNumber == 6:
+            return np.copy(data[::-1,:], order='C')
+        elif self.passNumber == 7:
+            return np.copy(data[::-1, ::-1], order='C')
+        else:
+            raise ValueError()
 
     def __transformArray__(self, data):
         """Transforms the input data arrays such that iterating over them in C-normal order will effectively
@@ -75,7 +99,7 @@ cdef class A2PassData:
         This implementation actually copies the data into a new C-normal array, so that all A2 pass runs
         should take the same amount of time. Not copying the data i.e. not using np.copy results in the
         transposed passed 1-4 being ~ 9* slower due to the inefficient memory access.
-        All transforms are reversible so can use the same call for input and output"""
+        Transforms 1 and 2 are not reversible so use __untransformArray__ for output"""
         if self.passNumber == 0:
             return np.copy(data.T, order='C')
         elif self.passNumber == 1:
