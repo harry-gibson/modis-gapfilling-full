@@ -4,7 +4,7 @@
     <list default="true" id="25a570f8-1e0e-467f-92ac-53e8035bc2b4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Gapfill_BySlice_Cython_v04.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Gapfill_BySlice_Cython_v04.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gapfill_run_config_testing.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gapfill_run_config_testing.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +22,7 @@
       </map>
     </option>
   </component>
-  <component name="JupyterTrust" id="57f048a9-348b-42d2-95a1-8b5d32237971" />
+  <component name="JupyterTrust" id="581a9f69-5fda-4a7a-8487-7feafc7417ef" />
   <component name="ProjectId" id="1YaAn1w79VIHak6haJRWt3PoDA4" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -94,6 +94,7 @@
       <workItem from="1584619982270" duration="8726000" />
       <workItem from="1584716447370" duration="5001000" />
       <workItem from="1584974603717" duration="7978000" />
+      <workItem from="1585040264249" duration="2070000" />
     </task>
     <servers />
   </component>
