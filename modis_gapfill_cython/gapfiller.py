@@ -70,8 +70,10 @@ class GapFiller:
             self.yLims = (0, self.InputRasterProps.height)
 
         else:
+            # TODO replace with rasterio.DatasetReader.index
             self.xLims, self.yLims = CalculatePixelLims(self.InputRasterProps.gt, longitudeLims=_lonLims,
                                                         latitudeLims=_latLims)
+            # TODO barring snapping just create this manually from the origin and existing resolution
             outGT = CalculateClippedGeoTransform(self.InputRasterProps.gt, xPixelLims=self.xLims,
                                                  yPixelLims=self.yLims)
             outW = self.xLims[1] - self.xLims[0]
@@ -80,6 +82,7 @@ class GapFiller:
             outNdv = self.InputRasterProps.ndv
             outRes = self.InputRasterProps.res
             outDT = self.InputRasterProps.datatype
+            # TODO define this type in this project, not imported
             self.OutputProps = RasterProps(gt=outGT, proj=outProj, ndv=outNdv, width=outW, height=outH,
                                            res=outRes, datatype=outDT)
         maxZSize = max([len(v) for k,v in self._inputFileDict.items()])
@@ -329,15 +332,6 @@ class GapFiller:
             right=sliceTotalMarginR
         )
 
-        #a1Margins = {
-        #    "TOP": sliceTotalMarginT,
-        #    "BOTTOM": sliceTotalMarginB,
-        #    "LEFT": sliceTotalMarginL,
-        #    "RIGHT": sliceTotalMarginR,
-        #    "FILLHEIGHT": sliceFillHeight,
-        #    "FILLWIDTH": sliceFillWidth
-        #}
-
         dataReadWindow = PixelMargins(
             top=g_sliceDespeckleT, bottom=g_sliceDespeckleB,
             left=g_sliceDespeckleL, right=g_sliceDespeckleR
@@ -376,7 +370,7 @@ class GapFiller:
                                                yPixelLims=(dataWriteWindow.Top, dataWriteWindow.Bottom))
         sliceDespeckleHeight = dataReadWindow.Bottom - dataReadWindow.Top
         sliceDespeckleWidth = dataReadWindow.Right - dataReadWindow.Left
-
+        # todo replace these calls with rasterio.DatasetReader.read()
         meanReader = SingleBandTiffFile(self._filePaths.SYNOPTIC_MEAN_FILE)
         sliceMeanArr, _, _, _ = meanReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
                                                             yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
