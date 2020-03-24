@@ -1,0 +1,35 @@
+FilePaths:
+  UnfilledFilesGlobPattern: string
+  UnfilledSynopticMean: string
+  UnfilledSynopticSD: string
+  CoastlineTemplate: string
+  OutputFolder: string
+  TemporaryFolder: string
+
+# if this section is not provided then an attempt will be made to identify the data
+# being filled as one of LST, EVI, TCB, or TCW and apply MAP defaults as appropriate
+DataLimitParams:
+  ceiling_value: float
+  floor_value: float
+  correction_offset: float
+  floor_ceiling_zscore: float
+  absolute_zero_for_ratio: float
+  nodata_value: float
+
+FillJob:
+  XMin: float
+  XMax: float
+  YMin: float
+  YMax: float
+  # use 0 to fill all days or specify a yaml list of julian days
+  CalendarDaysToFill:
+    - 0
+  # use 0 to fill all years or specify the first year to fill
+  StartYear: 2000
+  ClipMinMax: true
+  RunA2: True
+  NCores: int
+  MemTargetBytes: 40e9
+  OutputFilenameTag: str
+
+

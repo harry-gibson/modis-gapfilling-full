@@ -1,0 +1,35 @@
+FilePaths:
+  UnfilledFilesGlobPattern: "G:\\Shared drives\\MODIS-unfilled\\LST_Day_v6\\1km\\8-Daily\\*_LST_Day*.tif"
+  UnfilledSynopticMean: "G:\\Shared drives\\MODIS-unfilled\\LST_Day_v6\\1km\\Synoptic\\LST_Day_v6_Unfilled.Synoptic.Overall.Balanced-mean.mean.1km.tif"
+  UnfilledSynopticSD: "G:\\Shared drives\\MODIS-unfilled\\LST_Day_v6\\1km\\Synoptic\\LST_Day_v6_Unfilled.Synoptic.Overall.SD.1km.Data.tif"
+  CoastlineTemplate: "G:\\Shared drives\\MAP MODIS Covariates\\MODIS_Global\\CoastGlobal.tiff"
+  OutputFolder: "C:\\Temp\\LST_Test"
+  TemporaryFolder: "C:\\Temp\\LST_Test\\Intermediate"
+
+# if this section is not provided then an attempt will be made to identify the data
+# being filled as one of LST, EVI, TCB, or TCW and apply MAP defaults as appropriate
+#DataLimitParams:
+#  ceiling_value: float
+#  floor_value: float
+#  correction_offset: float
+#  floor_ceiling_zscore: float
+#  absolute_zero_for_ratio: float
+#  nodata_value: float
+
+FillJob:
+  XMin: -2
+  XMax: 40
+  YMin: -10
+  YMax: 15
+  # use 0 to fill all days or specify a yaml list of julian days
+  CalendarDaysToFill:
+  - 361
+  # use 0 to fill all years or specify the first year to fill
+  StartYear: 2018
+  ClipMinMax: true
+  RunA2: true
+  NCores: 20
+  MemTargetBytes: 40e9
+  OutputFilenameTag: "LST_Day"
+
+

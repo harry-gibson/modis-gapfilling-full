@@ -1,0 +1,28 @@
+LST:
+  ceiling_value: 100.0
+  floor_value: -100.0
+  correction_offset: 0
+  floor_ceiling_zscore: 2.58
+  absolute_zero_for_ratio: -273.15
+  nodata_value: -9999
+EVI:
+  ceiling_value: 1.0
+  floor_value: 0.0
+  correction_offset: 0
+  floor_ceiling_zscore: 2.58
+  absolute_zero_for_ratio: 0
+  nodata_value: -9999
+TCW:
+  ceiling_value: 2.0
+  floor_value: -1.0
+  correction_offset: 0
+  floor_ceiling_zscore: 2.58
+  absolute_zero_for_ratio: 0
+  nodata_value: -9999
+TCB:
+  ceiling_value: 2.0
+  floor_value: -1.0
+  correction_offset: 0
+  floor_ceiling_zscore: 2.58
+  absolute_zero_for_ratio: 0
+  nodata_value: -9999
