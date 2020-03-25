@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="25a570f8-1e0e-467f-92ac-53e8035bc2b4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gapfill_run_config_testing.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gapfill_run_config_testing.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py" beforeDir="false" afterPath="$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -96,7 +97,7 @@
       <workItem from="1585040264249" duration="3514000" />
       <workItem from="1585145022781" duration="1560000" />
       <workItem from="1585147147784" duration="240000" />
-      <workItem from="1585147657674" duration="2339000" />
+      <workItem from="1585147657674" duration="6758000" />
     </task>
     <servers />
   </component>
@@ -108,54 +109,54 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="414" y="234" key="#com.intellij.execution.impl.EditConfigurationsDialog/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1584105999294" />
-    <state x="2115" y="376" key="#xdebugger.evaluate" timestamp="1584980632584">
+    <state x="2115" y="376" key="#xdebugger.evaluate" timestamp="1585152600740">
       <screen x="1920" y="-13" width="1280" height="984" />
     </state>
-    <state x="2115" y="376" key="#xdebugger.evaluate/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1584980632584" />
+    <state x="2115" y="376" key="#xdebugger.evaluate/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1585152600740" />
     <state x="1269" y="413" key="FileChooserDialogImpl" timestamp="1584112857800">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="1269" y="413" key="FileChooserDialogImpl/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1584112857800" />
     <state x="1269" y="413" key="FileChooserDialogImpl/1920.0.1920.1160/0.0.1920.1160@0.0.1920.1160" timestamp="1583769278822" />
-    <state width="1877" height="267" key="GridCell.Tab.0.bottom" timestamp="1584984349878">
+    <state width="1877" height="267" key="GridCell.Tab.0.bottom" timestamp="1585154487190">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="267" key="GridCell.Tab.0.bottom/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1584984349878" />
+    <state width="1877" height="267" key="GridCell.Tab.0.bottom/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1585154487190" />
     <state width="1663" height="320" key="GridCell.Tab.0.bottom/0.0.1707.920@0.0.1707.920" timestamp="1584955351930" />
-    <state width="1877" height="267" key="GridCell.Tab.0.center" timestamp="1584984349878">
+    <state width="1877" height="267" key="GridCell.Tab.0.center" timestamp="1585154487190">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="267" key="GridCell.Tab.0.center/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1584984349878" />
+    <state width="1877" height="267" key="GridCell.Tab.0.center/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1585154487190" />
     <state width="1663" height="320" key="GridCell.Tab.0.center/0.0.1707.920@0.0.1707.920" timestamp="1584955351930" />
-    <state width="1877" height="267" key="GridCell.Tab.0.left" timestamp="1584984349878">
+    <state width="1877" height="267" key="GridCell.Tab.0.left" timestamp="1585154487190">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="267" key="GridCell.Tab.0.left/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1584984349878" />
+    <state width="1877" height="267" key="GridCell.Tab.0.left/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1585154487190" />
     <state width="1663" height="320" key="GridCell.Tab.0.left/0.0.1707.920@0.0.1707.920" timestamp="1584955351930" />
-    <state width="1877" height="267" key="GridCell.Tab.0.right" timestamp="1584984349878">
+    <state width="1877" height="267" key="GridCell.Tab.0.right" timestamp="1585154487190">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="267" key="GridCell.Tab.0.right/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1584984349878" />
+    <state width="1877" height="267" key="GridCell.Tab.0.right/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1585154487190" />
     <state width="1663" height="320" key="GridCell.Tab.0.right/0.0.1707.920@0.0.1707.920" timestamp="1584955351930" />
-    <state width="1877" height="267" key="GridCell.Tab.1.bottom" timestamp="1584984349878">
+    <state width="1877" height="267" key="GridCell.Tab.1.bottom" timestamp="1585154487191">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="267" key="GridCell.Tab.1.bottom/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1584984349878" />
+    <state width="1877" height="267" key="GridCell.Tab.1.bottom/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1585154487191" />
     <state width="1877" height="267" key="GridCell.Tab.1.bottom/0.0.1707.920@0.0.1707.920" timestamp="1584955351922" />
-    <state width="1877" height="267" key="GridCell.Tab.1.center" timestamp="1584984349878">
+    <state width="1877" height="267" key="GridCell.Tab.1.center" timestamp="1585154487190">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="267" key="GridCell.Tab.1.center/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1584984349878" />
+    <state width="1877" height="267" key="GridCell.Tab.1.center/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1585154487190" />
     <state width="1877" height="267" key="GridCell.Tab.1.center/0.0.1707.920@0.0.1707.920" timestamp="1584955351921" />
-    <state width="1877" height="267" key="GridCell.Tab.1.left" timestamp="1584984349878">
+    <state width="1877" height="267" key="GridCell.Tab.1.left" timestamp="1585154487190">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="267" key="GridCell.Tab.1.left/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1584984349878" />
+    <state width="1877" height="267" key="GridCell.Tab.1.left/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1585154487190" />
     <state width="1877" height="267" key="GridCell.Tab.1.left/0.0.1707.920@0.0.1707.920" timestamp="1584955351920" />
-    <state width="1877" height="267" key="GridCell.Tab.1.right" timestamp="1584984349878">
+    <state width="1877" height="267" key="GridCell.Tab.1.right" timestamp="1585154487190">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="267" key="GridCell.Tab.1.right/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1584984349878" />
+    <state width="1877" height="267" key="GridCell.Tab.1.right/-2560.-13.1707.933/0.0.1920.1160/1920.-13.1280.984@0.0.1920.1160" timestamp="1585154487190" />
     <state width="1877" height="267" key="GridCell.Tab.1.right/0.0.1707.920@0.0.1707.920" timestamp="1584955351921" />
     <state x="410" y="176" key="SettingsEditor" timestamp="1585145788449">
       <screen x="0" y="0" width="1707" height="920" />
@@ -237,23 +238,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py</url>
-          <line>555</line>
+          <line>564</line>
           <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py</url>
-          <line>79</line>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/modis_gapfill_cython/gapfiller.py</url>
-          <line>124</line>
-          <option name="timeStamp" value="17" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/modis_gapfilling$run_gapfill.coverage" NAME="run_gapfill Coverage Results" MODIFIED="1584982646445" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/modis_gapfilling$run_gapfill.coverage" NAME="run_gapfill Coverage Results" MODIFIED="1585154287629" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

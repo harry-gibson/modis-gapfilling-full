@@ -14,6 +14,8 @@ from collections import defaultdict
 from raster_utilities.utils.geotransform_calcs import CalculatePixelLims, CalculateClippedGeoTransform
 from raster_utilities.io.TiffFile import SingleBandTiffFile, RasterProps
 import rasterio as rio
+from rasterio.windows import Window
+import rasterio.dtypes as rio_dt
 from osgeo import gdal
 # from raster_utilities.tileProcessor import tileProcessor
 from collections import namedtuple
@@ -372,15 +374,14 @@ class GapFiller:
         sliceDespeckleHeight = dataReadWindow.Bottom - dataReadWindow.Top
         sliceDespeckleWidth = dataReadWindow.Right - dataReadWindow.Left
         # replaced reading with rasterio
+        dataReadWindow_rio = Window.from_slices(rows=(dataReadWindow.Top, dataReadWindow.Bottom),
+                                                cols=(dataReadWindow.Left, dataReadWindow.Right))
         with rio.open(self._filePaths.SYNOPTIC_MEAN_FILE) as meanReader:
-            sliceMeanArr = meanReader.read(1, window=((dataReadWindow.Left, dataReadWindow.Right),
-                                                  (dataReadWindow.Top, dataReadWindow.Bottom)))
+            sliceMeanArr = meanReader.read(1, window=dataReadWindow_rio)
         with rio.open(self._filePaths.SYNOPTIC_SD_FILE) as sdReader:
-            sliceSDArr = sdReader.read(1, window=((dataReadWindow.Left, dataReadWindow.Right),
-                                                  (dataReadWindow.Top, dataReadWindow.Bottom)))
+            sliceSDArr = sdReader.read(1, window=dataReadWindow_rio)
         with rio.open(self._filePaths.COASTLINE_FILE) as coastReader:
-            sliceCoastArr = coastReader.read(1, window=((dataReadWindow.Left, dataReadWindow.Right),
-                                                  (dataReadWindow.Top, dataReadWindow.Bottom)))
+            sliceCoastArr = coastReader.read(1, window=dataReadWindow_rio)
         yearFileDictThisDay = self._inputFileDict[calendarDay]
         sortedFiles = [f for (y, f) in sorted(yearFileDictThisDay.items())]
         if startYear != 0:
@@ -410,8 +411,7 @@ class GapFiller:
         dataStack.KnownUnfillable2D = None
         for zPos in range(len(sortedFiles)):
             with rio.open(sortedFiles[zPos]) as f:
-                dataStack.DataArray3D[zPos] = f.read(1, window=((dataReadWindow.Left, dataReadWindow.Right),
-                                                  (dataReadWindow.Top, dataReadWindow.Bottom)))
+                dataStack.DataArray3D[zPos] = f.read(1, window=dataReadWindow_rio)
                 assert f.nodata == self._dataSpecificConfig.NODATA_VALUE
         #assert dataStack.DataArray3D.flags.c_contiguous
 
@@ -509,15 +509,21 @@ class GapFiller:
 
     def A2BatchRunner(self):
         # cf. a2Caller, but run for a provided filename
-
+        dataReadWindow_rio = Window.from_slices(rows=self.yLims, cols=self.xLims)
+        # the MAP writer code checks the array is of an equal or "higher" datatype based on their gdal numeric
+        # enum values (which are in a suitable order for this to be useful). We can recreate those from rio using the
+        # order of this list:
+        ordered_rio_dtypes = list(rio_dt.dtype_fwd.values())
         with rio.open(self._filePaths.SYNOPTIC_MEAN_FILE) as f:
-            arr_Mean = f.read(1, window=(self.xLims, self.yLims))
+            arr_Mean = f.read(1, window=dataReadWindow_rio)
         if False: # self._CACHE_SD:
             with rio.open(self._filePaths.SYNOPTIC_SD_FILE) as f:
-                arr_SD = f.read(1, window=(self.xLims, self.yLims))
+                arr_SD = f.read(1, window=dataReadWindow_rio)
         for inputName, intermediateDataForDate in self._intermediateFiles.items():
             dataFile = intermediateDataForDate["Data"]
             with rio.open(dataFile) as f:
+                # the entirety of this intermediate file corresponds to the window read from the
+                # global synoptic files above
                 arr_Data = f.read(1)
                 # reusing the RasterProps namedtuple type from MAP-raster-utilities just for convenience
                 props_Data = RasterProps(gt=f.transform, # an Affine type, not just a tuple
@@ -525,7 +531,8 @@ class GapFiller:
                                          ndv=f.nodata,  # not sure what this does if file is multiband,
                                                         # maybe should do get_nodata()[0]
                                          width=f.width, height=f.height,
-                                         datatype=f.dtypes[0] # a string, not a numeric gdal type code
+                                         datatype=ordered_rio_dtypes.index(f.dtypes[0]),
+                                         res = f.transform[0]
                                          )
             distsFile = intermediateDataForDate["Distances"]
             with rio.open(distsFile) as f:
@@ -536,7 +543,8 @@ class GapFiller:
                                          ndv=f.nodata,  # not sure what this does if file is multiband,
                                          # maybe should do get_nodata()[0]
                                          width=f.width, height=f.height,
-                                         datatype=f.dtypes[0]  # a string, not a numeric gdal type code
+                                         datatype=ordered_rio_dtypes.index(f.dtypes[0]),  # a string, not a numeric gdal type code
+                                         res=f.transform[0]
                                          )
 
             flagsFile = intermediateDataForDate["Flags"]
@@ -548,7 +556,8 @@ class GapFiller:
                                          ndv=f.nodata,  # not sure what this does if file is multiband,
                                          # maybe should do get_nodata()[0]
                                          width=f.width, height=f.height,
-                                         datatype=f.dtypes[0]  # a string, not a numeric gdal type code
+                                         datatype=ordered_rio_dtypes.index(f.dtypes[0]),  # a string, not a numeric gdal type code
+                                         res=f.transform[0]
                                          )
             if self._jobDetails.RunA2:
                 print(f"Running A2 for image {dataFile}")
@@ -563,7 +572,7 @@ class GapFiller:
                 # if not self._CACHE_SD:
                 if True:
                     with rio.open(self._filePaths.SYNOPTIC_SD_FILE) as f:
-                        arr_SD = f.read(1, window=(self.xLims, self.yLims))
+                        arr_SD = f.read(1, window=dataReadWindow_rio)
                 MinMaxClip(dataImage=arr_Data, flagsImage=arr_Flags, meansImage=arr_Mean, stdImage=arr_SD,
                            flagToCheck=self._flagValues.A2_FILLED, flagToSet=self._flagValues.CLIPPED,
                            floor_ceiling_value=self._dataSpecificConfig.FLOOR_CEILING_ZSCORE,

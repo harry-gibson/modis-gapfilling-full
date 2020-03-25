@@ -3,8 +3,8 @@ FilePaths:
   UnfilledSynopticMean: "G:\\Shared drives\\MODIS-unfilled\\LST_Day_v6\\1km\\Synoptic\\LST_Day_v6_Unfilled.Synoptic.Overall.Balanced-mean.mean.1km.tif"
   UnfilledSynopticSD: "G:\\Shared drives\\MODIS-unfilled\\LST_Day_v6\\1km\\Synoptic\\LST_Day_v6_Unfilled.Synoptic.Overall.SD.1km.Data.tif"
   CoastlineTemplate: "G:\\Shared drives\\MAP MODIS Covariates\\MODIS_Global\\CoastGlobal.tiff"
-  OutputFolder: "C:\\Temp\\LST_Test"
-  TemporaryFolder: "C:\\Temp\\LST_Test\\Intermediate"
+  OutputFolder: "C:\\Temp\\LST_Test_rioread"
+  TemporaryFolder: "C:\\Temp\\LST_Test_rioread\\Intermediate"
 
 # if this section is not provided then an attempt will be made to identify the data
 # being filled as one of LST, EVI, TCB, or TCW and apply MAP defaults as appropriate
