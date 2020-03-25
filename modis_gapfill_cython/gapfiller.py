@@ -16,7 +16,7 @@ from raster_utilities.io.TiffFile import SingleBandTiffFile, RasterProps
 import rasterio as rio
 from osgeo import gdal
 # from raster_utilities.tileProcessor import tileProcessor
-
+from collections import namedtuple
 # cython functions
 from .gapfill_core_despeckle_and_flag import setSpeckleFlags
 from .gapfill_core_a1 import a1_core
@@ -505,32 +505,51 @@ class GapFiller:
                                      (dataWriteWindow.Left, dataWriteWindow.Top))
                 thisOutFile = None
 
+    RasterProps = namedtuple("RasterProps", ["gt", "proj", "ndv", "width", "height", "res", "datatype"])
+
     def A2BatchRunner(self):
         # cf. a2Caller, but run for a provided filename
 
-        arr_Mean, _, _, _ = SingleBandTiffFile(self._filePaths.SYNOPTIC_MEAN_FILE).ReadForPixelLims(
-            xLims=self.xLims, yLims=self.yLims
-        )
+        with rio.open(self._filePaths.SYNOPTIC_MEAN_FILE) as f:
+            arr_Mean = f.read(1, window=(self.xLims, self.yLims))
         if False: # self._CACHE_SD:
-            arr_SD, _, _, _ = SingleBandTiffFile(self._filePaths.SYNOPTIC_SD_FILE).ReadForPixelLims(
-                xLims=self.xLims, yLims=self.yLims
-            )
+            with rio.open(self._filePaths.SYNOPTIC_SD_FILE) as f:
+                arr_SD = f.read(1, window=(self.xLims, self.yLims))
         for inputName, intermediateDataForDate in self._intermediateFiles.items():
             dataFile = intermediateDataForDate["Data"]
-            dataReader = SingleBandTiffFile(dataFile)
-            arr_Data, gt_Data, proj_Data, ndv_Data = dataReader.ReadAll()
-            props_Data = dataReader.GetProperties()
-
+            with rio.open(dataFile) as f:
+                arr_Data = f.read(1)
+                # reusing the RasterProps namedtuple type from MAP-raster-utilities just for convenience
+                props_Data = RasterProps(gt=f.transform, # an Affine type, not just a tuple
+                                         proj=f.crs, # a CRS type, not just a string
+                                         ndv=f.nodata,  # not sure what this does if file is multiband,
+                                                        # maybe should do get_nodata()[0]
+                                         width=f.width, height=f.height,
+                                         datatype=f.dtypes[0] # a string, not a numeric gdal type code
+                                         )
             distsFile = intermediateDataForDate["Distances"]
-            distsReader = SingleBandTiffFile(distsFile)
-            arr_Dists, gt_Dists, proj_Dists, ndv_Dists = distsReader.ReadAll()
-            props_Dists = distsReader.GetProperties()
+            with rio.open(distsFile) as f:
+                arr_Dists = f.read(1)
+                # reusing the RasterProps namedtuple type from MAP-raster-utilities just for convenience
+                props_Dists = RasterProps(gt=f.transform,  # an Affine type, not just a tuple
+                                         proj=f.crs,  # a CRS type, not just a string
+                                         ndv=f.nodata,  # not sure what this does if file is multiband,
+                                         # maybe should do get_nodata()[0]
+                                         width=f.width, height=f.height,
+                                         datatype=f.dtypes[0]  # a string, not a numeric gdal type code
+                                         )
 
             flagsFile = intermediateDataForDate["Flags"]
-            flagsReader = SingleBandTiffFile(flagsFile)
-            arr_Flags, gt_Flags, proj_Flags, ndv_Flags = flagsReader.ReadAll()
-            props_Flags = flagsReader.GetProperties()
-
+            with rio.open(flagsFile) as f:
+                arr_Flags = f.read(1)
+                # reusing the RasterProps namedtuple type from MAP-raster-utilities just for convenience
+                props_Flags = RasterProps(gt=f.transform,  # an Affine type, not just a tuple
+                                         proj=f.crs,  # a CRS type, not just a string
+                                         ndv=f.nodata,  # not sure what this does if file is multiband,
+                                         # maybe should do get_nodata()[0]
+                                         width=f.width, height=f.height,
+                                         datatype=f.dtypes[0]  # a string, not a numeric gdal type code
+                                         )
             if self._jobDetails.RunA2:
                 print(f"Running A2 for image {dataFile}")
                 print(self._a2Config.GetSummaryMessage())
@@ -540,10 +559,11 @@ class GapFiller:
                                               dataConfig=self._dataSpecificConfig)
                 print(A2Diagnostics.GetSummaryMessage())
             if self._jobDetails.ClipMinMax:
-                #if not self._CACHE_SD: # TODO add this
+                # TODO add SD caching - for now re-reading for each image to leave more mem free for A2 above
+                # if not self._CACHE_SD:
                 if True:
-                    arr_SD, _, _, _ = SingleBandTiffFile(self._filePaths.SYNOPTIC_SD_FILE).ReadForPixelLims(
-                        xLims=self.xLims, yLims=self.yLims)
+                    with rio.open(self._filePaths.SYNOPTIC_SD_FILE) as f:
+                        arr_SD = f.read(1, window=(self.xLims, self.yLims))
                 MinMaxClip(dataImage=arr_Data, flagsImage=arr_Flags, meansImage=arr_Mean, stdImage=arr_SD,
                            flagToCheck=self._flagValues.A2_FILLED, flagToSet=self._flagValues.CLIPPED,
                            floor_ceiling_value=self._dataSpecificConfig.FLOOR_CEILING_ZSCORE,
