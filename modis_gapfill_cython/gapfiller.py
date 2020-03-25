@@ -13,6 +13,7 @@ from collections import defaultdict
 # io management functions
 from raster_utilities.utils.geotransform_calcs import CalculatePixelLims, CalculateClippedGeoTransform
 from raster_utilities.io.TiffFile import SingleBandTiffFile, RasterProps
+import rasterio as rio
 from osgeo import gdal
 # from raster_utilities.tileProcessor import tileProcessor
 
@@ -370,17 +371,16 @@ class GapFiller:
                                                yPixelLims=(dataWriteWindow.Top, dataWriteWindow.Bottom))
         sliceDespeckleHeight = dataReadWindow.Bottom - dataReadWindow.Top
         sliceDespeckleWidth = dataReadWindow.Right - dataReadWindow.Left
-        # todo replace these calls with rasterio.DatasetReader.read()
-        meanReader = SingleBandTiffFile(self._filePaths.SYNOPTIC_MEAN_FILE)
-        sliceMeanArr, _, _, _ = meanReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
-                                                            yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
-        sdReader = SingleBandTiffFile(self._filePaths.SYNOPTIC_SD_FILE)
-        sliceSDArr, _, _, _ = sdReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
-                                                        yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
-
-        coastReader = SingleBandTiffFile(self._filePaths.COASTLINE_FILE)
-        sliceCoastArr, _, _, _ = coastReader.ReadForPixelLims(xLims=(dataReadWindow.Left, dataReadWindow.Right),
-                                                              yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
+        # replaced reading with rasterio
+        with rio.open(self._filePaths.SYNOPTIC_MEAN_FILE) as meanReader:
+            sliceMeanArr = meanReader.read(1, window=((dataReadWindow.Left, dataReadWindow.Right),
+                                                  (dataReadWindow.Top, dataReadWindow.Bottom)))
+        with rio.open(self._filePaths.SYNOPTIC_SD_FILE) as sdReader:
+            sliceSDArr = sdReader.read(1, window=((dataReadWindow.Left, dataReadWindow.Right),
+                                                  (dataReadWindow.Top, dataReadWindow.Bottom)))
+        with rio.open(self._filePaths.COASTLINE_FILE) as coastReader:
+            sliceCoastArr = coastReader.read(1, window=((dataReadWindow.Left, dataReadWindow.Right),
+                                                  (dataReadWindow.Top, dataReadWindow.Bottom)))
         yearFileDictThisDay = self._inputFileDict[calendarDay]
         sortedFiles = [f for (y, f) in sorted(yearFileDictThisDay.items())]
         if startYear != 0:
@@ -409,11 +409,10 @@ class GapFiller:
         dataStack.DistanceTemplate3D = None
         dataStack.KnownUnfillable2D = None
         for zPos in range(len(sortedFiles)):
-            f = SingleBandTiffFile(sortedFiles[zPos])
-            dataStack.DataArray3D[zPos], _, _, _ = f.ReadForPixelLims(
-                xLims=(dataReadWindow.Left, dataReadWindow.Right),
-                yLims=(dataReadWindow.Top, dataReadWindow.Bottom))
-            assert f.GetNdv() == self._dataSpecificConfig.NODATA_VALUE
+            with rio.open(sortedFiles[zPos]) as f:
+                dataStack.DataArray3D[zPos] = f.read(1, window=((dataReadWindow.Left, dataReadWindow.Right),
+                                                  (dataReadWindow.Top, dataReadWindow.Bottom)))
+                assert f.nodata == self._dataSpecificConfig.NODATA_VALUE
         #assert dataStack.DataArray3D.flags.c_contiguous
 
         # Run the despeckle
