@@ -11,11 +11,11 @@ import itertools
 import glob
 from collections import defaultdict
 # io management functions
-from raster_utilities.utils.geotransform_calcs import CalculatePixelLims, CalculateClippedGeoTransform
-from raster_utilities.io.TiffFile import SingleBandTiffFile, RasterProps
 import rasterio as rio
 from rasterio.windows import Window
 import rasterio.dtypes as rio_dt
+import rasterio.transform
+from rasterio.profiles import Profile as rio_prof
 from osgeo import gdal
 # from raster_utilities.tileProcessor import tileProcessor
 from collections import namedtuple
@@ -27,10 +27,9 @@ from .gapfill_prep_a2 import A2ImageCaller
 
 # configuration types (NamedTuples with yaml-parsing factory methods)
 from .gapfill_config_types import GapfillFilePaths, GapfillJobConfig, DataLimitsConfig, \
-    DespeckleConfig, A1SearchConfig, A2SearchConfig, FlagItems
+    DespeckleConfig, A1SearchConfig, A2SearchConfig, FlagItems, RasterProps
 
 from .gapfill_utils import PixelMargins, A1DataStack, A2PassData
-
 
 class GapFiller:
     def __init__(self, gapfillFilePaths: GapfillFilePaths,
@@ -67,31 +66,109 @@ class GapFiller:
         _lonLims = (jobDetails.XMin_Deg, jobDetails.XMax_Deg)
         _latLims = (jobDetails.YMax_Deg, jobDetails.YMin_Deg)
 
+        self._setInputProperties()
         if None in _latLims and None in _lonLims:
             self.OutputProps = self.InputRasterProps
             self.xLims = (0, self.InputRasterProps.width)
             self.yLims = (0, self.InputRasterProps.height)
 
         else:
-            # TODO replace with rasterio.DatasetReader.index
-            self.xLims, self.yLims = CalculatePixelLims(self.InputRasterProps.gt, longitudeLims=_lonLims,
-                                                        latitudeLims=_latLims)
+            self.xLims, self.yLims = self._getPixelLims(lonLims=_lonLims, latLims=_latLims)
             # TODO barring snapping just create this manually from the origin and existing resolution
-            outGT = CalculateClippedGeoTransform(self.InputRasterProps.gt, xPixelLims=self.xLims,
-                                                 yPixelLims=self.yLims)
+            outGT = self._getClippedTransform(self.InputRasterProps.gt, xLims=self.xLims,
+                                                 yLims=self.yLims)
             outW = self.xLims[1] - self.xLims[0]
             outH = self.yLims[1] - self.yLims[0]
             outProj = self.InputRasterProps.proj
             outNdv = self.InputRasterProps.ndv
-            outRes = self.InputRasterProps.res
             outDT = self.InputRasterProps.datatype
-            # TODO define this type in this project, not imported
             self.OutputProps = RasterProps(gt=outGT, proj=outProj, ndv=outNdv, width=outW, height=outH,
-                                           res=outRes, datatype=outDT)
+                                           datatype=outDT)
         maxZSize = max([len(v) for k,v in self._inputFileDict.items()])
         # calculate slices to run a1
         self._slices = self.CalculateSliceEdges(maxZSize)
 
+    def _getPixelLims(self, lonLims, latLims):
+        # TODO consider replacing with rasterio.DatasetReader.index.
+        # However this contains logic to deal with common issues in MAP around rounding of coordinates to
+        # ensure properly aligned output, so may not do
+        assert isinstance(lonLims, tuple) and len(lonLims) == 2
+        assert isinstance(latLims, tuple) and len(latLims) == 2
+
+        EastLimitOut = lonLims[1]
+        WestLimitOut = lonLims[0]
+        NorthLimitOut = latLims[0]
+        SouthLimitOut = latLims[1]
+
+        assert EastLimitOut > WestLimitOut
+        assert NorthLimitOut > SouthLimitOut
+
+        if None in latLims and None in lonLims:
+            self.OutputProps = self.InputRasterProps
+            self.xLims = (0, self.InputRasterProps.width)
+            self.yLims = (0, self.InputRasterProps.height)
+            return
+
+        oneday = next(iter(self._inputFileDict.values()))
+        onefile = next(iter(oneday.values()))
+        # TODO fix incompatibility with the item positions of the Affine type
+        with rio.open(onefile) as templateFile:
+            inGT = templateFile.transform
+            xRes = inGT[0]
+            yRes = -(inGT[4])
+            # check for the commonly-used imprecise resolutions and recalculate to ensure we don't end up missing a pixel
+            inResXRnd = round(xRes, 8)
+            inResYRnd = round(yRes, 8)
+            if inResXRnd == 0.00833333:
+                xRes = 1.0 / 120.0
+            elif inResXRnd == 0.04166667:
+                xRes = 1.0 / 24.0
+            elif inResXRnd == 0.08333333:
+                xRes = 1.0 / 12.0
+            if inResYRnd == 0.00833333:
+                yRes = 1.0 / 120.0
+            elif inResYRnd == 0.04166667:
+                yRes = 1.0 / 24.0
+            elif inResYRnd == 0.08333333:
+                yRes = 1.0 / 12.0
+
+            OverallNorthLimit = inGT[5]
+            OverallWestLimit = inGT[2]
+
+            x0 = int((WestLimitOut - OverallWestLimit) / xRes)
+            x1 = int(((EastLimitOut - OverallWestLimit) / xRes) + 0.5)
+            y0 = int((OverallNorthLimit - NorthLimitOut) / yRes)
+            y1 = int(((OverallNorthLimit - SouthLimitOut) / yRes) + 0.5)
+            return((x0, x1),(y0, y1))
+
+    def _setInputProperties(self):
+        oneday = next(iter(self._inputFileDict.values()))
+        onefile = next(iter(oneday.values()))
+        with rio.open(onefile) as firstFile:
+            initialProps = RasterProps(gt=firstFile.transform,  # an Affine type, not just a tuple
+                    proj=firstFile.crs,  # a CRS type, not just a string
+                    ndv=firstFile.nodata,  # not sure what this does if file is multiband,
+                    # maybe should do get_nodata()[0]
+                    width=firstFile.width, height=firstFile.height,
+                    datatype=firstFile.dtypes[0]
+                    )
+        self.InputRasterProps = initialProps
+
+    def _getClippedTransform(self, inGT, xLims, yLims):
+        '''Returns the GDAL geotransform of a clipped subset of an existing geotransform
+
+        Where clipping coordinates are specified as pixel limits'''
+        topLeftLongIn = inGT[2]
+        topLeftLatIn = inGT[5]
+        resX = inGT[0]
+        resY = inGT[4]
+
+        # the origin coord of the output is simply a whole number of pixels from the input origin
+        topLeftLongOut = topLeftLongIn + xLims[0] * resX
+        topLeftLatOut = topLeftLatIn + yLims[0] * resY
+
+        clippedGT = rasterio.transform.from_origin(topLeftLongOut, topLeftLatOut, resX, -resY)
+        return clippedGT
     def RunFill(self):
         allDays = self._inputFileDict.keys()
         startYear = self._jobDetails.StartYear
@@ -123,8 +200,6 @@ class GapFiller:
         for f in allFiles:
             calendarday, year = self.__parseDailyFilename(f)
             self._inputFileDict[calendarday][year] = f
-        initialProps = SingleBandTiffFile(allFiles[0])
-        self.InputRasterProps = initialProps.GetProperties()
 
     def __parseDailyFilename(self, f):
         """Get julian day and year from a filename in old or new MAP MODIS filename formats,
@@ -368,9 +443,9 @@ class GapFiller:
         if not calendarDay in self._inputFileDict:
             raise FileNotFoundError("No data files were identified for the requested calendar day ({})"
                                     .format(calendarDay))
-        sliceGT = CalculateClippedGeoTransform(self.OutputProps.gt,
-                                               xPixelLims=(dataWriteWindow.Left, dataWriteWindow.Right),
-                                               yPixelLims=(dataWriteWindow.Top, dataWriteWindow.Bottom))
+        sliceGT = self._getClippedTransform(self.OutputProps.gt,
+                                               xLims=(dataWriteWindow.Left, dataWriteWindow.Right),
+                                               yLims=(dataWriteWindow.Top, dataWriteWindow.Bottom))
         sliceDespeckleHeight = dataReadWindow.Bottom - dataReadWindow.Top
         sliceDespeckleWidth = dataReadWindow.Right - dataReadWindow.Left
         # replaced reading with rasterio
@@ -462,6 +537,9 @@ class GapFiller:
             # use intermediate files.
             # in this code we're not saving separate tile files, we're saving global tiffs and just writing
             # part of them at once
+            dataWriteWindow_rio = Window.from_slices(rows=(dataWriteWindow.Top, dataWriteWindow.Bottom),
+                                                     cols=(dataWriteWindow.Left,dataWriteWindow.Right))
+            dataWriteProfile = self.OutputProps.GetRasterioProfile()
             for y in range(len(sortedFiles)):
                 if y < startFillFromPos:
                     continue
@@ -475,37 +553,26 @@ class GapFiller:
                 outNameData = os.path.join(self._filePaths.TEMP_FOLDER, outDataFile)
                 outNameDist = os.path.join(self._filePaths.TEMP_FOLDER, outDistFile)
                 outNameFlag = os.path.join(self._filePaths.TEMP_FOLDER, outFlagFile)
-                thisOutFile = SingleBandTiffFile(outNameData)
-                try:
-                    thisOutFile.SetProperties(self.OutputProps)
-                    self._intermediateFiles[inputFilename]["Data"] = outNameData
-                except RuntimeError:
-                    pass
-                thisOutFile.SavePart(np.asarray(dataStack.DataArray3D[y]),
-                                     (dataWriteWindow.Left, dataWriteWindow.Top))
-                thisOutFile = SingleBandTiffFile(outNameDist)
-                try:
-                    thisOutFile.SetProperties(self.OutputProps)
-                    self._intermediateFiles[inputFilename]["Distances"] = outNameDist
-                except RuntimeError:
-                    pass
-                thisOutFile.SavePart(np.asarray(dataStack.DistanceTemplate3D[y]),
-                                     (dataWriteWindow.Left, dataWriteWindow.Top))
-                thisOutFile = SingleBandTiffFile(outNameFlag)
-                try:
-                    op = self.OutputProps
-                    flagProps = RasterProps(gt=op.gt, proj=op.proj, ndv=None,
-                                            width=op.width, height=op.height, res=op.res,
-                                            datatype=gdal.gdalconst.GDT_Byte)
-                    thisOutFile.SetProperties(flagProps)
-                    self._intermediateFiles[inputFilename]["Flags"] = outNameFlag
-                except RuntimeError:
-                    pass
-                thisOutFile.SavePart(np.asarray(dataStack.FlagsArray3D[y]),
-                                     (dataWriteWindow.Left, dataWriteWindow.Top))
-                thisOutFile = None
+                if not os.path.exists(self._filePaths.TEMP_FOLDER):
+                    os.makedirs(self._filePaths.TEMP_FOLDER)
+                self._intermediateFiles[inputFilename]["Data"] = outNameData
+                self._intermediateFiles[inputFilename]["Distances"] = outNameDist
+                self._intermediateFiles[inputFilename]["Flags"] = outNameFlag
+                with rio.open(outNameData, 'w',
+                              **dataWriteProfile) as dst:
+                    dst.write(np.asarray(dataStack.DataArray3D[y]), 1,
+                              window=dataWriteWindow_rio)
+                with rio.open(outNameDist, 'w',
+                              **dataWriteProfile) as dst:
+                    dst.write(np.asarray(dataStack.DistanceTemplate3D[y]), 1,
+                              window=dataWriteWindow_rio)
+                dataWriteProfile.update(dtype=rio_dt.uint8)
+                dataWriteProfile.update(nodata=None)
+                with rio.open(outNameFlag, 'w',
+                              **dataWriteProfile) as dst:
+                    dst.write(np.asarray(dataStack.FlagsArray3D[y]), 1,
+                              window=dataWriteWindow_rio)
 
-    RasterProps = namedtuple("RasterProps", ["gt", "proj", "ndv", "width", "height", "res", "datatype"])
 
     def A2BatchRunner(self):
         # cf. a2Caller, but run for a provided filename
@@ -531,8 +598,7 @@ class GapFiller:
                                          ndv=f.nodata,  # not sure what this does if file is multiband,
                                                         # maybe should do get_nodata()[0]
                                          width=f.width, height=f.height,
-                                         datatype=ordered_rio_dtypes.index(f.dtypes[0]),
-                                         res = f.transform[0]
+                                         datatype=f.dtypes[0]
                                          )
             distsFile = intermediateDataForDate["Distances"]
             with rio.open(distsFile) as f:
@@ -543,8 +609,7 @@ class GapFiller:
                                          ndv=f.nodata,  # not sure what this does if file is multiband,
                                          # maybe should do get_nodata()[0]
                                          width=f.width, height=f.height,
-                                         datatype=ordered_rio_dtypes.index(f.dtypes[0]),  # a string, not a numeric gdal type code
-                                         res=f.transform[0]
+                                         datatype=f.dtypes[0]  # a string, not a numeric gdal type code
                                          )
 
             flagsFile = intermediateDataForDate["Flags"]
@@ -556,8 +621,7 @@ class GapFiller:
                                          ndv=f.nodata,  # not sure what this does if file is multiband,
                                          # maybe should do get_nodata()[0]
                                          width=f.width, height=f.height,
-                                         datatype=ordered_rio_dtypes.index(f.dtypes[0]),  # a string, not a numeric gdal type code
-                                         res=f.transform[0]
+                                         datatype=f.dtypes[0]  # a string, not a numeric gdal type code
                                          )
             if self._jobDetails.RunA2:
                 print(f"Running A2 for image {dataFile}")
@@ -581,18 +645,24 @@ class GapFiller:
                            lowerHardLimit=self._dataSpecificConfig.FLOOR_VALUE,
                            nCores=self._jobDetails.NCores)
             day, yr = self.__parseDailyFilename(inputName)
+            dataWriteProfile = self.OutputProps.GetRasterioProfile()
             outDataFile = self._outTemplate.format("-FilledData", yr, day)
             outDistFile = self._outTemplate.format("-FilledDists", yr, day)
             outFlagFile = self._outTemplate.format("-FillFlags", yr, day)
-            dataWriter = SingleBandTiffFile(os.path.join(self._filePaths.OUTPUT_FOLDER, outDataFile))
-            dataWriter.SetProperties(props_Data)
-            dataWriter.Save(arr_Data)
-            distWriter = SingleBandTiffFile(os.path.join(self._filePaths.OUTPUT_FOLDER, outDistFile))
-            distWriter.SetProperties(props_Dists)
-            distWriter.Save(arr_Dists)
-            flagWriter = SingleBandTiffFile(os.path.join(self._filePaths.OUTPUT_FOLDER, outFlagFile))
-            flagWriter.SetProperties(props_Flags)
-            flagWriter.Save(arr_Flags)
+            if not os.path.exists(self._filePaths.OUTPUT_FOLDER):
+                os.makedirs(self._filePaths.OUTPUT_FOLDER)
+            with rio.open(os.path.join(self._filePaths.OUTPUT_FOLDER, outDataFile), 'w',
+                          **dataWriteProfile) as dataWriter:
+                dataWriter.write(arr_Data, 1)
+            with rio.open(os.path.join(self._filePaths.OUTPUT_FOLDER, outDistFile), 'w',
+                          **dataWriteProfile) as distWriter:
+                distWriter.write(arr_Dists, 1)
+
+            dataWriteProfile.update(dtype=rio_dt.uint8)
+            dataWriteProfile.update(nodata=None)
+            with rio.open(os.path.join(self._filePaths.OUTPUT_FOLDER, outFlagFile), 'w',
+                          **dataWriteProfile) as flagWriter:
+                flagWriter.write(arr_Flags, 1)
 
             #os.remove(dataFile)
             #os.remove(distsFile)

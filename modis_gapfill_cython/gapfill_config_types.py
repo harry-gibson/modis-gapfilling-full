@@ -1,5 +1,7 @@
 from typing import NamedTuple
-
+import rasterio.dtypes as rio_dt
+import rasterio.transform
+from rasterio.profiles import Profile as rio_prof
 
 class FlagItems(NamedTuple):
     """The flags output is an 8 bit raster holding 8 separate flag conditions as a bitmask, values defined here"""
@@ -235,7 +237,6 @@ class DataLimitsConfig(NamedTuple):
         return configParsed
 
 
-
 class GapfillFilePaths(NamedTuple):
     DATA_FILES_GLOB_PATTERN: str
     SYNOPTIC_MEAN_FILE: str
@@ -342,3 +343,20 @@ class A2Diagnostics(NamedTuple):
         return message
 
 
+class RasterProps(NamedTuple):
+    gt: list
+    proj: str
+    ndv: float
+    width: int
+    height: int
+    datatype: str
+
+    def GetRasterioProfile(self):
+        prof = rio_prof(driver='GTiff', interleave='band', tiled=True,
+                        compress='lzw', num_threads='all_cpus',
+                        width=self.width, height=self.height,
+                        dtype=self.datatype, crs=self.proj,
+                        transform=self.gt,
+                        nodata=self.ndv,
+                        count=1)
+        return prof
