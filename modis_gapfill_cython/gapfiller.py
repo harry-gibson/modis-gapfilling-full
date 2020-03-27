@@ -1,8 +1,6 @@
 # hack in the path to map raster utilities for I/O
 import sys
 
-sys.path.insert(0, r'E:\Data\Harry\Documents\Git\MAP-raster-utilities')
-sys.path.insert(0, r'C:\Users\zool1301\Documents\GitHub\MAP-raster-utilities')
 # standard python libraries
 import os
 import math
